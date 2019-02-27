@@ -4,14 +4,16 @@ using LMS_1_1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LMS_1_1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190227135827_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,21 +48,6 @@ namespace LMS_1_1.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("LMS_1_1.Models.CourseUser", b =>
-                {
-                    b.Property<string>("CourseId");
-
-                    b.Property<string>("UserId");
-
-                    b.Property<string>("LMSUserId");
-
-                    b.HasKey("CourseId", "UserId");
-
-                    b.HasIndex("LMSUserId");
-
-                    b.ToTable("CourseUsers");
                 });
 
             modelBuilder.Entity("LMS_1_1.Models.LMSActivity", b =>
@@ -278,18 +265,6 @@ namespace LMS_1_1.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("LMS_1_1.Models.CourseUser", b =>
-                {
-                    b.HasOne("LMS_1_1.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LMS_1_1.Models.LMSUser", "LMSUser")
-                        .WithMany()
-                        .HasForeignKey("LMSUserId");
                 });
 
             modelBuilder.Entity("LMS_1_1.Models.LMSActivity", b =>
