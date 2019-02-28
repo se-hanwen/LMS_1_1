@@ -34,6 +34,7 @@ namespace LMS_1_1.Controllers
         [Authorize]
         public async Task<ActionResult<LMSUser>> GetCourseUser(Guid Courseid)
         {
+            
             var courseUser = await _context.CourseUsers
                 .Include(cu=> cu.LMSUser)                
                 .Where(cu => cu.CourseId == Courseid)
