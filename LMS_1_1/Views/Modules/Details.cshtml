@@ -48,7 +48,7 @@
                 @foreach (var activity in Model.LMSActivities)
                 {
                     <a asp-controller="LMSActivities" asp-action="Details" asp-route-id="@activity.Id">
-                        @activity.Name
+                        @activity.ActivityType.Name
                     </a><br />
                 }
             </dd>

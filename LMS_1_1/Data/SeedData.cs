@@ -88,27 +88,29 @@ namespace LMS_1_1.Data
 
                 }
 
-                if (context.Courses.FirstOrDefault(c => c.Name == "NA18") == null)
+                if (context.Courses == null)
                 {
-                    // add a course
-                    await context.Courses.AddAsync(new Course { Name = "NA18", Description = "Kurs i .net core och C#", StartDate = DateTime.Parse("2018-11-26 09:00:00") });
-                    await context.SaveChangesAsync();
-                }
-                var courseid = context.Courses.FirstOrDefault(c => c.Name == "NA18")?.Id;
+                    if (context.Courses.FirstOrDefault(c => c.Name == "NA18") == null)
+                    {
+                        // add a course
+                        await context.Courses.AddAsync(new Course { Name = "NA18", Description = "Kurs i .net core och C#", StartDate = DateTime.Parse("2018-11-26 09:00:00") });
+                        await context.SaveChangesAsync();
+                    }
+                    var courseid = context.Courses.FirstOrDefault(c => c.Name == "NA18")?.Id;
 
-                if (context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Programmering i C#") == null)
-                {
-                    await context.Modules.AddAsync(new Module { Name = "C#", Description = "Programmering i C#", StartDate = DateTime.Parse("2018-11-26 09:00:00"), EndDate = DateTime.Parse("2018-12-07 17:00:00"), CourseId = courseid.Value });
+                    if (context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Programmering i C#") == null)
+                    {
+                        await context.Modules.AddAsync(new Module { Name = "C#", Description = "Programmering i C#", StartDate = DateTime.Parse("2018-11-26 09:00:00"), EndDate = DateTime.Parse("2018-12-07 17:00:00"), CourseId = courseid.Value });
 
-                    await context.SaveChangesAsync();
-                }
-                var moduleid = context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Programmering i C#")?.Id;
+                        await context.SaveChangesAsync();
+                    }
+                    var moduleid = context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Programmering i C#")?.Id;
 
 
-                if (context.LMSActivity.FirstOrDefault(a => a.ModuleId == moduleid) == null)
-                {
+                    if (context.LMSActivity.FirstOrDefault(a => a.ModuleId == moduleid) == null)
+                    {
 
-                    await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
+                        await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
                     {
                         new LMSActivity{Name="", Description="Intro + E-L 1.1, 1.2", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-26 09:00:00"),EndDate=DateTime.Parse("2018-11-26 17:00:00") },
                         new LMSActivity{Name="", Description="E-L 1.3", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-27 09:00:00"),EndDate=DateTime.Parse("2018-11-27 12:00:00") },
@@ -124,20 +126,20 @@ namespace LMS_1_1.Data
                         new LMSActivity{Name="", Description="FRL OOP 2", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-06 09:00:00"),EndDate=DateTime.Parse("2018-12-06 17:00:00") },
                         new LMSActivity{Name="", Description="Övning 3", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-07 09:00:00"),EndDate=DateTime.Parse("2018-12-07 17:00:00") },
                     });
-                }
+                    }
 
-                if (context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "C#") == null)
-                {
-                    await context.Modules.AddAsync(new Module { Name = "C#", Description = "C#", StartDate = DateTime.Parse("2018-12-10 09:00:00"), EndDate = DateTime.Parse("2018-12-14 17:00:00"), CourseId = courseid.Value });
+                    if (context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "C#") == null)
+                    {
+                        await context.Modules.AddAsync(new Module { Name = "C#", Description = "C#", StartDate = DateTime.Parse("2018-12-10 09:00:00"), EndDate = DateTime.Parse("2018-12-14 17:00:00"), CourseId = courseid.Value });
 
-                    await context.SaveChangesAsync();
-                }
+                        await context.SaveChangesAsync();
+                    }
 
-                moduleid = context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "C#")?.Id;
+                    moduleid = context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "C#")?.Id;
 
-                if (context.LMSActivity.FirstOrDefault(a => a.ModuleId == moduleid) == null)
-                {
-                    await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
+                    if (context.LMSActivity.FirstOrDefault(a => a.ModuleId == moduleid) == null)
+                    {
+                        await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
                     {
                         new LMSActivity{Name="", Description="E-L 2.1 - 2.4", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-10 09:00:00"),EndDate=DateTime.Parse("2018-12-10 12:00:00") },
                         new LMSActivity{Name="", Description="Övning 4", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-10 13:00:00"),EndDate=DateTime.Parse("2018-12-10 17:00:00") },
@@ -150,37 +152,37 @@ namespace LMS_1_1.Data
                         new LMSActivity{Name="", Description="Övning 4", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-14 13:00:00"),EndDate=DateTime.Parse("2018-12-14 17:00:00") },
 
                     });
-                }
+                    }
 
-                if (context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Testning") == null)
-                {
-                    await context.Modules.AddAsync(new Module { Name = "C#", Description = "Testning", StartDate = DateTime.Parse("2018-12-17 09:00:00"), EndDate = DateTime.Parse("2018-12-18 17:00:00"), CourseId = courseid.Value });
-                    await context.SaveChangesAsync();
-                }
+                    if (context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Testning") == null)
+                    {
+                        await context.Modules.AddAsync(new Module { Name = "C#", Description = "Testning", StartDate = DateTime.Parse("2018-12-17 09:00:00"), EndDate = DateTime.Parse("2018-12-18 17:00:00"), CourseId = courseid.Value });
+                        await context.SaveChangesAsync();
+                    }
 
-                moduleid = context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Testning")?.Id;
+                    moduleid = context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Testning")?.Id;
 
-                if (context.LMSActivity.FirstOrDefault(a => a.ModuleId == moduleid) == null)
-                {
-                    await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
+                    if (context.LMSActivity.FirstOrDefault(a => a.ModuleId == moduleid) == null)
+                    {
+                        await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
                     {
                         new LMSActivity{Name="", Description="Unit Test E-L Test ", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-17 09:00:00"),EndDate=DateTime.Parse("2018-12-17 17:00:00") },
                         new LMSActivity{Name="", Description="FRL/Ariktektur", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-18 09:00:00"),EndDate=DateTime.Parse("2018-12-18 12:00:00") },
                         new LMSActivity{Name="", Description="FRL/Test", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-18 13:00:00"),EndDate=DateTime.Parse("2018-12-18 17:00:00") },
 
                     });
-                }
+                    }
 
-                if (context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Garage 1.0") == null)
-                {
-                    await context.Modules.AddAsync(new Module { Name = "C#", Description = "Garage 1.0", StartDate = DateTime.Parse("2018-12-19 09:00:00"), EndDate = DateTime.Parse("2019-01-02 17:00:00"), CourseId = courseid.Value });
-                    await context.SaveChangesAsync();
-                }
-                moduleid = context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Garage 1.0")?.Id;
+                    if (context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Garage 1.0") == null)
+                    {
+                        await context.Modules.AddAsync(new Module { Name = "C#", Description = "Garage 1.0", StartDate = DateTime.Parse("2018-12-19 09:00:00"), EndDate = DateTime.Parse("2019-01-02 17:00:00"), CourseId = courseid.Value });
+                        await context.SaveChangesAsync();
+                    }
+                    moduleid = context.Modules.FirstOrDefault(u => u.CourseId == courseid && u.Name == "C#" && u.Description == "Garage 1.0")?.Id;
 
-                if (context.LMSActivity.FirstOrDefault(a => a.ModuleId == moduleid) == null)
-                {
-                    await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
+                    if (context.LMSActivity.FirstOrDefault(a => a.ModuleId == moduleid) == null)
+                    {
+                        await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
                     {
                         new LMSActivity{Name="", Description="Övning Garage 1.0", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-19 09:00:00"),EndDate=DateTime.Parse("2018-12-28 12:00:00") },
                         new LMSActivity{Name="", Description="Redovisning", ActivityTypeId=5, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-28 13:00:00"),EndDate=DateTime.Parse("2018-12-28 17:00:00") },
@@ -188,26 +190,27 @@ namespace LMS_1_1.Data
                         new LMSActivity{Name="", Description="Kodgenomgång", ActivityTypeId=5, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2019-01-02 13:00:00"),EndDate=DateTime.Parse("2019-01-02 17:00:00") },
 
                     });
-                }
-
-
-
-                // Add student to course
-                var students = await userManager.GetUsersInRoleAsync("Student");
-
-                foreach (var student in students)
-                {
-                    if (context.CourseUsers.FirstOrDefault(cu => cu.UserId == student.Id) == null)
-                    {
-                        await context.CourseUsers.AddAsync(
-                            new CourseUser { CourseId = courseid.Value, UserId = student.Id });
                     }
 
+
+
+                    // Add student to course
+                    var students = await userManager.GetUsersInRoleAsync("Student");
+
+                    foreach (var student in students)
+                    {
+                        if (context.CourseUsers.FirstOrDefault(cu => cu.UserId == student.Id) == null)
+                        {
+                            await context.CourseUsers.AddAsync(
+                                new CourseUser { CourseId = courseid.Value, UserId = student.Id });
+                        }
+
+                    }
+
+
+
+                    await context.SaveChangesAsync();
                 }
-
-
-
-                await context.SaveChangesAsync();
             }
         }
     }

@@ -8,31 +8,31 @@ namespace LMS_1_1.Repository
 {
     public interface IProgramRepository
     {
-       
-        IEnumerable<Course> GetAllCourses (bool includeModule);
-        Course GetCourseById (Guid courseId, bool includeModule);
-        bool CourseExists (Guid id);
-       /* Course FindCourseById (string courseId);*/
+
+        Task<IEnumerable<Course>> GetAllCoursesAsync (bool includeModule);
+        Task<Course> GetCourseByIdAsync (Guid courseId, bool includeModule);
+        Task<bool> CourseExistsAsync (Guid id);
+        /* Course FindCourseById (string courseId);*/
 
 
-        IEnumerable<Module> GetAllModules (bool includeActivities);
-        Module GetModuleById (Guid moduleId, bool includeActivity);
-        bool ModuleExists (Guid id);
+        Task<IEnumerable<Module>> GetAllModulesAsync (bool includeActivities);
+        Task<Module> GetModuleByIdAsync (Guid moduleId, bool includeActivity);
+        Task<bool> ModuleExistsAsync (Guid id);
 
 
 
-        IEnumerable<LMSActivity> GetAllActivities ();
-        LMSActivity GetActivityById (Guid activityId);
-        bool LMSActivityExists (Guid id);
+        Task<IEnumerable<LMSActivity>> GetAllActivitiesAsync ();
+        Task<LMSActivity> GetActivityByIdAsync (Guid activityId);
+        Task<bool> LMSActivityExistsAsync (Guid id);
 
-        IEnumerable<ActivityType> GetAllActivitiyTypes ();
-        ActivityType GetAllActivitiyTypesById (int activityTypeId);
-        bool ActivityTypeExists (int id);
+        Task<IEnumerable<ActivityType>> GetAllActivityTypesAsync ();
+        Task<ActivityType> GetAllActivityTypesByIdAsync (int activityTypeId);
+        Task<bool> ActivityTypeExistsAsync (int id);
 
 
-        bool SaveAll ();
-        void AddEntity (object model);
-        void UpdateEntity (object model);
-        void RemoveEntity (object model);
+        Task<bool> SaveAllAsync ();
+        Task AddEntityAsync (object model);
+        Task UpdateEntityAsync (object model);
+        Task RemoveEntityAsync (object model);
     }
 }

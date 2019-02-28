@@ -9,9 +9,11 @@ using LMS_1_1.Data;
 using LMS_1_1.Models;
 using LMS_1_1.Repository;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS_1_1.Controllers
 {
+    [Authorize]
     public class ModulesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -24,18 +26,16 @@ namespace LMS_1_1.Controllers
             _logger = logger;
             _context = context;
         }
-
-
-      
-
         // GET: Modules
+        [Authorize]
         public async Task<IActionResult> Index()
         {
            
-            return View(_repository.GetAllModules(false));
+            return View(await _repository.GetAllModulesAsync(false));
         }
 
         // GET: Modules/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
@@ -43,11 +43,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var module = _repository.GetModuleById(id, true);
-            /*
-            var @module = await _context.Modules
-                .Include(c => c.Courses)
-                .FirstOrDefaultAsync(m => m.Id == id);*/
+            var module = await _repository.GetModuleByIdAsync(id, true);
             if (module == null)
             {
                 return NotFound();
@@ -57,6 +53,7 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: Modules/Create
+        [Authorize(Roles = "Teacher")]
         public IActionResult Create()
         {
             ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Name");
@@ -66,14 +63,15 @@ namespace LMS_1_1.Controllers
         // POST: Modules/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Description,CourseId")] Module module)
         {
             if (ModelState.IsValid)
             {
-                _repository.AddEntity(module);
-                _repository.SaveAll();
+                await _repository.AddEntityAsync(module);
+               await  _repository.SaveAllAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Name", module.CourseId);
@@ -81,6 +79,7 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: Modules/Edit/5
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
@@ -88,7 +87,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var module = _repository.GetModuleById(id, false);
+            var module =await  _repository.GetModuleByIdAsync(id, false);
             if (module == null)
             {
                 return NotFound();
@@ -102,6 +101,7 @@ namespace LMS_1_1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,StartDate,EndDate,Description,CourseId")] Module module)
         {
             if (id != module.Id)
@@ -113,12 +113,12 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                    _repository.UpdateEntity(module);
-                    _repository.SaveAll();
+                   await  _repository.UpdateEntityAsync(module);
+                   await  _repository.SaveAllAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_repository.ModuleExists(module.Id))
+                    if ( !await _repository.ModuleExistsAsync(module.Id))
                     {
                         return NotFound();
                     }
@@ -134,6 +134,7 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: Modules/Delete/5
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
@@ -141,7 +142,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var module = _repository.GetModuleById(id, false);
+            var module = await _repository.GetModuleByIdAsync(id, false);
             if (@module == null)
             {
                 return NotFound();
@@ -151,13 +152,14 @@ namespace LMS_1_1.Controllers
         }
 
         // POST: Modules/Delete/5
+        [Authorize(Roles = "Teacher")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var module = _repository.GetModuleById(id, false);
-            _repository.RemoveEntity(module);
-            _repository.SaveAll();
+            var module = await _repository.GetModuleByIdAsync(id, false);
+            await _repository.RemoveEntityAsync(module);
+            await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }
 
