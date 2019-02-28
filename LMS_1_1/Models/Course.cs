@@ -16,6 +16,7 @@ namespace LMS_1_1.Models
         public DateTime StartDate { get; set; }
         public string Description { get ; set ; }
 
-        ICollection<Module> Modules { get; set; }
+       public ICollection<Module> Modules { get; set; }
+       
     }
 }

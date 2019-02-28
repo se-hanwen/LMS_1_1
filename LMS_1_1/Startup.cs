@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using LMS_1_1.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using LMS_1_1.Repository;
 
 namespace LMS_1_1
 {
@@ -42,6 +43,7 @@ namespace LMS_1_1
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddScoped<IProgramRepository, ProgramRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

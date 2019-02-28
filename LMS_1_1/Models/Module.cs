@@ -20,7 +20,7 @@ namespace LMS_1_1.Models
         public string  CourseId { get; set; }
         public Course Courses { get; set; }
 
-        ICollection<LMSActivity> LMSActivities { get; set; }
+        public ICollection<LMSActivity> LMSActivities { get; set; }
 
     }
 }
