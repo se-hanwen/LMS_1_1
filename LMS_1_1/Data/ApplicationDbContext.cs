@@ -16,7 +16,7 @@ namespace LMS_1_1.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<CourseUser>()
-                .HasKey(cu => new { cu.CourseId, cu.UserId });
+                .HasKey(cu => new { cu.CourseId, cu.LMSUserId });
 
 
             modelBuilder.Entity<ActivityType>()
