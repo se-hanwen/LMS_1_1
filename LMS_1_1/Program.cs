@@ -28,13 +28,13 @@ namespace LMS_1_1
   "Teachers": [
     {
       "UserName": "Penny@lysator.liu.se",
-      "PassWord": "LMS2019"
+      "PassWord": "LmS2019Penny#"
     }
   ],
   "Students": [
     {
       "UserName": "elev@lexicon.se",
-      "PassWord": "Qwerty"
+      "PassWord": "Qwe12rTy#"
     }
   ]
                  * 
