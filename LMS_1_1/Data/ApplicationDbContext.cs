@@ -19,6 +19,17 @@ namespace LMS_1_1.Data
                 .HasKey(cu => new { cu.CourseId, cu.UserId });
 
 
+            modelBuilder.Entity<ActivityType>()
+    .HasData(
+        new ActivityType { Id = 1, Name = "E-Learningpass" },
+        new ActivityType { Id = 2, Name = "Föreläsning" },
+        new ActivityType { Id = 3, Name = "Övningstillfälle" },
+        new ActivityType { Id = 4, Name = "Inlämingsuppgift" },
+        new ActivityType { Id = 5, Name = "Annat" }
+
+
+    );
+
         }
 
 
