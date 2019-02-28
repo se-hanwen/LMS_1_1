@@ -42,6 +42,8 @@ namespace LMS_1_1
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IProgramRepository, ProgramRepository>();
+            services.AddScoped<ICourseUsersRepository, CourseUsersRepository>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

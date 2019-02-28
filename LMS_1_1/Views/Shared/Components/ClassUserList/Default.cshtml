@@ -1,0 +1,21 @@
+﻿@model List<LMS_1_1.Models.CourseUser>
+@{
+    ViewData["Title"] = "Default";
+}
+
+<div class="row">
+
+
+    @foreach (var item in Model)
+    {
+        <div class="col-6">
+            @item.LMSUser.FirstName  @item.LMSUser.LastName
+        </div>
+
+    }
+
+
+
+
+</div>
+

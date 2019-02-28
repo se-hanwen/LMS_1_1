@@ -1,8 +1,11 @@
 ﻿using LMS_1_1.Data;
 using LMS_1_1.Models;
+using LMS_1_1.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,32 +18,36 @@ namespace LMS_1_1.Controllers
     public class CourseUsersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<CoursesController> _logger;
+        private readonly ICourseUsersRepository _repository;
+        private readonly UserManager<LMSUser> _userManager;
 
-        public CourseUsersController(ApplicationDbContext context)
+        public CourseUsersController(ICourseUsersRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context, UserManager<LMSUser> userManager)
         {
             _context = context;
-        }
-
-        // GET: api/CourseUsers
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<IEnumerable<CourseUser>>> GetCourseUsers()
-        {
-            return await _context.CourseUsers.ToListAsync();
+            _logger = logger;
+            _repository = repository;
+            _userManager = userManager;
         }
 
         // GET: api/CourseUsers/5
-        [HttpGet("{Courseid}")]
+        [HttpGet("{CourseId}")]
         [Authorize]
-        public async Task<ActionResult<LMSUser>> GetCourseUser(Guid Courseid)
+        public async Task<ActionResult<ICollection<CourseUser>>> GetCourseUsers(Guid CourseId)
         {
-            
-            var courseUser = await _context.CourseUsers
-                .Include(cu=> cu.LMSUser)                
-                .Where(cu => cu.CourseId == Courseid)
-                .Select(cu => cu.LMSUser)
-                .FirstOrDefaultAsync()
-                ;
+            return await _repository.GetCourseUsers(CourseId).ToListAsync();
+        }
+
+        // GET: api/CourseUsers/5
+        [HttpGet]
+        [Authorize]
+        //public IQueryable<CourseUser> GetCoursesForUsers(string LMSUserId)
+        public async Task<ActionResult<ICollection<CourseUser>>> GetCoursesForUsers()
+        {
+            var userid = _userManager.GetUserId(User);
+            // to do Teacher case
+            var courseUser = await _repository.GetCoursesForUsers(userid).ToListAsync();
+
 
             if (courseUser == null)
             {
@@ -68,7 +75,7 @@ namespace LMS_1_1.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CourseUserExists(Courseid))
+                if (!CourseUserExists(Courseid, courseUser.LMSUserId))
                 {
                     return NotFound();
                 }
@@ -93,7 +100,7 @@ namespace LMS_1_1.Controllers
             }
             catch (DbUpdateException)
             {
-                if (CourseUserExists(courseUser.CourseId))
+                if (CourseUserExists(courseUser.CourseId, courseUser.LMSUserId))
                 {
                     return Conflict();
                 }
@@ -111,7 +118,7 @@ namespace LMS_1_1.Controllers
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<CourseUser>> DeleteCourseUser(Guid Courseid, string LMSUserId)
         {
-            var courseUser = await _context.CourseUsers.FirstOrDefaultAsync(cu => cu.CourseId==Courseid && cu.LMSUserId==LMSUserId);
+            var courseUser = await _context.CourseUsers.FirstOrDefaultAsync(cu => cu.CourseId == Courseid && cu.LMSUserId == LMSUserId);
             if (courseUser == null)
             {
                 return NotFound();
@@ -123,9 +130,9 @@ namespace LMS_1_1.Controllers
             return courseUser;
         }
 
-        private bool CourseUserExists(Guid Courseid)
+        private bool CourseUserExists(Guid Courseid, string LMSUserid)
         {
-            return _context.CourseUsers.Any(e => e.CourseId == Courseid);
+            return _context.CourseUsers.Any(e => e.CourseId == Courseid && e.LMSUserId == LMSUserid);
         }
     }
 }
