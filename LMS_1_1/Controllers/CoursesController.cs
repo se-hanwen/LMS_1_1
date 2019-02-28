@@ -33,7 +33,7 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: Courses/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
@@ -76,7 +76,7 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: Courses/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
             {
@@ -97,7 +97,7 @@ namespace LMS_1_1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,StartDate,Description")] Course course)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,StartDate,Description")] Course course)
         {
             if (id != course.Id)
             {
@@ -128,7 +128,7 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: Courses/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
@@ -150,7 +150,7 @@ namespace LMS_1_1.Controllers
         // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var course = _repository.GetCourseById(id, false);
             _repository.RemoveEntity(course);

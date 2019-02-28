@@ -60,7 +60,7 @@ namespace LMS_1_1.Repository
             return courses.ToList();
         }
 
-        public Course GetCourseById (string courseId, bool includeModule)
+        public Course GetCourseById (Guid courseId, bool includeModule)
         {
             var course = _ctx.Courses
                .Where(c => c.Id == courseId);
@@ -76,9 +76,9 @@ namespace LMS_1_1.Repository
 
         }
 
-        public bool CourseExists (string id)
+        public bool CourseExists (Guid courseId)
         {
-            return _ctx.Courses.Any(e => e.Id == id);
+            return _ctx.Courses.Any(e => e.Id == courseId);
         }
 
         public IEnumerable<Module> GetAllModules (bool includeActivities)
@@ -97,7 +97,7 @@ namespace LMS_1_1.Repository
 
         }
 
-        public Module GetModuleById (string moduleId, bool includeActivity)
+        public Module GetModuleById (Guid moduleId, bool includeActivity)
         {
             var module = _ctx.Modules
                          .Include(c => c.Courses)
@@ -116,9 +116,9 @@ namespace LMS_1_1.Repository
             }
         }
 
-        public bool ModuleExists (string id)
+        public bool ModuleExists (Guid moduleId)
         {
-            return _ctx.Modules.Any(e => e.Id == id);
+            return _ctx.Modules.Any(e => e.Id == moduleId);
         }
         public IEnumerable<LMSActivity> GetAllActivities ()
         {
@@ -129,7 +129,7 @@ namespace LMS_1_1.Repository
 
         }
 
-        public LMSActivity GetActivityById (string activityId)
+        public LMSActivity GetActivityById (Guid activityId)
         {
             return _ctx.LMSActivity
                  .Include(a => a.ActivityType)
@@ -137,9 +137,9 @@ namespace LMS_1_1.Repository
                  .FirstOrDefault(a => a.Id == activityId);
 
         }
-        public bool LMSActivityExists (string id)
+        public bool LMSActivityExists (Guid activityId)
         {
-            return _ctx.LMSActivity.Any(e => e.Id == id);
+            return _ctx.LMSActivity.Any(e => e.Id == activityId);
         }
 
 
@@ -154,9 +154,9 @@ namespace LMS_1_1.Repository
                 .FirstOrDefault(a => a.Id == activityTypeId);
         }
 
-        public bool ActivityTypeExists (int id)
+        public bool ActivityTypeExists (int activityTypeId)
         {
-            return _ctx.ActivityTypes.Any(e => e.Id == id);
+            return _ctx.ActivityTypes.Any(e => e.Id == activityTypeId);
         }
 
        

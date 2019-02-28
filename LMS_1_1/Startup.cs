@@ -1,4 +1,6 @@
 ﻿using LMS_1_1.Data;
+using LMS_1_1.Models;
+using LMS_1_1.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

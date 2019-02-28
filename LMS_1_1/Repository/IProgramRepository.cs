@@ -10,20 +10,20 @@ namespace LMS_1_1.Repository
     {
        
         IEnumerable<Course> GetAllCourses (bool includeModule);
-        Course GetCourseById (string courseId, bool includeModule);
-        bool CourseExists (string id);
+        Course GetCourseById (Guid courseId, bool includeModule);
+        bool CourseExists (Guid id);
        /* Course FindCourseById (string courseId);*/
 
 
         IEnumerable<Module> GetAllModules (bool includeActivities);
-        Module GetModuleById (string moduleId, bool includeActivity);
-        bool ModuleExists (string id);
+        Module GetModuleById (Guid moduleId, bool includeActivity);
+        bool ModuleExists (Guid id);
 
 
 
         IEnumerable<LMSActivity> GetAllActivities ();
-        LMSActivity GetActivityById (string activityId);
-        bool LMSActivityExists (string id);
+        LMSActivity GetActivityById (Guid activityId);
+        bool LMSActivityExists (Guid id);
 
         IEnumerable<ActivityType> GetAllActivitiyTypes ();
         ActivityType GetAllActivitiyTypesById (int activityTypeId);
