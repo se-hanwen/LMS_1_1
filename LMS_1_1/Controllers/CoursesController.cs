@@ -9,9 +9,11 @@ using LMS_1_1.Data;
 using LMS_1_1.Models;
 using LMS_1_1.Repository;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS_1_1.Controllers
 {
+    [Authorize]
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,32 +28,31 @@ namespace LMS_1_1.Controllers
            
         }
         // GET: Courses
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View( _repository.GetAllCourses(false));
-          //  return View(await _context.Courses.ToListAsync());
+            return  View( await _repository.GetAllCoursesAsync(false));
+         
         }
 
         // GET: Courses/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var course = _repository.GetCourseById(id, true);
-         /*   var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);*/
+            var course = await _repository.GetCourseByIdAsync(id, true);
             if (course == null)
             {
                 return NotFound();
             }
-
             return View(course);
         }
 
         // GET: Courses/Create
+        [Authorize(Roles = "Teacher")]
         public IActionResult Create()
         {
             return View();
@@ -62,20 +63,20 @@ namespace LMS_1_1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  IActionResult Create([Bind("Id,Name,StartDate,Description")] Course course)
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> Create ([Bind("Id,Name,StartDate,Description")] Course course)
         {
             if (ModelState.IsValid)
             {
-                _repository.AddEntity(course);
-                _repository.SaveAll();
-               // _context.Add(course);
-                //await _context.SaveChangesAsync();
+                await _repository.AddEntityAsync(course);
+                await _repository.SaveAllAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(course);
         }
 
         // GET: Courses/Edit/5
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
@@ -83,7 +84,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var course = _repository.GetCourseById(id, false);
+            var course = await _repository.GetCourseByIdAsync(id, false);
            /* var course = await _context.Courses.FindAsync(id);*/
             if (course == null)
             {
@@ -95,6 +96,7 @@ namespace LMS_1_1.Controllers
         // POST: Courses/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,StartDate,Description")] Course course)
@@ -108,12 +110,12 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                    _repository.UpdateEntity(course);
-                    _repository.SaveAll();
+                    await _repository.UpdateEntityAsync(course);
+                    await _repository.SaveAllAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_repository.CourseExists(course.Id))
+                    if (!await _repository.CourseExistsAsync(course.Id))
                     {
                         return NotFound();
                     }
@@ -128,17 +130,14 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: Courses/Delete/5
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var course = _repository.GetCourseById(id, false);
-
-            /* var course = await _context.Courses
-                 .FirstOrDefaultAsync(m => m.Id == id);*/
+            var course = await _repository.GetCourseByIdAsync(id, false);
             if (course == null)
             {
                 return NotFound();
@@ -148,13 +147,14 @@ namespace LMS_1_1.Controllers
         }
 
         // POST: Courses/Delete/5
+        [Authorize(Roles = "Teacher")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var course = _repository.GetCourseById(id, false);
-            _repository.RemoveEntity(course);
-            _repository.SaveAll();
+            var course = await _repository.GetCourseByIdAsync(id, false);
+            await _repository.RemoveEntityAsync(course);
+            await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }
 
