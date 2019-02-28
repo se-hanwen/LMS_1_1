@@ -1,4 +1,6 @@
 ﻿using LMS_1_1.Data;
+using LMS_1_1.Models;
+using LMS_1_1.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using LMS_1_1.Models;
 
 namespace LMS_1_1
 {
@@ -40,6 +41,7 @@ namespace LMS_1_1
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddScoped<IProgramRepository, ProgramRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
