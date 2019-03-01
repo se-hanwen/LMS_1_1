@@ -205,10 +205,10 @@ namespace LMS_1_1.Data
 
                     foreach (var student in students)
                     {
-                        if (context.CourseUsers.FirstOrDefault(cu => cu.UserId == student.Id) == null)
+                        if (context.CourseUsers.FirstOrDefault(cu => cu.LMSUserId == student.Id) == null)
                         {
                             await context.CourseUsers.AddAsync(
-                                new CourseUser { CourseId = courseid.Value, UserId = student.Id });
+                                new CourseUser { CourseId = courseid.Value, LMSUserId = student.Id });
                         }
 
                     }
