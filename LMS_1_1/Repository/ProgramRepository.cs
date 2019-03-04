@@ -70,6 +70,8 @@ namespace LMS_1_1.Repository
             {
                 return await course
                            .Include(c => c.Modules)
+                           .ThenInclude(m => m.LMSActivities)
+                           .ThenInclude(a => a.ActivityType)
                             .FirstOrDefaultAsync();
             }
             return await course

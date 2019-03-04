@@ -29,9 +29,16 @@ namespace LMS_1_1.Controllers
         }
         // GET: Courses
         [Authorize]
+        public async Task<IActionResult> Home (Guid id)
+        {
+            return View(await _repository.GetCourseByIdAsync(id, true));
+
+        }
+        // GET: Courses
+        [Authorize]
         public async Task<IActionResult> Index ()
         {
-            return View(await _repository.GetAllCoursesAsync(false));
+            return View(await _repository.GetAllCoursesAsync(true));
 
         }
 
