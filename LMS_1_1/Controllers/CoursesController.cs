@@ -10,6 +10,7 @@ using LMS_1_1.Models;
 using LMS_1_1.Repository;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace LMS_1_1.Controllers
 {
@@ -19,13 +20,15 @@ namespace LMS_1_1.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IProgramRepository _repository;
         private readonly ILogger<CoursesController> _logger;
+        private readonly UserManager<LMSUser> _userManager;
 
-        public CoursesController (IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context)
+        public CoursesController (IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context, UserManager<LMSUser> userManager)
         {
             _repository = repository;
             _logger = logger;
             _context = context;
-           
+            _userManager = userManager;
+
         }
         // GET: Courses
         [Authorize]
@@ -158,6 +161,25 @@ namespace LMS_1_1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+        [Authorize(Roles = ConstDefine.R_STUDENT)]
+        public async Task<IActionResult> ShowStudent()
+        {
+            List<ShowStudent> stuCourses = new List<ShowStudent>();
+            var userid = _userManager.GetUserId(User);
+
+            var cs = from ucs in _context.CourseUsers where ucs.LMSUserId == userid select ucs;
+            var lstcourse = await cs.ToListAsync();
+            foreach (var item in cs)
+            {
+                var courseStu = new ShowStudent();
+                var thecourse = await _repository.GetCourseByIdAsync(item.CourseId, false);
+                courseStu.CourseID = item.CourseId;
+                courseStu.CourseName = thecourse.Name;
+                courseStu.StudentID = User.Identity.Name;
+                stuCourses.Add(courseStu);
+            }
+
+            return View(stuCourses);
+        }
     }
 }

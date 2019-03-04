@@ -23,24 +23,24 @@ namespace LMS_1_1.Repository
         #region Commen
         public async Task AddEntityAsync (object model)
         {
-            if (model is Course || model is Module || model is LMSActivity || model is ActivityType)
+            if (model is IProgram || model is ActivityType)
             {
-               await _ctx.AddAsync(model);
+                await _ctx.AddAsync(model);
             }
         }
 
         public async Task UpdateEntityAsync (object model)
         {
-            if (model is Course || model is Module || model is LMSActivity || model is ActivityType)
+            if (model is IProgram || model is ActivityType)
             {
                 _ctx.Update(model);
             }
         }
         public async Task RemoveEntityAsync (object model)
         {
-            if (model is Course || model is Module || model is LMSActivity || model is ActivityType)
+            if (model is IProgram || model is ActivityType)
             {
-                 _ctx.Remove(model);
+                _ctx.Remove(model);
             }
         }
 
