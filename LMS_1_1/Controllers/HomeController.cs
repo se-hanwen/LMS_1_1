@@ -5,13 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LMS_1_1.Models;
+using Microsoft.AspNetCore.Authorization;
+using LMS_1_1.Data;
 
 namespace LMS_1_1.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
+            var bRole = User.IsInRole(ConstDefine.R_TEACHER);
+
+            if (bRole)
+            {
+                RedirectToAction("Courses", "Index");
+            }
+
             return View();
         }
 
