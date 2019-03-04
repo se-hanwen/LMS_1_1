@@ -1,0 +1,41 @@
+﻿@model IEnumerable<LMS_1_1.Models.ShowStudent>
+
+@{
+    ViewData["Title"] = "ShowStudent";
+}
+
+<h1>Show courses of this student</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.CourseID}) |
+                @Html.ActionLink("Details", "Details", new { id=item.CourseID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.CourseID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
