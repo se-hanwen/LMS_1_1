@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace LMS_1_1.Data
 {
+    public class ConstDefine
+    {
+        public const string R_TEACHER = "Teacher";
+        public const string R_STUDENT = "Student";
+    }
+
     public class UserData
     {
         public string UserName { get; set; }
@@ -38,7 +44,7 @@ namespace LMS_1_1.Data
                     throw new Exception("roleManager or userManager is null");
                 }
 
-                var roleNames = new[] { "Teacher", "Student" };
+                var roleNames = new[] { ConstDefine.R_TEACHER, ConstDefine.R_STUDENT };
                 foreach (var name in roleNames)
                 { // init roles
                     if (await roleManager.RoleExistsAsync(name)) continue;
@@ -63,7 +69,7 @@ namespace LMS_1_1.Data
                     var adminUser = await userManager.FindByNameAsync(email);
                     if ((await userManager.GetRolesAsync(adminUser)).Count() == 0)
                     {
-                        var ok = await userManager.AddToRoleAsync(adminUser, "Teacher");
+                        var ok = await userManager.AddToRoleAsync(adminUser, ConstDefine.R_TEACHER);
                         if (!ok.Succeeded)
                         {
                             throw new Exception(string.Join("\n", ok.Errors));
@@ -85,7 +91,7 @@ namespace LMS_1_1.Data
                     var adminUser = await userManager.FindByNameAsync(email);
                     if ((await userManager.GetRolesAsync(adminUser)).Count() == 0)
                     {
-                        var ok = await userManager.AddToRoleAsync(adminUser, "Student");
+                        var ok = await userManager.AddToRoleAsync(adminUser, ConstDefine.R_STUDENT);
                         if (!ok.Succeeded)
                         {
                             throw new Exception(string.Join("\n", ok.Errors));
@@ -201,7 +207,7 @@ namespace LMS_1_1.Data
 
 
                     // Add student to course
-                    var students = await userManager.GetUsersInRoleAsync("Student");
+                    var students = await userManager.GetUsersInRoleAsync(ConstDefine.R_STUDENT);
 
                     foreach (var student in students)
                     {

@@ -1,30 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+﻿using LMS_1_1.Data;
+using LMS_1_1.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace LMS_1_1.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<LMSUser> _userManager;
+        private readonly SignInManager<LMSUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext db;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            IEmailSender emailSender)
+            UserManager<LMSUser> userManager,
+            SignInManager<LMSUser> signInManager,
+            IEmailSender emailSender,
+            ApplicationDbContext ApplicationDbContext
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            db = ApplicationDbContext;
         }
 
         public string Username { get; set; }
@@ -43,6 +47,17 @@ namespace LMS_1_1.Areas.Identity.Pages.Account.Manage
             [EmailAddress]
             public string Email { get; set; }
 
+
+
+            [Required]
+            [Display(Name = "Given Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Family Name")]
+            public string LastName { get; set; }
+
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -59,13 +74,17 @@ namespace LMS_1_1.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var FirstName = user.FirstName;
+            var LastName = user.LastName;
 
             Username = userName;
 
             Input = new InputModel
             {
                 Email = email,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = FirstName,
+                LastName = LastName
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -96,7 +115,20 @@ namespace LMS_1_1.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting email for user with ID '{userId}'.");
                 }
             }
+            var FirstName = user.FirstName;
 
+
+            if (Input.FirstName != FirstName)
+            {
+                user.FirstName = Input.FirstName;
+
+            }
+
+            var LastName = user.LastName;
+            if (Input.LastName != LastName)
+            {
+                user.LastName = Input.LastName;
+            }
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -107,7 +139,7 @@ namespace LMS_1_1.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
-
+            await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

@@ -43,7 +43,10 @@ namespace LMS_1_1
 
             services.AddScoped<IProgramRepository, ProgramRepository>();
             services.AddScoped<ICourseUsersRepository, CourseUsersRepository>();
-          
+
+            services.AddTransient<UserManager<LMSUser>>();
+            services.AddTransient<ApplicationDbContext>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
