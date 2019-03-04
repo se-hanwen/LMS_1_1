@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LMS_1_1.Controllers
 {
-    [Authorize(Roles ="Teacher")]
+    [Authorize(Roles = "Teacher")]
     public class ActivityTypesController : Controller
     {
 
@@ -23,29 +23,29 @@ namespace LMS_1_1.Controllers
         private readonly ILogger<ModulesController> _logger;
 
 
-        public ActivityTypesController (IProgramRepository repository, ILogger<ModulesController> logger,ApplicationDbContext context)
+        public ActivityTypesController (IProgramRepository repository, ILogger<ModulesController> logger, ApplicationDbContext context)
         {
             _repository = repository;
             _logger = logger;
             _context = context;
         }
-        
+
 
         // GET: ActivityTypes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index ()
         {
-            return View( _repository.GetAllActivityTypes());
+            return View(await _repository.GetAllActivityTypesAsync());
         }
 
         // GET: ActivityTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details (int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var activityType =  _repository.GetAllActivityTypesById(Convert.ToInt32(id));
+            var activityType = await _repository.GetAllActivityTypesByIdAsync(Convert.ToInt32(id));
             if (activityType == null)
             {
                 return NotFound();
@@ -55,7 +55,7 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: ActivityTypes/Create
-        public IActionResult Create()
+        public IActionResult Create ()
         {
             return View();
         }
@@ -65,26 +65,26 @@ namespace LMS_1_1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] ActivityType activityType)
+        public async Task<IActionResult> Create ([Bind("Id,Name")] ActivityType activityType)
         {
             if (ModelState.IsValid)
             {
-                 _repository.AddEntity(activityType);
-                 _repository.SaveAll();
+                await _repository.AddEntityAsync(activityType);
+                await _repository.SaveAllAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(activityType);
         }
 
         // GET: ActivityTypes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit (int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var activityType =  _repository.GetAllActivityTypesById(Convert.ToInt32(id));
+            var activityType = await _repository.GetAllActivityTypesByIdAsync(Convert.ToInt32(id));
             if (activityType == null)
             {
                 return NotFound();
@@ -97,7 +97,7 @@ namespace LMS_1_1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] ActivityType activityType)
+        public async Task<IActionResult> Edit (int id, [Bind("Id,Name")] ActivityType activityType)
         {
             if (id != activityType.Id)
             {
@@ -108,12 +108,12 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                     _repository.UpdateEntity(activityType);
-                     _repository.SaveAll();
+                    await _repository.UpdateEntityAsync(activityType);
+                    await _repository.SaveAllAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (! _repository.ActivityTypeExists(activityType.Id))
+                    if (!await _repository.ActivityTypeExistsAsync(activityType.Id))
                     {
                         return NotFound();
                     }
@@ -128,14 +128,14 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: ActivityTypes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete (int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var activityType =  _repository.GetAllActivityTypesById(Convert.ToInt32(id));
+            var activityType = await _repository.GetAllActivityTypesByIdAsync(Convert.ToInt32(id));
             if (activityType == null)
             {
                 return NotFound();
@@ -147,14 +147,14 @@ namespace LMS_1_1.Controllers
         // POST: ActivityTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed (int id)
         {
-            var activityType =  _repository.GetAllActivityTypesById(Convert.ToInt32(id));
-             _repository.RemoveEntity(activityType);
-             _repository.SaveAll();
+            var activityType = await _repository.GetAllActivityTypesByIdAsync(Convert.ToInt32(id));
+            await _repository.RemoveEntityAsync(activityType);
+            await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }
 
-      
+
     }
 }

@@ -20,8 +20,8 @@ namespace LMS_1_1.Controllers
         private readonly IProgramRepository _repository;
         private readonly ILogger<ModulesController> _logger;
 
-      
-        public LMSActivitiesController (IProgramRepository repository, ILogger<ModulesController> logger,ApplicationDbContext context)
+
+        public LMSActivitiesController (IProgramRepository repository, ILogger<ModulesController> logger, ApplicationDbContext context)
         {
             _repository = repository;
             _logger = logger;
@@ -31,22 +31,22 @@ namespace LMS_1_1.Controllers
 
         // GET: LMSActivities
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index ()
         {
-            
-            return View( _repository.GetAllActivities());
+
+            return View(await _repository.GetAllActivitiesAsync());
         }
 
         // GET: LMSActivities/Details/5
         [Authorize]
-        public async Task<IActionResult> Details(Guid id)
+        public async Task<IActionResult> Details (Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var lMSActivity =  _repository.GetActivityById(id);
+            var lMSActivity = await _repository.GetActivityByIdAsync(id);
             if (lMSActivity == null)
             {
                 return NotFound();
@@ -57,7 +57,7 @@ namespace LMS_1_1.Controllers
 
         // GET: LMSActivities/Create
         [Authorize(Roles = "Teacher")]
-        public IActionResult Create()
+        public IActionResult Create ()
         {
             ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Name");
             ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Name");
@@ -70,12 +70,12 @@ namespace LMS_1_1.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Description,ModuleId,ActivityTypeId")] LMSActivity lMSActivity)
+        public async Task<IActionResult> Create ([Bind("Id,Name,StartDate,EndDate,Description,ModuleId,ActivityTypeId")] LMSActivity lMSActivity)
         {
             if (ModelState.IsValid)
             {
-                 _repository.AddEntity(lMSActivity);
-                 _repository.SaveAll();
+                await _repository.AddEntityAsync(lMSActivity);
+                await _repository.SaveAllAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Name", lMSActivity.ActivityTypeId);
@@ -85,14 +85,14 @@ namespace LMS_1_1.Controllers
 
         // GET: LMSActivities/Edit/5
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit (Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var lMSActivity =  _repository.GetActivityById(id);
+            var lMSActivity = await _repository.GetActivityByIdAsync(id);
             if (lMSActivity == null)
             {
                 return NotFound();
@@ -108,7 +108,7 @@ namespace LMS_1_1.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,StartDate,EndDate,Description,ModuleId,ActivityTypeId")] LMSActivity lMSActivity)
+        public async Task<IActionResult> Edit (Guid id, [Bind("Id,Name,StartDate,EndDate,Description,ModuleId,ActivityTypeId")] LMSActivity lMSActivity)
         {
             if (id != lMSActivity.Id)
             {
@@ -119,11 +119,11 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                     _repository.UpdateEntity(lMSActivity);
+                    await _repository.UpdateEntityAsync(lMSActivity);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (! _repository.LMSActivityExists(lMSActivity.Id))
+                    if (!await _repository.LMSActivityExistsAsync(lMSActivity.Id))
                     {
                         return NotFound();
                     }
@@ -141,14 +141,14 @@ namespace LMS_1_1.Controllers
 
         // GET: LMSActivities/Delete/5
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete (Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var lMSActivity =  _repository.GetActivityById(id);
+            var lMSActivity = await _repository.GetActivityByIdAsync(id);
             if (lMSActivity == null)
             {
                 return NotFound();
@@ -161,14 +161,14 @@ namespace LMS_1_1.Controllers
         [Authorize(Roles = "Teacher")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed (Guid id)
         {
-            var lMSActivity =  _repository.GetActivityById(id);
-             _repository.RemoveEntity(lMSActivity);
-             _repository.SaveAll();
+            var lMSActivity = await _repository.GetActivityByIdAsync(id);
+            await _repository.RemoveEntityAsync(lMSActivity);
+            await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        
+
     }
 }
