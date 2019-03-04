@@ -21,13 +21,20 @@ namespace LMS_1_1.Controllers
         private readonly IProgramRepository _repository;
         private readonly ILogger<CoursesController> _logger;
 
-        public CoursesController(IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context, UserManager<LMSUser> userManager, )
+        public CoursesController(IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context, UserManager<LMSUser> userManager )
         {
             _repository = repository;
             _logger = logger;
             _context = context;
-            _userManager = userManager
+            _userManager = userManager;
         }
+
+        public async Task<ActionResult<Guid>> CourseStudent(Guid id)
+        {
+
+            return View(id);
+        }
+
         // GET: Courses
         [Authorize]
         public async Task<IActionResult> Home(Guid id)
@@ -118,7 +125,7 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                    await _repository.UpdateEntityAsync(course);
+                     _repository.UpdateEntity(course);
                     await _repository.SaveAllAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -162,7 +169,7 @@ namespace LMS_1_1.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var course = await _repository.GetCourseByIdAsync(id, false);
-            await _repository.RemoveEntityAsync(course);
+            _repository.RemoveEntity(course);
             await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -190,5 +197,4 @@ namespace LMS_1_1.Controllers
         }
     }
 
-}
 }

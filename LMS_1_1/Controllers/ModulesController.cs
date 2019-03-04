@@ -113,7 +113,7 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                    await _repository.UpdateEntityAsync(module);
+                    _repository.UpdateEntity(module);
                     await _repository.SaveAllAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -158,7 +158,7 @@ namespace LMS_1_1.Controllers
         public async Task<IActionResult> DeleteConfirmed (Guid id)
         {
             var module = await _repository.GetModuleByIdAsync(id, false);
-            await _repository.RemoveEntityAsync(module);
+             _repository.RemoveEntity(module);
             await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }

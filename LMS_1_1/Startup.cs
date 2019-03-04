@@ -46,6 +46,7 @@ namespace LMS_1_1
 
             services.AddTransient<UserManager<LMSUser>>();
             services.AddTransient<ApplicationDbContext>();
+          
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

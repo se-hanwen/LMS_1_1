@@ -1,0 +1,28 @@
+﻿@model  UserViewModel;
+
+<div>
+    <input type="hidden" value="@Model.CourseID" name="CourseId" id="CourseIdStudent" />
+    <table>
+        <tr><th>FirstName</th><th>LastName</th><th>controll</th></tr>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.User.FirstName</td>
+                <td>@user.User.LastName</td>
+                <td>
+
+                    @if (user.Coureids.Any(cid => cid == Model.CourseID))
+                    {
+                        <input type="checkbox" checked="checked" onclick="SaveStudent(this)" id="@user.User.Id" />
+
+                    }
+                    else
+                    {
+                        <input type="checkbox" onclick="SaveStudent(this)" id="@user.User.Id" />
+                    }
+
+                </td>
+            </tr>
+        }
+    </table>
+</div>

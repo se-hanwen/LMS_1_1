@@ -29,14 +29,14 @@ namespace LMS_1_1.Repository
             }
         }
 
-        public async Task UpdateEntityAsync (object model)
+        public void UpdateEntity (object model)
         {
             if (model is IProgram || model is ActivityType)
             {
                 _ctx.Update(model);
             }
         }
-        public async Task RemoveEntityAsync (object model)
+        public void RemoveEntity (object model)
         {
             if (model is IProgram || model is ActivityType)
             {

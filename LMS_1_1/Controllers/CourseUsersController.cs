@@ -13,9 +13,13 @@ using System.Threading.Tasks;
 
 namespace LMS_1_1.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CourseUsersController : ControllerBase
+  //  [Route("api/[controller]")]
+  //  [ApiController]
+    public class CourseUsersController : Controller
+    //ControllerBase
+    //Controller
+
+    //ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<CoursesController> _logger;
@@ -28,6 +32,13 @@ namespace LMS_1_1.Controllers
             _logger = logger;
             _repository = repository;
             _userManager = userManager;
+        }
+
+        [HttpGet("{CourseId}")]
+        public async Task<ActionResult<ICollection<CourseUser>>> GetStart(Guid CourseId)
+        {
+
+            return Ok(CourseId);
         }
 
         // GET: api/CourseUsers/5
@@ -86,6 +97,43 @@ namespace LMS_1_1.Controllers
             }
 
             return NoContent();
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult<string>> ToggleCourseUser(Guid CourseId, string UserId)
+        {
+            CourseUser courseUser = new CourseUser { CourseId = CourseId, LMSUserId = UserId };
+            courseUser.Course = _context.Courses.FirstOrDefault(c => c.Id == courseUser.CourseId);
+            courseUser.LMSUser = _context.LMSUsers.FirstOrDefault(u => u.Id == courseUser.LMSUserId);
+
+            // if (_context.CourseUsers.Contains(courseUser))
+            var tempcu = _context.CourseUsers.FirstOrDefault(cu => cu.LMSUserId == courseUser.LMSUserId && cu.CourseId == courseUser.CourseId);
+            if (tempcu != null)
+            {
+                _context.CourseUsers.Remove(tempcu);
+            }
+            else
+            {
+                _context.CourseUsers.Add(courseUser);
+            }
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (CourseUserExists(courseUser.CourseId, courseUser.LMSUserId))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return "ok";
         }
 
         // POST: api/CourseUsers

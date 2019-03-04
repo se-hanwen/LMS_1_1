@@ -1,4 +1,8 @@
 ﻿@model LMS_1_1.Models.Course
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<LMSUser> SignInManager
+@inject UserManager<LMSUser> UserManager
 
 @{
     ViewData["Title"] = "Index";
@@ -11,22 +15,27 @@
             <div class="card-body">
                 <h5 class="card-title"> @Html.DisplayFor(model => model.Name)</h5>
                 <h5 class="card-title"> @Html.DisplayFor(model => model.StartDate)</h5>
-               
+
                 <p class="card-text">  @Html.DisplayFor(model => model.Description)</p>
             </div>
             <ul class="list-group list-group-flush">
                 @await Component.InvokeAsync("ClassUserList", new { CourseID = @Model.Id })
             </ul>
+            @if (this.User.IsInRole("Teacher"))
+            {
             <div class="card-body">
                 <a href="#" class="card-link">Add Module</a>
-                <a href="#" class="card-link">Add Participant</a>
+                <!--  <a asp-controller="CourseUsers" asp-action="GetStart" lass="card-link" >Add Participant</a> --->
+
+                <a  asp-controller="Courses" asp-action="CourseStudent" asp-route-id="@Model.Id" class="card-link">Add Participant</a>
             </div>
-        </div>
-      
+            }
+            </div>
+           
         <div></div>
         <div>
 
-           
+
         </div>
 
     </div>
@@ -44,14 +53,14 @@
                 {
                     @foreach (var activity in module.LMSActivities)
                     {
-                    <a asp-controller="LMSActivities" asp-action="Details" asp-route-id="@activity.Id">
-                        &nbsp; &nbsp;  @activity.ActivityType.Name
-                    </a><br />
+                        <a asp-controller="LMSActivities" asp-action="Details" asp-route-id="@activity.Id">
+                            &nbsp; &nbsp;  @activity.ActivityType.Name
+                        </a><br />
                     }
-                 }
                 }
             }
-        </div>
+        }
+    </div>
 
 </div>
 
