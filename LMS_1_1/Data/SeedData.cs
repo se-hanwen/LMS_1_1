@@ -94,7 +94,7 @@ namespace LMS_1_1.Data
 
                 }
 
-                if (context.Courses == null)
+                if (context.Courses.Count() == 0)   //0 men inte null.
                 {
                     if (context.Courses.FirstOrDefault(c => c.Name == "NA18") == null)
                     {
@@ -118,19 +118,19 @@ namespace LMS_1_1.Data
 
                         await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
                     {
-                        new LMSActivity{Name="", Description="Intro + E-L 1.1, 1.2", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-26 09:00:00"),EndDate=DateTime.Parse("2018-11-26 17:00:00") },
-                        new LMSActivity{Name="", Description="E-L 1.3", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-27 09:00:00"),EndDate=DateTime.Parse("2018-11-27 12:00:00") },
-                        new LMSActivity{Name="", Description="E-L 1.4 + 1.5", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-27 13:00:00"),EndDate=DateTime.Parse("2018-11-27 17:00:00") },
-                        new LMSActivity{Name="", Description="Frl C# Intro", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-28 09:00:00"),EndDate=DateTime.Parse("2018-11-28 17:00:00") },
-                        new LMSActivity{Name="", Description="Övning 2", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-29 09:00:00"),EndDate=DateTime.Parse("2018-11-29 17:00:00") },
-                        new LMSActivity{Name="", Description="Frl C# Grund", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-30 09:00:00"),EndDate=DateTime.Parse("2018-11-30 17:00:00") },
+                        new LMSActivity{Name="EL1", Description="Intro + E-L 1.1, 1.2", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-26 09:00:00"),EndDate=DateTime.Parse("2018-11-26 17:00:00") },
+                        new LMSActivity{Name="EL2", Description="E-L 1.3", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-27 09:00:00"),EndDate=DateTime.Parse("2018-11-27 12:00:00") },
+                        new LMSActivity{Name="EL3", Description="E-L 1.4 + 1.5", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-27 13:00:00"),EndDate=DateTime.Parse("2018-11-27 17:00:00") },
+                        new LMSActivity{Name="FR1", Description="Frl C# Intro", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-28 09:00:00"),EndDate=DateTime.Parse("2018-11-28 17:00:00") },
+                        new LMSActivity{Name="OV2", Description="Övning 2", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-29 09:00:00"),EndDate=DateTime.Parse("2018-11-29 17:00:00") },
+                        new LMSActivity{Name="FR2", Description="Frl C# Grund", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-11-30 09:00:00"),EndDate=DateTime.Parse("2018-11-30 17:00:00") },
 
-                        new LMSActivity{Name="", Description="E-L 1.6 + 1.7", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-03 09:00:00"),EndDate=DateTime.Parse("2018-12-03 12:00:00") },
-                        new LMSActivity{Name="", Description="E-L 1.8", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-03 13:00:00"),EndDate=DateTime.Parse("2018-12-03 17:00:00") },
-                        new LMSActivity{Name="", Description="FRL OOP", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-04 09:00:00"),EndDate=DateTime.Parse("2018-12-04 17:00:00") },
-                        new LMSActivity{Name="", Description="Övning 3", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-05 09:00:00"),EndDate=DateTime.Parse("2018-12-05 17:00:00") },
-                        new LMSActivity{Name="", Description="FRL OOP 2", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-06 09:00:00"),EndDate=DateTime.Parse("2018-12-06 17:00:00") },
-                        new LMSActivity{Name="", Description="Övning 3", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-07 09:00:00"),EndDate=DateTime.Parse("2018-12-07 17:00:00") },
+                        new LMSActivity{Name="EL4", Description="E-L 1.6 + 1.7", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-03 09:00:00"),EndDate=DateTime.Parse("2018-12-03 12:00:00") },
+                        new LMSActivity{Name="EL5", Description="E-L 1.8", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-03 13:00:00"),EndDate=DateTime.Parse("2018-12-03 17:00:00") },
+                        new LMSActivity{Name="FR2", Description="FRL OOP", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-04 09:00:00"),EndDate=DateTime.Parse("2018-12-04 17:00:00") },
+                        new LMSActivity{Name="OV3", Description="Övning 3", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-05 09:00:00"),EndDate=DateTime.Parse("2018-12-05 17:00:00") },
+                        new LMSActivity{Name="FR3", Description="FRL OOP 2", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-06 09:00:00"),EndDate=DateTime.Parse("2018-12-06 17:00:00") },
+                        new LMSActivity{Name="OV3", Description="Övning 3", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-07 09:00:00"),EndDate=DateTime.Parse("2018-12-07 17:00:00") },
                     });
                     }
 
@@ -147,15 +147,15 @@ namespace LMS_1_1.Data
                     {
                         await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
                     {
-                        new LMSActivity{Name="", Description="E-L 2.1 - 2.4", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-10 09:00:00"),EndDate=DateTime.Parse("2018-12-10 12:00:00") },
-                        new LMSActivity{Name="", Description="Övning 4", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-10 13:00:00"),EndDate=DateTime.Parse("2018-12-10 17:00:00") },
-                        new LMSActivity{Name="", Description="FRl Generics", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-11 09:00:00"),EndDate=DateTime.Parse("2018-12-11 17:00:00") },
-                        new LMSActivity{Name="", Description="E-L 2.5 – 2.6 ", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-12 09:00:00"),EndDate=DateTime.Parse("2018-12-12 12:00:00") },
-                        new LMSActivity{Name="", Description="Övning 4", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-12 13:00:00"),EndDate=DateTime.Parse("2018-12-12 17:00:00") },
-                        new LMSActivity{Name="", Description="FRL Generics", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-13 09:00:00"),EndDate=DateTime.Parse("2018-12-13 12:00:00") },
-                        new LMSActivity{Name="", Description="FRL LINQ", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-13 13:00:00"),EndDate=DateTime.Parse("2018-12-13 17:00:00") },
-                        new LMSActivity{Name="", Description="E-L 2.7 – 2.9", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-14 09:00:00"),EndDate=DateTime.Parse("2018-12-14 12:00:00") },
-                        new LMSActivity{Name="", Description="Övning 4", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-14 13:00:00"),EndDate=DateTime.Parse("2018-12-14 17:00:00") },
+                        new LMSActivity{Name="EL6", Description="E-L 2.1 - 2.4", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-10 09:00:00"),EndDate=DateTime.Parse("2018-12-10 12:00:00") },
+                        new LMSActivity{Name="OV4", Description="Övning 4", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-10 13:00:00"),EndDate=DateTime.Parse("2018-12-10 17:00:00") },
+                        new LMSActivity{Name="FR4", Description="FRl Generics", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-11 09:00:00"),EndDate=DateTime.Parse("2018-12-11 17:00:00") },
+                        new LMSActivity{Name="EL7", Description="E-L 2.5 – 2.6 ", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-12 09:00:00"),EndDate=DateTime.Parse("2018-12-12 12:00:00") },
+                        new LMSActivity{Name="OV4", Description="Övning 4", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-12 13:00:00"),EndDate=DateTime.Parse("2018-12-12 17:00:00") },
+                        new LMSActivity{Name="FR4", Description="FRL Generics", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-13 09:00:00"),EndDate=DateTime.Parse("2018-12-13 12:00:00") },
+                        new LMSActivity{Name="FR5", Description="FRL LINQ", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-13 13:00:00"),EndDate=DateTime.Parse("2018-12-13 17:00:00") },
+                        new LMSActivity{Name="EL8", Description="E-L 2.7 – 2.9", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-14 09:00:00"),EndDate=DateTime.Parse("2018-12-14 12:00:00") },
+                        new LMSActivity{Name="OV4", Description="Övning 4", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-14 13:00:00"),EndDate=DateTime.Parse("2018-12-14 17:00:00") },
 
                     });
                     }
@@ -172,9 +172,9 @@ namespace LMS_1_1.Data
                     {
                         await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
                     {
-                        new LMSActivity{Name="", Description="Unit Test E-L Test ", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-17 09:00:00"),EndDate=DateTime.Parse("2018-12-17 17:00:00") },
-                        new LMSActivity{Name="", Description="FRL/Ariktektur", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-18 09:00:00"),EndDate=DateTime.Parse("2018-12-18 12:00:00") },
-                        new LMSActivity{Name="", Description="FRL/Test", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-18 13:00:00"),EndDate=DateTime.Parse("2018-12-18 17:00:00") },
+                        new LMSActivity{Name="EL9", Description="Unit Test E-L Test ", ActivityTypeId=1, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-17 09:00:00"),EndDate=DateTime.Parse("2018-12-17 17:00:00") },
+                        new LMSActivity{Name="FR6", Description="FRL/Ariktektur", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-18 09:00:00"),EndDate=DateTime.Parse("2018-12-18 12:00:00") },
+                        new LMSActivity{Name="FR7", Description="FRL/Test", ActivityTypeId=2, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-18 13:00:00"),EndDate=DateTime.Parse("2018-12-18 17:00:00") },
 
                     });
                     }
@@ -190,10 +190,10 @@ namespace LMS_1_1.Data
                     {
                         await context.LMSActivity.AddRangeAsync(new List<LMSActivity>
                     {
-                        new LMSActivity{Name="", Description="Övning Garage 1.0", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-19 09:00:00"),EndDate=DateTime.Parse("2018-12-28 12:00:00") },
-                        new LMSActivity{Name="", Description="Redovisning", ActivityTypeId=5, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-28 13:00:00"),EndDate=DateTime.Parse("2018-12-28 17:00:00") },
-                        new LMSActivity{Name="", Description="Redovisning", ActivityTypeId=5, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2019-01-02 09:00:00"),EndDate=DateTime.Parse("2019-01-02 12:00:00") },
-                        new LMSActivity{Name="", Description="Kodgenomgång", ActivityTypeId=5, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2019-01-02 13:00:00"),EndDate=DateTime.Parse("2019-01-02 17:00:00") },
+                        new LMSActivity{Name="OVG1", Description="Övning Garage 1.0", ActivityTypeId=3, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-19 09:00:00"),EndDate=DateTime.Parse("2018-12-28 12:00:00") },
+                        new LMSActivity{Name="AN1", Description="Redovisning", ActivityTypeId=5, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2018-12-28 13:00:00"),EndDate=DateTime.Parse("2018-12-28 17:00:00") },
+                        new LMSActivity{Name="AN1", Description="Redovisning", ActivityTypeId=5, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2019-01-02 09:00:00"),EndDate=DateTime.Parse("2019-01-02 12:00:00") },
+                        new LMSActivity{Name="AN2", Description="Kodgenomgång", ActivityTypeId=5, ModuleId=moduleid.Value,StartDate = DateTime.Parse("2019-01-02 13:00:00"),EndDate=DateTime.Parse("2019-01-02 17:00:00") },
 
                     });
                     }
