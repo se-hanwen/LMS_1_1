@@ -94,7 +94,7 @@ namespace LMS_1_1.Data
 
                 }
 
-                if (context.Courses == null)
+                if (context.Courses.Count() == 0)
                 {
                     if (context.Courses.FirstOrDefault(c => c.Name == "NA18") == null)
                     {
