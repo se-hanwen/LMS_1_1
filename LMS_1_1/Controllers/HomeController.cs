@@ -19,7 +19,13 @@ namespace LMS_1_1.Controllers
 
             if (bRole)
             {
-                RedirectToAction("Courses", "Index");
+                return RedirectToAction("Index", "Courses");
+            }
+
+            bRole = User.IsInRole(ConstDefine.R_STUDENT);
+            if (bRole)
+            {
+                return RedirectToAction("ShowStudent", "Courses");
             }
 
             return View();
