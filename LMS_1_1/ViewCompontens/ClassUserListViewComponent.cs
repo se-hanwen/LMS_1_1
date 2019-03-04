@@ -1,17 +1,15 @@
 ﻿using LMS_1_1.Data;
 using LMS_1_1.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LMS_1_1.ViewCompontens
 {
-    public class ClassUserListViewComponent: ViewComponent
+    public class ClassUserListViewComponent : ViewComponent
     {
         private readonly ApplicationDbContext db;
         private readonly UserManager<LMSUser> userManager;
@@ -22,10 +20,10 @@ namespace LMS_1_1.ViewCompontens
             this.userManager = userManager;
         }
 
-        [Authorize]
+
         public async Task<IViewComponentResult> InvokeAsync(Guid? CourseID)
         {
-            if(CourseID == null)
+            if (CourseID == null)
             {
                 string userid = userManager.GetUserId(this.UserClaimsPrincipal);
                 CourseID = db.CourseUsers.Where(cu => cu.LMSUserId == userid).FirstOrDefault().CourseId;
