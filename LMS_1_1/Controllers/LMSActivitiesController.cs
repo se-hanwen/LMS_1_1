@@ -34,7 +34,7 @@ namespace LMS_1_1.Controllers
         public async Task<IActionResult> Index()
         {
             
-            return View(await _repository.GetAllActivitiesAsync());
+            return View( _repository.GetAllActivities());
         }
 
         // GET: LMSActivities/Details/5
@@ -46,7 +46,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var lMSActivity =await  _repository.GetActivityByIdAsync(id);
+            var lMSActivity =  _repository.GetActivityById(id);
             if (lMSActivity == null)
             {
                 return NotFound();
@@ -74,8 +74,8 @@ namespace LMS_1_1.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _repository.AddEntityAsync(lMSActivity);
-                await _repository.SaveAllAsync();
+                 _repository.AddEntity(lMSActivity);
+                 _repository.SaveAll();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Name", lMSActivity.ActivityTypeId);
@@ -92,7 +92,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var lMSActivity = await _repository.GetActivityByIdAsync(id);
+            var lMSActivity =  _repository.GetActivityById(id);
             if (lMSActivity == null)
             {
                 return NotFound();
@@ -119,11 +119,11 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                   await  _repository.UpdateEntityAsync(lMSActivity);
+                     _repository.UpdateEntity(lMSActivity);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _repository.LMSActivityExistsAsync(lMSActivity.Id))
+                    if (! _repository.LMSActivityExists(lMSActivity.Id))
                     {
                         return NotFound();
                     }
@@ -148,7 +148,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var lMSActivity = await _repository.GetActivityByIdAsync(id);
+            var lMSActivity =  _repository.GetActivityById(id);
             if (lMSActivity == null)
             {
                 return NotFound();
@@ -163,9 +163,9 @@ namespace LMS_1_1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var lMSActivity = await _repository.GetActivityByIdAsync(id);
-            await _repository.RemoveEntityAsync(lMSActivity);
-            await _repository.SaveAllAsync();
+            var lMSActivity =  _repository.GetActivityById(id);
+             _repository.RemoveEntity(lMSActivity);
+             _repository.SaveAll();
             return RedirectToAction(nameof(Index));
         }
 

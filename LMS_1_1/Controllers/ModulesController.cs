@@ -31,7 +31,7 @@ namespace LMS_1_1.Controllers
         public async Task<IActionResult> Index()
         {
            
-            return View(await _repository.GetAllModulesAsync(false));
+            return View( _repository.GetAllModules(false));
         }
 
         // GET: Modules/Details/5
@@ -43,7 +43,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var module = await _repository.GetModuleByIdAsync(id, true);
+            var module =  _repository.GetModuleById(id, true);
             if (module == null)
             {
                 return NotFound();
@@ -70,8 +70,8 @@ namespace LMS_1_1.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _repository.AddEntityAsync(module);
-               await  _repository.SaveAllAsync();
+                 _repository.AddEntity(module);
+                 _repository.SaveAll();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Name", module.CourseId);
@@ -87,7 +87,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var module =await  _repository.GetModuleByIdAsync(id, false);
+            var module =  _repository.GetModuleById(id, false);
             if (module == null)
             {
                 return NotFound();
@@ -113,12 +113,12 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                   await  _repository.UpdateEntityAsync(module);
-                   await  _repository.SaveAllAsync();
+                     _repository.UpdateEntity(module);
+                     _repository.SaveAll();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if ( !await _repository.ModuleExistsAsync(module.Id))
+                    if ( ! _repository.ModuleExists(module.Id))
                     {
                         return NotFound();
                     }
@@ -142,7 +142,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var module = await _repository.GetModuleByIdAsync(id, false);
+            var module =  _repository.GetModuleById(id, false);
             if (@module == null)
             {
                 return NotFound();
@@ -157,9 +157,9 @@ namespace LMS_1_1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var module = await _repository.GetModuleByIdAsync(id, false);
-            await _repository.RemoveEntityAsync(module);
-            await _repository.SaveAllAsync();
+            var module =  _repository.GetModuleById(id, false);
+             _repository.RemoveEntity(module);
+             _repository.SaveAll();
             return RedirectToAction(nameof(Index));
         }
 

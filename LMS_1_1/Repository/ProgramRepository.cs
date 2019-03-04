@@ -21,146 +21,146 @@ namespace LMS_1_1.Repository
             _logger = logger;
         }
         #region Commen
-        public async Task AddEntityAsync (object model)
+        public void AddEntity (object model)
         {
-            if (model is Course || model is Module || model is LMSActivity || model is ActivityType)
+            if (model is IProgram || model is ActivityType)
             {
-               await _ctx.AddAsync(model);
+                _ctx.Add(model);
             }
         }
 
-        public async Task UpdateEntityAsync (object model)
+        public  void UpdateEntity (object model)
         {
-            if (model is Course || model is Module || model is LMSActivity || model is ActivityType)
+            if (model is IProgram || model is ActivityType)
             {
                 _ctx.Update(model);
             }
         }
-        public async Task RemoveEntityAsync (object model)
+        public void RemoveEntity (object model)
         {
-            if (model is Course || model is Module || model is LMSActivity || model is ActivityType)
+            if (model is IProgram || model is ActivityType)
             {
                  _ctx.Remove(model);
             }
         }
 
-        public async Task <bool> SaveAllAsync ()
+        public  bool SaveAll ()
         {
-            return await _ctx.SaveChangesAsync() > 0;
+            return  _ctx.SaveChanges() > 0;
         }
         #endregion
         #region Course
-        public async Task<IEnumerable<Course>> GetAllCoursesAsync (bool includeModule)
+        public   IQueryable<Course> GetAllCourses (bool includeModule)
         {
             var courses =  _ctx.Courses;
             if (includeModule)
             {
-                return await courses
-                           .Include(c => c.Modules).ToListAsync();
+                return   courses
+                           .Include(c => c.Modules);
             }
-            return await courses.ToListAsync();
+            return  courses;
         }
 
-        public async Task<Course> GetCourseByIdAsync (Guid courseId, bool includeModule)
+        public Course GetCourseById (Guid courseId, bool includeModule)
         {
             var course = _ctx.Courses
                .Where(c => c.Id == courseId);
 
             if (includeModule)
             {
-                return await course
+                return  course
                            .Include(c => c.Modules)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefault();
             }
-            return await course
-                   .FirstOrDefaultAsync();
+            return  course
+                   .FirstOrDefault();
 
         }
 
-        public async Task<bool> CourseExistsAsync (Guid courseId)
+        public bool CourseExists(Guid courseId)
         {
-            return await _ctx.Courses.AnyAsync(e => e.Id == courseId);
+            return  _ctx.Courses.Any(e => e.Id == courseId);
         }
         #endregion
         #region Module
-        public async Task<IEnumerable<Module>> GetAllModulesAsync (bool includeActivities)
+        public  IQueryable<Module> GetAllModules (bool includeActivities)
         {
             var modules = _ctx.Modules
                           .Include(c => c.Courses);
 
             if (includeActivities)
             {
-                return await modules
-                           .Include(m => m.LMSActivities)
-                           .ToListAsync();
+                return modules
+                           .Include(m => m.LMSActivities);
+                           
             }
-            return await modules
-                       .ToListAsync();
+            return modules;
+                       
 
         }
 
-        public async Task<Module> GetModuleByIdAsync (Guid moduleId, bool includeActivity)
+        public Module GetModuleById (Guid moduleId, bool includeActivity)
         {
             var module = _ctx.Modules
                          .Include(c => c.Courses)
                          .Where(m => m.Id == moduleId);
             if (includeActivity)
             {
-                return await module
+                return  module
                            .Include(m => m.LMSActivities)
                            .ThenInclude(a=> a.ActivityType)
-                           .FirstOrDefaultAsync();
+                           .FirstOrDefault();
 
             }
             else
             {
-                return await module
-                           .FirstOrDefaultAsync();
+                return  module
+                           .FirstOrDefault();
             }
         }
 
-        public async Task<bool> ModuleExistsAsync (Guid moduleId)
+        public  bool ModuleExists (Guid moduleId)
         {
-            return await _ctx.Modules.AnyAsync(e => e.Id == moduleId);
+            return  _ctx.Modules.Any(e => e.Id == moduleId);
         }
         #endregion
         #region Activity
-        public async Task<IEnumerable<LMSActivity>> GetAllActivitiesAsync ()
+        public  IQueryable<LMSActivity> GetAllActivities ()
         {
-            return await _ctx.LMSActivity
+            return  _ctx.LMSActivity
                      .Include(a => a.ActivityType)
-                      .Include(a => a.Modules).ToListAsync();
+                      .Include(a => a.Modules);
         }
 
-        public async Task<LMSActivity> GetActivityByIdAsync (Guid activityId)
+        public LMSActivity GetActivityById (Guid activityId)
         {
-            return await _ctx.LMSActivity
+            return  _ctx.LMSActivity
                  .Include(a => a.ActivityType)
                  .Include(a => a.Modules)
-                 .FirstOrDefaultAsync(a => a.Id == activityId);
+                 .FirstOrDefault(a => a.Id == activityId);
 
         }
-        public async Task<bool> LMSActivityExistsAsync (Guid activityId)
+        public  bool LMSActivityExists (Guid activityId)
         {
-            return await _ctx.LMSActivity.AnyAsync(e => e.Id == activityId);
+            return  _ctx.LMSActivity.Any(e => e.Id == activityId);
         }
 
         #endregion
         #region ActivityType
-        public async Task<IEnumerable<ActivityType>> GetAllActivityTypesAsync ()
+        public  IQueryable<ActivityType> GetAllActivityTypes ()
         {
-            return await _ctx.ActivityTypes.ToListAsync();
+            return  _ctx.ActivityTypes;
         }
 
-        public async Task<ActivityType> GetAllActivityTypesByIdAsync (int activityTypeId)
+        public  ActivityType GetAllActivityTypesById (int activityTypeId)
         {
-            return await _ctx.ActivityTypes
-                .FirstOrDefaultAsync(a => a.Id == activityTypeId);
+            return  _ctx.ActivityTypes
+                .FirstOrDefault(a => a.Id == activityTypeId);
         }
 
-        public async Task<bool> ActivityTypeExistsAsync (int activityTypeId)
+        public  bool ActivityTypeExists (int activityTypeId)
         {
-            return await _ctx.ActivityTypes.AnyAsync(e => e.Id == activityTypeId);
+            return  _ctx.ActivityTypes.Any(e => e.Id == activityTypeId);
         }
         #endregion
 

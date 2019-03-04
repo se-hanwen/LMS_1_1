@@ -34,7 +34,7 @@ namespace LMS_1_1.Controllers
         // GET: ActivityTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _repository.GetAllActivityTypesAsync());
+            return View( _repository.GetAllActivityTypes());
         }
 
         // GET: ActivityTypes/Details/5
@@ -45,7 +45,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var activityType = await _repository.GetAllActivityTypesByIdAsync(Convert.ToInt32(id));
+            var activityType =  _repository.GetAllActivityTypesById(Convert.ToInt32(id));
             if (activityType == null)
             {
                 return NotFound();
@@ -69,8 +69,8 @@ namespace LMS_1_1.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _repository.AddEntityAsync(activityType);
-                await _repository.SaveAllAsync();
+                 _repository.AddEntity(activityType);
+                 _repository.SaveAll();
                 return RedirectToAction(nameof(Index));
             }
             return View(activityType);
@@ -84,7 +84,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var activityType = await _repository.GetAllActivityTypesByIdAsync(Convert.ToInt32(id));
+            var activityType =  _repository.GetAllActivityTypesById(Convert.ToInt32(id));
             if (activityType == null)
             {
                 return NotFound();
@@ -108,12 +108,12 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                    await _repository.UpdateEntityAsync(activityType);
-                    await _repository.SaveAllAsync();
+                     _repository.UpdateEntity(activityType);
+                     _repository.SaveAll();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _repository.ActivityTypeExistsAsync(activityType.Id))
+                    if (! _repository.ActivityTypeExists(activityType.Id))
                     {
                         return NotFound();
                     }
@@ -135,7 +135,7 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            var activityType = await _repository.GetAllActivityTypesByIdAsync(Convert.ToInt32(id));
+            var activityType =  _repository.GetAllActivityTypesById(Convert.ToInt32(id));
             if (activityType == null)
             {
                 return NotFound();
@@ -149,9 +149,9 @@ namespace LMS_1_1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var activityType = await _repository.GetAllActivityTypesByIdAsync(Convert.ToInt32(id));
-            await _repository.RemoveEntityAsync(activityType);
-            await _repository.SaveAllAsync();
+            var activityType =  _repository.GetAllActivityTypesById(Convert.ToInt32(id));
+             _repository.RemoveEntity(activityType);
+             _repository.SaveAll();
             return RedirectToAction(nameof(Index));
         }
 

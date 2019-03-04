@@ -43,7 +43,7 @@ namespace LMS_1_1
 
             services.AddScoped<IProgramRepository, ProgramRepository>();
             services.AddScoped<ICourseUsersRepository, CourseUsersRepository>();
-
+          
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
