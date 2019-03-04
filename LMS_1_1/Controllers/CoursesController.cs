@@ -153,6 +153,7 @@ namespace LMS_1_1.Controllers
             return View(course);
         }
 
+
         // POST: Courses/Delete/5
         [Authorize(Roles = "Teacher")]
         [HttpPost, ActionName("Delete")]
