@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LMS_1_1.Models
 {
@@ -15,11 +17,15 @@ namespace LMS_1_1.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
+        [Required]
         public DateTime StartDate { get; set; }
+        [Required]
         public string Description { get; set; }
 
-       public ICollection<Module> Modules { get; set; }
-       
+        public ICollection<Module> Modules { get; set; }
+
     }
 }

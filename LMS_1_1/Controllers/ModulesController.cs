@@ -20,7 +20,7 @@ namespace LMS_1_1.Controllers
         private readonly IProgramRepository _repository;
         private readonly ILogger<ModulesController> _logger;
 
-        public ModulesController (IProgramRepository repository, ILogger<ModulesController> logger, ApplicationDbContext context)
+        public ModulesController(IProgramRepository repository, ILogger<ModulesController> logger, ApplicationDbContext context)
         {
             _repository = repository;
             _logger = logger;
@@ -28,7 +28,7 @@ namespace LMS_1_1.Controllers
         }
         // GET: Modules
         [Authorize]
-        public async Task<IActionResult> Index ()
+        public async Task<IActionResult> Index()
         {
 
             return View(await _repository.GetAllModulesAsync(false));
@@ -36,7 +36,7 @@ namespace LMS_1_1.Controllers
 
         // GET: Modules/Details/5
         [Authorize]
-        public async Task<IActionResult> Details (Guid id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
@@ -54,9 +54,17 @@ namespace LMS_1_1.Controllers
 
         // GET: Modules/Create
         [Authorize(Roles = "Teacher")]
-        public IActionResult Create ()
+        public IActionResult Create()
         {
             ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Name");
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Teacher")]
+        public IActionResult CreateWithCourseid(Guid id)
+        {
+            ViewData["CourseId"] = id;
             return View();
         }
 
@@ -66,7 +74,7 @@ namespace LMS_1_1.Controllers
         [Authorize(Roles = "Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create ([Bind("Id,Name,StartDate,EndDate,Description,CourseId")] Module module)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Description,CourseId")] Module module)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +88,7 @@ namespace LMS_1_1.Controllers
 
         // GET: Modules/Edit/5
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Edit (Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
             {
@@ -102,7 +110,7 @@ namespace LMS_1_1.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Edit (Guid id, [Bind("Id,Name,StartDate,EndDate,Description,CourseId")] Module module)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,StartDate,EndDate,Description,CourseId")] Module module)
         {
             if (id != module.Id)
             {
@@ -135,7 +143,7 @@ namespace LMS_1_1.Controllers
 
         // GET: Modules/Delete/5
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Delete (Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
@@ -155,10 +163,10 @@ namespace LMS_1_1.Controllers
         [Authorize(Roles = "Teacher")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed (Guid id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var module = await _repository.GetModuleByIdAsync(id, false);
-             _repository.RemoveEntity(module);
+            _repository.RemoveEntity(module);
             await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }

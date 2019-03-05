@@ -23,15 +23,13 @@
             </ul>
             @if (this.User.IsInRole("Teacher"))
             {
-            <div class="card-body">
-                <a href="#" class="card-link">Add Module</a>
-                <!--  <a asp-controller="CourseUsers" asp-action="GetStart" lass="card-link" >Add Participant</a> --->
-
-                <a  asp-controller="Courses" asp-action="CourseStudent" asp-route-id="@Model.Id" class="card-link">Add Participant</a>
-            </div>
+                <div class="card-body">
+                    <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Module</a>
+                    <a asp-controller="Courses" asp-action="CourseStudent" asp-route-id="@Model.Id" class="card-link">Add Participant</a>
+                </div>
             }
-            </div>
-           
+        </div>
+
         <div></div>
         <div>
 
