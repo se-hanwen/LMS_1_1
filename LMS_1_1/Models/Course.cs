@@ -21,6 +21,7 @@ namespace LMS_1_1.Models
         [Required]
         public string Name { get; set; }
         [Required]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
         [Required]
         public string Description { get; set; }
