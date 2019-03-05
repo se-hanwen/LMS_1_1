@@ -1,9 +1,10 @@
-﻿@model  UserViewModel;
+﻿@model UserViewModel;
 
-<div>
+<fieldset>
+    <legend>Students for course: @Model.Course.Name</legend>
     <input type="hidden" value="@Model.CourseID" name="CourseId" id="CourseIdStudent" />
     <table>
-        <tr><th>FirstName</th><th>LastName</th><th>controll</th></tr>
+        <tr><th>First Name</th><th>Last Name</th><th>Controll</th></tr>
         @foreach (var user in Model.Users)
         {
             <tr>
@@ -25,4 +26,4 @@
             </tr>
         }
     </table>
-</div>
+</fieldset>

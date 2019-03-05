@@ -6,9 +6,7 @@
 
 <h1>Show courses of this student</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -22,18 +20,19 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseName)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Home", new { id=item.CourseID }) 
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseName)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.CourseID })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
