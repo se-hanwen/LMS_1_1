@@ -9,51 +9,94 @@
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="~/img/0_JLPdbimCEnWB8qJL.png" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title"> @Html.DisplayFor(model => model.Name)</h5>
+                <h3 class="card-title"> @Html.DisplayFor(model => model.Name)</h3>
+
                 <h5 class="card-title"> @Html.DisplayFor(model => model.StartDate)</h5>
-               
                 <p class="card-text">  @Html.DisplayFor(model => model.Description)</p>
+
             </div>
-            <ul class="list-group list-group-flush">
+            
                 @await Component.InvokeAsync("ClassUserList", new { CourseID = @Model.Id })
-            </ul>
+            
             <div class="card-body">
-                <a href="#" class="card-link">Add Module</a>
+                <a class="card-link" asp-controller="Modules" asp-action="Create">Add Module</a>
+               
                 <a href="#" class="card-link">Add Participant</a>
             </div>
         </div>
-      
+
         <div></div>
         <div>
 
-           
+
         </div>
 
     </div>
     <div class="col-md-8">
-        @if (Model.Modules != null)
-        {
 
 
+
+      
+            
+
+            
+        
+    
+
+
+    @if (Model.Modules != null)
+    {
+       
+        <div id="accordion">
+           
             @foreach (var module in Model.Modules)
+
             {
-                <a asp-controller="Modules" asp-action="Details" asp-route-id="@module.Id">
-                    @module.Name
-                </a><br />
-                @if (module.LMSActivities != null)
-                {
-                    @foreach (var activity in module.LMSActivities)
+
+                <div class="card">
+                    <div class="card-header" id="@module.Id">
+                        <h5 class="mb-0">
+
+                            <div 
+                                 class="btn btn-link collapsed"
+                                 data-target="#@module.Name"
+                                 aria-controls="@module.Name"
+                                 data-toggle="collapse"
+                                 aria-expanded="false">
+
+                                @module.Name
+
+                            </div>
+                        </h5>
+                    </div>
+
+                    @if (module.LMSActivities != null)
                     {
-                    <a asp-controller="LMSActivities" asp-action="Details" asp-route-id="@activity.Id">
-                        &nbsp; &nbsp;  @activity.ActivityType.Name
-                    </a><br />
+                    <div id="@module.Name" class="collapse" aria-labelledby="@module.Id" data-parent="#accordion">
+                        <div class="card-body">
+                            @foreach (var activity in module.LMSActivities)
+                            {
+
+
+
+                            <div>
+                                <a asp-controller="LMSActivities" asp-action="Details" asp-route-id="@activity.Id">
+                                    @activity.ActivityType.Name
+                                </a>
+                            </div>
+
+
+                            }
+                        </div>
+                        </div>
                     }
-                 }
-                }
+                </div>
             }
         </div>
+                }
+            </div>
 
-</div>
+    </div>
 
 
 

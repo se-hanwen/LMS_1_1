@@ -46,10 +46,6 @@
             @RenderBody()
         </main>
     </div>
-    @if(User.IsInRole("Student"))
-    {
-        @await Component.InvokeAsync("ClassUserList");
-    }
 
     <footer class="border-top footer text-muted">
         <div class="container">
