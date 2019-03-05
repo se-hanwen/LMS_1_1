@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using LMS_1_1.Data;
 using LMS_1_1.Models;
 using Microsoft.AspNetCore.Authorization;
-using LMS_1_1.Data;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace LMS_1_1.Controllers
 {
@@ -25,7 +21,7 @@ namespace LMS_1_1.Controllers
             bRole = User.IsInRole(ConstDefine.R_STUDENT);
             if (bRole)
             {
-                return RedirectToAction("ShowStudent", "Courses");
+                return RedirectToAction( "ShowStudent" ,"Courses");
             }
 
             return View();

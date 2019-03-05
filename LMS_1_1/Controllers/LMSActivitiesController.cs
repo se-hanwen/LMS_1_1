@@ -117,9 +117,11 @@ namespace LMS_1_1.Controllers
 
             if (ModelState.IsValid)
             {
+                lMSActivity.ActivityType = await _context.ActivityTypes.Where(act => act.Id == lMSActivity.ActivityTypeId).FirstOrDefaultAsync();
                 try
                 {
-                    await _repository.UpdateEntityAsync(lMSActivity);
+                     _repository.UpdateEntity(lMSActivity);
+                    await _repository.SaveAllAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -164,7 +166,7 @@ namespace LMS_1_1.Controllers
         public async Task<IActionResult> DeleteConfirmed (Guid id)
         {
             var lMSActivity = await _repository.GetActivityByIdAsync(id);
-            await _repository.RemoveEntityAsync(lMSActivity);
+            _repository.RemoveEntity(lMSActivity);
             await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }

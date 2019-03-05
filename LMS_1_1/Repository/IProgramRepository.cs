@@ -32,7 +32,7 @@ namespace LMS_1_1.Repository
 
         Task<bool> SaveAllAsync ();
         Task AddEntityAsync (object model);
-        Task UpdateEntityAsync (object model);
-        Task RemoveEntityAsync (object model);
+        void UpdateEntity (object model);
+        void RemoveEntity (object model);
     }
 }

@@ -1,0 +1,7 @@
+﻿@model Guid
+@{
+    ViewData["Title"] = "CourseStudent";
+}
+
+@await Component.InvokeAsync("ChooseStudents", new { CourseID = @Model })
+

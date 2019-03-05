@@ -108,7 +108,7 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                    await _repository.UpdateEntityAsync(activityType);
+                     _repository.UpdateEntity(activityType);
                     await _repository.SaveAllAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -150,7 +150,7 @@ namespace LMS_1_1.Controllers
         public async Task<IActionResult> DeleteConfirmed (int id)
         {
             var activityType = await _repository.GetAllActivityTypesByIdAsync(Convert.ToInt32(id));
-            await _repository.RemoveEntityAsync(activityType);
+            _repository.RemoveEntity(activityType);
             await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }

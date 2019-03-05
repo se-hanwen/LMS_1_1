@@ -1,15 +1,15 @@
-﻿using System;
+﻿using LMS_1_1.Data;
+using LMS_1_1.Models;
+using LMS_1_1.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using LMS_1_1.Data;
-using LMS_1_1.Models;
-using LMS_1_1.Repository;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authorization;
 
 namespace LMS_1_1.Controllers
 {
@@ -17,26 +17,34 @@ namespace LMS_1_1.Controllers
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<LMSUser> _userManager;
         private readonly IProgramRepository _repository;
         private readonly ILogger<CoursesController> _logger;
 
-        public CoursesController (IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context)
+        public CoursesController(IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context, UserManager<LMSUser> userManager )
         {
             _repository = repository;
             _logger = logger;
             _context = context;
-
+            _userManager = userManager;
         }
+
+        public async Task<ActionResult<Guid>> CourseStudent(Guid id)
+        {
+
+            return View(id);
+        }
+
         // GET: Courses
         [Authorize]
-        public async Task<IActionResult> Home (Guid id)
+        public async Task<IActionResult> Home(Guid id)
         {
             return View(await _repository.GetCourseByIdAsync(id, true));
 
         }
         // GET: Courses
         [Authorize]
-        public async Task<IActionResult> Index ()
+        public async Task<IActionResult> Index()
         {
             return View(await _repository.GetAllCoursesAsync(true));
 
@@ -44,7 +52,7 @@ namespace LMS_1_1.Controllers
 
         // GET: Courses/Details/5
         [Authorize]
-        public async Task<IActionResult> Details (Guid id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
@@ -60,7 +68,7 @@ namespace LMS_1_1.Controllers
 
         // GET: Courses/Create
         [Authorize(Roles = "Teacher")]
-        public IActionResult Create ()
+        public IActionResult Create()
         {
             return View();
         }
@@ -71,7 +79,7 @@ namespace LMS_1_1.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Create ([Bind("Id,Name,StartDate,Description")] Course course)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,Description")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +92,7 @@ namespace LMS_1_1.Controllers
 
         // GET: Courses/Edit/5
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Edit (Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
             {
@@ -106,7 +114,7 @@ namespace LMS_1_1.Controllers
         [Authorize(Roles = "Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit (Guid id, [Bind("Id,Name,StartDate,Description")] Course course)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,StartDate,Description")] Course course)
         {
             if (id != course.Id)
             {
@@ -117,7 +125,7 @@ namespace LMS_1_1.Controllers
             {
                 try
                 {
-                    await _repository.UpdateEntityAsync(course);
+                     _repository.UpdateEntity(course);
                     await _repository.SaveAllAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -138,7 +146,7 @@ namespace LMS_1_1.Controllers
 
         // GET: Courses/Delete/5
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Delete (Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
@@ -153,18 +161,40 @@ namespace LMS_1_1.Controllers
             return View(course);
         }
 
+
         // POST: Courses/Delete/5
         [Authorize(Roles = "Teacher")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed (Guid id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var course = await _repository.GetCourseByIdAsync(id, false);
-            await _repository.RemoveEntityAsync(course);
+            _repository.RemoveEntity(course);
             await _repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }
 
 
+        [Authorize(Roles = ConstDefine.R_STUDENT)]
+        public async Task<IActionResult> ShowStudent()
+        {
+            List<ShowStudent> stuCourses = new List<ShowStudent>();
+            var userid = _userManager.GetUserId(User);
+
+            var cs = from ucs in _context.CourseUsers where ucs.LMSUserId == userid select ucs;
+            var lstcourse = await cs.ToListAsync();
+            foreach (var item in cs)
+            {
+                var courseStu = new ShowStudent();
+                var thecourse = await _repository.GetCourseByIdAsync(item.CourseId, false);
+                courseStu.CourseID = item.CourseId;
+                courseStu.CourseName = thecourse.Name;
+                courseStu.StudentID = User.Identity.Name;
+                stuCourses.Add(courseStu);
+            }
+
+            return View(stuCourses);
+        }
     }
+
 }
