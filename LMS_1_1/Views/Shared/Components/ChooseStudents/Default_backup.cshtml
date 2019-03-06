@@ -1,0 +1,29 @@
+﻿@model UserViewModel;
+
+<fieldset>
+    <legend>Students for course: @Model.Course.Name</legend>
+    <input type="hidden" value="@Model.CourseID" name="CourseId" id="CourseIdStudent" />
+    <table>
+        <tr><th>First Name</th><th>Last Name</th><th>Controll</th></tr>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.User.FirstName</td>
+                <td>@user.User.LastName</td>
+                <td>
+
+                    @if (user.Coureids.Any(cid => cid == Model.CourseID))
+                    {
+                        <input type="checkbox" checked="checked" onclick="SaveStudent(this)" id="@user.User.Id" />
+
+                    }
+                    else
+                    {
+                        <input type="checkbox" onclick="SaveStudent(this)" id="@user.User.Id" />
+                    }
+
+                </td>
+            </tr>
+        }
+    </table>
+</fieldset>
