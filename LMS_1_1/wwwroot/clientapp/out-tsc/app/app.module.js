@@ -1,8 +1,10 @@
 import * as tslib_1 from "tslib";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AddPartipantModule } from './AddPartipant/add-partipant.module';
+import { NoRouteModule } from './NoRoute/no-route.module';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -13,7 +15,13 @@ var AppModule = /** @class */ (function () {
             ],
             imports: [
                 BrowserModule,
-                AddPartipantModule
+                AddPartipantModule,
+                RouterModule.forRoot([
+                    { path: 'Angular\*', component: AppComponent }
+                ], { useHash: true,
+                    enableTracing: false // for debug
+                }),
+                NoRouteModule
             ],
             providers: [],
             bootstrap: [AppComponent]

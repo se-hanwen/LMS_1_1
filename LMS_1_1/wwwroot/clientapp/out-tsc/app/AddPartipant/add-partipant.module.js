@@ -2,6 +2,7 @@ import * as tslib_1 from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddPartipantComponent } from './add-partipant.component';
+import { RouterModule } from '@angular/router';
 var AddPartipantModule = /** @class */ (function () {
     function AddPartipantModule() {
     }
@@ -9,7 +10,13 @@ var AddPartipantModule = /** @class */ (function () {
         NgModule({
             declarations: [AddPartipantComponent],
             imports: [
-                CommonModule
+                CommonModule,
+                RouterModule.forChild([{ path: 'Angular/AddPartipant/:id',
+                        component: AddPartipantComponent }
+                ])
+            ],
+            exports: [
+                AddPartipantComponent
             ]
         })
     ], AddPartipantModule);

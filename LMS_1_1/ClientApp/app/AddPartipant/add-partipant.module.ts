@@ -11,7 +11,7 @@ import  { RouterModule} from '@angular/router';
     CommonModule,
     RouterModule.forChild(
       [{path:'Angular/AddPartipant/:id' 
-      ,canActivate : [OnlyTeacher]
+      
       ,component: AddPartipantComponent }
     ]
     )
