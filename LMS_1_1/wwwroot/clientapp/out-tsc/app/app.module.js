@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AddPartipantModule } from './AddPartipant/add-partipant.module';
 import { NoRouteModule } from './NoRoute/no-route.module';
+import { NoRouteComponent } from './NoRoute/no-route.component';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -17,8 +18,8 @@ var AppModule = /** @class */ (function () {
                 BrowserModule,
                 AddPartipantModule,
                 RouterModule.forRoot([
-                    { path: 'Angular\*', component: AppComponent }
-                ], { useHash: true,
+                    { path: '**', component: NoRouteComponent }
+                ], {
                     enableTracing: false // for debug
                 }),
                 NoRouteModule

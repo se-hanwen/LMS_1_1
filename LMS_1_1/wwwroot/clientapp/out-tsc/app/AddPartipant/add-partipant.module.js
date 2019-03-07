@@ -11,7 +11,7 @@ var AddPartipantModule = /** @class */ (function () {
             declarations: [AddPartipantComponent],
             imports: [
                 CommonModule,
-                RouterModule.forChild([{ path: 'Angular/AddPartipant/:id',
+                RouterModule.forChild([{ path: 'AddPartipant/:id',
                         component: AddPartipantComponent }
                 ])
             ],

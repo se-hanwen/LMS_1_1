@@ -7,6 +7,11 @@
     <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="ClientApp\img\0_JLPdbimCEnWB8qJL.png" />
+    <Content Include="ClientApp\img\download.jpg" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -16,7 +21,7 @@
 
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\" />
+    <Folder Include="ClientApp\img\" />
   </ItemGroup>
 
 </Project>

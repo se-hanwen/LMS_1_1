@@ -5,10 +5,13 @@ import { AppComponent } from './app.component';
 import { AddPartipantModule } from './AddPartipant/add-partipant.module';
 import { NoRouteModule } from './NoRoute/no-route.module';
 import {NoRouteComponent} from './NoRoute/no-route.component';
+import { CourseListComponent } from './courses/course-list/course-list.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CourseListComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +22,8 @@ import {NoRouteComponent} from './NoRoute/no-route.component';
     ], {
       enableTracing: false // for debug
     }),
-    NoRouteModule
+    NoRouteModule,
+   
   ],
   providers: [],
   bootstrap: [AppComponent]
