@@ -6,6 +6,7 @@
     <script src="~/clientapp/dist/vendor.js"></script>
     <script src="~/clientapp/dist/main.js"></script>
 }
+@using System.Text.RegularExpressions;
 @{
     ViewData["Title"] = "Index";
 }
@@ -51,13 +52,13 @@
                 @foreach (var module in Model.Modules)
 
                 {
-                  
+
                     string name = Regex.Replace(@module.Name, @"[\W_]+", string.Empty);
                     <div class="card">
                         <div class="card-header" id="@module.Id">
                             <h5 class="mb-0">
-                               
-                              
+
+
                                 <div class="btn btn-link collapsed"
                                      data-target="#@name"
                                      aria-controls="@name"
