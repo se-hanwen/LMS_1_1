@@ -19,12 +19,14 @@ namespace LMS_1_1.Repository
             _logger = logger;
         }
 
-        public IQueryable<CourseUser> GetCourseUsers(Guid CourseId)
+
+
+        public IQueryable<CourseUser> GetCourseUsers(string CourseId)
         {
             return _context
                  .CourseUsers
                  .Include(cu => cu.LMSUser)
-                 .Where(cu => cu.CourseId == CourseId);
+                 .Where(cu => cu.CourseId.ToString() == CourseId);
         }
 
 
@@ -36,15 +38,27 @@ namespace LMS_1_1.Repository
                  .Where(cu => cu.LMSUserId == LMSUserId);
         }
 
-        public async Task AddCourseUser(Guid CouresID, string LMSUserid)
+        public async Task AddCourseUser(string CouresID, string LMSUserid)
         {
-            _context.Add(new CourseUser { CourseId = CouresID, LMSUserId = LMSUserid });
+            var temp = new CourseUser{ LMSUserId = LMSUserid };
+            temp.Course = await _context.Courses.FirstOrDefaultAsync(c => c.Id.ToString() == CouresID);
+            temp.CourseId = temp.Course.Id;
+
+            _context.Add(temp);
             await _context.SaveChangesAsync();
         }
 
         public async Task RemoveCourseUser(Guid CouresID, string LMSUserid)
         {
             _context.Remove(new CourseUser { CourseId = CouresID, LMSUserId = LMSUserid });
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveAllCourseUsers(string CouresID)
+        {
+            var temp = _context.CourseUsers.Where(cu => cu.CourseId.ToString() == CouresID);
+
+            _context.Remove(temp);
             await _context.SaveChangesAsync();
         }
     }

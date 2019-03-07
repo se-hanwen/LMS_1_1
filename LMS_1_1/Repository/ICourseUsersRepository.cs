@@ -7,13 +7,14 @@ namespace LMS_1_1.Repository
 {
     public interface ICourseUsersRepository
     {
-        IQueryable<CourseUser> GetCourseUsers(Guid CourseId);
+        IQueryable<CourseUser> GetCourseUsers(string CourseId);
 
         IQueryable<CourseUser> GetCoursesForUsers(string LMSUserId);
 
-        Task AddCourseUser(Guid CouresID, string LMSUserid);
+        Task AddCourseUser(string CouresID, string LMSUserid);
 
         Task RemoveCourseUser(Guid CouresID, string LMSUserid);
 
+        Task RemoveAllCourseUsers(string CouresID);
     }
 }

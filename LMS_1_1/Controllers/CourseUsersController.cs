@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 
 namespace LMS_1_1.Controllers
 {
-  //  [Route("api/[controller]")]
-  //  [ApiController]
+   // [Route("api/[controller]")]
+   // [ApiController]
     public class CourseUsersController : Controller
     //ControllerBase
     //Controller
@@ -45,7 +45,7 @@ namespace LMS_1_1.Controllers
         // GET: api/CourseUsers/5
         [HttpGet("{CourseId}")]
         [Authorize]
-        public async Task<ActionResult<ICollection<CourseUser>>> GetCourseUsers(Guid CourseId)
+        public async Task<ActionResult<ICollection<CourseUser>>> GetCourseUsers(string CourseId)
         {
             return await _repository.GetCourseUsers(CourseId).ToListAsync();
         }
@@ -99,7 +99,18 @@ namespace LMS_1_1.Controllers
 
             return NoContent();
         }
+        [HttpPost]
+        public async Task<ActionResult<string>> AddStudentsToCourse(string courseid, ICollection<string> Userids)
+        {
+            await _repository.RemoveAllCourseUsers(courseid);
 
+            foreach(var userid in Userids)
+            {
+               await _repository.AddCourseUser(courseid, userid);
+            }
+
+            return Ok();
+        }
 
 
         [HttpPost]

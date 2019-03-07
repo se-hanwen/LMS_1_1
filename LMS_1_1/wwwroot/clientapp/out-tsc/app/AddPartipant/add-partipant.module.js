@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddPartipantComponent } from './add-partipant.component';
 import { RouterModule } from '@angular/router';
+import { IsTeacherGuard } from '../Shared/is-teacher.guard';
+import { FormsModule } from '@angular/forms';
 var AddPartipantModule = /** @class */ (function () {
     function AddPartipantModule() {
     }
@@ -11,7 +13,9 @@ var AddPartipantModule = /** @class */ (function () {
             declarations: [AddPartipantComponent],
             imports: [
                 CommonModule,
-                RouterModule.forChild([{ path: 'Angular/AddPartipant/:id',
+                FormsModule,
+                RouterModule.forChild([{ path: 'AddPartipant/:id',
+                        canActivate: [IsTeacherGuard],
                         component: AddPartipantComponent }
                 ])
             ],

@@ -1,3 +1,62 @@
-<p>
-  add-partipant works!
-</p>
+<div class='card'>
+  <div class='card-header'>
+       {{pageTitle}}
+  </div>
+  <div class='card-body'>
+      <div class="row">
+      <div class="col-md-2">Filtera</div>
+        <div class='col-md-4'>
+            <input type='text'  [(ngModel)]='listFilter'/>
+        </div>
+  </div>
+  <div class='row'>
+      <div class='col-md-6'>
+          <h4 *ngIf='listFilter'> Filtered by:{{listFilter}}</h4>
+          <div class="table-responsive">
+            <label>Choose among these</labe>
+            <table class="table" *ngIf="ChooseFrom && ChooseFrom.length">
+
+                <thead>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                </thead>
+                <tbody >
+                      <tr *ngFor='let Choose of ChooseFrom'>
+                          <td (click)="chooseStudent()">{{Choose.FirstName}}</td>
+                          <td (click)="chooseStudent()">{{Choose.LastName}}</td>
+                      </tr>
+
+                  </tbody>
+
+            </table>
+      
+          </div>
+        </div>
+
+
+
+<div class="col-md-6">
+
+    <button class="btn btn-success" (click)="SaveStudents()">Save</button>
+    <div class="table-responsive">
+        <label>Click here to unchoose</labe>
+          <table class="table" *ngIf="Choosed && Choosed.length">
+              <thead>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+              </thead>
+              <tbody >
+                    <tr *ngFor='let UnChoose of Choosed'>
+                        <td (click)="unChooseStudent()">{{UnChoose.FirstName}}</td>
+                        <td (click)="unChooseStudent()">{{UnChoose.LastName}}</td>
+                    </tr>
+
+                </tbody>
+
+          </table>
+        </div>   
+  </div>
+        </div>
+    </div>
+
+   </div> 

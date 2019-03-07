@@ -42,5 +42,7 @@ namespace LMS_1_1.Data
 
         public DbSet<CourseUser> CourseUsers { get; set; }
 
+        public DbSet<TokenUser> TokenUsers { get; set; }
+
     }
 }

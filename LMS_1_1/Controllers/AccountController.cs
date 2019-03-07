@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using LMS_1_1.Models;
+using LMS_1_1.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -22,13 +23,16 @@ namespace LMS_1_1.Controllers
         private readonly UserManager<LMSUser> _userManager;
         private readonly IConfiguration _config;
         private readonly RoleManager<LMSUser> _roleManager;
+        private readonly IProgramRepository _programRepository;
 
         public AccountController(ILogger<AccountController> logger,
           SignInManager<LMSUser> signInManager,
           UserManager<LMSUser> userManager,
           IConfiguration config,
-          RoleManager<LMSUser> roleManager
-            
+          RoleManager<LMSUser> roleManager, IProgramRepository programRepository
+
+
+
             )
         {
             _logger = logger;
@@ -36,6 +40,7 @@ namespace LMS_1_1.Controllers
             _userManager = userManager;
             _config = config;
             _roleManager = roleManager;
+            _programRepository = programRepository;
         }
 
         [HttpPost]
@@ -59,11 +64,11 @@ namespace LMS_1_1.Controllers
               new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
              
             };
-                        foreach (var role in await _userManager.GetRolesAsync(user))
+                      /*  foreach (var role in await _userManager.GetRolesAsync(user))
                         {
                             claims.Add(new Claim(ClaimTypes.Role, role));
                         }
-
+                        */
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
                         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -73,12 +78,13 @@ namespace LMS_1_1.Controllers
                           claims.ToArray(),
                           expires: DateTime.Now.AddMinutes(30),
                           signingCredentials: creds);
-
+                        
                         var results = new
                         {
                             token = new JwtSecurityTokenHandler().WriteToken(token),
                             expiration = token.ValidTo
                         };
+                        await _programRepository.AddTokenUser(results.token, user.Id);
 
                         return Created("", results);
                     }
@@ -86,6 +92,13 @@ namespace LMS_1_1.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<bool> IsTeacher(string token)
+        {
+            return await _programRepository.IsTeacher(token);
+
         }
     }
 }

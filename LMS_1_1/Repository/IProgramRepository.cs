@@ -29,6 +29,10 @@ namespace LMS_1_1.Repository
         Task<ActivityType> GetAllActivityTypesByIdAsync (int activityTypeId);
         Task<bool> ActivityTypeExistsAsync (int id);
 
+        Task AddTokenUser(string token, string userid);
+        Task<bool> RemoveTokenUser(string token);
+        Task<bool> IsTeacher(string token);
+
 
         Task<bool> SaveAllAsync ();
         Task AddEntityAsync (object model);

@@ -16,6 +16,7 @@
 
 
   <ItemGroup>
+    <Folder Include="ClientApp\app\Shared\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
