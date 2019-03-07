@@ -19,13 +19,11 @@
             </div>
 
             @await Component.InvokeAsync("ClassUserList", new { CourseID = @Model.Id })
-            @if (User.IsInRole("Teacher"))
+            @if (this.User.IsInRole("Teacher"))
             {
                 <div class="card-body">
-                    <a class="card-link" asp-controller="Modules" asp-action="Create">Add Module</a>
-
-                    <a class="card-link" asp-area="Identity" asp-page="/Account/Register">Add Participant</a>
-
+                    <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Module</a>
+                    <a asp-controller="Courses" asp-action="CourseStudent" asp-route-id="@Model.Id" class="card-link">Add Participant</a>
                 </div>
             }
         </div>
