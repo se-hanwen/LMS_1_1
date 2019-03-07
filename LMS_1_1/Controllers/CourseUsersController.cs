@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LMS_1_1.Controllers
@@ -37,7 +38,7 @@ namespace LMS_1_1.Controllers
         [HttpGet("{CourseId}")]
         public async Task<ActionResult<ICollection<CourseUser>>> GetStart(Guid CourseId)
         {
-
+           
             return Ok(CourseId);
         }
 
