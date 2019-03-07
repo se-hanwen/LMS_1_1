@@ -68,11 +68,12 @@ namespace LMS_1_1.Repository
 
             if (includeModule)
             {
-                return await course
-                           .Include(c => c.Modules)
-                           .ThenInclude(m => m.LMSActivities)
-                           .ThenInclude(a => a.ActivityType)
-                            .FirstOrDefaultAsync();
+                var res = await course
+                          .Include(c => c.Modules)
+                          .ThenInclude(m => m.LMSActivities)
+                          .ThenInclude(a => a.ActivityType)
+                           .FirstOrDefaultAsync();
+                return res;
             }
             return await course
                    .FirstOrDefaultAsync();

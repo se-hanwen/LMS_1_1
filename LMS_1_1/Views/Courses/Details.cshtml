@@ -1,6 +1,11 @@
 ﻿@model LMS_1_1.Models.Course
-@using System.Text.RegularExpressions;
-
+@section Scripts {
+    <script src="~/clientapp/dist/runtime.js"></script>
+    <script src="~/clientapp/dist/polyfills.js"></script>
+    <script src="~/clientapp/dist/styles.js"></script>
+    <script src="~/clientapp/dist/vendor.js"></script>
+    <script src="~/clientapp/dist/main.js"></script>
+}
 @{
     ViewData["Title"] = "Index";
 }
@@ -97,6 +102,5 @@
 
     </div>
 </div>
-
 
 
