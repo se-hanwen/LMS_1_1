@@ -4,13 +4,12 @@ import { AddPartipantComponent } from './add-partipant.component';
 import  { RouterModule} from '@angular/router';
 
 
-
 @NgModule({
   declarations: [AddPartipantComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(
-      [{path:'Angular/AddPartipant/:id' 
+      [{path:'AddPartipant/:id' 
       
       ,component: AddPartipantComponent }
     ]

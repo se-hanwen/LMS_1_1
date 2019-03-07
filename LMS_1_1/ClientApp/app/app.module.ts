@@ -4,6 +4,7 @@ import  { RouterModule} from '@angular/router';
 import { AppComponent } from './app.component';
 import { AddPartipantModule } from './AddPartipant/add-partipant.module';
 import { NoRouteModule } from './NoRoute/no-route.module';
+import {NoRouteComponent} from './NoRoute/no-route.component';
 
 @NgModule({
   declarations: [
@@ -13,9 +14,9 @@ import { NoRouteModule } from './NoRoute/no-route.module';
     BrowserModule,
     AddPartipantModule,
     RouterModule.forRoot([
-      {path: 'Angular\*', component: AppComponent}
+      {path: '**', component:  NoRouteComponent}
       
-    ], {useHash: true, 
+    ], {
       enableTracing: false // for debug
     }),
     NoRouteModule
