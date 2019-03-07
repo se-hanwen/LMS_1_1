@@ -1,114 +1,25 @@
 ﻿@model LMS_1_1.Models.Course
-
+@section Scripts {
+    <script src="~/clientapp/dist/runtime.js"></script>
+    <script src="~/clientapp/dist/polyfills.js"></script>
+    <script src="~/clientapp/dist/styles.js"></script>
+    <script src="~/clientapp/dist/vendor.js"></script>
+    <script src="~/clientapp/dist/main.js"></script>
+}
 @{
     ViewData["Title"] = "Index";
 }
-<style>
 
-    .step {
-        position: relative;
-        padding: 10px;
-        border-left: 5px solid rgb(122, 197, 228);
-        position: relative;
-        margin-left: 1em;
-        padding-left: 2em;
-    }
-
-    step h2 {
-        border-top-right-radius: 1em;
-        border-bottom-right-radius: 1em;
-        border: 3px solid rgb(122, 197, 228);
-        margin: 0;
-        text-indent: 1em;
-        color: rgb(122, 197, 228);
-        font-weight: normal;
-        font-size: 1.3em;
-        margin-left: -1em;
-    }
-
-    .step h2::before {
-        content: attr(data-step-id);
-        border-radius: 2em;
-        background-color: rgb(122, 197, 228);
-        width: 2em;
-        height: 2em;
-        display: inline-block;
-        position: absolute;
-        left: -1.1em;
-        top: 0;
-        text-align: center;
-        line-height: 2em;
-        font-size: 1.2em;
-        font-weight: normal;
-        color: #EEEEEE;
-        text-indent: 0;
-    }
-
-    .step.active h2 {
-        background-color: rgb(122, 197, 228);
-        color: #FFFFFF;
-        font-weight: bold;
-    }
-
-        .step.active h2::before {
-            border-right: 3px solid #FFFFFF;
-        }
-
-    .step::before {
-        content: "";
-        border: 0.8em solid transparent;
-        border-top-color: rgb(122, 197, 228);
-        border-top-width: 1.5em;
-        position: absolute;
-        display: inline-block;
-        left: -0.9em;
-        bottom: -0.9em;
-    }
-
-    .step.inactive {
-        border-color: #bbbbbb;
-    }
-
-        .step.inactive::before {
-            border-top-color: #bbbbbb;
-        }
-
-        .step.inactive h2 {
-            color: #aaaaaa;
-            border-color: #bbbbbb;
-        }
-
-            .step.inactive h2::before {
-                background-color: #bbbbbb;
-            }
-
-    [class*='step']:last-of-type {
-        border-color: transparent;
-    }
-
-        [class*='step']:last-of-type::before {
-            content: none;
-        }
-
-
-
-    .step.active .back,
-    .step.active .next {
-        background-color: rgb(122, 197, 228);
-        cursor: pointer;
-        pointer-events: auto;
-    }
-</style>
 
 <div class="row">
     <div class="col-md-4">
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="~/img/0_JLPdbimCEnWB8qJL.png" alt="Card image cap">
             <div class="card-body">
-                <h3 class="card-title"> @Html.DisplayFor(model => model.Name)</h3>
+                <h3 class="card-title">@Model.Name</h3>
 
-                <h5 class="card-title"> @Html.DisplayFor(model => model.StartDate)</h5>
-                <p class="card-text">  @Html.DisplayFor(model => model.Description)</p>
+                <h5 class="card-title">@Model.StartDate</h5>
+                <p class="card-text">  @Model.Description</p>
 
             </div>
 
@@ -129,24 +40,27 @@
         </div>
 
     </div>
-    <div class="col-md-8">
+    <div class="col-md-6">
 
         @if (Model.Modules != null)
         {
+
 
             <div id="accordion">
 
                 @foreach (var module in Model.Modules)
 
                 {
-
+                  
+                    string name = Regex.Replace(@module.Name, @"[\W_]+", string.Empty);
                     <div class="card">
                         <div class="card-header" id="@module.Id">
                             <h5 class="mb-0">
-
+                               
+                              
                                 <div class="btn btn-link collapsed"
-                                     data-target="#@module.Id-1"
-                                     aria-controls="@module.Id-1"
+                                     data-target="#@name"
+                                     aria-controls="@name"
                                      data-toggle="collapse"
                                      aria-expanded="false">
 
@@ -158,22 +72,25 @@
 
                         @if (module.LMSActivities != null)
                         {
-                            <div id="@module.Id-1" class="collapse" aria-labelledby="@module.Id-1" data-parent="#accordion">
+                            <div id="@name" class="collapse" aria-labelledby="@module.Id" data-parent="#accordion">
                                 <div class="card-body">
-                                    @foreach (var activity in module.LMSActivities)
-                                    {
-                                        <div class="step">
-                                            <h2 data-step-id=""> &nbsp; @activity.ActivityType.Name</h2>
-                                            <p>&nbsp; @activity.Description</p>
+                                    <h4>Activities</h4>
+                                    <ul class="timeline">
 
-                                        </div>
-
-
-
-
-
-                                    }
+                                        @foreach (var activity in module.LMSActivities)
+                                        {
+                                            <li>
+                                                <a asp-controller="LMSActivities" asp-action="Details" asp-route-id="@activity.Id">@activity.ActivityType.Name</a>
+                                                <a href="#" class="float-right"> @activity.StartDate</a>
+                                                <p>@activity.Description</p>
+                                                <a asp-controller="LMSActivities" asp-action="Edit" asp-route-id="@activity.Id">Edit Activity</a>&nbsp;|&nbsp;
+                                                <a asp-controller="LMSActivities" asp-action="Delete" asp-route-id="@activity.Id">Delete Activity</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                    <a class="float-right" asp-controller="LMSActivities" asp-action="Create" asp-route-id="@module.Id">Add Activity</a>
                                 </div>
+
                             </div>
                         }
                     </div>
@@ -181,8 +98,9 @@
             </div>
         }
     </div>
+    <div class="col-md-2">
 
+    </div>
 </div>
-
 
 
