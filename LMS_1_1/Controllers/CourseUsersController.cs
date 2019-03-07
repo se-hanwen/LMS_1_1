@@ -35,8 +35,16 @@ namespace LMS_1_1.Controllers
             _userManager = userManager;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<ICollection<LMSUser>>> Getusers(string CourseId, bool choosed)
+        {
+
+            return Ok(await _repository.GetUsers(CourseId, choosed));
+
+        }
+
         [HttpGet("{CourseId}")]
-        public async Task<ActionResult<ICollection<CourseUser>>> GetStart(Guid CourseId)
+        public async Task<ActionResult<Guid>> GetStart(Guid CourseId)
         {
            
             return Ok(CourseId);
