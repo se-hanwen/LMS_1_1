@@ -6,23 +6,35 @@ import { AddPartipantModule } from './AddPartipant/add-partipant.module';
 import { NoRouteModule } from './NoRoute/no-route.module';
 import {NoRouteComponent} from './NoRoute/no-route.component';
 import { CourseListComponent } from './courses/course-list/course-list.component';
+import { HttpClientModule } from '@angular/common/http';
+import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CourseListComponent
+    CourseListComponent,
+    CourseDetailComponent
   ],
   imports: [
     BrowserModule,
     AddPartipantModule,
     RouterModule.forRoot([
-      {path: '**', component:  NoRouteComponent}
+        {
+            path: 'courses', component: CourseListComponent
+        },
+        {
+            path: 'courses:id', component: CourseDetailComponent
+        },
+        {
+            path: '**', component: NoRouteComponent
+        }
       
     ], {
       enableTracing: false // for debug
     }),
-    NoRouteModule,
+      NoRouteModule,
+      HttpClientModule,
    
   ],
   providers: [],

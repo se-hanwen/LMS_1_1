@@ -1,23 +1,26 @@
 
-<div class="row">
+<div class="row"  *ngIf='courses && courses.length'>
+    
+    <div class="col-md-4" *ngFor='let course of courses'>
+        <a [routerLink]="['/courses', course.Id]">
+            <div class="card" style="width: 20rem;">
 
-    <div class="col-md-3">
-        <div class="card" style="width: 18rem;">
 
-           
-            <img class="card-img-top" src="" alt="Card image cap" />
-            <div class="card-body">
-                <h3 class="card-title"></h3>
 
-                <h5 class="card-title"></h5>
-                <p class="card-text"></p>
+                <img class="card-img-top" width="100px" height="300px" [src]='course.courseImgUrl' alt="Card image cap" />
+                <div class="card-body">
+                    <h3 class="card-title">{{course.name}}</h3>
 
+                    <h5 class="card-title">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>
+                    <p class="card-text">{{course.description}} </p>
+
+                </div>
+                <div class="card-body">
+                    <a class="card-link">Edit Course</a>
+                    <a class="card-link">Delete Course</a>
+                </div>
             </div>
-            <div class="card-body">
-                <a class="card-link">Edit Course</a>
-                <a class="card-link">Delete Course</a>
-            </div>
-        </div>
+        </a>
     </div>
-
+    
 </div>

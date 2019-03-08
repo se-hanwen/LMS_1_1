@@ -81,7 +81,6 @@
             "tsConfig": "ClientApp/tsconfig.spec.json",
             "karmaConfig": "ClientApp/karma.conf.js",
             "styles": [
-              "../wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
               "ClientApp/styles.css"
 
             ],
