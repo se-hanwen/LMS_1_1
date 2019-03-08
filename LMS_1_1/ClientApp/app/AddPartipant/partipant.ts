@@ -1,6 +1,6 @@
-export class Partipant
+export interface IPartipant
 {
-    Userid : string;
-    FirstName: string;
-    LastName: string;
+    userid : string;
+    firstName: string;
+    lastName: string;
 }

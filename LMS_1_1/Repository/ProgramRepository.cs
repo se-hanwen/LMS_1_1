@@ -16,14 +16,16 @@ namespace LMS_1_1.Repository
         private readonly ApplicationDbContext _ctx;
         private readonly ILogger<ProgramRepository> _logger;
         private readonly UserManager<LMSUser> _userManager;
-        private readonly RoleManager<LMSUser> _roleManager;
+        //private readonly RoleManager<LMSUser> _roleManager;
 
-        public ProgramRepository (ApplicationDbContext ctx, ILogger<ProgramRepository> logger ,UserManager<LMSUser> userManager, RoleManager<LMSUser> roleManager)
+        public ProgramRepository (ApplicationDbContext ctx, ILogger<ProgramRepository> logger ,UserManager<LMSUser> userManager
+         //   , RoleManager<LMSUser> roleManager
+            )
         {
             _ctx = ctx;
             _logger = logger;
             _userManager = userManager;
-            _roleManager = roleManager;
+           // _roleManager = roleManager;
         }
         #region Commen
         public async Task AddEntityAsync (object model)

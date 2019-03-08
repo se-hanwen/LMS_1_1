@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL0FkZFBhcnRpcGFudC9hZGQtcGFydGlwYW50LmNvbXBvbmVudC5jc3MifQ== */"
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJBZGRQYXJ0aXBhbnQvYWRkLXBhcnRpcGFudC5jb21wb25lbnQuY3NzIn0= */"
 
 /***/ }),
 
@@ -41,7 +41,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='card'>\r\n  <div class='card-header'>\r\n       {{pageTitle}}\r\n  </div>\r\n  <div class='card-body'>\r\n      <div class=\"row\">\r\n      <div class=\"col-md-2\">Filtera</div>\r\n        <div class='col-md-4'>\r\n            <input type='text'  [(ngModel)]='listFilter'/>\r\n        </div>\r\n  </div>\r\n  <div class='row'>\r\n      <div class='col-md-6'>\r\n          <h4 *ngIf='listFilter'> Filtered by:{{listFilter}}</h4>\r\n          <div class=\"table-responsive\">\r\n            <label>Choose among these</labe>\r\n            <table class=\"table\" *ngIf=\"ChooseFrom && ChooseFrom.length\">\r\n\r\n                <thead>\r\n                    <th>First Name</th>\r\n                    <th>Last Name</th>\r\n                </thead>\r\n                <tbody >\r\n                      <tr *ngFor='let Choose of ChooseFrom'>\r\n                          <td (click)=\"chooseStudent()\">{{Choose.FirstName}}</td>\r\n                          <td (click)=\"chooseStudent()\">{{Choose.LastName}}</td>\r\n                      </tr>\r\n\r\n                  </tbody>\r\n\r\n            </table>\r\n      \r\n          </div>\r\n        </div>\r\n\r\n\r\n\r\n<div class=\"col-md-6\">\r\n\r\n    <button class=\"btn btn-success\" (click)=\"SaveStudents()\">Save</button>\r\n    <div class=\"table-responsive\">\r\n        <label>Click here to unchoose</labe>\r\n          <table class=\"table\" *ngIf=\"Choosed && Choosed.length\">\r\n              <thead>\r\n                  <th>First Name</th>\r\n                  <th>Last Name</th>\r\n              </thead>\r\n              <tbody >\r\n                    <tr *ngFor='let UnChoose of Choosed'>\r\n                        <td (click)=\"unChooseStudent()\">{{UnChoose.FirstName}}</td>\r\n                        <td (click)=\"unChooseStudent()\">{{UnChoose.LastName}}</td>\r\n                    </tr>\r\n\r\n                </tbody>\r\n\r\n          </table>\r\n        </div>   \r\n  </div>\r\n        </div>\r\n    </div>\r\n\r\n   </div> \r\n"
+module.exports = "<div class='card'>\r\n  <div class='card-header'>\r\n       {{pageTitle}}\r\n  </div>\r\n  <div class='card-body'>\r\n      <div class=\"row\">\r\n      <div class=\"col-md-2\">Filtera</div>\r\n        <div class='col-md-4'>\r\n            <input type='text'  [(ngModel)]='listFilter'/>\r\n        </div>\r\n  </div>\r\n  <div class='row'>\r\n      <div class='col-md-6'>\r\n          <h4 *ngIf='listFilter'> Filtered by:{{listFilter}}</h4>\r\n          <div class=\"table-responsive\">\r\n            <label>Choose among these</labe>\r\n            <table class=\"table\" *ngIf=\"ChooseFrom && ChooseFrom.length\">\r\n\r\n                <thead>\r\n                    <th>First Name</th>\r\n                    <th>Last Name</th>\r\n                </thead>\r\n                <tbody >\r\n                      <tr *ngFor='let Choose of ChooseFrom'>\r\n                          <td  (click)=\"chooseStudent(Choose.Userid)\">{{Choose.FirstName}}</td>\r\n                          <td  (click)=\"chooseStudent(Choose.Userid)\">{{Choose.LastName}}</td>\r\n                      </tr>\r\n\r\n                  </tbody>\r\n\r\n            </table>\r\n      \r\n          </div>\r\n        </div>\r\n\r\n\r\n\r\n<div class=\"col-md-6\">\r\n\r\n    <button class=\"btn btn-success\" (click)=\"SaveStudents()\">Save</button>\r\n    <div class=\"table-responsive\">\r\n        <label>Click here to unchoose</labe>\r\n          <table class=\"table\" *ngIf=\"Choosed && Choosed.length\">\r\n              <thead>\r\n                  <th>First Name</th>\r\n                  <th>Last Name</th>\r\n              </thead>\r\n              <tbody >\r\n                    <tr *ngFor='let UnChoose of Choosed'>\r\n                        <td  (click)=\"unChooseStudent(UnChoose.Userid)\">{{UnChoose.FirstName}}</td>\r\n                        <td ' (click)=\"unChooseStudent(UnChoose.Userid)\">{{UnChoose.LastName}}</td>\r\n                    </tr>\r\n\r\n                </tbody>\r\n\r\n          </table>\r\n        </div>   \r\n  </div>\r\n        </div>\r\n    </div>\r\n\r\n   </div> \r\n"
 
 /***/ }),
 
@@ -73,8 +73,98 @@ var AddPartipantComponent = /** @class */ (function () {
         this.ChooseFrom = [];
         this.Choosed = [];
         this.courseId = "";
+        this._listFilter = '';
     }
+    Object.defineProperty(AddPartipantComponent.prototype, "listFilter", {
+        get: function () {
+            return this._listFilter;
+        },
+        set: function (value) {
+            this._listFilter = value;
+            this.performFilter(this.listFilter);
+        },
+        enumerable: true,
+        configurable: true
+    });
     AddPartipantComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.courseId = this.route.snapshot.paramMap.get('id');
+        this.PartipantService.GetStudentsOf(this.courseId).subscribe(function (Choose) { return _this.ChooseFrom = Choose; });
+        this.PartipantService.GetStudentsOn(this.courseId).subscribe(function (Choosed) { return _this.Choosed = Choosed; });
+        this.PartipantService.Choosed = this.Choosed;
+    };
+    AddPartipantComponent.prototype.chooseStudent = function (userid) {
+        var keyin = this.ChooseFrom.findIndex(function (cu) { return cu.Userid == userid; });
+        var user = this.ChooseFrom.splice(+keyin);
+        this.Choosed.push(user[0]);
+        this.PartipantService.AddStudent(user[0]);
+        this.Choosed.sort(function (a, b) {
+            var FirstNameA = a.FirstName.toLocaleUpperCase();
+            var LastNameA = a.LastName.toLocaleUpperCase();
+            var FirstNameB = b.FirstName.toLocaleUpperCase();
+            var LastNameB = b.LastName.toLocaleUpperCase();
+            if (FirstNameA < FirstNameB)
+                return -1;
+            if (FirstNameA > FirstNameB)
+                return 1;
+            if (LastNameA < LastNameB)
+                return -1;
+            if (LastNameA > LastNameB)
+                return 1;
+            return 0;
+        });
+    };
+    AddPartipantComponent.prototype.unChooseStudent = function (userid) {
+        var keyin = this.Choosed.findIndex(function (cu) { return cu.Userid == userid; });
+        var user = this.Choosed.splice(+keyin);
+        this.ChooseFrom.push(user[0]);
+        this.PartipantService.RemoveStudent(user[0]);
+        this.ChooseFrom.sort(function (a, b) {
+            var FirstNameA = a.FirstName.toLocaleUpperCase();
+            var LastNameA = a.LastName.toLocaleUpperCase();
+            var FirstNameB = b.FirstName.toLocaleUpperCase();
+            var LastNameB = b.LastName.toLocaleUpperCase();
+            if (FirstNameA < FirstNameB)
+                return -1;
+            if (FirstNameA > FirstNameB)
+                return 1;
+            if (LastNameA < LastNameB)
+                return -1;
+            if (LastNameA > LastNameB)
+                return 1;
+            return 0;
+        });
+    };
+    AddPartipantComponent.prototype.SaveStudents = function () {
+        this.PartipantService.SaveStudents(this.courseId).subscribe();
+    };
+    AddPartipantComponent.prototype.performFilter = function (FilterBy) {
+        for (var key in this.BlackList) { // nwe filter => reset before applying filter
+            var temp = this.BlackList.pop();
+            this.ChooseFrom.push(temp);
+        }
+        for (var key in this.ChooseFrom) {
+            if (this.ChooseFrom[key].FirstName.indexOf(FilterBy) > -1 ||
+                this.ChooseFrom[key].LastName.indexOf(FilterBy) > -1) {
+                var user = this.ChooseFrom.splice(+key);
+                this.BlackList.push(user[0]); // I Know there is just one hit cause key is scalar
+            }
+            this.ChooseFrom.sort(function (a, b) {
+                var FirstNameA = a.FirstName.toLocaleUpperCase();
+                var LastNameA = a.LastName.toLocaleUpperCase();
+                var FirstNameB = b.FirstName.toLocaleUpperCase();
+                var LastNameB = b.LastName.toLocaleUpperCase();
+                if (FirstNameA < FirstNameB)
+                    return -1;
+                if (FirstNameA > FirstNameB)
+                    return 1;
+                if (LastNameA < LastNameB)
+                    return -1;
+                if (LastNameA > LastNameB)
+                    return 1;
+                return 0;
+            });
+        }
     };
     AddPartipantComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -156,23 +246,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "../node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+
+
 
 
 
 var PartipantService = /** @class */ (function () {
-    function PartipantService(http, CourseId) {
+    function PartipantService(http) {
         this.http = http;
-        this.CourseId = CourseId;
         this.Choosed = [];
     }
-    /*
-    public GetStudents(choosed : boolean): Observable<Partipant[] | undefined>
-    {
-        let url:string="/CourseUsers/AddStudentsToCourse";
-
-    }
-*/
-    PartipantService.prototype.SaveStudents = function () {
+    PartipantService.prototype.GetStudentsOf = function (CourseId) {
+        var url = "/CourseUsers/Getusers";
+        return this.http.post(url, { CourseId: CourseId, choosed: false })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All: ' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
+    };
+    PartipantService.prototype.GetStudentsOn = function (CourseId) {
+        var url = "/CourseUsers/Getusers";
+        return this.http.post(url, { CourseId: CourseId, choosed: true })
+            .pipe(
+        /* map(
+         (response:IPartipant[])=>
+     {this.Choosed=response;
+     }
+     ),*/
+        Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All: ' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
+    };
+    PartipantService.prototype.SaveStudents = function (CourseId) {
+        var url = "/CourseUsers/AddStudentsToCourse";
+        var userids = [];
+        for (var _i = 0, _a = this.Choosed; _i < _a.length; _i++) {
+            var part = _a[_i];
+            userids.push(part.Userid);
+        }
+        return this.http.post(url, { CourseId: CourseId, userids: userids })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All: ' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
     };
     PartipantService.prototype.AddStudent = function (user) {
         var item = this.Choosed.find(function (i) { return i.Userid == user.Userid; });
@@ -187,9 +297,25 @@ var PartipantService = /** @class */ (function () {
             this.Choosed.splice(index, 1);
         }
     };
+    PartipantService.prototype.handleError = function (err) {
+        // in a real world app, we may send the server to some remote logging infrastructure
+        // instead of just logging it to the console
+        var errorMessage = '';
+        if (err.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            errorMessage = "An error occurred: " + err.error.message;
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            errorMessage = "Server returned code: " + err.status + ", error message is: " + err.message;
+        }
+        console.error(errorMessage);
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(errorMessage);
+    };
     PartipantService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], String])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
     ], PartipantService);
     return PartipantService;
 }());
@@ -205,7 +331,7 @@ var PartipantService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL05vUm91dGUvbm8tcm91dGUuY29tcG9uZW50LmNzcyJ9 */"
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJOb1JvdXRlL25vLXJvdXRlLmNvbXBvbmVudC5jc3MifQ== */"
 
 /***/ }),
 
@@ -334,7 +460,7 @@ var IsTeacherGuard = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL2FwcC5jb21wb25lbnQuY3NzIn0= */"
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJhcHAuY29tcG9uZW50LmNzcyJ9 */"
 
 /***/ }),
 
@@ -543,7 +669,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Kod\LMS_1_1\LMS_1_1\ClientApp\main.ts */"./main.ts");
+module.exports = __webpack_require__(/*! C:\Users\Penny\source\repos\LMS_1_1\LMS_1_1\ClientApp\main.ts */"./main.ts");
 
 
 /***/ })

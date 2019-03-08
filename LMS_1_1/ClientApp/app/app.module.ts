@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { AddPartipantModule } from './AddPartipant/add-partipant.module';
 import { NoRouteModule } from './NoRoute/no-route.module';
 import {NoRouteComponent} from './NoRoute/no-route.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import {NoRouteComponent} from './NoRoute/no-route.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AddPartipantModule,
     RouterModule.forRoot([
       {path: '**', component:  NoRouteComponent}

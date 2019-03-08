@@ -1,19 +1,26 @@
-<div class='card'>
-  <div class='card-header'>
+<div  >
+  <div >
        {{pageTitle}}
   </div>
-  <div class='card-body'>
+  <div  class="container">
       <div class="row">
-      <div class="col-md-2">Filtera</div>
-        <div class='col-md-4'>
+      <div class="col-sm-6">
+          <div>Filtera</div>
+        <div >
             <input type='text'  [(ngModel)]='listFilter'/>
         </div>
-  </div>
-  <div class='row'>
-      <div class='col-md-6'>
+
           <h4 *ngIf='listFilter'> Filtered by:{{listFilter}}</h4>
+        </div>
+          <div class="col-sm-6">
+                <button class="btn btn-success" (click)="SaveStudents()">Save</button>
+          </div>
+        </div>
+    <div class="row">
+            <div class="col-sm-6">
+    
           <div class="table-responsive">
-            <label>Choose among these</labe>
+            <label>Choose among these</label>
             <table class="table" *ngIf="ChooseFrom && ChooseFrom.length">
 
                 <thead>
@@ -22,8 +29,8 @@
                 </thead>
                 <tbody >
                       <tr *ngFor='let Choose of ChooseFrom'>
-                          <td (click)="chooseStudent()">{{Choose.FirstName}}</td>
-                          <td (click)="chooseStudent()">{{Choose.LastName}}</td>
+                          <td  (click)="chooseStudent(Choose.userid)">{{Choose.firstName}}</td>
+                          <td  (click)="chooseStudent(Choose.userid)">{{Choose.lastName}}</td>
                       </tr>
 
                   </tbody>
@@ -35,11 +42,11 @@
 
 
 
-<div class="col-md-6">
+<div class="col-sm-6">
 
-    <button class="btn btn-success" (click)="SaveStudents()">Save</button>
+    
     <div class="table-responsive">
-        <label>Click here to unchoose</labe>
+        <label>Click here to unchoose</label>
           <table class="table" *ngIf="Choosed && Choosed.length">
               <thead>
                   <th>First Name</th>
@@ -47,16 +54,17 @@
               </thead>
               <tbody >
                     <tr *ngFor='let UnChoose of Choosed'>
-                        <td (click)="unChooseStudent()">{{UnChoose.FirstName}}</td>
-                        <td (click)="unChooseStudent()">{{UnChoose.LastName}}</td>
+                        <td  (click)="unChooseStudent(UnChoose.userid)">{{UnChoose.firstName}}</td>
+                        <td  (click)="unChooseStudent(UnChoose.userid)">{{UnChoose.lastName}}</td>
                     </tr>
 
                 </tbody>
 
           </table>
-        </div>   
-  </div>
+    </div>   
+</div>
         </div>
     </div>
 
-   </div> 
+</div>
+

@@ -21,6 +21,7 @@ namespace LMS_1_1
         {
             Configuration = configuration;
         }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public IConfiguration Configuration { get; }
 
@@ -62,6 +63,16 @@ namespace LMS_1_1
             services.AddTransient<UserManager<LMSUser>>();
             services.AddTransient<ApplicationDbContext>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:1234")
+                    .AllowAnyHeader() ;
+                });
+                
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -80,6 +91,8 @@ namespace LMS_1_1
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

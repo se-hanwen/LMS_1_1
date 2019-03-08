@@ -51,9 +51,13 @@ namespace LMS_1_1.Repository
             temp.CourseId = temp.Course.Id;
 
             _context.Add(temp);
-            await _context.SaveChangesAsync();
+           // await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> SaveChanges()
+        {
+            return await _context.SaveChangesAsync() > 0;  
+        }
         public async Task RemoveCourseUser(Guid CouresID, string LMSUserid)
         {
             _context.Remove(new CourseUser { CourseId = CouresID, LMSUserId = LMSUserid });
@@ -74,7 +78,7 @@ namespace LMS_1_1.Repository
                 var res = await _context.CourseUsers
                     .Include(cu => cu.LMSUser)
                     .Where(cu => cu.CourseId.ToString() == courseId)
-                    .Select(cu => cu.LMSUser).ToListAsync();
+                    .Select(cu => cu.LMSUser).OrderBy(cu=>cu.FirstName).ThenBy(cu=>cu.LastName).ToListAsync();
             
             if(!choosed)
             {
@@ -85,6 +89,8 @@ namespace LMS_1_1.Repository
                 {
                     res2.Remove(user);
                 }
+
+             
                 return res2;
             }
 

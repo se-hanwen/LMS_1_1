@@ -5,14 +5,16 @@ import  { RouterModule} from '@angular/router';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { FormsModule } from '@angular/forms';
 
+
 @NgModule({
   declarations: [AddPartipantComponent],
   imports: [
     CommonModule,
     FormsModule,
+    
     RouterModule.forChild(
       [{path:'AddPartipant/:id' 
-      ,canActivate: [IsTeacherGuard]
+    //  ,canActivate: [IsTeacherGuard]
       ,component: AddPartipantComponent }
     ]
     )

@@ -36,10 +36,21 @@ namespace LMS_1_1.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ICollection<LMSUser>>> Getusers(string CourseId, bool choosed)
+        public async Task<ActionResult<ICollection<CourseUserViewModel>>> GetusersOn(string CourseId)
         {
+            var res = (await _repository.GetUsers(CourseId, true))
+                .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();
+            return Ok(res);
 
-            return Ok(await _repository.GetUsers(CourseId, choosed));
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<ICollection<CourseUserViewModel>>> GetusersOff(string CourseId)
+        {
+            var res = (await _repository.GetUsers(CourseId, false))
+                .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();
+            return Ok(res);
 
         }
 
@@ -117,6 +128,7 @@ namespace LMS_1_1.Controllers
                await _repository.AddCourseUser(courseid, userid);
             }
 
+            await _repository.SaveChanges();
             return Ok();
         }
 
