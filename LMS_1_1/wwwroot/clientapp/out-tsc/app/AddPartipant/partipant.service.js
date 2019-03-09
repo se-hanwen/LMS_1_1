@@ -9,13 +9,13 @@ var PartipantService = /** @class */ (function () {
         this.Choosed = [];
     }
     PartipantService.prototype.GetStudentsOff = function (CourseId) {
-        var url = "https://localhost:44396/CourseUsers/Getusers";
-        return this.http.post(url, { CourseId: CourseId, choosed: false })
+        var url = "https://localhost:44396/CourseUsers/GetusersOff";
+        return this.http.post(url, { CourseId: CourseId })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     PartipantService.prototype.GetStudentsOn = function (CourseId) {
-        var url = "https://localhost:44396/CourseUsers/Getusers";
-        return this.http.post(url, { CourseId: CourseId, choosed: true })
+        var url = "https://localhost:44396/CourseUsers/GetusersOn";
+        return this.http.post(url, { CourseId: CourseId })
             .pipe(
         /* map(
          (response:IPartipant[])=>
@@ -29,19 +29,19 @@ var PartipantService = /** @class */ (function () {
         var userids = [];
         for (var _i = 0, _a = this.Choosed; _i < _a.length; _i++) {
             var part = _a[_i];
-            userids.push(part.Userid);
+            userids.push(part.userid);
         }
         return this.http.post(url, { CourseId: CourseId, userids: userids })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     PartipantService.prototype.AddStudent = function (user) {
-        var item = this.Choosed.find(function (i) { return i.Userid == user.Userid; });
+        var item = this.Choosed.find(function (i) { return i.userid == user.userid; });
         if (!item) {
             this.Choosed.push(user);
         }
     };
     PartipantService.prototype.RemoveStudent = function (user) {
-        var item = this.Choosed.find(function (i) { return i.Userid == user.Userid; });
+        var item = this.Choosed.find(function (i) { return i.userid == user.userid; });
         var index = this.Choosed.indexOf(item);
         if (item) {
             this.Choosed.splice(index, 1);
