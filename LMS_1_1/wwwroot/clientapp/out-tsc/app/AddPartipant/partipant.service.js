@@ -7,15 +7,24 @@ var PartipantService = /** @class */ (function () {
     function PartipantService(http) {
         this.http = http;
         this.Choosed = [];
+        this.CourseId = "";
     }
-    PartipantService.prototype.GetStudentsOff = function (CourseId) {
+    PartipantService.prototype.GetStudentsOff = function () {
         var url = "https://localhost:44396/CourseUsers/GetusersOff";
-        return this.http.post(url, { CourseId: CourseId })
+        var parmas = { "CourseId": this.CourseId };
+        return this.http.post(url, parmas)
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
-    PartipantService.prototype.GetStudentsOn = function (CourseId) {
+    PartipantService.prototype.GetCourseName = function () {
+        var url = "https://localhost:44396/CourseUsers/GetCourseName";
+        var parmas = { "CourseId": this.CourseId };
+        return this.http.post(url, parmas)
+            .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    PartipantService.prototype.GetStudentsOn = function () {
         var url = "https://localhost:44396/CourseUsers/GetusersOn";
-        return this.http.post(url, { CourseId: CourseId })
+        var parmas = { "CourseId": this.CourseId };
+        return this.http.post(url, parmas)
             .pipe(
         /* map(
          (response:IPartipant[])=>
@@ -24,14 +33,15 @@ var PartipantService = /** @class */ (function () {
      ),*/
         tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
-    PartipantService.prototype.SaveStudents = function (CourseId) {
+    PartipantService.prototype.SaveStudents = function () {
         var url = "https://localhost:44396/CourseUsers/AddStudentsToCourse";
-        var userids = [];
+        var Userids = [];
         for (var _i = 0, _a = this.Choosed; _i < _a.length; _i++) {
             var part = _a[_i];
-            userids.push(part.userid);
+            Userids.push(part.userid);
         }
-        return this.http.post(url, { CourseId: CourseId, userids: userids })
+        var parmas = { "CourseId": this.CourseId, Userids: Userids };
+        return this.http.post(url, { parmas: parmas })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     PartipantService.prototype.AddStudent = function (user) {

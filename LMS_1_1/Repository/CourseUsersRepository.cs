@@ -44,6 +44,15 @@ namespace LMS_1_1.Repository
                  .Where(cu => cu.LMSUserId == LMSUserId);
         }
 
+        public async Task<string> GetCourseName(string CourseId)
+        {
+           var res= await  _context
+                   .Courses.FirstOrDefaultAsync(c => c.Id.ToString() == CourseId);
+
+            return res.Name;
+
+        }
+
         public async Task AddCourseUser(string CouresID, string LMSUserid)
         {
             var temp = new CourseUser{ LMSUserId = LMSUserid };
@@ -66,9 +75,15 @@ namespace LMS_1_1.Repository
 
         public async Task RemoveAllCourseUsers(string CouresID)
         {
-            var temp = _context.CourseUsers.Where(cu => cu.CourseId.ToString() == CouresID);
+              var temp = _context.CourseUsers.Where(cu => cu.CourseId.ToString() == CouresID);
 
-            _context.Remove(temp);
+            foreach (var cuser in temp)
+            {
+                _context.CourseUsers.Remove(cuser);
+            }
+
+
+           // _context.CourseUsers
             await _context.SaveChangesAsync();
         }
 
@@ -84,13 +99,15 @@ namespace LMS_1_1.Repository
             {
 
 
-                var res2 = await _userManager.GetUsersInRoleAsync("Student");
-                foreach (var user in res)
-                {
-                    res2.Remove(user);
-                }
+                var res2 = (await _userManager.GetUsersInRoleAsync("Student")).ToList();
+              // var res3= res2.Except(res);
+                 foreach (var user in res)
+                 {
+                    res2.RemoveAll(u => u.Id == user.Id);
+                 }
 
-             
+
+
                 return res2;
             }
 

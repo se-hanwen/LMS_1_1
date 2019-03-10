@@ -36,19 +36,32 @@ namespace LMS_1_1.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ICollection<CourseUserViewModel>>> GetusersOn(string CourseId)
+        public async Task<ActionResult<ICollection<CourseUserViewModel>>> GetusersOn([FromBody] CourseIdViewModel CourseId)
         {
-            var res = (await _repository.GetUsers(CourseId, true))
+            var res = (await _repository.GetUsers(CourseId.CourseId, true))
                 .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();
+
+          
+
+            return Ok(res);
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> GetCourseName([FromBody] CourseIdViewModel CourseId)
+        {
+            var res = Json(new {
+                            Name = (await _repository.GetCourseName(CourseId.CourseId))
+                    });
             return Ok(res);
 
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<ICollection<CourseUserViewModel>>> GetusersOff(string CourseId)
+        public async Task<ActionResult<ICollection<CourseUserViewModel>>> GetusersOff([FromBody] CourseIdViewModel CourseId)
         {
-            var res = (await _repository.GetUsers(CourseId, false))
+            var res = (await _repository.GetUsers(CourseId.CourseId, false))
                 .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();
             return Ok(res);
 
@@ -64,7 +77,7 @@ namespace LMS_1_1.Controllers
         // GET: api/CourseUsers/5
         [HttpGet("{CourseId}")]
         [Authorize]
-        public async Task<ActionResult<ICollection<CourseUser>>> GetCourseUsers(string CourseId)
+        public async Task<ActionResult<ICollection<CourseUser>>> GetCourseUsers([FromBody] string CourseId)
         {
             return await _repository.GetCourseUsers(CourseId).ToListAsync();
         }
@@ -119,13 +132,13 @@ namespace LMS_1_1.Controllers
             return NoContent();
         }
         [HttpPost]
-        public async Task<ActionResult<string>> AddStudentsToCourse(string courseid, ICollection<string> Userids)
+        public async Task<ActionResult<string>> AddStudentsToCourse([FromBody] SavecouseListViewmodel savecouseListViewmodel)
         {
-            await _repository.RemoveAllCourseUsers(courseid);
+            await _repository.RemoveAllCourseUsers(savecouseListViewmodel.Courseid);
 
-            foreach(var userid in Userids)
+            foreach(var userid in savecouseListViewmodel.Userids)
             {
-               await _repository.AddCourseUser(courseid, userid);
+               await _repository.AddCourseUser(savecouseListViewmodel.Courseid, userid);
             }
 
             await _repository.SaveChanges();

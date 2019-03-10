@@ -1,2 +1,58 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../wwwroot/lib/bootstrap/dist/css/bootstrap.min.css";
+
+
+.scrollContent {
+    display: block; /* to enable vertical scrolling */
+    max-height: 10em;; /* e.g. */
+    overflow-y: auto; /* keeps the scrollbar even if it doesn't need it; display purpose */
+}
+
+
+.scrollTable tr {
+    display: table; /* display purpose; th's border */
+    width: 100%;
+    box-sizing: border-box; /* because of the border (Chrome needs this line, but not FF) */
+  }
+  .scrollTable th {
+  text-align: center;
+  }
+  .scrollTable td {
+    text-align: center;
+    border-bottom: none;
+    border-left: none;
+  }
+
+.scrollTable th, td {
+    width: 50%; /* to enable "word-break: break-all" */
+    padding: 5px;
+    word-break: break-all; /* 4. */
+  }
+tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
+	background: #FFF;
+	border-bottom: none;
+	border-left: none;
+	border-right: 1px solid #CCC;
+	border-top: 1px solid #DDD;
+	padding: 2px 3px 3px 4px
+}
+
+.fixedHeader {
+    display: table; /* to take the same width as tr */
+    width: calc(100% - 17px); /* - 17px because of the scrollbar width */
+}
+
+.scrollTable
+{
+    border: none;
+    width: 100%;
+    
+}
+
+.scrollTable td
+{
+    border-collapse: collapse;
+    border: 1px solid #000;
+    
+}
+

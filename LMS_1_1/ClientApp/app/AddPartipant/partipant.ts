@@ -4,3 +4,17 @@ export interface IPartipant
     firstName: string;
     lastName: string;
 }
+
+ export interface ICourseNameData
+ {
+    contentType:string;
+    serializerSettings:string;
+    statusCode?:number;
+    value : ICourseNameSubdata;
+ }
+
+ export interface ICourseNameSubdata
+ {
+    name:string;
+
+ }

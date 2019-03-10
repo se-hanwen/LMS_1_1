@@ -19,6 +19,7 @@ namespace LMS_1_1.Repository
         Task RemoveAllCourseUsers(string CouresID);
 
         Task<ICollection<LMSUser>> GetUsers(string courseId, bool choosed);
+        Task<string> GetCourseName(string CourseId);
         Task<bool> SaveChanges();
     }
 }

@@ -11,10 +11,28 @@ import { throwError } from 'rxjs';
   styleUrls: ['./add-partipant.component.css']
 })
 export class AddPartipantComponent implements OnInit {
+
   pageTitle: string = "";
   BlackList: IPartipant[] =[];
-  ChooseFrom: IPartipant[] =[];
-  Choosed:IPartipant[] =[];
+  private _ChooseFrom: IPartipant[] =[];
+  get ChooseFrom(): IPartipant[]  {
+    return this._ChooseFrom;
+  }
+  set ChooseFrom(value: IPartipant[]) {
+    this._ChooseFrom = value;
+
+  }
+
+
+  private _Choosed:IPartipant[] =[];
+  get Choosed(): IPartipant[]  {
+    return this._Choosed;
+  }
+  set Choosed(value: IPartipant[]) {
+    this._Choosed = value;
+
+  }
+
   courseId: string =""
   _listFilter = '';
   get listFilter(): string {
@@ -33,18 +51,26 @@ export class AddPartipantComponent implements OnInit {
 
   ngOnInit() {
     this.courseId = this.route.snapshot.paramMap.get('id');
-    this.PartipantService.GetStudentsOff(this.courseId).subscribe
+    this.PartipantService.CourseId=this.courseId;
+    this.PartipantService.GetStudentsOff().subscribe
     (
-      Choose=> this.ChooseFrom=Choose 
-    )
-    this.PartipantService.GetStudentsOn(this.courseId).subscribe
+      Choose=> this.ChooseFrom=Choose
+
+    
+    );
+    this.PartipantService.GetStudentsOn().subscribe
     (
       Choosed=>
       { 
         this.Choosed=Choosed; 
         this.PartipantService.Choosed=this.Choosed;
+
       }
-    )
+    );
+    this.PartipantService.GetCourseName().subscribe
+    (
+      CourseName => this.pageTitle=CourseName.value.name
+    );
     
   }
 
@@ -109,7 +135,7 @@ export class AddPartipantComponent implements OnInit {
   }
   public SaveStudents()
   {
-    this.PartipantService.SaveStudents(this.courseId).subscribe();
+    this.PartipantService.SaveStudents().subscribe();
 
   }
 
@@ -155,6 +181,57 @@ export class AddPartipantComponent implements OnInit {
       
     }
   }
+
+  private FixHeader(From_id: string, To_id: string, Body_from_id: string): void
+   {
+      let element=document.querySelector("#"+From_id).cloneNode(true);
+      let temp=[], i1, i2, el, l1;
+      const childs=document.querySelector("#"+From_id).children;
+      l1= childs.length;
+      for( i1=0; i1<l1; i1++)
+      {
+        temp[i1]=childs.item(i1).clientWidth;
+      };
+      if(element.hasChildNodes)
+      {
+        let elchild=element.firstChild;
+        (elchild as HTMLElement).style.width==temp[0];
+        let elchild2=elchild.nextSibling;
+        for( i1=1; i1<l1; i1++)
+        {
+          (elchild2 as HTMLElement).style.width=temp[i1];
+          //elchild2.childNodes.item[0].clientWidth=temp[i1];
+          elchild2=elchild2.nextSibling;
+        }
+      }
+       let tableBody_from_id=( document.querySelector("table#"+Body_from_id) as HTMLElement);
+       if(tableBody_from_id != null)
+       {
+        tableBody_from_id.style.tableLayout="fixed";
+       }
+    //  ( document.querySelector("table#"+Body_from_id) as HTMLElement).style.tableLayout="fixed";
+      let bodytrs=document.querySelectorAll("#"+Body_from_id+" tr");
+      bodytrs.forEach(function( el2, i2)
+      {
+        ( document.querySelectorAll("#"+el2.id+" td")).forEach(function(el1,i1)
+        {
+          (el1 as HTMLElement).style.width=temp[i1];
+        },el2)
+
+      }, bodytrs);
+      let to_id_elem=document.querySelector("#"+To_id);
+      if(to_id_elem.hasChildNodes)
+      {
+        document.querySelector("#"+To_id).childNodes.forEach(function(el2, i2)
+        {
+            el2.remove();
+        });
+      };
+      document.querySelector("#"+To_id).append(element);
+      (document.querySelector("#"+From_id) as HTMLElement).style.display="none";
+      (element as HTMLElement).style.display="Block";
+  }
+
 /*
    private sortfunction(a:IPartipant,b:IPartipant): -1|1|0
    {

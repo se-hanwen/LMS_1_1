@@ -91,8 +91,9 @@ var AddPartipantComponent = /** @class */ (function () {
     AddPartipantComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.courseId = this.route.snapshot.paramMap.get('id');
-        this.PartipantService.GetStudentsOff(this.courseId).subscribe(function (Choose) { return _this.ChooseFrom = Choose; });
-        this.PartipantService.GetStudentsOn(this.courseId).subscribe(function (Choosed) {
+        this.PartipantService.CourseId = this.courseId;
+        this.PartipantService.GetStudentsOff().subscribe(function (Choose) { return _this.ChooseFrom = Choose; });
+        this.PartipantService.GetStudentsOn().subscribe(function (Choosed) {
             _this.Choosed = Choosed;
             _this.PartipantService.Choosed = _this.Choosed;
         });
@@ -148,7 +149,7 @@ var AddPartipantComponent = /** @class */ (function () {
         }
     };
     AddPartipantComponent.prototype.SaveStudents = function () {
-        this.PartipantService.SaveStudents(this.courseId).subscribe();
+        this.PartipantService.SaveStudents().subscribe();
     };
     AddPartipantComponent.prototype.performFilter = function (FilterBy) {
         for (var key in this.BlackList) { // nwe filter => reset before applying filter
@@ -272,15 +273,18 @@ var PartipantService = /** @class */ (function () {
     function PartipantService(http) {
         this.http = http;
         this.Choosed = [];
+        this.CourseId = "";
     }
-    PartipantService.prototype.GetStudentsOff = function (CourseId) {
+    PartipantService.prototype.GetStudentsOff = function () {
         var url = "https://localhost:44396/CourseUsers/GetusersOff";
-        return this.http.post(url, { CourseId: CourseId })
+        var parmas = this.CourseId;
+        return this.http.post(url, { parmas: parmas })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All: ' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
     };
-    PartipantService.prototype.GetStudentsOn = function (CourseId) {
+    PartipantService.prototype.GetStudentsOn = function () {
         var url = "https://localhost:44396/CourseUsers/GetusersOn";
-        return this.http.post(url, { CourseId: CourseId })
+        var parmas = this.CourseId;
+        return this.http.post(url, { parmas: parmas })
             .pipe(
         /* map(
          (response:IPartipant[])=>
@@ -289,14 +293,15 @@ var PartipantService = /** @class */ (function () {
      ),*/
         Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All: ' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
     };
-    PartipantService.prototype.SaveStudents = function (CourseId) {
+    PartipantService.prototype.SaveStudents = function () {
         var url = "https://localhost:44396/CourseUsers/AddStudentsToCourse";
         var userids = [];
         for (var _i = 0, _a = this.Choosed; _i < _a.length; _i++) {
             var part = _a[_i];
             userids.push(part.userid);
         }
-        return this.http.post(url, { CourseId: CourseId, userids: userids })
+        var parmas = { CourseId: this.CourseId, userids: userids };
+        return this.http.post(url, { parmas: parmas })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All: ' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
     };
     PartipantService.prototype.AddStudent = function (user) {

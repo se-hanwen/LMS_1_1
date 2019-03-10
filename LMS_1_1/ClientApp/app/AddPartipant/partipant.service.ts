@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IPartipant } from './partipant';
+import { IPartipant,ICourseNameData,ICourseNameSubdata } from './partipant';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import {Observable, throwError} from 'rxjs';
@@ -13,25 +13,39 @@ export class PartipantService{
 
     public Choosed: IPartipant[] = [];
 
+    public CourseId: string="";
 
     constructor(private http: HttpClient) {}
     
 
 
-    public GetStudentsOff(CourseId: string): Observable<IPartipant[] | undefined>
+    public GetStudentsOff(): Observable<IPartipant[] | undefined>
     {
-        let url:string="https://localhost:44396/CourseUsers/GetusersOff";     
-        return this.http.post<IPartipant[]>(url,{CourseId})
+        let url:string="https://localhost:44396/CourseUsers/GetusersOff";  
+        let parmas={"CourseId":this.CourseId}; 
+        return this.http.post<IPartipant[]>(url,parmas )
         .pipe(
             tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.handleError)
         );    
     }
 
-    public GetStudentsOn(CourseId: string): Observable<IPartipant[] | undefined>
+    public GetCourseName(): Observable<ICourseNameData| undefined>
     {
-        let url:string="https://localhost:44396/CourseUsers/GetusersOn";     
-        return this.http.post<IPartipant[]>(url,{CourseId})
+        let url:string="https://localhost:44396/CourseUsers/GetCourseName";  
+        let parmas={"CourseId":this.CourseId}; 
+        return this.http.post<ICourseNameData>(url,parmas )
+        .pipe(
+            tap(data => console.log('All: ' + JSON.stringify(data))),
+        catchError(this.handleError)
+        ); 
+
+     }
+    public GetStudentsOn(): Observable<IPartipant[] | undefined>
+    {
+        let url:string="https://localhost:44396/CourseUsers/GetusersOn";  
+        let parmas={"CourseId":this.CourseId};   
+        return this.http.post<IPartipant[]>(url,parmas)
         .pipe(
            /* map(
             (response:IPartipant[])=>
@@ -43,15 +57,16 @@ export class PartipantService{
         );  
     }
 
-    public SaveStudents(CourseId: string)
+    public SaveStudents()
     {
         let url:string="https://localhost:44396/CourseUsers/AddStudentsToCourse";  
-        let userids: string[] =[];
+        let Userids: string[] =[];
         for(const part of this.Choosed )
         {
-            userids.push(part.userid);
+            Userids.push(part.userid);
         }
-        return this.http.post(url,{CourseId,userids})
+        //let parmas={"CourseId":this.CourseId,Userids};    
+        return this.http.post(url,{"CourseId":this.CourseId,Userids})
         .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.handleError));
 
