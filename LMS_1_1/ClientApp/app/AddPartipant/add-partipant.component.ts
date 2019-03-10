@@ -141,23 +141,30 @@ export class AddPartipantComponent implements OnInit {
 
   private performFilter(FilterBy: string): void
   {
-    for(let key in this.BlackList)
-    { // nwe filter => reset before applying filter
+    let l1=this.BlackList.length, i1:number;
+    for(i1=0;i1<l1;i1++)
+    { // new filter => reset before applying filter
        let temp=this.BlackList.pop();
        this.ChooseFrom.push(temp);
+
     }
     if(FilterBy != "")
     {
-      for(let key in this.ChooseFrom)
+      let l2= this.ChooseFrom.length, i2:number;
+
+      for(i2=0;i2<l2;i2++)
       {
-        if(this.ChooseFrom[key].firstName.toLocaleUpperCase().indexOf(FilterBy.toLocaleUpperCase())==-1 &&
-        this.ChooseFrom[key].lastName.toLocaleUpperCase().indexOf(FilterBy.toLocaleUpperCase())==-1
+        if(this.ChooseFrom[i2].firstName.toLocaleUpperCase().indexOf(FilterBy.toLocaleUpperCase())==-1 &&
+        this.ChooseFrom[i2].lastName.toLocaleUpperCase().indexOf(FilterBy.toLocaleUpperCase())==-1
         )
         {
-          let user=this.ChooseFrom.splice(+key,1);
+          let user=this.ChooseFrom.splice(+i2,1);
           this.BlackList.push(user[0]); // I Know there is just one hit cause key is scalar
+          i2--; // since one is gone...
+          l2--;// since one is gone...
         }
       }
+
         if(this.ChooseFrom.length>1)
         {
           this.ChooseFrom.sort(function(a,b)
