@@ -3,6 +3,8 @@ import { ICourse } from './course';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
+import { Guid } from 'guid-typescript';
+import { Data } from '@angular/router';
 
 @Injectable(
     {
@@ -11,23 +13,32 @@ import { tap, catchError, map } from 'rxjs/operators';
 
 export class CourseService {
     private courseUrl = "https://localhost:44396/api/courses1";
-   // public courses: ICourse[] = [];
+    
     constructor(private http: HttpClient) {
 
     }
     getCourses(): Observable<ICourse[]> {
-       /* return this.http.get(this.courseUrl)
-            .pipe(
-            map((data: any[]) => {
-                this.courses = data;
-                    return true;
-            }));*/
-
         return this.http.get<ICourse[]>(this.courseUrl).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
             );
     }
+
+
+    getCourseById(id: string): Observable<ICourse> {
+        return this.http.get<ICourse>(this.courseUrl +"/"+id).pipe(
+            tap(data => console.log('All:' + JSON.stringify(data))),
+            catchError(this.handleError)
+        );
+    }
+    createCourse(course: ICourse) {
+
+        return this.http.post(this.courseUrl, course).pipe(
+            tap(result => JSON.stringify(result)),
+            catchError(this.handleError)
+        );
+    }
+
 
     private handleError(err: HttpErrorResponse) {
         // in a real world app, we may send the server to some remote logging infrastructure

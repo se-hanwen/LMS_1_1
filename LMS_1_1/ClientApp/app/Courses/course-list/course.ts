@@ -1,7 +1,7 @@
 ﻿import { Data } from '@angular/router';
 import { Guid } from "guid-typescript";
 export interface ICourse {
-    Id: Guid;
+    id?: Guid;
     name: string;
     startDate: Data;
     description: string;

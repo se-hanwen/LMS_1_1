@@ -30,9 +30,10 @@ namespace LMS_1_1.Controllers
 
         // GET: api/Courses1/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(Guid id)
+        public async Task<ActionResult<Course>> GetCourse(string id)
         {
-            var course = await _context.Courses.FindAsync(id);
+           Guid idG = Guid.Parse(id);
+            var course = await _context.Courses.FindAsync(idG);
 
             if (course == null)
             {
@@ -74,7 +75,7 @@ namespace LMS_1_1.Controllers
 
         // POST: api/Courses1
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<Course>> PostCourse([FromBody] Course course)
         {
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();

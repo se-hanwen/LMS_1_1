@@ -4,19 +4,18 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 var CourseService = /** @class */ (function () {
-    // public courses: ICourse[] = [];
     function CourseService(http) {
         this.http = http;
         this.courseUrl = "https://localhost:44396/api/courses1";
     }
     CourseService.prototype.getCourses = function () {
-        /* return this.http.get(this.courseUrl)
-             .pipe(
-             map((data: any[]) => {
-                 this.courses = data;
-                     return true;
-             }));*/
         return this.http.get(this.courseUrl).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    CourseService.prototype.getCourseById = function (id) {
+        return this.http.get(this.courseUrl + "/" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    CourseService.prototype.createCourse = function (course) {
+        return this.http.post(this.courseUrl, course).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     CourseService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure

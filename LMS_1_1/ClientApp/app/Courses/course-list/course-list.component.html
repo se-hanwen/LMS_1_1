@@ -2,7 +2,7 @@
 <div class="row"  *ngIf='courses && courses.length'>
     
     <div class="col-md-4" *ngFor='let course of courses'>
-        <a [routerLink]="['/courses', course.Id]">
+        <a [routerLink]="['/courses', course.id]">
             <div class="card" style="width: 20rem;">
 
 
@@ -12,7 +12,7 @@
                     <h3 class="card-title">{{course.name}}</h3>
 
                     <h5 class="card-title">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>
-                    <p class="card-text">{{course.description}} </p>
+                   
 
                 </div>
                 <div class="card-body">
