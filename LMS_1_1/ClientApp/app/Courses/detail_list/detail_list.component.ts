@@ -1,5 +1,7 @@
-﻿import { Component } from "@angular/core";
-
+﻿import { Component, OnInit, Input } from "@angular/core";
+import { ICourse } from '../course-list/course';
+import { ActivatedRoute } from '@angular/router';
+import { CourseService } from '../course-list/course.service';
 
 @Component({
     selector: "detail_list",
@@ -7,7 +9,40 @@
     styleUrls:[]
 })
 
-export class detailList{
+export class detailList implements OnInit{
+
+     course: ICourse;
+     errorMessage: string;
+     @Input()   courseid: string="";
+
+
+    constructor(private route: ActivatedRoute,
+        private CourseService: CourseService
+        ) 
+        { }
+    
+    ngOnInit() {
+  
+        this.CourseService.getCourseAllById(this.courseid).subscribe(
+                course => {
+                    this.course = course;
+                },
+                error => this.errorMessage = <any>error
+            );
+    }
+
+    public TogggelCollapse(mid: string): void
+    {
+         if(this.course.modules.find(m => m.id.toString()==mid).isExpanded ==" show")
+        {
+              this.course.modules.find(m => m.id.toString()==mid).isExpanded="";
+        }
+         else
+        {
+           this.course.modules.find(m => m.id.toString()==mid).isExpanded=" show";
+        }
+    }
+
     public courseTitle: "C#";
     public startDate: "2019.01.02 10:00";
     public description: "There are no external authentication services configured. See this article for details on setting up this ASP.NET application to support logging in via external services.";
