@@ -13,12 +13,16 @@ import { CreateCourseComponent } from './courses/create-course/create-course.com
 import { PartipantListComponent } from './PartipantList/partipant-list.component';
 import { AddModuleWithCourseIdComponent } from './Modules/add-module-with-course-id.component';
 
+import { detailList } from './courses/detail_list/detail_list.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     CourseListComponent,
     CourseDetailComponent,
+
+
     CreateCourseComponent,
     PartipantListComponent,
     AddModuleWithCourseIdComponent
