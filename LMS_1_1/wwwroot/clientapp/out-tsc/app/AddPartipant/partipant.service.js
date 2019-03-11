@@ -40,8 +40,8 @@ var PartipantService = /** @class */ (function () {
             var part = _a[_i];
             Userids.push(part.userid);
         }
-        var parmas = { "CourseId": this.CourseId, Userids: Userids };
-        return this.http.post(url, { parmas: parmas })
+        //let parmas={"CourseId":this.CourseId,Userids};    
+        return this.http.post(url, { "CourseId": this.CourseId, Userids: Userids })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     PartipantService.prototype.AddStudent = function (user) {
