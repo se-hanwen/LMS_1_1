@@ -27,6 +27,7 @@ namespace LMS_1_1.Models
         [Required]
         public string Description { get; set; }
 
+        public string courseImgPath { get; set; }
         public ICollection<Module> Modules { get; set; }
 
     }
