@@ -10,6 +10,7 @@ import { CourseListComponent } from './courses/course-list/course-list.component
 import { HttpClientModule } from '@angular/common/http';
 import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
 import { CreateCourseComponent } from './courses/create-course/create-course.component';
+import { PartipantListComponent } from './PartipantList/partipant-list.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { CreateCourseComponent } from './courses/create-course/create-course.com
     AppComponent,
     CourseListComponent,
     CourseDetailComponent,
-    CreateCourseComponent
+    CreateCourseComponent,
+    PartipantListComponent
   ],
     imports: [
     FormsModule,
