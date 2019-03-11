@@ -20,7 +20,7 @@ import { detailList } from './courses/detail_list/detail_list.component';
     AppComponent,
     CourseListComponent,
     CourseDetailComponent,
-
+      detailList,
 
     CreateCourseComponent,
     PartipantListComponent
