@@ -11,13 +11,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
 import { CreateCourseComponent } from './courses/create-course/create-course.component';
 
+import { detailList } from './courses/detail_list/detail_list.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     CourseListComponent,
     CourseDetailComponent,
-    CreateCourseComponent
+      CreateCourseComponent,
+      detailList
   ],
     imports: [
     FormsModule,
