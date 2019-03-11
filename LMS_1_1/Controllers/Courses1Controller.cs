@@ -49,8 +49,8 @@ namespace LMS_1_1.Controllers
         [HttpGet("All")]
         public async Task<ActionResult<CourseAllViewModel>> GetCourseAll(string id)
         {
-         //   Guid idG = Guid.Parse(id);
-
+            //   Guid idG = Guid.Parse(id);
+            int i = 0;
               var  course1 = await _context.Courses
                             .Include(c => c.Modules)
                             .ThenInclude(m => m.LMSActivities)
@@ -74,6 +74,7 @@ namespace LMS_1_1.Controllers
                                 EndDate = Actitivity.EndDate,
                                 Description = Actitivity.Description,
                                 ActivityType = Actitivity.ActivityType
+                               
                             }
 
                         );
@@ -87,7 +88,10 @@ namespace LMS_1_1.Controllers
                          StartDate = Modul.StartDate,
                          EndDate = Modul.EndDate,
                          Description = Modul.Description,
-                         Activities = Activities
+                         Activities = Activities,
+                         // Name2=(Guid.NewGuid()).ToString(),
+                         Name2 = "C" + (i++).ToString(),
+                         isExpanded = ""
                      }
                     );
             }

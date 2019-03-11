@@ -511,6 +511,78 @@ var NoRouteModule = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./app/PartipantList/partipant-list.component.css":
+/*!********************************************************!*\
+  !*** ./app/PartipantList/partipant-list.component.css ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL1BhcnRpcGFudExpc3QvcGFydGlwYW50LWxpc3QuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./app/PartipantList/partipant-list.component.html":
+/*!*********************************************************!*\
+  !*** ./app/PartipantList/partipant-list.component.html ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngIf=\"users && users.length>0\">\r\n  <ul  *ngFor=\"let user of users\">\r\n    <li>{{user.firstName}} {{user.lastName}}</li>\r\n  </ul>\r\n</div>\r\n\r\n"
+
+/***/ }),
+
+/***/ "./app/PartipantList/partipant-list.component.ts":
+/*!*******************************************************!*\
+  !*** ./app/PartipantList/partipant-list.component.ts ***!
+  \*******************************************************/
+/*! exports provided: PartipantListComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PartipantListComponent", function() { return PartipantListComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _AddPartipant_partipant_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../AddPartipant/partipant.service */ "./app/AddPartipant/partipant.service.ts");
+
+
+
+
+var PartipantListComponent = /** @class */ (function () {
+    function PartipantListComponent(route, PartipantService) {
+        this.route = route;
+        this.PartipantService = PartipantService;
+        this.courseid = "";
+    }
+    PartipantListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.PartipantService.CourseId = this.courseid;
+        this.PartipantService.GetStudentsOn().subscribe(function (user) {
+            _this.users = user;
+        });
+    };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", String)
+    ], PartipantListComponent.prototype, "courseid", void 0);
+    PartipantListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-partipant-list',
+            template: __webpack_require__(/*! ./partipant-list.component.html */ "./app/PartipantList/partipant-list.component.html"),
+            styles: [__webpack_require__(/*! ./partipant-list.component.css */ "./app/PartipantList/partipant-list.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _AddPartipant_partipant_service__WEBPACK_IMPORTED_MODULE_3__["PartipantService"]])
+    ], PartipantListComponent);
+    return PartipantListComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./app/app.component.css":
 /*!*******************************!*\
   !*** ./app/app.component.css ***!
@@ -588,7 +660,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/common/http */ "../node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _courses_course_detail_course_detail_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./courses/course-detail/course-detail.component */ "./app/courses/course-detail/course-detail.component.ts");
 /* harmony import */ var _courses_create_course_create_course_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./courses/create-course/create-course.component */ "./app/courses/create-course/create-course.component.ts");
-/* harmony import */ var _courses_detail_list_detail_list_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./courses/detail_list/detail_list.component */ "./app/courses/detail_list/detail_list.component.ts");
+/* harmony import */ var _PartipantList_partipant_list_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./PartipantList/partipant-list.component */ "./app/PartipantList/partipant-list.component.ts");
 
 
 
@@ -613,7 +685,7 @@ var AppModule = /** @class */ (function () {
                 _courses_course_list_course_list_component__WEBPACK_IMPORTED_MODULE_9__["CourseListComponent"],
                 _courses_course_detail_course_detail_component__WEBPACK_IMPORTED_MODULE_11__["CourseDetailComponent"],
                 _courses_create_course_create_course_component__WEBPACK_IMPORTED_MODULE_12__["CreateCourseComponent"],
-                _courses_detail_list_detail_list_component__WEBPACK_IMPORTED_MODULE_13__["detailList"]
+                _PartipantList_partipant_list_component__WEBPACK_IMPORTED_MODULE_13__["PartipantListComponent"]
             ],
             imports: [
                 _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
@@ -667,7 +739,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "{{course.name}}\r\n<div class=\"row\">\r\n   <div class=\"col-md-6\">\r\n     <div id=\"accordion\">\r\n            <div class=\"card\">\r\n                <div class=\"card-header\" id=\"\">\r\n                    <h5 class=\"mb-0\">\r\n\r\n\r\n                        <div class=\"btn btn-link collapsed\"\r\n                             data-target=\"\"\r\n                             aria-controls=\"\"\r\n                             data-toggle=\"collapse\"\r\n                             aria-expanded=\"false\">\r\n\r\n                        </div>\r\n                    </h5>\r\n                </div>\r\n\r\n               \r\n                <div id=\"\" class=\"collapse\" aria-labelledby=\"\" data-parent=\"#accordion\">\r\n                    <div class=\"card-body\">\r\n                        <h4>Activities</h4>\r\n                        <ul class=\"timeline\">\r\n\r\n                            \r\n                            <li>\r\n                                <a ></a>\r\n                                <a href=\"#\" class=\"float-right\"></a>\r\n                                <p></p>\r\n                                <a >Edit Activity</a>&nbsp;|&nbsp;\r\n                                <a >Delete Activity</a>\r\n                            </li>\r\n                          \r\n                        </ul>\r\n                        <a class=\"float-right\">Add Activity</a>\r\n                    </div>\r\n\r\n                </div>\r\n               \r\n            </div>\r\n           \r\n        </div>\r\n       \r\n    </div>\r\n    </div>\r\n"
+module.exports = "\r\n<div class=\"row\">\r\n\r\n    <div class=\"col-md-4\">\r\n        <div class=\"card\" style=\"width: 18rem;\">\r\n            <img class=\"card-img-top\" [src]=\"course.courseImgPath\" alt=\"Card image cap\">\r\n            <div class=\"card-body\">\r\n                <h3 class=\"card-title\">{{course.Name}}</h3>\r\n\r\n                <h5 class=\"card-title\">{{course.StartDate}}</h5>\r\n                <p class=\"card-text\"> {{course.Description}}</p>\r\n\r\n            </div>\r\n\r\n            <app-partipant-list [courseid]='course.id'></app-partipant-list>\r\n\r\n     \r\n                <div class=\"card-body\">\r\n                   <!-- <a asp-controller=\"Modules\" asp-action=\"CreateWithCourseid\" asp-route-id=\"@Model.Id\" class=\"card-link\">Add Module</a> -->\r\n                    <a [routerLink]=\"['/AddPartipant', course.id]\">Add Participant</a>\r\n                </div>\r\n          \r\n        </div>\r\n\r\n\r\n        <div>\r\n\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"col-md-6\">\r\n        <detail_list [courseid]='course.id'></detail_list> \r\n\r\n    </div>\r\n    <div class=\"col-md-2\">\r\n\r\n    </div>\r\n</div>\r\n\r\n<div class=\"row\">\r\n   <div class=\"col-md-6\">\r\n     <div id=\"accordion\">\r\n            <div class=\"card\">\r\n                <div class=\"card-header\" id=\"\">\r\n                    <h5 class=\"mb-0\">\r\n\r\n\r\n                        <div class=\"btn btn-link collapsed\"\r\n                             data-target=\"\"\r\n                             aria-controls=\"\"\r\n                             data-toggle=\"collapse\"\r\n                             aria-expanded=\"false\">\r\n\r\n                        </div>\r\n                    </h5>\r\n                </div>\r\n\r\n               \r\n                <div id=\"\" class=\"collapse\" aria-labelledby=\"\" data-parent=\"#accordion\">\r\n                    <div class=\"card-body\">\r\n                        <h4>Activities</h4>\r\n                        <ul class=\"timeline\">\r\n\r\n                            \r\n                            <li>\r\n                                <a ></a>\r\n                                <a href=\"#\" class=\"float-right\"></a>\r\n                                <p></p>\r\n                                <a >Edit Activity</a>&nbsp;|&nbsp;\r\n                                <a >Delete Activity</a>\r\n                            </li>\r\n                          \r\n                        </ul>\r\n                        <a class=\"float-right\">Add Activity</a>\r\n                    </div>\r\n\r\n                </div>\r\n               \r\n            </div>\r\n           \r\n        </div>\r\n       \r\n    </div>\r\n    </div>\r\n"
 
 /***/ }),
 
@@ -697,7 +769,7 @@ var CourseDetailComponent = /** @class */ (function () {
     CourseDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get('id');
-        this.CourseService.getCourseById(id).subscribe(function (course) {
+        this.CourseService.getCourseAllById(id).subscribe(function (course) {
             _this.course = course;
         }, function (error) { return _this.errorMessage = error; });
     };
@@ -810,6 +882,9 @@ var CourseService = /** @class */ (function () {
     CourseService.prototype.getCourseById = function (id) {
         return this.http.get(this.courseUrl + "/" + id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All:' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
     };
+    CourseService.prototype.getCourseAllById = function (id) {
+        return this.http.get(this.courseUrl + "/All?id=" + id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All:' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
+    };
     CourseService.prototype.createCourse = function (course) {
         return this.http.post(this.courseUrl, { course: course }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (result) { return JSON.stringify(result); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
     };
@@ -860,7 +935,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n        <form #createCourse=\"ngForm\"  (ngSubmit)=\"Create(createCourse.value)\">\r\n           \r\n            <div class=\"form-group\">\r\n                <label for=\"name\" class=\"control-label\">Name</label>\r\n                <input (ngModel)=\"name \"id=\"name\" class=\"form-control\" />\r\n               \r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <label for=\"startDate\" class=\"control-label\">StartDate</label>\r\n                <input  type =\"date\" (ngModel)=\"startDate\"  value=\"2018-07-22\"\r\n                  min=\"2018-01-01\" max=\"2018-12-31\" id=\"startDate\" class=\"form-control\" />\r\n               \r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"description\" class=\"control-label\">Description</label>\r\n                <input (ngModel)=\"description\" id=\"description\" class=\"form-control\" />\r\n               \r\n            </div>\r\n            <div class=\"form-group\">\r\n                <input type=\"submit\" value=\"Create\" class=\"btn btn-primary\" />\r\n            </div>\r\n        </form>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n        <form #createCourse=\"ngForm\"  (ngSubmit)=\"Create(createCourse.value)\">\r\n           \r\n            <div class=\"form-group\">\r\n                <label for=\"name\" class=\"control-label\">Name</label>\r\n                <input (ngModel)=\"name\" name=\"name\" id=\"name\" class=\"form-control\" />\r\n               \r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <label for=\"startDate\" class=\"control-label\">StartDate</label>\r\n                <input  type =\"date\" (ngModel)=\"startDate\" name=\"startDate\"  value=\"2018-07-22\"\r\n                  min=\"2018-01-01\" max=\"2018-12-31\" id=\"startDate\" class=\"form-control\" />\r\n               \r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"description\" class=\"control-label\">Description</label>\r\n                <input (ngModel)=\"description\" name=\"description\" id=\"description\" class=\"form-control\" />\r\n               \r\n            </div>\r\n            <div class=\"form-group\">\r\n                <input type=\"submit\" value=\"Create\" class=\"btn btn-primary\" />\r\n            </div>\r\n        </form>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -913,83 +988,6 @@ var CreateCourseComponent = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _course_list_course_service__WEBPACK_IMPORTED_MODULE_3__["CourseService"]])
     ], CreateCourseComponent);
     return CreateCourseComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./app/courses/detail_list/detail_list.component.html":
-/*!************************************************************!*\
-  !*** ./app/courses/detail_list/detail_list.component.html ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n        <div class=\"card\" style=\"width: 18rem;\">\r\n            <img class=\"card-img-top\" src=\"~/img/0_JLPdbimCEnWB8qJL.png\" alt=\"Card image cap\">\r\n            <div class=\"card-body\">\r\n                <h3 class=\"card-title\">{{ courseTitle }}</h3>\r\n\r\n                <h5 class=\"card-title\">{{ startDate }}</h5>\r\n                <p class=\"card-text\"> {{ description }} </p>\r\n\r\n            </div>\r\n\r\n            <div class=\"card-body\">\r\n                <a href=\"card-link\">Add Module</a>\r\n                <a href=\"card-link\">Add Participant</a>\r\n            </div>\r\n\r\n        </div>\r\n\r\n\r\n        <div>\r\n\r\n\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"col-md-6\">\r\n\r\n\r\n\r\n        <div id=\"accordion\" *ngFor=\"let cc of coulist\">\r\n\r\n            <!--string name = Regex.Replace(@module.Name, @\"[\\W_]+\", string.Empty);-->\r\n            <div class=\"card\">\r\n                <div class=\"card-header\" id=\"moduleId\">\r\n                    <h5 class=\"mb-0\">\r\n\r\n\r\n                        <div class=\"btn btn-link collapsed\"\r\n                             data-target=\"#name\"\r\n                             aria-controls=\"name\"\r\n                             data-toggle=\"collapse\"\r\n                             aria-expanded=\"false\">\r\n\r\n                            {{ cc.Name }}\r\n\r\n                        </div>\r\n                    </h5>\r\n                </div>\r\n\r\n                <div id=\"name\" class=\"collapse\" aria-labelledby=\"moduleId\" data-parent=\"#accordion\">\r\n                    <div class=\"card-body\">\r\n                        <h4>Activities</h4>\r\n                        <ul class=\"timeline\">\r\n\r\n                            <li *ngFor=\"let ca of Modules\">\r\n                                <a asp-controller=\"LMSActivities\" asp-action=\"Details\" asp-route-id=\"activity.Id\">{{ca.Name}}</a>\r\n                                <a href=\"#\" class=\"float-right\"> {{ca.StartDate}}</a>\r\n                                <p>{{ca.Description}}</p>\r\n                                <a asp-controller=\"LMSActivities\" asp-action=\"Edit\" asp-route-id=\"activity.Id\">Edit Activity</a>&nbsp;|&nbsp;\r\n                                <a asp-controller=\"LMSActivities\" asp-action=\"Delete\" asp-route-id=\"activity.Id\">Delete Activity</a>\r\n                            </li>\r\n\r\n                        </ul>\r\n                        <a href=\"Create\">Add Activity</a>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n    <div class=\"col-md-2\">\r\n\r\n    </div>\r\n</div>"
-
-/***/ }),
-
-/***/ "./app/courses/detail_list/detail_list.component.ts":
-/*!**********************************************************!*\
-  !*** ./app/courses/detail_list/detail_list.component.ts ***!
-  \**********************************************************/
-/*! exports provided: detailList */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "detailList", function() { return detailList; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
-
-
-var detailList = /** @class */ (function () {
-    function detailList() {
-        this.coulist = [
-            {
-                Name: "C# Basic",
-                StartDate: "2019.01.02 10:00",
-                Description: "A basic course of C#",
-                Modules: [
-                    {
-                        Name: "C# module 1",
-                        StartDate: "2019.01.02 10:00",
-                        Description: "Module 1 of C#"
-                    },
-                    {
-                        Name: "C# module 2",
-                        StartDate: "2019.01.02 10:00",
-                        Description: "Module 2 of C#"
-                    }
-                ]
-            },
-            {
-                Name: "C# Advanced",
-                StartDate: "2019.01.03 10:00",
-                Description: "A follow on course of C#",
-                Modules: [
-                    {
-                        Name: "C# module 3",
-                        StartDate: "2019.01.03 10:00",
-                        Description: "Module 3 of C#"
-                    },
-                    {
-                        Name: "C# module 4",
-                        StartDate: "2019.01.03 10:00",
-                        Description: "Module 4 of C#"
-                    }
-                ]
-            }
-        ];
-    }
-    detailList = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-            selector: "detail_list",
-            template: __webpack_require__(/*! ./detail_list.component.html */ "./app/courses/detail_list/detail_list.component.html")
-        })
-    ], detailList);
-    return detailList;
 }());
 
 

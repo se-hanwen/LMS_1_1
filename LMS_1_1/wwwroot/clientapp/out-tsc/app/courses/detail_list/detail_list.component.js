@@ -1,7 +1,12 @@
 import * as tslib_1 from "tslib";
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
+import { ActivatedRoute } from '@angular/router';
+import { CourseService } from '../course-list/course.service';
 var detailList = /** @class */ (function () {
-    function detailList() {
+    function detailList(route, CourseService) {
+        this.route = route;
+        this.CourseService = CourseService;
+        this.courseid = "";
         this.coulist = [
             {
                 Name: "C# Basic",
@@ -39,12 +44,32 @@ var detailList = /** @class */ (function () {
             }
         ];
     }
+    detailList.prototype.ngOnInit = function () {
+        var _this = this;
+        this.CourseService.getCourseAllById(this.courseid).subscribe(function (course) {
+            _this.course = course;
+        }, function (error) { return _this.errorMessage = error; });
+    };
+    detailList.prototype.TogggelCollapse = function (mid) {
+        if (this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded == " Show") {
+            this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = "";
+        }
+        else {
+            this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = " Show";
+        }
+    };
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", String)
+    ], detailList.prototype, "courseid", void 0);
     detailList = tslib_1.__decorate([
         Component({
             selector: "detail_list",
             templateUrl: "detail_list.component.html",
             styleUrls: []
-        })
+        }),
+        tslib_1.__metadata("design:paramtypes", [ActivatedRoute,
+            CourseService])
     ], detailList);
     return detailList;
 }());
