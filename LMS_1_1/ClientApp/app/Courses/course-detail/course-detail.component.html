@@ -16,7 +16,8 @@
 
      
                 <div class="card-body">
-                   <!-- <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Module</a> -->
+
+                   <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a>
                     <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
                 </div>
           
