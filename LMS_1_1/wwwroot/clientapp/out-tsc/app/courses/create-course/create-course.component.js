@@ -10,16 +10,19 @@ var CreateCourseComponent = /** @class */ (function () {
     CreateCourseComponent.prototype.ngOnInit = function () {
     };
     CreateCourseComponent.prototype.Create = function (formValues) {
-        var _this = this;
         this.course = {
             name: formValues.name,
             startDate: formValues.startDate,
             description: formValues.description
         };
-        this.CourseService.createCourse(this.course).subscribe(function (result) {
-            console.log(result);
-            console.log("Created a Course");
-        }, function (error) { return _this.errorMessage = error; });
+        console.log(formValues.name);
+        /* this.CourseService.createCourse(this.course).subscribe(
+             (result) => {
+                 console.log(result);
+                 console.log("Created a Course");
+             },
+             error => this.errorMessage = <any>error
+         );*/
     };
     CreateCourseComponent = tslib_1.__decorate([
         Component({
