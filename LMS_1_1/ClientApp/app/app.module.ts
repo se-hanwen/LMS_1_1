@@ -12,14 +12,19 @@ import { CourseDetailComponent } from './courses/course-detail/course-detail.com
 import { CreateCourseComponent } from './courses/create-course/create-course.component';
 import { PartipantListComponent } from './PartipantList/partipant-list.component';
 
+import { detailList } from './courses/detail_list/detail_list.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     CourseListComponent,
     CourseDetailComponent,
+
+
     CreateCourseComponent,
     PartipantListComponent
+
   ],
     imports: [
     FormsModule,
