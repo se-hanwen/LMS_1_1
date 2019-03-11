@@ -12,6 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
 import { CreateCourseComponent } from './courses/create-course/create-course.component';
 import { PartipantListComponent } from './PartipantList/partipant-list.component';
+import { AddModuleWithCourseIdComponent } from './Modules/add-module-with-course-id.component';
+import { detailList } from './courses/detail_list/detail_list.component';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -21,8 +23,10 @@ var AppModule = /** @class */ (function () {
                 AppComponent,
                 CourseListComponent,
                 CourseDetailComponent,
+                detailList,
                 CreateCourseComponent,
-                PartipantListComponent
+                PartipantListComponent,
+                AddModuleWithCourseIdComponent
             ],
             imports: [
                 FormsModule,
