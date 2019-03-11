@@ -134,15 +134,30 @@ namespace LMS_1_1.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> AddStudentsToCourse([FromBody] SavecouseListViewmodel savecouseListViewmodel)
         {
-            await _repository.RemoveAllCourseUsers(savecouseListViewmodel.Courseid);
 
-            foreach(var userid in savecouseListViewmodel.Userids)
+            try
             {
-               await _repository.AddCourseUser(savecouseListViewmodel.Courseid, userid);
+                await _repository.RemoveAllCourseUsers(savecouseListViewmodel.Courseid);
+
+                foreach (var userid in savecouseListViewmodel.Userids)
+                {
+                    await _repository.AddCourseUser(savecouseListViewmodel.Courseid, userid);
+                }
+
+                await _repository.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex.Message);
             }
 
-            await _repository.SaveChanges();
-            return Ok();
+            var res = Json(new
+            {
+                Name = "Ok"
+            });
+
+            return Ok(res);
         }
 
 
