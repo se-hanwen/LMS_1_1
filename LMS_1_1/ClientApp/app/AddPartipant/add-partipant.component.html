@@ -1,3 +1,75 @@
-<p>
-  add-partipant works!
-</p>
+<div  >
+  <div style="text-align:center"  >
+       <span *ngIf="pageTitle">Add/Remove students for {{pageTitle}}</span>
+  </div>
+  <div  class="container">
+      <div class="row">
+      <div class="col-sm-6">
+        
+          <div>Filtera</div>
+        <div >
+            <input type='text'  [(ngModel)]='listFilter'/>
+        </div>
+        </div>
+          <div class="col-sm-6">
+                <button class="btn btn-success" (click)="SaveStudents()">Save</button>
+          </div>
+        </div>
+    <div class="row">
+        
+            <div class="col-sm-6">
+  
+          <div class="table-responsive tableContainer">
+            <label>Choose among these</label>
+
+
+
+            <table class="table scrollTable"  cellpadding="0" cellspacing="0" width="100%"  >
+
+                <thead class="fixedHeader">
+                  <tr id="from_ChooseFrom">
+                    <th width="50%">First Name</th>
+                    <th width="50%">Last Name</th>
+                  </tr>
+                </thead>
+                <tbody id="Bodyn_ChooseFrom" class="scrollContent" >
+                      <tr *ngFor='let Choose of ChooseFrom'>
+                          <td width="49%" name="Add" (click)="chooseStudent(Choose.userid)">{{Choose.firstName}}</td>
+                          <td width="49%" name="Add" (click)="chooseStudent(Choose.userid)">{{Choose.lastName}}</td>
+                      </tr>
+
+                  </tbody>
+
+            </table>
+      
+          </div>
+        
+      </div>
+
+   
+<div class="col-sm-6">
+  
+    <div class="table-responsive tableContainer">
+        <label>Click here to unchoose</label>
+          <table class="table scrollTable" cellpadding="0" cellspacing="0" width="100%"  >
+              <thead class="fixedHeader">
+                <tr id="from_Choosed">
+                  <th width="50%">First Name</th>
+                  <th width="50%">Last Name</th>
+                </tr>
+              </thead>
+              <tbody id="Bodyn_Choosed" class="scrollContent">
+                    <tr *ngFor='let UnChoose of Choosed'>
+                        <td width="49%" name="Remove" (click)="unChooseStudent(UnChoose.userid)">{{UnChoose.firstName}}</td>
+                        <td width="49%" name="Remove" (click)="unChooseStudent(UnChoose.userid)">{{UnChoose.lastName}}</td>
+                    </tr>
+
+              </tbody>
+          </table>
+    </div>   
+
+     
+    </div>
+</div>
+</div>
+

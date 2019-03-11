@@ -6,6 +6,7 @@ using LMS_1_1.Data;
 using LMS_1_1.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace LMS_1_1.Repository
 {
@@ -14,11 +15,17 @@ namespace LMS_1_1.Repository
     {
         private readonly ApplicationDbContext _ctx;
         private readonly ILogger<ProgramRepository> _logger;
+        private readonly UserManager<LMSUser> _userManager;
+        //private readonly RoleManager<LMSUser> _roleManager;
 
-        public ProgramRepository (ApplicationDbContext ctx, ILogger<ProgramRepository> logger)
+        public ProgramRepository (ApplicationDbContext ctx, ILogger<ProgramRepository> logger ,UserManager<LMSUser> userManager
+         //   , RoleManager<LMSUser> roleManager
+            )
         {
             _ctx = ctx;
             _logger = logger;
+            _userManager = userManager;
+           // _roleManager = roleManager;
         }
         #region Commen
         public async Task AddEntityAsync (object model)
@@ -167,6 +174,42 @@ namespace LMS_1_1.Repository
         }
         #endregion
 
+        #region Token user
+
+        public async Task AddTokenUser(string token, string userid)
+        {
+            var model = new TokenUser
+            {
+                Token = token,
+                LMSUserId = userid
+            };
+            
+            await _ctx.AddAsync(model);
+        }
+
+        public async Task<bool> RemoveTokenUser(string token)
+        {
+            var models = _ctx.TokenUsers.Where(tu => tu.Token == token);
+
+            _ctx.RemoveRange(models);
+            return await _ctx.SaveChangesAsync() > 0;
+        }
+
+
+        public async Task<bool> IsTeacher(string token)
+        {
+            var User = _ctx.TokenUsers
+                 .Include(tu => tu.LMSUser)
+                 .FirstOrDefault(tu => tu.Token == token)
+                 ?.LMSUser;
+           var roles= await _userManager.GetRolesAsync(User);
+
+            return roles.Any(r => r == "Teacher");
+
+
+        }
+
+        #endregion  
 
     }
 }

@@ -25,6 +25,7 @@
             "styles": [
              
               "ClientApp/styles.css"
+
             ],
             "scripts": [],
             "es5BrowserSupport": true
