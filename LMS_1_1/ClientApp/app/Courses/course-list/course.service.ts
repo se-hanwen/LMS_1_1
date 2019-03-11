@@ -37,9 +37,9 @@ export class CourseService {
         );
     }
 
-    createCourse(course: ICourse) {
+    createCourse(course: any) {
 
-        return this.http.post(this.courseUrl, { course }).pipe(
+        return this.http.post(this.courseUrl,  course).pipe(
             tap(result => JSON.stringify(result)),
             catchError(this.handleError)
         );

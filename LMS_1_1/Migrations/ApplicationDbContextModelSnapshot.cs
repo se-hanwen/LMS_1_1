@@ -4,20 +4,18 @@ using LMS_1_1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace LMS_1_1.Data.Migrations
+namespace LMS_1_1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190227141155_initCourseUser")]
-    partial class initCourseUser
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -32,16 +30,47 @@ namespace LMS_1_1.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ActivityTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "E-Learningpass"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Föreläsning"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Övningstillfälle"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Inlämingsuppgift"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Annat"
+                        });
                 });
 
             modelBuilder.Entity("LMS_1_1.Models.Course", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("CourseImgPath");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<DateTime>("StartDate");
 
@@ -52,13 +81,11 @@ namespace LMS_1_1.Data.Migrations
 
             modelBuilder.Entity("LMS_1_1.Models.CourseUser", b =>
                 {
-                    b.Property<string>("CourseId");
-
-                    b.Property<string>("UserId");
+                    b.Property<Guid>("CourseId");
 
                     b.Property<string>("LMSUserId");
 
-                    b.HasKey("CourseId", "UserId");
+                    b.HasKey("CourseId", "LMSUserId");
 
                     b.HasIndex("LMSUserId");
 
@@ -67,18 +94,20 @@ namespace LMS_1_1.Data.Migrations
 
             modelBuilder.Entity("LMS_1_1.Models.LMSActivity", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ActivityTypeId");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<string>("ModuleId");
+                    b.Property<Guid>("ModuleId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<DateTime>("StartDate");
 
@@ -148,16 +177,18 @@ namespace LMS_1_1.Data.Migrations
 
             modelBuilder.Entity("LMS_1_1.Models.Module", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CourseId");
+                    b.Property<Guid>("CourseId");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<DateTime>("StartDate");
 
@@ -166,6 +197,23 @@ namespace LMS_1_1.Data.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Modules");
+                });
+
+            modelBuilder.Entity("LMS_1_1.Models.TokenUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("LMSUserId");
+
+                    b.Property<string>("Token");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LMSUserId");
+
+                    b.ToTable("TokenUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -290,8 +338,9 @@ namespace LMS_1_1.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("LMS_1_1.Models.LMSUser", "LMSUser")
-                        .WithMany()
-                        .HasForeignKey("LMSUserId");
+                        .WithMany("CourseUser")
+                        .HasForeignKey("LMSUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("LMS_1_1.Models.LMSActivity", b =>
@@ -302,15 +351,24 @@ namespace LMS_1_1.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("LMS_1_1.Models.Module", "Modules")
-                        .WithMany()
-                        .HasForeignKey("ModuleId");
+                        .WithMany("LMSActivities")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("LMS_1_1.Models.Module", b =>
                 {
                     b.HasOne("LMS_1_1.Models.Course", "Courses")
+                        .WithMany("Modules")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("LMS_1_1.Models.TokenUser", b =>
+                {
+                    b.HasOne("LMS_1_1.Models.LMSUser", "LMSUser")
                         .WithMany()
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("LMSUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

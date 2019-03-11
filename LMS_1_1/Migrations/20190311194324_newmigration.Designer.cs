@@ -4,14 +4,16 @@ using LMS_1_1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace LMS_1_1.Data.Migrations
+namespace LMS_1_1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190311194324_newmigration")]
+    partial class newmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,6 +66,8 @@ namespace LMS_1_1.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CourseImgPath");
+
                     b.Property<string>("Description")
                         .IsRequired();
 
@@ -71,8 +75,6 @@ namespace LMS_1_1.Data.Migrations
                         .IsRequired();
 
                     b.Property<DateTime>("StartDate");
-
-                    b.Property<string>("courseImgPath");
 
                     b.HasKey("Id");
 

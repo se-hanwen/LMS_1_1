@@ -11,8 +11,7 @@ namespace LMS_1_1.ViewModels
     {
        
         
-        public Guid Id { get; set; }
-
+       
         [Required]
         public string Name { get; set; }
         [Required]
@@ -20,7 +19,6 @@ namespace LMS_1_1.ViewModels
         public DateTime StartDate { get; set; }
         [Required]
         public string Description { get; set; }
-        public string courseImgPath { get; set; }
-        public IFormFile fileData { get; set; }
+        public IFormFile FileData { get; set; }
     }
 }

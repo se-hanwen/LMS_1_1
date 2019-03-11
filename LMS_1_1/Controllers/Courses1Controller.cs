@@ -103,7 +103,7 @@ namespace LMS_1_1.Controllers
                 Name = course1.Name,
                 StartDate = course1.StartDate,
                 Description = course1.Description,
-                courseImgPath = course1.courseImgPath,
+                courseImgPath = course1.CourseImgPath,
                 Modules = Modules
             };
 
@@ -159,15 +159,12 @@ namespace LMS_1_1.Controllers
                 Name = courseVm.Name,
                 StartDate = courseVm.StartDate,
                 Description = courseVm.Description,
-                courseImgPath = courseVm.fileData.FileName
+                CourseImgPath = @"..\assets\img\"+ courseVm.FileData.FileName
             };
          
            _context.Courses.Add(course);
             await _context.SaveChangesAsync();
-          
-
-           
-            Upload.UploadFile(courseVm.fileData);
+            Upload.UploadFile(courseVm.FileData);
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
 

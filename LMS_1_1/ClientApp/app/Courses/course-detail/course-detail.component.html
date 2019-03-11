@@ -12,15 +12,15 @@
 
             </div>
 
-            <app-partipant-list [courseid]='course.id'></app-partipant-list>
+            <!-- <app-partipant-list [courseid]='course.id'></app-partipant-list>-->
 
-     
-                <div class="card-body">
 
-                   <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a>
-                    <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
-                </div>
-          
+            <div class="card-body">
+
+                <!--< <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a>
+    <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>-->
+            </div>
+
         </div>
 
 
@@ -33,56 +33,56 @@
 
     <div class="col-md-6">
         <!--<detail_list [courseid]='course.id'></detail_list>-->
-        <detail_list></detail_list>
+            <!-- <detail_list></detail_list>-->
 
+        </div>
+        <div class="col-md-2">
+
+        </div>
     </div>
-    <div class="col-md-2">
 
-    </div>
-</div>
-
-<div class="row">
-   <div class="col-md-6">
-     <div id="accordion">
-            <div class="card">
-                <div class="card-header" id="">
-                    <h5 class="mb-0">
+    <div class="row">
+       <div class="col-md-6">
+         <div id="accordion">
+                <div class="card">
+                    <div class="card-header" id="">
+                        <h5 class="mb-0">
 
 
-                        <div class="btn btn-link collapsed"
-                             data-target=""
-                             aria-controls=""
-                             data-toggle="collapse"
-                             aria-expanded="false">
+                            <div class="btn btn-link collapsed"
+                                 data-target=""
+                                 aria-controls=""
+                                 data-toggle="collapse"
+                                 aria-expanded="false">
 
+                            </div>
+                        </h5>
+                    </div>
+
+
+                    <div id="" class="collapse" aria-labelledby="" data-parent="#accordion">
+                        <div class="card-body">
+                            <h4>Activities</h4>
+                            <ul class="timeline">
+
+
+                                <li>
+                                    <a ></a>
+                                    <a href="#" class="float-right"></a>
+                                    <p></p>
+                                    <a >Edit Activity</a>&nbsp;|&nbsp;
+                                    <a >Delete Activity</a>
+                                </li>
+
+                            </ul>
+                            <a class="float-right">Add Activity</a>
                         </div>
-                    </h5>
-                </div>
 
-               
-                <div id="" class="collapse" aria-labelledby="" data-parent="#accordion">
-                    <div class="card-body">
-                        <h4>Activities</h4>
-                        <ul class="timeline">
-
-                            
-                            <li>
-                                <a ></a>
-                                <a href="#" class="float-right"></a>
-                                <p></p>
-                                <a >Edit Activity</a>&nbsp;|&nbsp;
-                                <a >Delete Activity</a>
-                            </li>
-                          
-                        </ul>
-                        <a class="float-right">Add Activity</a>
                     </div>
 
                 </div>
-               
+
             </div>
-           
+
         </div>
-       
-    </div>
-    </div>
+        </div>

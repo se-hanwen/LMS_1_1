@@ -2,12 +2,25 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace LMS_1_1.Data.Migrations
+namespace LMS_1_1.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class newmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ActivityTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActivityTypes", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -40,11 +53,28 @@ namespace LMS_1_1.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    CourseImgPath = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +183,113 @@ namespace LMS_1_1.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TokenUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Token = table.Column<string>(nullable: true),
+                    LMSUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TokenUsers_AspNetUsers_LMSUserId",
+                        column: x => x.LMSUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseUsers",
+                columns: table => new
+                {
+                    CourseId = table.Column<Guid>(nullable: false),
+                    LMSUserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseUsers", x => new { x.CourseId, x.LMSUserId });
+                    table.ForeignKey(
+                        name: "FK_CourseUsers_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseUsers_AspNetUsers_LMSUserId",
+                        column: x => x.LMSUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Modules",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    CourseId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Modules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Modules_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LMSActivity",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    ModuleId = table.Column<Guid>(nullable: false),
+                    ActivityTypeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LMSActivity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LMSActivity_ActivityTypes_ActivityTypeId",
+                        column: x => x.ActivityTypeId,
+                        principalTable: "ActivityTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LMSActivity_Modules_ModuleId",
+                        column: x => x.ModuleId,
+                        principalTable: "Modules",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "ActivityTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "E-Learningpass" },
+                    { 2, "Föreläsning" },
+                    { 3, "Övningstillfälle" },
+                    { 4, "Inlämingsuppgift" },
+                    { 5, "Annat" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +328,31 @@ namespace LMS_1_1.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseUsers_LMSUserId",
+                table: "CourseUsers",
+                column: "LMSUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LMSActivity_ActivityTypeId",
+                table: "LMSActivity",
+                column: "ActivityTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LMSActivity_ModuleId",
+                table: "LMSActivity",
+                column: "ModuleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Modules_CourseId",
+                table: "Modules",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TokenUsers_LMSUserId",
+                table: "TokenUsers",
+                column: "LMSUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,10 +373,28 @@ namespace LMS_1_1.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CourseUsers");
+
+            migrationBuilder.DropTable(
+                name: "LMSActivity");
+
+            migrationBuilder.DropTable(
+                name: "TokenUsers");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "ActivityTypes");
+
+            migrationBuilder.DropTable(
+                name: "Modules");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Courses");
         }
     }
 }

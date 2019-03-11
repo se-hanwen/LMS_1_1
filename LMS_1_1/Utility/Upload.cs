@@ -15,14 +15,16 @@ namespace LMS_1_1.Utility
        
         
 
-        public static void UploadFile (IFormFile file)
+        public static bool UploadFile (IFormFile file)
         {
             try
             {
-                //var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
+                //var file = Request.Form.Files[0];
+                var filename = @"C:\Users\TOSHIBA\source\repos\LMS_1_1\LMS_1_1\ClientApp\";
+                var folderName = Path.Combine("assets", "img");
+                var pathToSave = Path.Combine(filename, folderName);
+                
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -34,18 +36,18 @@ namespace LMS_1_1.Utility
                         file.CopyTo(stream);
                     }
 
-                    //return Ok(new { dbPath });
+                    return true;
                    
                 }
                 else
                 {
-                    //return BadRequest();
+                    return false;
                 }
               
             }
             catch (Exception ex)
             {
-                // return StatusCode(500, "Internal server error");
+                return false;
             }
         }
     }
