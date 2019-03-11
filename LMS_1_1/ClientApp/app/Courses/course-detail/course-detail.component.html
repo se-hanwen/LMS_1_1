@@ -1,4 +1,43 @@
-{{course.name}}
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" [src]="course.courseImgPath" alt="Card image cap">
+            <div class="card-body">
+                <h3 class="card-title">{{course.Name}}</h3>
+
+                <h5 class="card-title">{{course.StartDate}}</h5>
+                <p class="card-text"> {{course.Description}}</p>
+
+            </div>
+
+            <app-partipant-list [courseid]='course.id'></app-partipant-list>
+
+     
+                <div class="card-body">
+                   <!-- <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Module</a> -->
+                    <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
+                </div>
+          
+        </div>
+
+
+        <div>
+
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+      <!--  <details-list [courseid]='course.id'></details-list> -->
+    </div>
+    <div class="col-md-2">
+
+    </div>
+</div>
+
 <div class="row">
    <div class="col-md-6">
      <div id="accordion">

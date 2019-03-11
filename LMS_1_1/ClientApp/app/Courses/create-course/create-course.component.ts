@@ -11,13 +11,15 @@ import { CourseService } from '../course-list/course.service';
 export class CreateCourseComponent implements OnInit {
     course: ICourse;
     errorMessage: string;
+    name: string;
+    startDate: Data;
+    description: string;
+
     constructor(private route: ActivatedRoute, private CourseService: CourseService) { }
 
   ngOnInit() {
     }
-    name: string;
-    startDate: Data;
-    description: string;
+
 
     Create(formValues) {
 
@@ -25,6 +27,7 @@ export class CreateCourseComponent implements OnInit {
             name: formValues.name,
             startDate: formValues.startDate,
             description: formValues.description
+            
         }
         console.log(formValues.name);
        /* this.CourseService.createCourse(this.course).subscribe(
