@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ICourse } from '../course-list/course';
 import { ActivatedRoute, Data } from '@angular/router';
 import { CourseService } from '../course-list/course.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-course',
@@ -11,28 +12,34 @@ import { CourseService } from '../course-list/course.service';
 export class CreateCourseComponent implements OnInit {
     course: ICourse;
     errorMessage: string;
+    courseForm: FormGroup;
     constructor(private route: ActivatedRoute, private CourseService: CourseService) { }
 
   ngOnInit() {
     }
-    name: string;
-    startDate: Data;
-    description: string;
+    
+    
+    
 
-    Create(formValues) {
+    register(formValues) {
 
-        this.course = {
-            name: formValues.name,
-            startDate: formValues.startDate,
-            description: formValues.description
-        }
-        console.log(formValues.name);
-       /* this.CourseService.createCourse(this.course).subscribe(
+        console.log(formValues)
+        let fileToUpload = <File>formValues.fileData;
+        let formData = new FormData();
+
+        formData.append('name', formValues.name);
+        formData.append('startDate', formValues.startDate);
+        formData.append('description', formValues.description);
+        formData.append('fileData', fileToUpload, fileToUpload.name);
+        console.log(formData);
+        this.CourseService.createCourse(formData).subscribe(
             (result) => {
                 console.log(result);
                 console.log("Created a Course");
             },
             error => this.errorMessage = <any>error
-        );*/
+        );
     }
+
+    
 }

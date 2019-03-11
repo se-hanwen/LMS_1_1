@@ -5,7 +5,7 @@ export interface ICourse {
     name: string;
     startDate: Data;
     description: string;
-   // courseImgUrl: string;
+    fileData: File;
 }
 //it is also possible to define course class that implement the Icourse interface
 //when needed

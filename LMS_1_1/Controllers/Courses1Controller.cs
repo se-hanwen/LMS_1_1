@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LMS_1_1.Data;
 using LMS_1_1.Models;
+using LMS_1_1.Utility;
+using LMS_1_1.ViewModels;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LMS_1_1.Controllers
 {
@@ -15,10 +19,12 @@ namespace LMS_1_1.Controllers
     public class Courses1Controller : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment _environment;
 
-        public Courses1Controller(ApplicationDbContext context)
+        public Courses1Controller (ApplicationDbContext context, IHostingEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         // GET: api/Courses1
@@ -74,14 +80,33 @@ namespace LMS_1_1.Controllers
         }
 
         // POST: api/Courses1
-        [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse([FromBody] Course course)
+        [HttpPost, DisableRequestSizeLimit]
+        public async Task<ActionResult<Course>> PostCourse([FromForm] CourseViewModel courseVm)
         {
-            _context.Courses.Add(course);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Course course = new Course
+            {
+                Name = courseVm.Name,
+                StartDate = courseVm.StartDate,
+                Description = courseVm.Description,
+                courseImgPath = courseVm.fileData.FileName
+            };
+         
+           _context.Courses.Add(course);
             await _context.SaveChangesAsync();
+          
 
+           
+            Upload.UploadFile(courseVm.fileData);
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
+
+
+        
+
 
         // DELETE: api/Courses1/5
         [HttpDelete("{id}")]

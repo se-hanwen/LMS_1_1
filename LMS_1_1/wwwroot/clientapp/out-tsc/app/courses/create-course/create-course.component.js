@@ -9,20 +9,20 @@ var CreateCourseComponent = /** @class */ (function () {
     }
     CreateCourseComponent.prototype.ngOnInit = function () {
     };
-    CreateCourseComponent.prototype.Create = function (formValues) {
-        this.course = {
-            name: formValues.name,
-            startDate: formValues.startDate,
-            description: formValues.description
-        };
-        console.log(formValues.name);
-        /* this.CourseService.createCourse(this.course).subscribe(
-             (result) => {
-                 console.log(result);
-                 console.log("Created a Course");
-             },
-             error => this.errorMessage = <any>error
-         );*/
+    CreateCourseComponent.prototype.register = function (formValues) {
+        var _this = this;
+        console.log(formValues);
+        var fileToUpload = formValues.fileData;
+        var formData = new FormData();
+        formData.append('name', formValues.name);
+        formData.append('startDate', formValues.startDate);
+        formData.append('description', formValues.description);
+        formData.append('fileData', fileToUpload);
+        console.log(formData);
+        this.CourseService.createCourse(formData).subscribe(function (result) {
+            console.log(result);
+            console.log("Created a Course");
+        }, function (error) { return _this.errorMessage = error; });
     };
     CreateCourseComponent = tslib_1.__decorate([
         Component({

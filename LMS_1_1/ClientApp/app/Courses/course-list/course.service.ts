@@ -31,13 +31,16 @@ export class CourseService {
             catchError(this.handleError)
         );
     }
-    createCourse(course: ICourse) {
-
-        return this.http.post(this.courseUrl, { course }).pipe(
+    createCourse(course: any) {
+      
+        console.log(course);
+        return this.http.post(this.courseUrl, course).pipe(
             tap(result => JSON.stringify(result)),
             catchError(this.handleError)
         );
     }
+
+    
 
 
     private handleError(err: HttpErrorResponse) {
