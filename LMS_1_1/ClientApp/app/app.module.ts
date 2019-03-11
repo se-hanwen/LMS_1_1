@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
 import { CreateCourseComponent } from './courses/create-course/create-course.component';
 import { PartipantListComponent } from './PartipantList/partipant-list.component';
+import { AddModuleWithCourseIdComponent } from './Modules/add-module-with-course-id.component';
 
 import { detailList } from './courses/detail_list/detail_list.component';
 
@@ -23,8 +24,8 @@ import { detailList } from './courses/detail_list/detail_list.component';
       detailList,
 
     CreateCourseComponent,
-    PartipantListComponent
-
+    PartipantListComponent,
+    AddModuleWithCourseIdComponent
   ],
     imports: [
     FormsModule,
