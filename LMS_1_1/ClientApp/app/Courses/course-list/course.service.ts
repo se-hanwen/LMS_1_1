@@ -14,6 +14,10 @@ import { Data } from '@angular/router';
 export class CourseService {
     private courseUrl = "https://localhost:44396/api/courses1";
     
+
+    
+    
+
     constructor(private http: HttpClient) {
 
     }
@@ -32,6 +36,7 @@ export class CourseService {
 
     getCourseAllById(id: string): Observable<ICourse> {
         return this.http.get<ICourse>(this.courseUrl +"/All?id=" +id).pipe(
+   
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
         );

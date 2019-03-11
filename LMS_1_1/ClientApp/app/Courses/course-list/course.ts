@@ -7,7 +7,7 @@ export interface ICourse {
     description: string;
     courseImgPath?: string;
 
-   Modules?:IModule[];
+   modules?:IModule[];
 }
 
 
@@ -17,9 +17,9 @@ export interface IModule {
     startDate: Data;
     endDate: Data;
     description: string;
-
-
-    Activities?:IActivity[];
+    name2?:string;
+ isExpanded?:string;
+    activities?:IActivity[];
 }
 
 export interface IActivity {
