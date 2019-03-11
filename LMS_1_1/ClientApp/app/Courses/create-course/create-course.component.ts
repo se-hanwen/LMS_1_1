@@ -26,12 +26,13 @@ export class CreateCourseComponent implements OnInit {
             startDate: formValues.startDate,
             description: formValues.description
         }
-        this.CourseService.createCourse(this.course).subscribe(
+        console.log(formValues.name);
+       /* this.CourseService.createCourse(this.course).subscribe(
             (result) => {
                 console.log(result);
                 console.log("Created a Course");
             },
             error => this.errorMessage = <any>error
-        );
+        );*/
     }
 }

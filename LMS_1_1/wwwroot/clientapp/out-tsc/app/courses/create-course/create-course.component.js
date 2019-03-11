@@ -12,7 +12,6 @@ var CreateCourseComponent = /** @class */ (function () {
     CreateCourseComponent.prototype.Create = function (formValues) {
         var _this = this;
         this.course = {
-            id: null,
             name: formValues.name,
             startDate: formValues.startDate,
             description: formValues.description
