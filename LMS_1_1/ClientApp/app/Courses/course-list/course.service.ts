@@ -23,18 +23,23 @@ export class CourseService {
             catchError(this.handleError)
             );
     }
-
-
     getCourseById(id: string): Observable<ICourse> {
         return this.http.get<ICourse>(this.courseUrl +"/"+id).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
         );
     }
-    createCourse(course: any) {
-      
-        console.log(course);
-        return this.http.post(this.courseUrl, course).pipe(
+
+    getCourseAllById(id: string): Observable<ICourse> {
+        return this.http.get<ICourse>(this.courseUrl +"/All?id=" +id).pipe(
+            tap(data => console.log('All:' + JSON.stringify(data))),
+            catchError(this.handleError)
+        );
+    }
+
+    createCourse(course: ICourse) {
+
+        return this.http.post(this.courseUrl, { course }).pipe(
             tap(result => JSON.stringify(result)),
             catchError(this.handleError)
         );

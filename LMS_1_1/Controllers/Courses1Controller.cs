@@ -34,12 +34,14 @@ namespace LMS_1_1.Controllers
             return Ok(await _context.Courses.ToListAsync());
         }
 
-        // GET: api/Courses1/5
+        // GET: api/Courses1/5/true course , modules and activites
+        // GET: api/Courses1/5/false  just the course
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(string id)
         {
            Guid idG = Guid.Parse(id);
-            var course = await _context.Courses.FindAsync(idG);
+            Course course = await _context.Courses.FindAsync(idG);
+            
 
             if (course == null)
             {
@@ -48,7 +50,72 @@ namespace LMS_1_1.Controllers
 
             return course;
         }
+        
+        [HttpGet("All")]
+        public async Task<ActionResult<CourseAllViewModel>> GetCourseAll(string id)
+        {
+         //   Guid idG = Guid.Parse(id);
 
+              var  course1 = await _context.Courses
+                            .Include(c => c.Modules)
+                            .ThenInclude(m => m.LMSActivities)
+                            .ThenInclude(a => a.ActivityType)
+                            .FirstOrDefaultAsync(c => c.Id.ToString() == id);
+
+
+
+            var Modules = new List<ModelAllViewModel>();
+            foreach (var Modul in course1.Modules)
+            {
+                var Activities = new List<ActivityAllViewModel>();
+                foreach (var Actitivity in Modul.LMSActivities)
+                {
+                    Activities.Add(
+                            new ActivityAllViewModel
+                            {
+                                Id = Actitivity.Id,
+                                Name = Actitivity.Name,
+                                StartDate = Actitivity.StartDate,
+                                EndDate = Actitivity.EndDate,
+                                Description = Actitivity.Description,
+                                ActivityType = Actitivity.ActivityType
+                            }
+
+                        );
+                }
+
+                Modules.Add(
+                     new ModelAllViewModel
+                     {
+                         Id = Modul.Id,
+                         Name = Modul.Name,
+                         StartDate = Modul.StartDate,
+                         EndDate = Modul.EndDate,
+                         Description = Modul.Description,
+                         Activities = Activities
+                     }
+                    );
+            }
+
+            CourseAllViewModel course = new CourseAllViewModel
+            {
+                Id = course1.Id,
+                Name = course1.Name,
+                StartDate = course1.StartDate,
+                Description = course1.Description,
+                courseImgPath = course1.courseImgPath,
+                Modules = Modules
+            };
+
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return course;
+        }
+        
         // PUT: api/Courses1/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse(Guid id, Course course)

@@ -1,0 +1,77 @@
+﻿<div class="row">
+    <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="~/img/0_JLPdbimCEnWB8qJL.png" alt="Card image cap">
+            <div class="card-body">
+                <h3 class="card-title">{{ courseTitle }}</h3>
+
+                <h5 class="card-title">{{ startDate }}</h5>
+                <p class="card-text"> {{ description }} </p>
+
+            </div>
+
+            <div class="card-body">
+                <a href="card-link">Add Module</a>
+                <a href="card-link">Add Participant</a>
+            </div>
+
+        </div>
+
+
+        <div>
+
+
+        </div>
+
+    </div>
+    <div class="col-md-6">
+
+
+
+        <div id="accordion" *ngFor="let cc of coulist">
+
+            <!--string name = Regex.Replace(@module.Name, @"[\W_]+", string.Empty);-->
+            <div class="card">
+                <div class="card-header" id="moduleId">
+                    <h5 class="mb-0">
+
+
+                        <div class="btn btn-link collapsed"
+                             data-target="#name"
+                             aria-controls="name"
+                             data-toggle="collapse"
+                             aria-expanded="false">
+
+                            {{ cc.Name }}
+
+                        </div>
+                    </h5>
+                </div>
+
+                <div id="name" class="collapse" aria-labelledby="moduleId" data-parent="#accordion">
+                    <div class="card-body">
+                        <h4>Activities</h4>
+                        <ul class="timeline">
+
+                            <li *ngFor="let ca of Modules">
+                                <a asp-controller="LMSActivities" asp-action="Details" asp-route-id="activity.Id">{{ca.Name}}</a>
+                                <a href="#" class="float-right"> {{ca.StartDate}}</a>
+                                <p>{{ca.Description}}</p>
+                                <a asp-controller="LMSActivities" asp-action="Edit" asp-route-id="activity.Id">Edit Activity</a>&nbsp;|&nbsp;
+                                <a asp-controller="LMSActivities" asp-action="Delete" asp-route-id="activity.Id">Delete Activity</a>
+                            </li>
+
+                        </ul>
+                        <a href="Create">Add Activity</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-2">
+
+    </div>
+</div>

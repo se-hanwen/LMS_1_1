@@ -90,15 +90,15 @@ export class AddPartipantComponent implements OnInit {
         const LastNameA=a.lastName.toLocaleUpperCase();
         const FirstNameB=b.firstName.toLocaleUpperCase();
         const LastNameB=b.lastName.toLocaleUpperCase();
-          if (FirstNameA < FirstNameB)
-              return -1;
-          if (FirstNameA > FirstNameB)
-              return 1;
-          if (LastNameA < LastNameB)
-              return -1;
-          if (LastNameA > LastNameB)
-              return 1;
-          return 0;
+        if (FirstNameA < FirstNameB)
+            return -1;
+        if (FirstNameA > FirstNameB)
+             return 1;
+        if (LastNameA < LastNameB)
+             return -1;
+        if (LastNameA > LastNameB)
+             return 1;
+        return 0;
       }
       );
     }
@@ -106,7 +106,6 @@ export class AddPartipantComponent implements OnInit {
 
   public unChooseStudent(userid : string) : void
   {
-
       const keyin=this.Choosed.findIndex(cu => cu.userid==userid);
       if(keyin == -1) throwError;
       const user=this.Choosed.splice(+keyin,1);

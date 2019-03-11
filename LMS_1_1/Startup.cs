@@ -71,6 +71,7 @@ namespace LMS_1_1
                 builder =>
                 {
                     builder.WithOrigins("http://localhost:1234")
+                    .AllowAnyMethod()
                     .AllowAnyHeader() ;
                 });
                 

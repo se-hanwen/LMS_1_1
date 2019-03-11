@@ -10,7 +10,7 @@ var CourseDetailComponent = /** @class */ (function () {
     CourseDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get('id');
-        this.CourseService.getCourseById(id).subscribe(function (course) {
+        this.CourseService.getCourseAllById(id).subscribe(function (course) {
             _this.course = course;
         }, function (error) { return _this.errorMessage = error; });
     };

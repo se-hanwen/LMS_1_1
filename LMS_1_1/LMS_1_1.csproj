@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Utility\**" />
+    <Content Remove="Utility\**" />
+    <EmbeddedResource Remove="Utility\**" />
+    <None Remove="Utility\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="ClientApp\assets\img\0_JLPdbimCEnWB8qJL.png" />
     <Content Include="ClientApp\assets\img\download.jpg" />
   </ItemGroup>

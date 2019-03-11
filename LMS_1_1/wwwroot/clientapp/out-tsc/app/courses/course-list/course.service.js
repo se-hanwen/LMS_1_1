@@ -14,6 +14,9 @@ var CourseService = /** @class */ (function () {
     CourseService.prototype.getCourseById = function (id) {
         return this.http.get(this.courseUrl + "/" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
+    CourseService.prototype.getCourseAllById = function (id) {
+        return this.http.get(this.courseUrl + "/All?id=" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
     CourseService.prototype.createCourse = function (course) {
         console.log(course);
         return this.http.post(this.courseUrl, course).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
