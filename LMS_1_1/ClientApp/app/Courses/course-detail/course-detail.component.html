@@ -2,7 +2,7 @@
 <div class="row">
 
     <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 19rem;">
             <img class="card-img-top" [src]="course.courseImgPath" alt="Card image cap">
             <div class="card-body">
                 <h3 class="card-title">{{course.name}}</h3>
@@ -16,9 +16,15 @@
 
      
                 <div class="card-body">
-
-                   <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a>
+                    <div class="row">
+                        <div class="col-6">
+                  <!-- <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a> -->
+                  <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Module</a>
+                </div>
+                <div class="col-6">
                     <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
+                </div>
+                </div>
                 </div>
           
         </div>
