@@ -22,12 +22,15 @@ import { detailList } from './courses/detail_list/detail_list.component';
     AppComponent,
     CourseListComponent,
     CourseDetailComponent,
-    CreateCourseComponent
+      CreateCourseComponent,
+      PartipantListComponent,
+      detailList
   ],
     imports: [
     FormsModule,
     BrowserModule,
-    AddPartipantModule,
+        AddPartipantModule,
+
     RouterModule.forRoot([
         {
             path: 'courses', component: CourseListComponent

@@ -11,16 +11,13 @@
 
             </div>
 
-             <app-partipant-list [courseid]="course.id"></app-partipant-list>-->
-
-
+             <app-partipant-list [courseid]="course.id"></app-partipant-list>
             <div class="card-body">
-
                  <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a>
-        <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
+    <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
             </div>
 
-            </div>
+        </div>
 
 
             <div>
@@ -31,10 +28,7 @@
         </div>
 
     <div class="col-md-6">
-
          <detail_list [courseid]="course.id"></detail_list>
-
-
     </div>
         <div class="col-md-2">
 

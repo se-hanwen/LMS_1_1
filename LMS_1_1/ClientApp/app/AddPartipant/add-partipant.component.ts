@@ -33,7 +33,8 @@ export class AddPartipantComponent implements OnInit {
 
   }
 
-    @Input() courseid: string;
+    courseid: string;
+
   _listFilter = '';
   get listFilter(): string {
     return this._listFilter;
@@ -50,7 +51,9 @@ export class AddPartipantComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-  
+
+      this.courseid = this.route.snapshot.paramMap.get('id');
+      this.PartipantService.CourseId = this.courseid;
     this.PartipantService.GetStudentsOff().subscribe
     (
       Choose=> this.ChooseFrom=Choose
