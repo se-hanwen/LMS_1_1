@@ -1,5 +1,5 @@
 import * as tslib_1 from "tslib";
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PartipantService } from './partipant.service';
 import { throwError } from 'rxjs';
@@ -47,6 +47,8 @@ var AddPartipantComponent = /** @class */ (function () {
     });
     AddPartipantComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.courseid = this.route.snapshot.paramMap.get('id');
+        this.PartipantService.CourseId = this.courseid;
         this.PartipantService.GetStudentsOff().subscribe(function (Choose) { return _this.ChooseFrom = Choose; });
         this.PartipantService.GetStudentsOn().subscribe(function (Choosed) {
             _this.Choosed = Choosed;
@@ -106,7 +108,7 @@ var AddPartipantComponent = /** @class */ (function () {
     };
     AddPartipantComponent.prototype.SaveStudents = function () {
         this.PartipantService.SaveStudents().subscribe();
-        this.router.navigate(['/courses', this.courseid]);
+        //this.router.navigate(['/courses', this.courseid]);
     };
     AddPartipantComponent.prototype.performFilter = function (FilterBy) {
         var l1 = this.BlackList.length, i1;
@@ -185,10 +187,6 @@ var AddPartipantComponent = /** @class */ (function () {
         document.querySelector("#" + From_id).style.display = "none";
         element.style.display = "Block";
     };
-    tslib_1.__decorate([
-        Input(),
-        tslib_1.__metadata("design:type", String)
-    ], AddPartipantComponent.prototype, "courseid", void 0);
     AddPartipantComponent = tslib_1.__decorate([
         Component({
             selector: 'add-partipant',

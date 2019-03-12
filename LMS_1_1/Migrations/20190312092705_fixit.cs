@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LMS_1_1.Migrations
 {
-    public partial class Initial : Migration
+    public partial class fixit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
