@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IModule } from '../courses/course-list/course';
+import { IModule } from '../../courses/course-list/course';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
