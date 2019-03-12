@@ -34,6 +34,7 @@ import { CoursesModule } from './Courses/courses.module';
    
   ],
   providers: [],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

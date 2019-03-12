@@ -24,13 +24,14 @@ namespace LMS_1_1.Controllers
         private readonly IConfiguration _config;
         private readonly RoleManager<LMSUser> _roleManager;
         private readonly IProgramRepository _programRepository;
+        private readonly IUserClaimsPrincipalFactory<LMSUser> _claimsFactory;
 
         public AccountController(ILogger<AccountController> logger,
           SignInManager<LMSUser> signInManager,
           UserManager<LMSUser> userManager,
           IConfiguration config,
           RoleManager<LMSUser> roleManager, IProgramRepository programRepository
-
+            ,IUserClaimsPrincipalFactory<LMSUser> claimsFactory
 
 
             )
@@ -41,6 +42,7 @@ namespace LMS_1_1.Controllers
             _config = config;
             _roleManager = roleManager;
             _programRepository = programRepository;
+            _claimsFactory = claimsFactory;
         }
 
         [HttpPost]
@@ -49,26 +51,25 @@ namespace LMS_1_1.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Username);
-
+               
                 if (user != null)
                 {
                     var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
 
                     if (result.Succeeded)
                     {
+                        var principal = await _claimsFactory.CreateAsync(user);
                         // Create the token
-                        var claims = new List<Claim>()
-                        {
-              new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-              new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-              new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-             
-            };
-                      /*  foreach (var role in await _userManager.GetRolesAsync(user))
+                        var claims = principal.Claims.ToList();
+
+                        claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Email));
+                        claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+                        claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName));
+                        foreach (var role in await _userManager.GetRolesAsync(user))
                         {
                             claims.Add(new Claim(ClaimTypes.Role, role));
-                        }
-                        */
+                         }
+                              
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
                         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -84,7 +85,7 @@ namespace LMS_1_1.Controllers
                             token = new JwtSecurityTokenHandler().WriteToken(token),
                             expiration = token.ValidTo
                         };
-                        await _programRepository.AddTokenUser(results.token, user.Id);
+                      //  await _programRepository.AddTokenUser(results.token, user.Id);
 
                         return Created("", results);
                     }

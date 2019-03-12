@@ -11,7 +11,7 @@ import { throwError } from 'rxjs';
   styleUrls: ['./add-partipant.component.css']
 })
 export class AddPartipantComponent implements OnInit {
-
+private test:string ="";
   pageTitle: string = "";
   BlackList: IPartipant[] =[];
   private _ChooseFrom: IPartipant[] =[];
@@ -33,7 +33,7 @@ export class AddPartipantComponent implements OnInit {
 
   }
 
-    courseid: string;
+  courseid: string;
 
   _listFilter = '';
   get listFilter(): string {
