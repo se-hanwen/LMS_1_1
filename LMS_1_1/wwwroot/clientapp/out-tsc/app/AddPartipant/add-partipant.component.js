@@ -106,6 +106,7 @@ var AddPartipantComponent = /** @class */ (function () {
     };
     AddPartipantComponent.prototype.SaveStudents = function () {
         this.PartipantService.SaveStudents().subscribe();
+        this.router.navigate(['/courses', this.courseid]);
     };
     AddPartipantComponent.prototype.performFilter = function (FilterBy) {
         var l1 = this.BlackList.length, i1;
