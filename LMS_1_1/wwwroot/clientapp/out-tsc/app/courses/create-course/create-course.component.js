@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseService } from '../course-list/course.service';
+import { CourseService } from '../course.service';
 import { ViewChild } from '@angular/core';
 var CreateCourseComponent = /** @class */ (function () {
     function CreateCourseComponent(route, CourseService, router) {

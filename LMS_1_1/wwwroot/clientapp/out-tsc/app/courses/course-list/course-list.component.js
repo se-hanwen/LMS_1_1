@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { Component } from '@angular/core';
-import { CourseService } from './course.service';
+import { CourseService } from '../course.service';
 var CourseListComponent = /** @class */ (function () {
     function CourseListComponent(CourseService) {
         this.CourseService = CourseService;

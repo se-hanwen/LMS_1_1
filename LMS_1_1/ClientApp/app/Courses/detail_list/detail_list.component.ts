@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input } from "@angular/core";
-import { ICourse } from '../course-list/course';
+import { ICourse } from '../course';
 import { ActivatedRoute } from '@angular/router';
-import { CourseService } from '../course-list/course.service';
+import { CourseService } from '../course.service';
 
 @Component({
     selector: "detail_list",

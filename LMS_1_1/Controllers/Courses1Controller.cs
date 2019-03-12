@@ -11,6 +11,8 @@ using LMS_1_1.Utility;
 using LMS_1_1.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using LMS_1_1.Repository;
+using Microsoft.Extensions.Logging;
 
 namespace LMS_1_1.Controllers
 {
@@ -20,9 +22,13 @@ namespace LMS_1_1.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _environment;
+        private readonly IProgramRepository _repository;
+        private readonly ILogger<CoursesController> _logger;
 
-        public Courses1Controller (ApplicationDbContext context, IHostingEnvironment environment)
+        public Courses1Controller (IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context, IHostingEnvironment environment)
         {
+            _repository = repository;
+            _logger = logger;
             _context = context;
             _environment = environment;
         }
@@ -31,7 +37,8 @@ namespace LMS_1_1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
         {
-            return Ok(await _context.Courses.ToListAsync());
+           
+            return Ok(await _repository.GetAllCoursesAsync(false));
         }
 
         // GET: api/Courses1/5/true course , modules and activites

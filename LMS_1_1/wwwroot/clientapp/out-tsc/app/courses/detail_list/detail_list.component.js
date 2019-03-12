@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Component, Input } from "@angular/core";
 import { ActivatedRoute } from '@angular/router';
-import { CourseService } from '../course-list/course.service';
+import { CourseService } from '../course.service';
 var detailList = /** @class */ (function () {
     function detailList(route, CourseService) {
         this.route = route;
