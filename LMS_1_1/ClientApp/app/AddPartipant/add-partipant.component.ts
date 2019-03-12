@@ -134,7 +134,7 @@ export class AddPartipantComponent implements OnInit {
   public SaveStudents()
   {
     this.PartipantService.SaveStudents().subscribe();
-
+    this.router.navigate(['/courses', this.courseId]);
   }
 
   private performFilter(FilterBy: string): void
