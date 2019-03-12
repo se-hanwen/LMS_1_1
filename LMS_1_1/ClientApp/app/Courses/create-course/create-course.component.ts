@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ICourse } from '../course-list/course';
-import { ActivatedRoute, Data } from '@angular/router';
+import { ActivatedRoute, Data, Router} from '@angular/router';
+
 import { CourseService } from '../course-list/course.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ViewChild } from '@angular/core';
@@ -15,7 +16,8 @@ export class CreateCourseComponent implements OnInit {
     errorMessage: string;
     courseForm: FormGroup;
     @ViewChild("fileInput") fileInputVariable: any;
-    constructor(private route: ActivatedRoute, private CourseService: CourseService) { }
+    showMsg: boolean = false;
+    constructor(private route: ActivatedRoute, private CourseService: CourseService, private router: Router,) { }
 
   ngOnInit() {
     }
@@ -37,6 +39,9 @@ export class CreateCourseComponent implements OnInit {
         console.log(formData);
         this.CourseService.createCourse(formData).subscribe(
             (result) => {
+                this.showMsg = true;
+                this.router.navigate(['/courses'])
+                
                 console.log(result);
                 console.log("Created a Course");
             },

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { IPartipant } from './partipant';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,7 +33,7 @@ export class AddPartipantComponent implements OnInit {
 
   }
 
-  courseId: string =""
+    @Input() courseid: string;
   _listFilter = '';
   get listFilter(): string {
     return this._listFilter;
@@ -50,8 +50,7 @@ export class AddPartipantComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.courseId = this.route.snapshot.paramMap.get('id');
-    this.PartipantService.CourseId=this.courseId;
+  
     this.PartipantService.GetStudentsOff().subscribe
     (
       Choose=> this.ChooseFrom=Choose

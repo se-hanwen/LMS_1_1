@@ -1,12 +1,14 @@
 import * as tslib_1 from "tslib";
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../course-list/course.service';
 import { ViewChild } from '@angular/core';
 var CreateCourseComponent = /** @class */ (function () {
-    function CreateCourseComponent(route, CourseService) {
+    function CreateCourseComponent(route, CourseService, router) {
         this.route = route;
         this.CourseService = CourseService;
+        this.router = router;
+        this.showMsg = false;
     }
     CreateCourseComponent.prototype.ngOnInit = function () {
     };
@@ -20,6 +22,8 @@ var CreateCourseComponent = /** @class */ (function () {
         formData.append('FileData', fileToUpload);
         console.log(formData);
         this.CourseService.createCourse(formData).subscribe(function (result) {
+            _this.showMsg = true;
+            _this.router.navigate(['/courses']);
             console.log(result);
             console.log("Created a Course");
         }, function (error) { return _this.errorMessage = error; });
@@ -34,7 +38,7 @@ var CreateCourseComponent = /** @class */ (function () {
             templateUrl: './create-course.component.html',
             styleUrls: ['./create-course.component.css']
         }),
-        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, CourseService])
+        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, CourseService, Router])
     ], CreateCourseComponent);
     return CreateCourseComponent;
 }());

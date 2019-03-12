@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\**" />
     <Compile Remove="Resources\**" />
+    <Content Remove="Data\Migrations\**" />
     <Content Remove="Resources\**" />
+    <EmbeddedResource Remove="Data\Migrations\**" />
     <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Data\Migrations\**" />
     <None Remove="Resources\**" />
   </ItemGroup>
 
@@ -30,7 +34,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
+    <Folder Include="wwwroot\clientapp\dist\assets\img\" />
   </ItemGroup>
 
 </Project>

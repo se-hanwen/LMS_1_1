@@ -6,38 +6,37 @@
             <img class="card-img-top" [src]="course.courseImgPath" alt="Card image cap">
             <div class="card-body">
                 <h3 class="card-title">{{course.name}}</h3>
-
-                <h5 class="card-title">{{course.startDate}}</h5>
+                <h5 class="card-title">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>
                 <p class="card-text"> {{course.description}}</p>
 
             </div>
 
-            <app-partipant-list [courseid]='course.id'></app-partipant-list>
+            <!-- <app-partipant-list [courseid]="course.id"></app-partipant-list>-->
 
-     
-                <div class="card-body">
 
-                   <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a>
-                    <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
-                </div>
-          
+            <div class="card-body">
+
+                <!-- <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a>
+        <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>-->
+            </div>
+
+            </div>
+
+
+            <div>
+
+
+            </div>
+
         </div>
-
-
-        <div>
-
-
-        </div>
-
-    </div>
 
     <div class="col-md-6">
-        
-        <detail_list [courseid]='course.id'></detail_list>
+
+        <!-- <detail_list [courseid]="course.id"></detail_list>-->
 
 
     </div>
-    <div class="col-md-2">
+        <div class="col-md-2">
 
+        </div>
     </div>
-</div>

@@ -13,7 +13,7 @@ export class detailList implements OnInit{
 
      course: ICourse;
      errorMessage: string;
-     @Input()   courseid: string="";
+     @Input()   courseid: string;
 
 
     constructor(private route: ActivatedRoute,

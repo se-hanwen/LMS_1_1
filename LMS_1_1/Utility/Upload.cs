@@ -19,9 +19,10 @@ namespace LMS_1_1.Utility
         {
             try
             {
+            
 
                 //var file = Request.Form.Files[0];
-                var filename = @"C:\Users\TOSHIBA\source\repos\LMS_1_1\LMS_1_1\ClientApp\";
+                var filename = @"C:\Users\Bereket\source\repos\LMS_1_1\LMS_1_1\ClientApp\";
                 var folderName = Path.Combine("assets", "img");
                 var pathToSave = Path.Combine(filename, folderName);
                 
