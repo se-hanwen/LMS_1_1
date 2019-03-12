@@ -24,7 +24,8 @@ import { detailList } from './courses/detail_list/detail_list.component';
     CourseDetailComponent,
       CreateCourseComponent,
       PartipantListComponent,
-      detailList
+      detailList,
+      AddModuleWithCourseIdComponent
   ],
     imports: [
     FormsModule,
@@ -54,6 +55,7 @@ import { detailList } from './courses/detail_list/detail_list.component';
    
   ],
   providers: [],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
