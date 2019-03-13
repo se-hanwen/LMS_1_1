@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InnerSubscriber } from 'rxjs/internal/InnerSubscriber';
-import { IUser } from './login';
-import { AuthService } from '../auth/auth.service';
+import { IUser } from '../login';
+import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 
 

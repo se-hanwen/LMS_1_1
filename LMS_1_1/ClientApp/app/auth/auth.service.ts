@@ -3,11 +3,14 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { IUser } from '../Login/login';
+import { tokenData } from './tokenData';
 
 @Injectable()
 export class AuthService {
   constructor(public jwtHelper: JwtHelperService,private http: HttpClient) {}
   // ...
+
+   private tokenData: tokenData;
 
   private _token: string = "";
   get token(): string {
