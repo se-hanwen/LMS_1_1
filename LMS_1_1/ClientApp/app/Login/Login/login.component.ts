@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { InnerSubscriber } from 'rxjs/internal/InnerSubscriber';
-import { IUser } from '../login';
+import { User } from '../login';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-   user:IUser
+   user:User = new User();
    errorMessage: string = "";
 
   constructor(private db: AuthService
@@ -29,7 +30,10 @@ export class LoginComponent implements OnInit {
   onLogin() {
     this.errorMessage = "";
     this.db.login(this.user)
-      .subscribe(
+      .subscribe(success => {
+        if (success) 
+            this.router.navigate(["courses"]);  
+      },
          err => this.errorMessage = "Failed to login");
   }
 }

@@ -2,6 +2,7 @@ import * as tslib_1 from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../Navbar/navbar.component';
+import { LoginModule } from '../Login/login.module';
 var NavbarModule = /** @class */ (function () {
     function NavbarModule() {
     }
@@ -9,8 +10,10 @@ var NavbarModule = /** @class */ (function () {
         NgModule({
             declarations: [NavbarComponent],
             imports: [
-                CommonModule
-            ]
+                CommonModule,
+                LoginModule
+            ],
+            exports: [NavbarComponent]
         })
     ], NavbarModule);
     return NavbarModule;

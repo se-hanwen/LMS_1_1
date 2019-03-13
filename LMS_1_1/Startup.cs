@@ -70,8 +70,7 @@ namespace LMS_1_1
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.AllowAnyOrigin()
-                    //.WithOrigins("http://localhost:1234")
+                    builder.WithOrigins("http://localhost:1234")
                     .AllowAnyMethod()
                     .AllowAnyHeader() ;
                 });

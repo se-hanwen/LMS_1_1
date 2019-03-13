@@ -10,11 +10,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoursesModule } from './Courses/courses.module';
 import { NavbarModule } from './Navbar/navbar.module';
 import { LoginModule } from './Login/login.module';
+import { ModulesModule } from './Modules/modules.module';
+import { LoginpartialComponent } from './Login/LoginPartial/loginpartial.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
     
   ],
     imports: [
@@ -35,6 +37,8 @@ import { LoginModule } from './Login/login.module';
       HttpClientModule,
       NavbarModule,
       LoginModule,
+      ModulesModule,
+     
    
   ],
   providers: [],

@@ -1,52 +1,84 @@
-import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { Injectable, OnInit } from '@angular/core';
+//import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { IUser } from '../Login/login';
+import { User } from '../Login/login';
 import { tokenData } from './tokenData';
 
-@Injectable()
-export class AuthService {
-  constructor(public jwtHelper: JwtHelperService,private http: HttpClient) {}
-  // ...
+@Injectable(
+  {
+    providedIn: 'root'
+})
+export class AuthService implements OnInit {
 
-   private tokenData: tokenData;
+  constructor(private http: HttpClient) {}
+  // ...public jwtHelper: JwtHelperService,
 
-  private _token: string = "";
+  ngOnInit(): void {
+    throw new Error("Method not implemented.");
+  }
+   private tokenData: tokenData=new tokenData();
+
+
   get token(): string {
-    return this._token
+    return this.tokenData.token
   }
   
-  private _tokenExpiration: Date = new Date();
+
   get tokenExpiration():Date
   {
-    return this._tokenExpiration;
+    return this.tokenData.tokenExpiration;
   }
+
+
+  get FirstName():string
+  {
+    return this.tokenData.firstName;
+  }
+
+  get LastName():string
+  {
+    return this.tokenData.lastName;
+  }
+  get Userid():string
+  {
+    return this.tokenData.userid;
+  }
+ private url:string="https://localhost:44396";
+
   private _isTeacher:string="";
 
   
-  public login(creds:IUser) {
-    return this.http.post("/account/createtoken", creds)
+  public login(creds:User) {
+    return this.http.post(this.url+"/account/createtoken", creds)
       .pipe(
         map((response: any) => {
           let tokenInfo = response;
-          this._token = tokenInfo.token;
-          this._tokenExpiration = tokenInfo.expiration;
-          this._isTeacher=tokenInfo.isTeacher;
+          this.tokenData.token = tokenInfo.token;
+          this.tokenData.tokenExpiration = tokenInfo.expiration;
+          this.tokenData.isTeacher=tokenInfo.isTeacher;
+          this.tokenData.firstName=tokenInfo.firstName;
+          this.tokenData.lastName=tokenInfo.lastName;
+          this.tokenData.userid=tokenInfo.userid;
           return true;
-        }));
+        })
+        
+        );
   }
-
+ public logout()
+ {
+    this.tokenData=new tokenData();
+ }
 
   public isAuthenticated(): boolean {
-    return this.token.length == 0 || this.tokenExpiration > new Date();
+    return !(this.tokenData.token.length == 0 && this.tokenData.tokenExpiration > new Date());
   }
 
   public IsTeacher(): boolean 
   {
     if(this.isAuthenticated())
     {
-      if(this._isTeacher == "Teacher")
+      if(this.tokenData.isTeacher == "Teacher")
           return true;
         return false;
     }

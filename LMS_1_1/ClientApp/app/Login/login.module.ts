@@ -3,9 +3,11 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {LoginComponent} from './Login/login.component'
 import { RouterModule } from '@angular/router';
+import { LoginpartialComponent } from './LoginPartial/loginpartial.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent
+  ,LoginpartialComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -15,6 +17,7 @@ import { RouterModule } from '@angular/router';
       }
       ]
   )
-  ]
+  ],
+  exports: [LoginpartialComponent]
 })
 export class LoginModule { }

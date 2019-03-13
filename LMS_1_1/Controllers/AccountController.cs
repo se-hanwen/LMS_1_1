@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LMS_1_1.Models;
 using LMS_1_1.Repository;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace LMS_1_1.Controllers
 {
-   
+
     public class AccountController : Controller
     {
 
@@ -57,6 +58,14 @@ namespace LMS_1_1.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "App");
+        }
+
 
         [HttpPost]
      // [HttpGet]
