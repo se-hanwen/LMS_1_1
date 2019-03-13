@@ -26,14 +26,14 @@
 
                         <li *ngFor="let activity of module.activities">
                             <a asp-controller="LMSActivities" asp-action="Details" [attr.asp-route-id]="activity.id">{{activity.name}}</a>
-                            <a href="#" class="float-right"> {{activity.startDate}}</a>
+                            <span class="float-right"> {{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}}</span>
                             <p>{{activity.description}}</p>
                             <a asp-controller="LMSActivities" asp-action="Edit" [attr.asp-route-id]="activity.id">Edit Activity</a>&nbsp;|&nbsp;
                             <a asp-controller="LMSActivities" asp-action="Delete" [attr.asp-route-id]="activity.id">Delete Activity</a>
                         </li>
 
                     </ul>
-                    <a href="Create">Add Activity</a>
+                    Add Activity
                 </div>
 
             </div>

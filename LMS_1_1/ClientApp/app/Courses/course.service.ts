@@ -13,11 +13,7 @@ import { Data } from '@angular/router';
 
 export class CourseService {
     private courseUrl = "https://localhost:44396/api/courses1";
-    
-
-    
-    
-
+   
     constructor(private http: HttpClient) {
 
     }
@@ -36,19 +32,20 @@ export class CourseService {
 
     getCourseAllById(id: string): Observable<ICourse> {
         return this.http.get<ICourse>(this.courseUrl +"/All?id=" +id).pipe(
-   
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
         );
     }
 
-    createCourse(course: ICourse) {
+    createCourse(course: any) {
 
-        return this.http.post(this.courseUrl, { course }).pipe(
+        return this.http.post(this.courseUrl,  course).pipe(
             tap(result => JSON.stringify(result)),
             catchError(this.handleError)
         );
     }
+
+    
 
 
     private handleError(err: HttpErrorResponse) {

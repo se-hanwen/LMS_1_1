@@ -1,27 +1,32 @@
 
-<div class="row"  *ngIf='courses && courses.length'>
-    
-    <div class="col-md-4" *ngFor='let course of courses'>
-    
-            <div class="card" style="width: 20rem;">
+<div class="row" style="margin-bottom:15px;">
+    <div class="col-md-4">
+        <a class="btn btn-outline-primary" [routerLink]="['/courses/create']"> Create Course</a>
+    </div>
+</div>
+    <div class="row" *ngIf='courses && courses.length'>
+
+        <div class="col-md-4" *ngFor='let course of courses'>
+
+            <div class="card" style="width: 19rem;">
 
 
                 <a [routerLink]="['/courses', course.id]">
-                <img class="card-img-top" width="100px" height="300px" [src]="course.courseImgPath" alt="Card image cap" />
-                <div class="card-body">
-                    <h3 class="card-title">{{course.name}}</h3>
+                    <img class="card-img-top" width="80px" height="300px"  [src]="course.courseImgPath" alt="Card image cap" />
+                    <div class="card-body">
+                        <h3 class="card-title">{{course.name}}</h3>
 
-                    <h5 class="card-title">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>
-                   
-                
-                </div>
+                        <h5 class="card-title">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>
+
+
+                    </div>
                 </a>
                 <div class="card-body">
                     <a class="card-link">Edit Course</a>
                     <a class="card-link">Delete Course</a>
                 </div>
             </div>
-       
+
+        </div>
+
     </div>
-    
-</div>

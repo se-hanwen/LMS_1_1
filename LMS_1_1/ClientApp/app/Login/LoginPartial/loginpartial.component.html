@@ -1,0 +1,29 @@
+<ul class="navbar-nav">
+ <div *ngIf="IsSignedIn">
+      <li class="nav-item" >
+          <a [routerLink]="['/Account/Manage']">
+              Hello
+              
+                  <span>{{FirstName}} {{LastName}}</span>
+              
+          </a>
+      </li>
+          <li class="nav-item" *ngIf="isTeacher">
+              <a [routerLink]="['/Account/Register']">Register</a>
+          </li>
+      
+      <li class="nav-item">
+            <button (click)="logout()">Logout</button>
+
+      </li>
+    </div>
+    <div *ngElse>
+
+
+
+      <li class="nav-item">
+        <a [routerLink]="['/Account/Login']">Login</a>
+      </li>
+
+</div>
+</ul>

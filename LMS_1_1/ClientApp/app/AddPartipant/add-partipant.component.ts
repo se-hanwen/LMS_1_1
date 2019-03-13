@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { IPartipant } from './partipant';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { throwError } from 'rxjs';
   styleUrls: ['./add-partipant.component.css']
 })
 export class AddPartipantComponent implements OnInit {
-
+private test:string ="";
   pageTitle: string = "";
   BlackList: IPartipant[] =[];
   private _ChooseFrom: IPartipant[] =[];
@@ -33,7 +33,8 @@ export class AddPartipantComponent implements OnInit {
 
   }
 
-  courseId: string =""
+  courseid: string;
+
   _listFilter = '';
   get listFilter(): string {
     return this._listFilter;
@@ -50,8 +51,9 @@ export class AddPartipantComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.courseId = this.route.snapshot.paramMap.get('id');
-    this.PartipantService.CourseId=this.courseId;
+
+      this.courseid = this.route.snapshot.paramMap.get('id');
+      this.PartipantService.CourseId = this.courseid;
     this.PartipantService.GetStudentsOff().subscribe
     (
       Choose=> this.ChooseFrom=Choose
@@ -135,7 +137,7 @@ export class AddPartipantComponent implements OnInit {
   public SaveStudents()
   {
     this.PartipantService.SaveStudents().subscribe();
-
+    //this.router.navigate(['/courses', this.courseid]);
   }
 
   private performFilter(FilterBy: string): void
