@@ -9,6 +9,7 @@ import { NoRouteModule } from './NoRoute/no-route.module';
 import { NoRouteComponent } from './NoRoute/no-route.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CoursesModule } from './Courses/courses.module';
+import { NavbarModule } from './Navbar/navbar.module';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -31,6 +32,7 @@ var AppModule = /** @class */ (function () {
                 }),
                 NoRouteModule,
                 HttpClientModule,
+                NavbarModule,
             ],
             providers: [],
             bootstrap: [AppComponent]
