@@ -13,6 +13,7 @@ namespace LMS_1_1.Repository
     public class CourseUsersRepository : ICourseUsersRepository
     {
         private readonly ApplicationDbContext _context;
+
         private readonly ILogger<ProgramRepository> _logger;
         private readonly UserManager<LMSUser> _userManager;
 
