@@ -26,9 +26,8 @@ namespace LMS_1_1.Models
         public DateTime StartDate { get; set; }
         [Required]
         public string Description { get; set; }
-
-        public string courseImgPath { get; set; }
-        public ICollection<Module> Modules { get; set; }
+        public string CourseImgPath{  get; set; }
+    public ICollection<Module> Modules { get; set; }
 
     }
 }

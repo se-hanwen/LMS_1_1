@@ -7,13 +7,9 @@ import { AppComponent } from './app.component';
 import { AddPartipantModule } from './AddPartipant/add-partipant.module';
 import { NoRouteModule } from './NoRoute/no-route.module';
 import { NoRouteComponent } from './NoRoute/no-route.component';
-import { CourseListComponent } from './courses/course-list/course-list.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
-import { CreateCourseComponent } from './courses/create-course/create-course.component';
-import { PartipantListComponent } from './PartipantList/partipant-list.component';
-import { AddModuleWithCourseIdComponent } from './Modules/add-module-with-course-id.component';
-import { detailList } from './courses/detail_list/detail_list.component';
+import { CoursesModule } from './Courses/courses.module';
+import { NavbarModule } from './Navbar/navbar.module';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -21,27 +17,13 @@ var AppModule = /** @class */ (function () {
         NgModule({
             declarations: [
                 AppComponent,
-                CourseListComponent,
-                CourseDetailComponent,
-                detailList,
-                CreateCourseComponent,
-                PartipantListComponent,
-                AddModuleWithCourseIdComponent
             ],
             imports: [
                 FormsModule,
                 BrowserModule,
                 AddPartipantModule,
+                CoursesModule,
                 RouterModule.forRoot([
-                    {
-                        path: 'courses', component: CourseListComponent
-                    },
-                    {
-                        path: 'courses/create', component: CreateCourseComponent
-                    },
-                    {
-                        path: 'courses/:id', component: CourseDetailComponent
-                    },
                     {
                         path: '**', component: NoRouteComponent
                     }
@@ -50,6 +32,7 @@ var AppModule = /** @class */ (function () {
                 }),
                 NoRouteModule,
                 HttpClientModule,
+                NavbarModule,
             ],
             providers: [],
             bootstrap: [AppComponent]

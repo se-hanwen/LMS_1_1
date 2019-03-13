@@ -8,15 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Utility\**" />
-    <Content Remove="Utility\**" />
-    <EmbeddedResource Remove="Utility\**" />
-    <None Remove="Utility\**" />
+    <Compile Remove="Data\Migrations\**" />
+    <Compile Remove="Resources\**" />
+    <Content Remove="Data\Migrations\**" />
+    <Content Remove="Resources\**" />
+    <EmbeddedResource Remove="Data\Migrations\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Data\Migrations\**" />
+    <None Remove="Resources\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ClientApp\assets\img\0_JLPdbimCEnWB8qJL.png" />
-    <Content Include="ClientApp\assets\img\download.jpg" />
+    <Content Include="ClientApp\assets\img\1.png" />
+    <Content Include="ClientApp\assets\img\3.jpg" />
   </ItemGroup>
 
 
@@ -30,7 +34,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Folder Include="wwwroot\clientapp\dist\assets\img\" />
   </ItemGroup>
 
 </Project>

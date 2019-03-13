@@ -5,42 +5,24 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AddPartipantModule } from './AddPartipant/add-partipant.module';
 import { NoRouteModule } from './NoRoute/no-route.module';
-import {NoRouteComponent} from './NoRoute/no-route.component';
-import { CourseListComponent } from './courses/course-list/course-list.component';
+import { NoRouteComponent } from './NoRoute/no-route.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
-import { CreateCourseComponent } from './courses/create-course/create-course.component';
-import { PartipantListComponent } from './PartipantList/partipant-list.component';
-import { AddModuleWithCourseIdComponent } from './Modules/add-module-with-course-id.component';
-
-import { detailList } from './courses/detail_list/detail_list.component';
+import { CoursesModule } from './Courses/courses.module';
+import { NavbarModule } from './Navbar/navbar.module';
+import { LoginModule } from './Login/login.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CourseListComponent,
-    CourseDetailComponent,
-      detailList,
-
-    CreateCourseComponent,
-    PartipantListComponent,
-    AddModuleWithCourseIdComponent
+    
   ],
     imports: [
     FormsModule,
     BrowserModule,
     AddPartipantModule,
+    CoursesModule,
     RouterModule.forRoot([
-        {
-            path: 'courses', component: CourseListComponent
-        },
-        {
-            path: 'courses/create', component: CreateCourseComponent
-        },
-        {
-            path: 'courses/:id', component: CourseDetailComponent
-        },
         
         {
             path: '**', component: NoRouteComponent
@@ -51,9 +33,12 @@ import { detailList } from './courses/detail_list/detail_list.component';
     }),
       NoRouteModule,
       HttpClientModule,
+      NavbarModule,
+      LoginModule,
    
   ],
   providers: [],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

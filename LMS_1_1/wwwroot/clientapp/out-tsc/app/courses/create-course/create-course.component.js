@@ -1,36 +1,44 @@
 import * as tslib_1 from "tslib";
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CourseService } from '../course-list/course.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CourseService } from '../course.service';
+import { ViewChild } from '@angular/core';
 var CreateCourseComponent = /** @class */ (function () {
-    function CreateCourseComponent(route, CourseService) {
+    function CreateCourseComponent(route, CourseService, router) {
         this.route = route;
         this.CourseService = CourseService;
+        this.router = router;
+        this.showMsg = false;
     }
     CreateCourseComponent.prototype.ngOnInit = function () {
     };
-    CreateCourseComponent.prototype.Create = function (formValues) {
-        this.course = {
-            name: formValues.name,
-            startDate: formValues.startDate,
-            description: formValues.description
-        };
-        console.log(formValues.name);
-        /* this.CourseService.createCourse(this.course).subscribe(
-             (result) => {
-                 console.log(result);
-                 console.log("Created a Course");
-             },
-             error => this.errorMessage = <any>error
-         );*/
+    CreateCourseComponent.prototype.register = function (formValues) {
+        var _this = this;
+        var fileToUpload = this.fileInputVariable.nativeElement.files[0];
+        var formData = new FormData();
+        formData.append('Name', formValues.name);
+        formData.append('StartDate', formValues.startDate);
+        formData.append('Description', formValues.description);
+        formData.append('FileData', fileToUpload);
+        console.log(formData);
+        this.CourseService.createCourse(formData).subscribe(function (result) {
+            _this.showMsg = true;
+            _this.router.navigate(['/courses']);
+            console.log(result);
+            console.log("Created a Course");
+        }, function (error) { return _this.errorMessage = error; });
     };
+    tslib_1.__decorate([
+        ViewChild("fileInput"),
+        tslib_1.__metadata("design:type", Object)
+    ], CreateCourseComponent.prototype, "fileInputVariable", void 0);
     CreateCourseComponent = tslib_1.__decorate([
         Component({
             selector: 'app-create-course',
             templateUrl: './create-course.component.html',
             styleUrls: ['./create-course.component.css']
         }),
-        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, CourseService])
+        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, CourseService, Router])
     ], CreateCourseComponent);
     return CreateCourseComponent;
 }());

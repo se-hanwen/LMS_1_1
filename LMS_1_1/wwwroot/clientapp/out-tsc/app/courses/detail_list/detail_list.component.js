@@ -1,12 +1,11 @@
 import * as tslib_1 from "tslib";
 import { Component, Input } from "@angular/core";
 import { ActivatedRoute } from '@angular/router';
-import { CourseService } from '../course-list/course.service';
+import { CourseService } from '../course.service';
 var detailList = /** @class */ (function () {
     function detailList(route, CourseService) {
         this.route = route;
         this.CourseService = CourseService;
-        this.courseid = "";
         this.coulist = [
             {
                 Name: "C# Basic",
@@ -51,11 +50,11 @@ var detailList = /** @class */ (function () {
         }, function (error) { return _this.errorMessage = error; });
     };
     detailList.prototype.TogggelCollapse = function (mid) {
-        if (this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded == " Show") {
+        if (this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded == " show") {
             this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = "";
         }
         else {
-            this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = " Show";
+            this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = " show";
         }
     };
     tslib_1.__decorate([

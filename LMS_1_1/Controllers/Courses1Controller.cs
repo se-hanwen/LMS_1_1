@@ -7,7 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LMS_1_1.Data;
 using LMS_1_1.Models;
+using LMS_1_1.Utility;
 using LMS_1_1.ViewModels;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using LMS_1_1.Repository;
+using Microsoft.Extensions.Logging;
 
 namespace LMS_1_1.Controllers
 {
@@ -16,17 +21,24 @@ namespace LMS_1_1.Controllers
     public class Courses1Controller : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment _environment;
+        private readonly IProgramRepository _repository;
+        private readonly ILogger<CoursesController> _logger;
 
-        public Courses1Controller(ApplicationDbContext context)
+        public Courses1Controller (IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context, IHostingEnvironment environment)
         {
+            _repository = repository;
+            _logger = logger;
             _context = context;
+            _environment = environment;
         }
 
         // GET: api/Courses1
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
         {
-            return Ok(await _context.Courses.ToListAsync());
+           
+            return Ok(await _repository.GetAllCoursesAsync(false));
         }
 
         // GET: api/Courses1/5/true course , modules and activites
@@ -102,7 +114,7 @@ namespace LMS_1_1.Controllers
                 Name = course1.Name,
                 StartDate = course1.StartDate,
                 Description = course1.Description,
-                courseImgPath = course1.courseImgPath,
+                courseImgPath = course1.CourseImgPath,
                 Modules = Modules
             };
 
@@ -146,14 +158,30 @@ namespace LMS_1_1.Controllers
         }
 
         // POST: api/Courses1
-        [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse([FromBody] Course course)
+        [HttpPost, DisableRequestSizeLimit]
+        public async Task<ActionResult<Course>> PostCourse([FromForm] CourseViewModel courseVm)
         {
-            _context.Courses.Add(course);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Course course = new Course
+            {
+                Name = courseVm.Name,
+                StartDate = courseVm.StartDate,
+                Description = courseVm.Description,
+                CourseImgPath = @"..\assets\img\"+ courseVm.FileData.FileName
+            };
+         
+           _context.Courses.Add(course);
             await _context.SaveChangesAsync();
-
+            Upload.UploadFile(courseVm.FileData);
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
+
+
+        
+
 
         // DELETE: api/Courses1/5
         [HttpDelete("{id}")]

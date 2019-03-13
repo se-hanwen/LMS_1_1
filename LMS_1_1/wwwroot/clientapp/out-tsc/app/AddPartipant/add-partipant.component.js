@@ -8,11 +8,11 @@ var AddPartipantComponent = /** @class */ (function () {
         this.route = route;
         this.router = router;
         this.PartipantService = PartipantService;
+        this.test = "";
         this.pageTitle = "";
         this.BlackList = [];
         this._ChooseFrom = [];
         this._Choosed = [];
-        this.courseId = "";
         this._listFilter = '';
     }
     Object.defineProperty(AddPartipantComponent.prototype, "ChooseFrom", {
@@ -48,8 +48,8 @@ var AddPartipantComponent = /** @class */ (function () {
     });
     AddPartipantComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.courseId = this.route.snapshot.paramMap.get('id');
-        this.PartipantService.CourseId = this.courseId;
+        this.courseid = this.route.snapshot.paramMap.get('id');
+        this.PartipantService.CourseId = this.courseid;
         this.PartipantService.GetStudentsOff().subscribe(function (Choose) { return _this.ChooseFrom = Choose; });
         this.PartipantService.GetStudentsOn().subscribe(function (Choosed) {
             _this.Choosed = Choosed;
@@ -109,6 +109,7 @@ var AddPartipantComponent = /** @class */ (function () {
     };
     AddPartipantComponent.prototype.SaveStudents = function () {
         this.PartipantService.SaveStudents().subscribe();
+        //this.router.navigate(['/courses', this.courseid]);
     };
     AddPartipantComponent.prototype.performFilter = function (FilterBy) {
         var l1 = this.BlackList.length, i1;

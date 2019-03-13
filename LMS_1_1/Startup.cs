@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace LMS_1_1
 {
@@ -68,13 +70,15 @@ namespace LMS_1_1
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:1234")
+                    builder.AllowAnyOrigin()
+                    //.WithOrigins("http://localhost:1234")
                     .AllowAnyMethod()
                     .AllowAnyHeader() ;
                 });
                 
             });
-
+          
+           
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -100,7 +104,7 @@ namespace LMS_1_1
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
+          
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
