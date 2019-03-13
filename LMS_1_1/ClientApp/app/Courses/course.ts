@@ -6,7 +6,6 @@ export interface ICourse {
     startDate: Data;
     description: string;
     courseImgPath?: string;
-
    modules?:IModule[];
 }
 

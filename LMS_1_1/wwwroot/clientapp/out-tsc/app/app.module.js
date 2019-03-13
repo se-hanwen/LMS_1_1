@@ -9,6 +9,7 @@ import { NoRouteModule } from './NoRoute/no-route.module';
 import { NoRouteComponent } from './NoRoute/no-route.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CoursesModule } from './Courses/courses.module';
+import { DocumentsModule } from './documents/documents.module';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -22,6 +23,7 @@ var AppModule = /** @class */ (function () {
                 BrowserModule,
                 AddPartipantModule,
                 CoursesModule,
+                DocumentsModule,
                 RouterModule.forRoot([
                     {
                         path: '**', component: NoRouteComponent

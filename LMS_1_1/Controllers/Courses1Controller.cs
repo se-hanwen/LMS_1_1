@@ -23,9 +23,9 @@ namespace LMS_1_1.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _environment;
         private readonly IProgramRepository _repository;
-        private readonly ILogger<CoursesController> _logger;
+        private readonly ILogger<Courses1Controller> _logger;
 
-        public Courses1Controller (IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context, IHostingEnvironment environment)
+        public Courses1Controller (IProgramRepository repository, ILogger<Courses1Controller> logger, ApplicationDbContext context, IHostingEnvironment environment)
         {
             _repository = repository;
             _logger = logger;

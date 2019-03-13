@@ -60,6 +60,7 @@ namespace LMS_1_1
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IProgramRepository, ProgramRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<ICourseUsersRepository, CourseUsersRepository>();
 
             services.AddTransient<UserManager<LMSUser>>();

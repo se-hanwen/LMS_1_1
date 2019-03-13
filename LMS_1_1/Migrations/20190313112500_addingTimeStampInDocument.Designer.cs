@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS_1_1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190312092705_fixit")]
-    partial class fixit
+    [Migration("20190313112500_addingTimeStampInDocument")]
+    partial class addingTimeStampInDocument
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -92,6 +92,57 @@ namespace LMS_1_1.Migrations
                     b.HasIndex("LMSUserId");
 
                     b.ToTable("CourseUsers");
+                });
+
+            modelBuilder.Entity("LMS_1_1.Models.Document", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("ActivityId");
+
+                    b.Property<Guid?>("CourseId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("DocumentTypeId");
+
+                    b.Property<string>("LMSUserId");
+
+                    b.Property<Guid?>("ModuleId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Path");
+
+                    b.Property<DateTime>("UploadDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("LMSUserId");
+
+                    b.HasIndex("ModuleId");
+
+                    b.ToTable("Documents");
+                });
+
+            modelBuilder.Entity("LMS_1_1.Models.DocumentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentTypes");
                 });
 
             modelBuilder.Entity("LMS_1_1.Models.LMSActivity", b =>
@@ -343,6 +394,30 @@ namespace LMS_1_1.Migrations
                         .WithMany("CourseUser")
                         .HasForeignKey("LMSUserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("LMS_1_1.Models.Document", b =>
+                {
+                    b.HasOne("LMS_1_1.Models.LMSActivity", "Activity")
+                        .WithMany()
+                        .HasForeignKey("ActivityId");
+
+                    b.HasOne("LMS_1_1.Models.Course", "Courses")
+                        .WithMany()
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("LMS_1_1.Models.DocumentType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("LMS_1_1.Models.LMSUser", "LMSUser")
+                        .WithMany()
+                        .HasForeignKey("LMSUserId");
+
+                    b.HasOne("LMS_1_1.Models.Module", "Module")
+                        .WithMany()
+                        .HasForeignKey("ModuleId");
                 });
 
             modelBuilder.Entity("LMS_1_1.Models.LMSActivity", b =>
