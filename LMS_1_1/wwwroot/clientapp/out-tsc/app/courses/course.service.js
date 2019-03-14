@@ -8,8 +8,8 @@ var CourseService = /** @class */ (function () {
         this.http = http;
         this.courseUrl = "https://localhost:44396/api/courses1";
     }
-    CourseService.prototype.getCourses = function () {
-        return this.http.get(this.courseUrl).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    CourseService.prototype.getCourses = function (userid) {
+        return this.http.get(this.courseUrl + "/foruser?id=" + userid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.getCourseById = function (id) {
         return this.http.get(this.courseUrl + "/" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));

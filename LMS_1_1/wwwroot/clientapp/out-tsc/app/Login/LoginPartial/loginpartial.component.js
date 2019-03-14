@@ -6,10 +6,11 @@ var LoginpartialComponent = /** @class */ (function () {
         this.AuthService = AuthService;
     }
     LoginpartialComponent.prototype.ngOnInit = function () {
-        this.isSignedIn = false; //this.AuthService.isAuthenticated();
-        this.isTeacher = this.AuthService.IsTeacher();
-        this.firstName = this.AuthService.FirstName;
-        this.lastName = this.AuthService.LastName;
+        var _this = this;
+        this.AuthService.isAuthenticated.subscribe(function (i) { return _this.isAuthenticated = i; });
+        this.AuthService.isTeacher.subscribe(function (i) { return _this.isTeacher = i; });
+        this.AuthService.firstName.subscribe(function (fn) { return _this.firstName = fn; });
+        this.AuthService.lastName.subscribe(function (ln) { return _this.lastName = ln; });
     };
     LoginpartialComponent.prototype.logout = function () {
         this.AuthService.logout();

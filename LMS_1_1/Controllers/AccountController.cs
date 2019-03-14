@@ -92,9 +92,9 @@ namespace LMS_1_1.Controllers
 
                         claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Email));
                         claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-                        claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName));
-                        claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName));
-                        claims.Add(new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName));
+                        claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""));
+                        claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName ?? ""));
+                        claims.Add(new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName ?? ""));
                         claims.Add(new Claim(JwtRegisteredClaimNames.NameId, user.Id));
 
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));

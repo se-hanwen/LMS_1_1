@@ -17,8 +17,8 @@ export class CourseService {
     constructor(private http: HttpClient) {
 
     }
-    getCourses(): Observable<ICourse[]> {
-        return this.http.get<ICourse[]>(this.courseUrl).pipe(
+    getCourses(userid: string): Observable<ICourse[]> {
+        return this.http.get<ICourse[]>(this.courseUrl+"/foruser?id="+userid).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
             );

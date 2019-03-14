@@ -41,6 +41,14 @@ namespace LMS_1_1.Controllers
             return Ok(await _repository.GetAllCoursesAsync(false));
         }
 
+
+        [HttpGet("foruser")]
+        public async Task<ActionResult<IEnumerable<Course>>> GetCoursesforuser(string id)
+        {
+
+            return Ok(await _repository.GetCoursesForUserAsync(id));
+        }
+
         // GET: api/Courses1/5/true course , modules and activites
         // GET: api/Courses1/5/false  just the course
         [HttpGet("{id}")]

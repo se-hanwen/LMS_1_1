@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 
 @Component({
@@ -6,28 +6,22 @@ import { AuthService } from 'ClientApp/app/auth/auth.service';
   templateUrl: './loginpartial.component.html',
   styleUrls: ['./loginpartial.component.css']
 })
-export class LoginpartialComponent implements OnInit, OnChanges {
+export class LoginpartialComponent implements OnInit {
   
-  isSignedIn: boolean
+  isAuthenticated: boolean
   isTeacher: boolean
   firstName: string;
   lastName: string;
   constructor(private AuthService:AuthService) { }
 
   ngOnInit() {
-    this.isSignedIn=this.AuthService.isAuthenticated();
-    this.isTeacher=this.AuthService.IsTeacher();
-    this.firstName=this.AuthService.FirstName;
-    this.lastName=this.AuthService.LastName;
+    this.AuthService.isAuthenticated.subscribe( i => this.isAuthenticated=i);
+    this.AuthService.isTeacher.subscribe(i => this.isTeacher=i);
+    this.AuthService.firstName.subscribe(fn => this.firstName=fn);
+    this.AuthService.lastName.subscribe(ln => this.lastName=ln);
   }
 
 
-  ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
-    this.isSignedIn=this.AuthService.isAuthenticated();
-    this.isTeacher=this.AuthService.IsTeacher();
-    this.firstName=this.AuthService.FirstName;
-    this.lastName=this.AuthService.LastName;
-  }
 
   public logout()
   {

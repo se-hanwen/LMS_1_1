@@ -1,7 +1,7 @@
 
 <div class="row" style="margin-bottom:15px;">
     <div class="col-md-4">
-        <a class="btn btn-outline-primary" [routerLink]="['/courses/create']"> Create Course</a>
+        <a class="btn btn-outline-primary" [routerLink]="['/courses/create']" *ngIf="isTeacher"> Create Course</a>
     </div>
 </div>
     <div class="row" *ngIf='courses && courses.length'>
@@ -21,7 +21,7 @@
 
                     </div>
                 </a>
-                <div class="card-body">
+                <div class="card-body" *ngIf="isTeacher">
                     <a class="card-link">Edit Course</a>
                     <a class="card-link">Delete Course</a>
                 </div>

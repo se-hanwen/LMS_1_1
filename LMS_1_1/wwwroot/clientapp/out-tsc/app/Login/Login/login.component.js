@@ -19,7 +19,10 @@ var LoginComponent = /** @class */ (function () {
         var _this = this;
         this.errorMessage = "";
         this.db.login(this.user)
-            .subscribe(function (err) { return _this.errorMessage = "Failed to login"; });
+            .subscribe(function (success) {
+            if (success)
+                _this.router.navigate(["courses"]);
+        }, function (err) { return _this.errorMessage = "Failed to login"; });
     };
     LoginComponent = tslib_1.__decorate([
         Component({

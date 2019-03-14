@@ -1,14 +1,14 @@
 <ul class="navbar-nav">
- <div *ngIf="AuthService.isAuthenticated()">
+ <div *ngIf="isAuthenticated; else LoggedOut">
       <li class="nav-item" >
           <a [routerLink]="['/Account/Manage']">
               Hello
               
-                  <span>{{AuthService.FirstName}} {{AuthService.LastName}}</span>
+                  <span>{{firstName}} {{lastName}}</span>
               
           </a>
       </li>
-          <li class="nav-item" *ngIf="this.AuthService.IsTeacher()">
+          <li class="nav-item" *ngIf="isTeacher">
               <a [routerLink]="['/Account/Register']">Register</a>
           </li>
       
@@ -17,13 +17,13 @@
 
       </li>
     </div>
-    <!--<div *ngElse> -->
-<div>
+
+<ng-template #LoggedOut>
 
 
       <li class="nav-item">
         <a [routerLink]="['/Account/Login']">Login</a>
       </li>
 
-</div>
+</ng-template>
 </ul>

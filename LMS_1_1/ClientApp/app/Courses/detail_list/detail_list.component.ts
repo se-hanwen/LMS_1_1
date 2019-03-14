@@ -2,6 +2,7 @@
 import { ICourse } from '../course';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../course.service';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
 
 @Component({
     selector: "detail_list",
@@ -15,14 +16,15 @@ export class detailList implements OnInit{
      errorMessage: string;
      @Input()   courseid: string;
 
-
+     isTeacher: boolean;
     constructor(private route: ActivatedRoute,
         private CourseService: CourseService
+        , private AuthService : AuthService
         ) 
         { }
     
     ngOnInit() {
-  
+        this.AuthService.isTeacher.subscribe( i => this.isTeacher=i);
         this.CourseService.getCourseAllById(this.courseid).subscribe(
                 course => {
                     this.course = course;
