@@ -7,13 +7,19 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { RouterModule } from '@angular/router';
 import { PartipantListComponent } from '../PartipantList/partipant-list.component';
 import { detailList } from './detail_list/detail_list.component';
+import { ExamplecompComponent } from './examplecomp/examplecomp.component';
+import { CourseDeleteComponent } from './course-delete/course-delete.component';
+import { CourseEditComponent } from './course-edit/course-edit.component';
 @NgModule({
     declarations: [
         CourseListComponent,
         CourseDetailComponent,
         CreateCourseComponent,
         PartipantListComponent,
-        detailList
+        detailList,
+        ExamplecompComponent,
+        CourseDeleteComponent,
+        CourseEditComponent
     ],
   imports: [
       CommonModule,

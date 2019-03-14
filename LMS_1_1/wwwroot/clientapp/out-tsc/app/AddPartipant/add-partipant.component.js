@@ -8,6 +8,7 @@ var AddPartipantComponent = /** @class */ (function () {
         this.route = route;
         this.router = router;
         this.PartipantService = PartipantService;
+        this.test = "";
         this.pageTitle = "";
         this.BlackList = [];
         this._ChooseFrom = [];
