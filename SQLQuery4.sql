@@ -7,5 +7,3 @@ drop column courseImgPath
 alter table courses
 add  CourseImgPath nvarchar(max) null
 
-courseImgPath
-assets\img\0_JLPdbimCEnWB8qJL.png

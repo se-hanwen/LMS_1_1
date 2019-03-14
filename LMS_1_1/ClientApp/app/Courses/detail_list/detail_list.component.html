@@ -4,24 +4,30 @@
         <!--string name = Regex.Replace(@module.Name, @"[\W_]+", string.Empty);-->
         <div class="card" *ngFor="let module of course.modules">
             <div class="card-header" [id]="module.id">
-                <h5 class="mb-0">
-                    <div class="btn btn-link collapsed"
+                <div class="row">
+                
+                    <div class="btn btn-link collapsed col-6"
                         [attr.data-target]="'#'+ module.name2"
                         [attr.aria-controls]="module.name2"
                         data-toggle="collapse"
                         [attr.aria-expanded]="false"
+                        (click)="TogggelCollapse(module.id)"
                         >
-                            
-                             <div (click)="TogggelCollapse(module.id)">
-                           <span > {{ module.name }}</span>
-                        </div>
+                        <h5 class="mb-0">  
+                          
+                            {{ module.name }}
+                        </h5>
                         
                      
                     </div>
-                </h5>
-                <div >
+                    
+                
+                <div class="col-6 somepadding">
+                        <h5 class="mb-0"> 
                         <a [routerLink]="['/Modules/', module.id]">Details</a>
+                    </h5>
                      </div>
+                    </div>
             </div>
 
             <div [id]="module.name2" [class]="'collapse'+ module.isExpanded" [attr.aria-labelledby]="module.id" data-parent="#accordion">

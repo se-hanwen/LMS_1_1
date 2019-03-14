@@ -12,7 +12,7 @@
 
 
                 <a [routerLink]="['/courses', course.id]">
-                    <img class="card-img-top" width="80px" height="300px"  [src]="course.courseImgPath" alt="Card image cap" />
+                    <img class="card-img-top" width="80px" height="300px"  [src]="course.courseImgPath==null?'':course.courseImgPath" alt="Card image cap" />
                     <div class="card-body">
                         <h3 class="card-title">{{course.name}}</h3>
 

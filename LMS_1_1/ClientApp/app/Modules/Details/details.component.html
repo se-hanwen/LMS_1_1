@@ -2,11 +2,11 @@
   <div class="row">
   
       <div class="col-md-4">
-          <div class="card" style="width: 19rem;"></div>
+          <div class="card" style="width: 19rem;">
               <div class="card-body">
                   <h3 class="card-title">{{module.name}}</h3>
                   <h5 class="card-title">{{module.startDate |date: 'yyyy-MM-dd'}} - {{module.endDate |date: 'yyyy-MM-dd'}}</h5>
-                  <p class="card-text"> {{Module.description}}</p>
+                  <p class="card-text"> {{module.description}}</p>
   
               </div>
   
@@ -29,14 +29,7 @@
                   </div>
             
           </div>
-  
-
-              <div>
-  
-  
-              </div>
-  
-          </div>
+        </div>
   
       <div class="col-md-6">
            <activity_list [moduleid]="module.id"></activity_list>

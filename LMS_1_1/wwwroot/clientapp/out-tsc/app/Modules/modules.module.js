@@ -5,6 +5,8 @@ import { AddModuleWithCourseIdComponent } from './Create/add-module-with-course-
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ActitityListComponent } from './Activity_list/actitity_list.component';
+import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
+import { ModulDetailsComponent } from './Details/details.component';
 var ModulesModule = /** @class */ (function () {
     function ModulesModule() {
     }
@@ -12,7 +14,8 @@ var ModulesModule = /** @class */ (function () {
         NgModule({
             declarations: [
                 AddModuleWithCourseIdComponent,
-                ActitityListComponent
+                ActitityListComponent,
+                ModulDetailsComponent
             ],
             imports: [
                 CommonModule,
@@ -20,6 +23,11 @@ var ModulesModule = /** @class */ (function () {
                 RouterModule.forChild([
                     {
                         path: 'Modules/create', component: AddModuleWithCourseIdComponent
+                    },
+                    {
+                        path: 'Modules/:id',
+                        canActivate: [IsAuthenticatedGuard],
+                        component: ModulDetailsComponent
                     }
                 ])
             ]

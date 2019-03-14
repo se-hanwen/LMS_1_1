@@ -17,7 +17,7 @@ export class ActitityListComponent implements OnInit {
   @Input()   moduleid: string;
 
 
-  isTeacher: boolean;
+  isTeacher: boolean=false;
  constructor(private route: ActivatedRoute,
      private CourseService: CourseService
      , private AuthService : AuthService
