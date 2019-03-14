@@ -11,16 +11,17 @@
                         data-toggle="collapse"
                         [attr.aria-expanded]="false"
                         >
-                            <div class="row">
-                             <div class="col-6" (click)="TogggelCollapse(module.id)">
+                            
+                             <div (click)="TogggelCollapse(module.id)">
                            <span > {{ module.name }}</span>
                         </div>
-                        <div class="col-6">
-                           <a [routerLink]="['/Modules/', module.id]">Details</a>
-                        </div>
-                        </div> 
+                        
+                     
                     </div>
                 </h5>
+                <div >
+                        <a [routerLink]="['/Modules/', module.id]">Details</a>
+                     </div>
             </div>
 
             <div [id]="module.name2" [class]="'collapse'+ module.isExpanded" [attr.aria-labelledby]="module.id" data-parent="#accordion">
