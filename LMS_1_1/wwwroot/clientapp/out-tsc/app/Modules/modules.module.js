@@ -4,13 +4,15 @@ import { CommonModule } from '@angular/common';
 import { AddModuleWithCourseIdComponent } from './Create/add-module-with-course-id.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ActitityListComponent } from './Activity_list/actitity_list.component';
 var ModulesModule = /** @class */ (function () {
     function ModulesModule() {
     }
     ModulesModule = tslib_1.__decorate([
         NgModule({
             declarations: [
-                AddModuleWithCourseIdComponent
+                AddModuleWithCourseIdComponent,
+                ActitityListComponent
             ],
             imports: [
                 CommonModule,

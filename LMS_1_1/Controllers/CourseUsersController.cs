@@ -68,7 +68,7 @@ namespace LMS_1_1.Controllers
         }
 
         [HttpGet("{CourseId}")]
-        public async Task<ActionResult<Guid>> GetStart(Guid CourseId)
+        public ActionResult<Guid> GetStart(Guid CourseId)
         {
            
             return Ok(CourseId);

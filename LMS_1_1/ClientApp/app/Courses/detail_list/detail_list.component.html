@@ -10,11 +10,15 @@
                         [attr.aria-controls]="module.name2"
                         data-toggle="collapse"
                         [attr.aria-expanded]="false"
-                        (click)="TogggelCollapse(module.id)"
                         >
-                             
-                            {{ module.name }}
-
+                            <div class="row">
+                             <div class="col-6" (click)="TogggelCollapse(module.id)">
+                           <span > {{ module.name }}</span>
+                        </div>
+                        <div class="col-6">
+                           <a [routerLink]="['/Modules/', module.id]">Details</a>
+                        </div>
+                        </div> 
                     </div>
                 </h5>
             </div>
@@ -28,7 +32,7 @@
                             <a asp-controller="LMSActivities" asp-action="Details" [attr.asp-route-id]="activity.id">{{activity.name}}</a>
                             <span class="float-right"> {{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}}</span>
                             <p>{{activity.description}}
-                            <br>{{activity.activityType.name}}</p>
+                            <br>{{activity.activityType}}</p>
                             <div *ngIf="isTeacher">
                                 <a asp-controller="LMSActivities" asp-action="Edit" [attr.asp-route-id]="activity.id">Edit Activity</a>&nbsp;|&nbsp;
                                 <a asp-controller="LMSActivities" asp-action="Delete" [attr.asp-route-id]="activity.id">Delete Activity</a>

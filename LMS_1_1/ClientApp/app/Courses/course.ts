@@ -10,6 +10,17 @@ export interface ICourse {
    modules?:IModule[];
 }
 
+export class course implements ICourse
+{
+    id?: Guid;   
+    name: string;
+    startDate: Data;
+    description: string;
+    courseImgPath?: string;
+    modules?: IModule[];
+
+    
+}
 
 export interface IModule {
     id?: Guid;
@@ -19,7 +30,7 @@ export interface IModule {
     description: string;
     name2?:string;
  isExpanded?:string;
-    activities?:IActivity[];
+    activities?:IActivity2[];
 }
 
 export interface IActivity {
@@ -33,6 +44,18 @@ export interface IActivity {
     activityType: IActivityType
 }
 
+
+export interface IActivity2 {
+    id?: Guid;
+    name: string;
+    startDate: Data;
+    endDate: Data;
+    description: string;
+    name2?:string;
+    isExpanded?:string;
+
+    activityType: string
+}
 export interface IActivityType
 {
     id: number;

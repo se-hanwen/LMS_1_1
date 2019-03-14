@@ -3,11 +3,17 @@ import { CommonModule } from '@angular/common';
 import { AddModuleWithCourseIdComponent } from './Create/add-module-with-course-id.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ActitityListComponent } from './Activity_list/actitity_list.component';
+import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
+import { ModulDetailsComponent } from './Details/details.component';
+
 
 
 @NgModule({
   declarations: [
-    AddModuleWithCourseIdComponent
+    AddModuleWithCourseIdComponent,
+    ActitityListComponent,
+    ModulDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +22,12 @@ import { RouterModule } from '@angular/router';
         [
             {
                 path: 'Modules/create', component: AddModuleWithCourseIdComponent
-            }
+            }  , 
+          {
+              path: 'Modules/:id'
+              ,canActivate: [IsAuthenticatedGuard]
+              ,component: ModulDetailsComponent
+          }
         ]
     )
   ]

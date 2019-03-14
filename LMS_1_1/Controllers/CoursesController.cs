@@ -29,7 +29,7 @@ namespace LMS_1_1.Controllers
             _userManager = userManager;
         }
 
-        public async Task<ActionResult<Guid>> CourseStudent(Guid id)
+        public ActionResult<Guid> CourseStudent(Guid id)
         {
 
             return View(id);

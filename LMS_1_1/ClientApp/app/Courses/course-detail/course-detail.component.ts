@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ICourse } from '../course';
+import { ICourse, course } from '../course';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../course.service';
 import { Guid } from 'guid-typescript';
@@ -20,7 +20,7 @@ export class CourseDetailComponent implements OnInit {
     ngOnInit(): void {
         this.AuthService.isTeacher.subscribe( i => this.isTeacher=i);
         let id: string = this.route.snapshot.paramMap.get('id');
-        this.CourseService.getCourseAllById(id).subscribe(
+        this.CourseService.getCourseAndModulebyId(id).subscribe(
                 course => {
                     this.course = course;
                 },
