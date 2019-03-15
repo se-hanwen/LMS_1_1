@@ -1,16 +1,16 @@
 import { async, TestBed } from '@angular/core/testing';
-import { ModulDetailsComponent } from './details.component';
-describe('ModulDetailsComponent', function () {
+import { ManageComponent } from './manage.component';
+describe('ManageComponent', function () {
     var component;
     var fixture;
     beforeEach(async(function () {
         TestBed.configureTestingModule({
-            declarations: [ModulDetailsComponent]
+            declarations: [ManageComponent]
         })
             .compileComponents();
     }));
     beforeEach(function () {
-        fixture = TestBed.createComponent(ModulDetailsComponent);
+        fixture = TestBed.createComponent(ManageComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
@@ -18,4 +18,4 @@ describe('ModulDetailsComponent', function () {
         expect(component).toBeTruthy();
     });
 });
-//# sourceMappingURL=details.component.spec.js.map
+//# sourceMappingURL=manage.component.spec.js.map

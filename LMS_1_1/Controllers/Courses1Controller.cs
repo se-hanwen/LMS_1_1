@@ -13,24 +13,34 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using LMS_1_1.Repository;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace LMS_1_1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Courses1Controller : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _environment;
+        private readonly UserManager<LMSUser> _userManager;
         private readonly IProgramRepository _repository;
         private readonly ILogger<CoursesController> _logger;
 
-        public Courses1Controller (IProgramRepository repository, ILogger<CoursesController> logger, ApplicationDbContext context, IHostingEnvironment environment)
+        public Courses1Controller (IProgramRepository repository
+            , ILogger<CoursesController> logger
+            , ApplicationDbContext context
+            , IHostingEnvironment environment
+            , UserManager<LMSUser> userManager)
         {
             _repository = repository;
             _logger = logger;
             _context = context;
             _environment = environment;
+            _userManager = userManager;
         }
 
         // GET: api/Courses1
@@ -43,10 +53,13 @@ namespace LMS_1_1.Controllers
 
 
         [HttpGet("foruser")]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCoursesforuser(string id)
+        public async Task<ActionResult<IEnumerable<Course>>> GetCoursesforuser()
         {
 
-            return Ok(await _repository.GetCoursesForUserAsync(id));
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+
+            return Ok(await _repository.GetCoursesForUserAsync(user.Id));
         }
 
         // GET: api/Courses1/5/true course , modules and activites

@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h4>Create a new account.</h4>
+      <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
+      <form (submit)="onRegister()" #theForm="ngForm" novalidate>
+          <div class="form-group">
+              <label for="user.email">Email</label>
+              <input type="text" class="form-control" name="email" [(ngModel)]="user.email" #email="ngModel" required />
+              <div class="text-danger" *ngIf="user.email.touched && user.email.invalid && user.email.errors.required" >Email is required!</div>
+          </div>
+          <div class="form-group">
+                <label for="user.firstName">First Name</label>
+                <input type="text" class="form-control" name="firstName" [(ngModel)]="user.firstName" #firstName="ngModel" required />
+                <div class="text-danger" *ngIf="user.firstName.touched && user.firstName.invalid && user.firstName.errors.required" >First Name is required!</div>
+          </div>
+          <div class="form-group">
+                  <label for="user.lastName">Last Name</label>
+                  <input type="text" class="form-control" name="lastName" [(ngModel)]="user.lastName" #lastName="ngModel" required />
+                  <div class="text-danger" *ngIf="user.lastName.touched && user.lastName.invalid && user.lastName.errors.required" >Last Name is required!</div>
+          </div>
+          <div class="form-group">
+              <label for="user.password">Password</label>
+              <input type="password" class="form-control" name="password" [(ngModel)]="user.password" required #password="ngModel" />
+              <div class="text-danger" *ngIf="user.password.touched && user.password.invalid && user.password.errors.required">Password is required!</div>
+          </div>
+          <div class="form-group">
+              <label for="user.confirmpassword">Confirm Password</label>
+              <input type="password" class="form-control" name="confirmpassword" [(ngModel)]="user.confirmpassword" required #confirmpassword="ngModel" />
+              <div class="text-danger" *ngIf="user.confirmpassword.touched && user.confirmpassword.invalid && user.confirmpassword.errors.required">Confirm Password is required!</div>
+              <div class="text-danger" *ngIf="user.confirmpassword.touched && user.password.touched && user.confirmpassword!=user.password">The password and the confirm password needs to be alike</div>
+          </div>
+          <div class="form-group">  
+              <label for="user.role">Role</label>
+              <select class="form-control" id="role" [(ngModel)]="user.role" name="role" required #role="ngModel">
+                  <option value="Student" selected>Student</option>
+                  <option value="Teacher">Teacher</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
+              <a routerLink="/" class="btn btn-default">Cancel</a>
+          </div>    
+        </form>
+  </div>
+</div>
