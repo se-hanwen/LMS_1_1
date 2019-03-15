@@ -4,17 +4,23 @@ import { PartipantService } from 'ClientApp/app/AddPartipant/partipant.service';
 import { Router } from '@angular/router';
 import { throwError, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoginMessageHandlerService } from '../login-message-handler.service';
 var AddStudentToCourseComponent = /** @class */ (function () {
-    function AddStudentToCourseComponent(PartipantService, route, cd) {
+    function AddStudentToCourseComponent(PartipantService, route, cd, messhandler) {
         this.PartipantService = PartipantService;
         this.route = route;
         this.cd = cd;
+        this.messhandler = messhandler;
         this.test = "";
         this.unsubscribe = new Subject();
         this.pageTitle = "";
         this.BlackList = [];
         this._ChooseFrom = [];
+        this.Saveoff = null;
+        this.SaveOn = null;
+        this.Saveusername = null;
         this._Choosed = [];
+        this.userid = null;
         this._listFilter = '';
     }
     Object.defineProperty(AddStudentToCourseComponent.prototype, "ChooseFrom", {
@@ -52,22 +58,59 @@ var AddStudentToCourseComponent = /** @class */ (function () {
         var _this = this;
         // this.userid= this.route.snapshot.paramMap.get('id');
         // getfrom save on regsiteruser
-        this.PartipantService.GetCoursesOff(this.userid)
+        this.messhandler.userid
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (resp) {
+            if (resp != null && resp != " ") {
+                _this.userid = resp;
+                if (_this.Saveoff != null) {
+                    _this.Saveoff.unsubscribe;
+                }
+                _this.Saveoff = _this.PartipantService.GetCoursesOff(_this.userid)
+                    .pipe(takeUntil(_this.unsubscribe))
+                    .subscribe(function (Choose) {
+                    _this.ChooseFrom = Choose;
+                    _this.cd.markForCheck();
+                });
+                if (_this.SaveOn != null) {
+                    _this.SaveOn.unsubscribe;
+                }
+                _this.Saveoff = _this.PartipantService.GetCoursesOff(_this.userid)
+                    .pipe(takeUntil(_this.unsubscribe))
+                    .subscribe(function (Choose) {
+                    _this.ChooseFrom = Choose;
+                    _this.cd.markForCheck();
+                });
+                _this.SaveOn = _this.PartipantService.GetCoursesOn(_this.userid)
+                    .pipe(takeUntil(_this.unsubscribe))
+                    .subscribe(function (Choosed) {
+                    _this.Choosed = Choosed;
+                    _this.cd.markForCheck();
+                });
+                if (_this.Saveusername != null) {
+                    _this.Saveusername.unsubscribe();
+                }
+                _this.Saveusername = _this.PartipantService.GetUserName(_this.userid)
+                    .pipe(takeUntil(_this.unsubscribe))
+                    .subscribe(function (UserName) {
+                    if (UserName != null) {
+                        _this.pageTitle = UserName.value.name;
+                    }
+                    _this.cd.markForCheck();
+                });
+                _this.cd.markForCheck();
+            }
+        });
+        this.Saveoff = this.PartipantService.GetCoursesOff(this.userid)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (Choose) {
             _this.ChooseFrom = Choose;
             _this.cd.markForCheck();
         });
-        this.PartipantService.GetCoursesOn(this.userid)
+        this.SaveOn = this.PartipantService.GetCoursesOn(this.userid)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (Choosed) {
             _this.Choosed = Choosed;
-            _this.cd.markForCheck();
-        });
-        this.PartipantService.GetUserName(this.userid)
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (UserName) {
-            _this.pageTitle = UserName.value.name;
             _this.cd.markForCheck();
         });
     };
@@ -89,7 +132,7 @@ var AddStudentToCourseComponent = /** @class */ (function () {
             });
         }
     };
-    AddStudentToCourseComponent.prototype.uunChooseCourse = function (corseid) {
+    AddStudentToCourseComponent.prototype.unChooseCourse = function (corseid) {
         var keyin = this.Choosed.findIndex(function (cu) { return cu.id.toString() == corseid; });
         if (keyin == -1)
             throwError;
@@ -153,7 +196,8 @@ var AddStudentToCourseComponent = /** @class */ (function () {
             styleUrls: ['./add_student_to_course.component.css']
         }),
         tslib_1.__metadata("design:paramtypes", [PartipantService, Router,
-            ChangeDetectorRef])
+            ChangeDetectorRef,
+            LoginMessageHandlerService])
     ], AddStudentToCourseComponent);
     return AddStudentToCourseComponent;
 }());

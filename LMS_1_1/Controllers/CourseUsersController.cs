@@ -1,6 +1,7 @@
 ﻿using LMS_1_1.Data;
 using LMS_1_1.Models;
 using LMS_1_1.Repository;
+using LMS_1_1.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -73,10 +74,10 @@ namespace LMS_1_1.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<ICollection<Course>>> GetCoursesOff([FromBody] CourseIdViewModel UserId)
+        public async Task<ActionResult<ICollection<Course>>> GetCoursesOff([FromBody] UserIdViewModel UserId)
         {
 
-            var res =await  _repository.GetCoursesOffAsync(UserId.CourseId);
+            var res =await  _repository.GetCoursesOffAsync(UserId.UserId);
 
             /* var res = (await _repository.GetUsers(CourseId.CourseId, false))
                  .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
@@ -85,10 +86,10 @@ namespace LMS_1_1.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<ICollection<Course>>> GetCoursesOn([FromBody] CourseIdViewModel UserId)
+        public async Task<ActionResult<ICollection<Course>>> GetCoursesOn([FromBody] UserIdViewModel UserId)
         {
 
-            var res = await _repository.GetCoursesOnAsync(UserId.CourseId);
+            var res = await _repository.GetCoursesOnAsync(UserId.UserId);
 
             /* var res = (await _repository.GetUsers(CourseId.CourseId, false))
                  .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
@@ -98,11 +99,17 @@ namespace LMS_1_1.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<string>> GetUserName([FromBody] CourseIdViewModel UserId)
+        public async Task<ActionResult<string>> GetUserName([FromBody] UserIdViewModel UserId)
         {
 
-            var res = (await _repository.GetUsers(UserId.CourseId, true))
-                .Select(u => u.FirstName + ' ' + u.LastName).FirstOrDefault();
+            var workonuser = await _userManager.FindByIdAsync(UserId.UserId);
+
+            var res = Json(new
+            {
+                Name = workonuser.FirstName +" "+workonuser.LastName
+
+             
+        });
 
             /* var res = (await _repository.GetUsers(CourseId.CourseId, false))
                  .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
@@ -111,16 +118,16 @@ namespace LMS_1_1.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<bool>> AddCoursesToStudent([FromBody] SavecouseListViewmodel savecouseListViewmodel)
+        public async Task<ActionResult<bool>> AddCoursesToStudent([FromBody] SaveUsercourseListViewmode savecouseListViewmodel)
         {
             //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
             try
             {
-                await _repository.RemoveAllCourseUsersForCourse(savecouseListViewmodel.Courseid);
+                await _repository.RemoveAllCourseUsersForCourse(savecouseListViewmodel.UserId);
 
-                foreach (var userid in savecouseListViewmodel.Userids)
+                foreach (var courseid in savecouseListViewmodel.CourseIds)
                 {
-                    await _repository.AddCourseUser(savecouseListViewmodel.Courseid, userid);
+                    await _repository.AddCourseUser( courseid, savecouseListViewmodel.UserId);
                 }
 
                 await _repository.SaveChanges();
@@ -206,7 +213,7 @@ namespace LMS_1_1.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<Boolean>> AddStudentsToCourse([FromBody] SavecouseListViewmodel savecouseListViewmodel)
+        public async Task<ActionResult<Boolean>> AddStudentsToCourse([FromBody] SaveUsercourseListViewmodel savecouseListViewmodel)
         {
             //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
             // atm SavecouseListViewmodel.Courseid is UserId

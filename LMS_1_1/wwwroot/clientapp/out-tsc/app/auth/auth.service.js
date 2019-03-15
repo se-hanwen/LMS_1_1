@@ -126,7 +126,7 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.register = function (registeruser) {
         return this.http.post(this.url + "/account/RegisterNewUser", registeruser, { headers: this.getAuthHeader() })
             .pipe(map(function (response) {
-            return true;
+            return response;
         }));
     };
     AuthService.prototype.checkisAuthenticated = function (token, tokenExpiration) {

@@ -123,7 +123,7 @@ export class PartipantService implements  OnDestroy{
     }
 
 
-    public GetCoursesOff(userid: string): Observable<ICourse[] | undefined>
+    public GetCoursesOff(userid?: string): Observable<ICourse[] | undefined>
     {
         let url:string="https://localhost:44396/CourseUsers/GetCoursesOff";  
         let parmas={"UserId":userid}; 
@@ -137,7 +137,7 @@ export class PartipantService implements  OnDestroy{
     }
 
 
-    public GetCoursesOn(userid: string): Observable<ICourse[] | undefined>
+    public GetCoursesOn(userid?: string): Observable<ICourse[] | undefined>
     {
         let url:string="https://localhost:44396/CourseUsers/GetCoursesOn";  
         let parmas={"UserId":userid};   
@@ -178,7 +178,7 @@ export class PartipantService implements  OnDestroy{
             courseids.push(part.id.toString());
          }
          //let parmas={"CourseId":this.CourseId,Userids};    
-         return this.http.post(url,{"CourseId":userid,courseids},
+         return this.http.post(url,{"UserId":userid,courseids},
          {headers: this.getAuthHeader() 
      })
          .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),

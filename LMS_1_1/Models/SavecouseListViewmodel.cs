@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LMS_1_1.Models
 {
-    public class SavecouseListViewmodel
+    public class SaveUsercourseListViewmodel
     {
         public string Courseid { get; set; }
 

@@ -137,7 +137,7 @@ namespace LMS_1_1.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> RegisterNewUser([FromBody] RegisterUserViewModel registerUser)
+        public async Task<ActionResult<string>> RegisterNewUser([FromBody] RegisterUserViewModel registerUser)
         {
             if (ModelState.IsValid)
             {
@@ -154,19 +154,27 @@ namespace LMS_1_1.Controllers
                     {
                         throw new Exception(string.Join("\n", ok.Errors));
                     }
-                  /*  var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
+                    /*  var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                      var callbackUrl = Url.Page(
+                          "/Account/ConfirmEmail",
+                          pageHandler: null,
+                          values: new { userId = user.Id, code = code },
+                          protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(registerUser.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-                        */
+                      await _emailSender.SendEmailAsync(registerUser.Email, "Confirm your email",
+                          $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                          */
                     // teacher makes users so no log in.
                     // await _signInManager.SignInAsync(user, isPersistent: false);
-                    return Created("", true);
+
+                     var res = Json(new
+                     {
+                         Name = user.Id
+                     });
+         
+
+
+                    return Created("", res);
                 }
                 foreach (var error in result.Errors)
                 {

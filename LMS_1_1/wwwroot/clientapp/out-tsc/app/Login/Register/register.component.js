@@ -4,10 +4,12 @@ import { RegisterUser } from './registeruser';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoginMessageHandlerService } from '../login-message-handler.service';
 var RegisterComponent = /** @class */ (function () {
-    function RegisterComponent(db, cd) {
+    function RegisterComponent(db, cd, messhandler) {
         this.db = db;
         this.cd = cd;
+        this.messhandler = messhandler;
         this.unsubscribe = new Subject();
         this.user = new RegisterUser();
     }
@@ -19,9 +21,9 @@ var RegisterComponent = /** @class */ (function () {
         this.db.register(this.user)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (success) {
-            if (success)
-                return true;
+            _this.messhandler.Send(success.value.name);
             _this.cd.markForCheck();
+            return true;
         }, function (err) { return _this.errorMessage = "Failed to Create user"; });
     };
     RegisterComponent.prototype.ngOnDestroy = function () {
@@ -35,7 +37,8 @@ var RegisterComponent = /** @class */ (function () {
             styleUrls: ['./register.component.css']
         }),
         tslib_1.__metadata("design:paramtypes", [AuthService,
-            ChangeDetectorRef])
+            ChangeDetectorRef,
+            LoginMessageHandlerService])
     ], RegisterComponent);
     return RegisterComponent;
 }());

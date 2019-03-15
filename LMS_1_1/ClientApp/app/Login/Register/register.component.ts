@@ -5,6 +5,7 @@ import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoginMessageHandlerService } from '../login-message-handler.service';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +21,7 @@ export class RegisterComponent implements OnInit, OnDestroy  {
   
   constructor(private db: AuthService
     , private cd: ChangeDetectorRef
+    ,private messhandler: LoginMessageHandlerService
    ) { }
 
   ngOnInit() {
@@ -31,10 +33,10 @@ export class RegisterComponent implements OnInit, OnDestroy  {
     this.errorMessage = "";
     this.db.register(this.user)
     .pipe(takeUntil(this.unsubscribe))
-      .subscribe(success => {
-        if (success) 
-            return  true;  
+      .subscribe(success => { 
+        this.messhandler.Send(success.value.name);  
         this.cd.markForCheck();
+        return  true; 
       },
          err =>  this.errorMessage = "Failed to Create user");
   }

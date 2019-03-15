@@ -6,6 +6,7 @@ import { User } from '../Login/login';
 import { tokenData } from './tokenData';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { RegisterUser } from '../Login/Register/registeruser';
+import { ICourseNameData } from '../AddPartipant/partipant';
 
 @Injectable(
   {
@@ -159,14 +160,14 @@ ngOnInit(): void {
     this.isTeacherSource.next(false)
  }
 
-  public register(registeruser: RegisterUser) : Observable<boolean> | undefined
+  public register(registeruser: RegisterUser) : Observable<ICourseNameData> | undefined
   {
     return this.http.post(this.url+"/account/RegisterNewUser", registeruser
     ,{headers:this.getAuthHeader()}
     )
     .pipe(
       map((response: any) => {
-      return true;
+      return response;
     })
     );
     
