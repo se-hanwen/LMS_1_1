@@ -1,7 +1,7 @@
 
 <div class="row" style="margin-bottom:15px;">
     <div class="col-md-4">
-        <a class="btn btn-outline-primary" [routerLink]="['/courses/create']"> Create Course</a>
+        <a class="btn btn-outline-primary" [routerLink]="['/courses/create']" *ngIf="isTeacher"> Create Course</a>
     </div>
 </div>
     <div class="row" *ngIf='courses && courses.length'>
@@ -12,7 +12,7 @@
 
 
                 <a [routerLink]="['/courses', course.id]">
-                    <img class="card-img-top" width="80px" height="300px"  [src]="course.courseImgPath" alt="Card image cap" />
+                    <img class="card-img-top" width="80px" height="300px"  [src]="course.courseImgPath==null?'':course.courseImgPath" alt="Card image cap" />
                     <div class="card-body">
                         <h3 class="card-title">{{course.name}}</h3>
 
@@ -21,7 +21,7 @@
 
                     </div>
                 </a>
-                <div class="card-body">
+                <div class="card-body" *ngIf="isTeacher">
                     <a class="card-link">Edit Course</a>
                     <a class="card-link" [routerLink]="['/courses/delete', course.id]">Delete Course</a>
                 </div>

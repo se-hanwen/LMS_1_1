@@ -1,0 +1,29 @@
+<ul class="navbar-nav">
+ <div *ngIf="isAuthenticated; else LoggedOut">
+      <li class="nav-item" >
+          <a [routerLink]="['/Account/Manage']">
+              Hello
+              
+                  <span>{{firstName}} {{lastName}}</span>
+              
+          </a>
+      </li>
+          <li class="nav-item" *ngIf="isTeacher">
+              <a [routerLink]="['/Account/Register']">Register</a>
+          </li>
+      
+      <li class="nav-item">
+            <button (click)="logout()">Logout</button>
+
+      </li>
+    </div>
+
+<ng-template #LoggedOut>
+
+
+      <li class="nav-item">
+        <a [routerLink]="['/Account/Login']">Login</a>
+      </li>
+
+</ng-template>
+</ul>

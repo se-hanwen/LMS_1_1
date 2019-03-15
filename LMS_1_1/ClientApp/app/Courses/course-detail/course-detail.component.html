@@ -14,7 +14,7 @@
             <app-partipant-list [courseid]='course.id'></app-partipant-list>
 
      
-                <div class="card-body">
+                <div class="card-body" *ngIf="isTeacher">
                     <div class="row">
                         <div class="col-6">
                   <!-- <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a> -->

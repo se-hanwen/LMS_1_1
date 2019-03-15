@@ -9,13 +9,16 @@ import { NoRouteModule } from './NoRoute/no-route.module';
 import { NoRouteComponent } from './NoRoute/no-route.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CoursesModule } from './Courses/courses.module';
+import { NavbarModule } from './Navbar/navbar.module';
+import { LoginModule } from './Login/login.module';
+import { ModulesModule } from './Modules/modules.module';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = tslib_1.__decorate([
         NgModule({
             declarations: [
-                AppComponent,
+                AppComponent
             ],
             imports: [
                 FormsModule,
@@ -31,6 +34,9 @@ var AppModule = /** @class */ (function () {
                 }),
                 NoRouteModule,
                 HttpClientModule,
+                NavbarModule,
+                LoginModule,
+                ModulesModule,
             ],
             providers: [],
             bootstrap: [AppComponent]

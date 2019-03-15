@@ -1,7 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
-import { ICourse } from './course';
+
+import { ICourse,course, IModule, IActivity2 } from './course';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+
 import { tap, catchError, map } from 'rxjs/operators';
 import { Guid } from 'guid-typescript';
 import { Data } from '@angular/router';
@@ -26,14 +28,15 @@ export class CourseService {
     constructor(private http: HttpClient) {
 
     }
-    getCourses(): Observable<ICourse[]> {
-        return this.http.get<ICourse[]>(this.courseUrl).pipe(
+    getCourses(userid: string): Observable<ICourse[]> {
+        return this.http.get<ICourse[]>(this.courseUrl+"/foruser?id="+userid).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
             );
     }
     getCourseById(id: string): Observable<ICourse> {
         return this.http.get<ICourse>(this.courseUrl +"/"+id).pipe(
+
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
         );
@@ -45,6 +48,33 @@ export class CourseService {
             catchError(this.handleError)
         );
     }
+
+    getCourseAndModulebyId(courseid: string) : Observable<ICourse>
+    {
+        return this.http.get<ICourse>(this.courseUrl +"/CAndM?id=" +courseid).pipe(
+            tap(data => console.log('All:' + JSON.stringify(data))),
+            catchError(this.handleError)
+        );
+
+    }
+
+    getActivitybymodulId(Moduleid: string) : Observable<IActivity2[]>
+    {
+        return this.http.get<IActivity2[]>(this.courseUrl +"/AfromMid?id=" +Moduleid).pipe(
+            tap(data => console.log('All:' + JSON.stringify(data))),
+            catchError(this.handleError)
+        );
+
+    }
+    getModulAndActivitybyId(Moduleid: string) : Observable<IModule>
+    {
+        return this.http.get<IModule>(this.courseUrl +"/MAndAfromMid?id=" +Moduleid).pipe(
+            tap(data => console.log('All:' + JSON.stringify(data))),
+            catchError(this.handleError)
+        );
+
+    }
+
 
     createCourse(course: any) {
 

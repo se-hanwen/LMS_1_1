@@ -13,7 +13,7 @@ var SharedModule = /** @class */ (function () {
             declarations: [],
             exports: [
                 CommonModule,
-                FormsModule
+                FormsModule,
             ]
         })
     ], SharedModule);

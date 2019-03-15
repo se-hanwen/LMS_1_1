@@ -1,0 +1,41 @@
+<div *ngIf="module">
+  <div class="row">
+  
+      <div class="col-md-4">
+          <div class="card" style="width: 19rem;">
+              <div class="card-body">
+                  <h3 class="card-title">{{module.name}}</h3>
+                  <h5 class="card-title">{{module.startDate |date: 'yyyy-MM-dd'}} - {{module.endDate |date: 'yyyy-MM-dd'}}</h5>
+                  <p class="card-text"> {{module.description}}</p>
+  
+              </div>
+  
+       
+                  <div class="card-body" *ngIf="isTeacher">
+                      <div class="row">
+                          <div class="col-6">
+                    <!-- <a [routerLink]="['/Modules/Edit', module.id]">Activity/a> -->
+                    <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Edit module</a>
+                  </div>
+                  <div class="col-6">
+                      <!--<a [routerLink]="['/Modules/Delete', module.id]">Delete module</a> -->
+                      Delete module
+                  </div>
+                  <div class="col-6">
+                    <!-- <a [routerLink]="['/Activites/AddActivityWithModuleId', .id]">Activity/a> -->
+                    <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Actitiy</a>
+                  </div>
+                  </div>
+                  </div>
+            
+          </div>
+        </div>
+  
+      <div class="col-md-6">
+           <activity_list [moduleid]="module.id"></activity_list>
+      </div>
+          <div class="col-md-2">
+  
+          </div>
+      </div>
+  

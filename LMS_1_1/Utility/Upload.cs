@@ -46,7 +46,7 @@ namespace LMS_1_1.Utility
                 }
               
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return false;
             }

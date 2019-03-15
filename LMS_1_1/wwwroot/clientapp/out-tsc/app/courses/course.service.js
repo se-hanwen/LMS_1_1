@@ -15,14 +15,23 @@ var CourseService = /** @class */ (function () {
             })
         };
     }
-    CourseService.prototype.getCourses = function () {
-        return this.http.get(this.courseUrl).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    CourseService.prototype.getCourses = function (userid) {
+        return this.http.get(this.courseUrl + "/foruser?id=" + userid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.getCourseById = function (id) {
         return this.http.get(this.courseUrl + "/" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.getCourseAllById = function (id) {
         return this.http.get(this.courseUrl + "/All?id=" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    CourseService.prototype.getCourseAndModulebyId = function (courseid) {
+        return this.http.get(this.courseUrl + "/CAndM?id=" + courseid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    CourseService.prototype.getActivitybymodulId = function (Moduleid) {
+        return this.http.get(this.courseUrl + "/AfromMid?id=" + Moduleid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    CourseService.prototype.getModulAndActivitybyId = function (Moduleid) {
+        return this.http.get(this.courseUrl + "/MAndAfromMid?id=" + Moduleid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.createCourse = function (course) {
         return this.http.post(this.courseUrl, course).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));

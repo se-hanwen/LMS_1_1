@@ -91,3 +91,11 @@ ul.timeline > li {
         height: 20px;
         z-index: 400;
     }
+
+.somepadding {
+ padding-left: 13px;
+ padding-right:  13px;
+ padding-bottom: 7px;
+ padding-top: 7px;
+ text-align:center;
+}

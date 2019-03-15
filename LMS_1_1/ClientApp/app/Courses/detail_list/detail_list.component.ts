@@ -1,7 +1,9 @@
 ﻿import { Component, OnInit, Input } from "@angular/core";
-import { ICourse } from '../course';
+import { ICourse, course } from '../course';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../course.service';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: "detail_list",
@@ -15,15 +17,19 @@ export class detailList implements OnInit{
      errorMessage: string;
      @Input()   courseid: string;
 
-
+    savesubs: Array<[string,Subscription]>= new Array<[string,Subscription]>();
+     isTeacher: boolean;
     constructor(private route: ActivatedRoute,
         private CourseService: CourseService
+        , private AuthService : AuthService
         ) 
         { }
     
     ngOnInit() {
-  
-        this.CourseService.getCourseAllById(this.courseid).subscribe(
+        this.AuthService.isTeacher.subscribe( i => this.isTeacher=i);
+
+
+        this.CourseService.getCourseAndModulebyId(this.courseid).subscribe(
                 course => {
                     this.course = course;
                 },
@@ -36,51 +42,34 @@ export class detailList implements OnInit{
          if(this.course.modules.find(m => m.id.toString()==mid).isExpanded ==" show")
         {
               this.course.modules.find(m => m.id.toString()==mid).isExpanded="";
+              if (this.savesubs.find( t => t[0]==mid))
+              {
+
+                  this.savesubs.find( t => t[0]==mid)[1].unsubscribe();
+                  this.savesubs.splice(this.savesubs.indexOf(this.savesubs.find( t => t[0]==mid)),1);
+              }
+
         }
          else
         {
            this.course.modules.find(m => m.id.toString()==mid).isExpanded=" show";
+           let temp=this.CourseService.getActivitybymodulId(mid).subscribe(
+                    activities=>
+                    {
+                        this.course.modules.find(m => m.id.toString()==mid).activities=activities;
+                    },
+                    error => this.errorMessage = <any>error
+                );
+            if (this.savesubs.find( t => t[0]==mid))
+            {
+                this.savesubs.find( t => t[0]==mid)[1]=temp;
+            }
+            else
+            {
+                this.savesubs.push([mid,temp])  ;
+            }
         }
     }
 
-    public courseTitle: "C#";
-    public startDate: "2019.01.02 10:00";
-    public description: "There are no external authentication services configured. See this article for details on setting up this ASP.NET application to support logging in via external services.";
-    public coulist = [
-        {
-            Name: "C# Basic",
-            StartDate: "2019.01.02 10:00",
-            Description: "A basic course of C#",
-            Modules: [
-                {
-                    Name: "C# module 1",
-                    StartDate: "2019.01.02 10:00",
-                    Description: "Module 1 of C#"
-                },
-                {
-                    Name: "C# module 2",
-                    StartDate: "2019.01.02 10:00",
-                    Description: "Module 2 of C#"
-                }
-            ]
-        },
-        {
-            Name: "C# Advanced",
-            StartDate: "2019.01.03 10:00",
-            Description: "A follow on course of C#",
-            Modules: [
-                {
-                    Name: "C# module 3",
-                    StartDate: "2019.01.03 10:00",
-                    Description: "Module 3 of C#"
-                },
-                {
-                    Name: "C# module 4",
-                    StartDate: "2019.01.03 10:00",
-                    Description: "Module 4 of C#"
-                }
-            ]
-        }
-    ];
-
+   
 }

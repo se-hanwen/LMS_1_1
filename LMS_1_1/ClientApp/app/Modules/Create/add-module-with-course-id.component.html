@@ -1,42 +1,42 @@
-<h1>Create</h1>
+<h1>Create</h1>	
 
-<h4>Module on {{courseID}}</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+ <h4>Module on {{courseID}}</h4>	
+<hr />	
+<div class="row">	
+    <div class="col-md-4">	
 
-        <form #createModule="ngForm"  (ngSubmit)="Create(createModule.value)">
+         <form #createModule="ngForm"  (ngSubmit)="Create(createModule.value)">	
 
-            <input type="hidden" (ngModel)="CourseId" name="CourseId" />
+             <input type="hidden" (ngModel)="CourseId" name="CourseId" />	
 
-            <div class="form-group">
-                <label for="name" class="control-label">Name</label>
-                <input (ngModel)="Module.name" name="name" id="name" class="form-control" />
-               
-            </div>
+             <div class="form-group">	
+                <label for="name" class="control-label">Name</label>	
+                <input (ngModel)="Module.name" name="name" id="name" class="form-control" />	
 
-            <div class="form-group">
-                <label for="startDate" class="control-label">StartDate</label>
-                <input  type ="date" (ngModel)="Module.startDate" name="startDate"  value="2018-07-22"
-                  min="2018-01-01" max="2018-12-31" id="startDate" class="form-control" />
-               
-            </div>
-            <div class="form-group">
-                <label for="endDate" class="control-label">StartDate</label>
-                <input  type ="date" (ngModel)="Module.endDate" name="endDate"  value="2018-07-22"
-                  min="2018-01-01" max="2018-12-31" id="endDate" class="form-control" />
-               
-            </div>
-            <div class="form-group">
-                <label for="description" class="control-label">Description</label>
-                <input (ngModel)="Module.description" name="description" id="description" class="form-control" />
-               
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+             </div>	
+
+             <div class="form-group">	
+                <label for="startDate" class="control-label">StartDate</label>	
+                <input  type ="date" (ngModel)="Module.startDate" name="startDate"  value="2018-07-22"	
+                  min="2018-01-01" max="2018-12-31" id="startDate" class="form-control" />	
+
+             </div>	
+            <div class="form-group">	
+                <label for="endDate" class="control-label">StartDate</label>	
+                <input  type ="date" (ngModel)="Module.endDate" name="endDate"  value="2018-07-22"	
+                  min="2018-01-01" max="2018-12-31" id="endDate" class="form-control" />	
+
+             </div>	
+            <div class="form-group">	
+                <label for="description" class="control-label">Description</label>	
+                <input (ngModel)="Module.description" name="description" id="description" class="form-control" />	
+
+             </div>	
+            <div class="form-group">	
+                <input type="submit" value="Create" class="btn btn-primary" />	
+            </div>	
+        </form>	
 
 
-    </div>
-</div>
+     </div>	
+</div> 

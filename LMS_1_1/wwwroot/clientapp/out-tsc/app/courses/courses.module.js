@@ -8,8 +8,14 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { RouterModule } from '@angular/router';
 import { PartipantListComponent } from '../PartipantList/partipant-list.component';
 import { detailList } from './detail_list/detail_list.component';
+
 import { CourseDeleteComponent } from './course-delete/course-delete.component';
 import { CourseEditComponent } from './course-edit/course-edit.component';
+
+import { SharedModule } from '../Shared/shared.module';
+import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
+import { IsTeacherGuard } from '../Shared/is-teacher.guard';
+
 var CoursesModule = /** @class */ (function () {
     function CoursesModule() {
     }
@@ -27,13 +33,19 @@ var CoursesModule = /** @class */ (function () {
             imports: [
                 CommonModule,
                 FormsModule,
+                SharedModule,
                 RouterModule.forChild([{
-                        path: 'courses', component: CourseListComponent
+                        path: 'courses',
+                        canActivate: [IsAuthenticatedGuard],
+                        component: CourseListComponent
                     },
                     {
-                        path: 'courses/create', component: CreateCourseComponent
+                        path: 'courses/create',
+                        canActivate: [IsTeacherGuard],
+                        component: CreateCourseComponent
                     },
                     {
+
                         path: 'courses/:id', component: CourseDetailComponent
                     },
                     {
@@ -41,6 +53,12 @@ var CoursesModule = /** @class */ (function () {
                     },
                     {
                         path: 'courses/edit/:id', component: CourseEditComponent
+                    },
+                    {
+                        path: 'courses/:id',
+                        canActivate: [IsAuthenticatedGuard],
+                        component: CourseDetailComponent
+
                     }
                 ])
             ]

@@ -42,6 +42,14 @@ namespace LMS_1_1.Controllers
             return Ok(await _repository.GetAllCoursesAsync(false));
         }
 
+
+        [HttpGet("foruser")]
+        public async Task<ActionResult<IEnumerable<Course>>> GetCoursesforuser(string id)
+        {
+
+            return Ok(await _repository.GetCoursesForUserAsync(id));
+        }
+
         // GET: api/Courses1/5/true course , modules and activites
         // GET: api/Courses1/5/false  just the course
         [HttpGet("{id}")]
@@ -63,7 +71,7 @@ namespace LMS_1_1.Controllers
         public async Task<ActionResult<CourseAllViewModel>> GetCourseAll(string id)
         {
             //   Guid idG = Guid.Parse(id);
-            int i = 0;
+  
               var  course1 = await _context.Courses
                             .Include(c => c.Modules)
                             .ThenInclude(m => m.LMSActivities)
@@ -75,19 +83,21 @@ namespace LMS_1_1.Controllers
             var Modules = new List<ModelAllViewModel>();
             foreach (var Modul in course1.Modules)
             {
-                var Activities = new List<ActivityAllViewModel>();
+                var Activities = new List<ActivityViewModel>();
                 foreach (var Actitivity in Modul.LMSActivities)
                 {
                     Activities.Add(
-                            new ActivityAllViewModel
+                            new ActivityViewModel
                             {
                                 Id = Actitivity.Id,
                                 Name = Actitivity.Name,
                                 StartDate = Actitivity.StartDate,
                                 EndDate = Actitivity.EndDate,
                                 Description = Actitivity.Description,
-                                ActivityType = Actitivity.ActivityType
-                               
+                                ActivityType = Actitivity.ActivityType.Name,
+                                Name2 = (Guid.NewGuid()).ToString(),
+                                isExpanded = ""
+
                             }
 
                         );
@@ -101,9 +111,9 @@ namespace LMS_1_1.Controllers
                          StartDate = Modul.StartDate,
                          EndDate = Modul.EndDate,
                          Description = Modul.Description,
-                         Activities = Activities,
-                         // Name2=(Guid.NewGuid()).ToString(),
-                         Name2 = "C" + (i++).ToString(),
+                         Activities = (ICollection<ActivityViewModel>)Activities,
+                         Name2=(Guid.NewGuid()).ToString(),
+                        // Name2 = "C" + (i++).ToString(),
                          isExpanded = ""
                      }
                     );
@@ -125,9 +135,153 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            return course;
+            return Ok(course);
+        }
+
+        [HttpGet("CAndM")]
+        public async Task<ActionResult<CourseAllViewModel>> GetCourseAndModule(string id)
+        {
+            //   Guid idG = Guid.Parse(id);
+            var course1 = await _context.Courses
+                          .Include(c => c.Modules)
+                          .FirstOrDefaultAsync(c => c.Id.ToString() == id);
+
+
+
+            var Modules = new List<ModelAllViewModel>();
+            foreach (var Modul in course1.Modules)
+            {
+                
+
+                Modules.Add(
+                     new ModelAllViewModel
+                     {
+                         Id = Modul.Id,
+                         Name = Modul.Name,
+                         StartDate = Modul.StartDate,
+                         EndDate = Modul.EndDate,
+                         Description = Modul.Description,
+                         Activities = null,
+                         Name2=(Guid.NewGuid()).ToString(),
+                        // Name2 = "C" + (i++).ToString(),
+                         isExpanded = ""
+                     }
+                    );
+            }
+
+            CourseAllViewModel course = new CourseAllViewModel
+            {
+                Id = course1.Id,
+                Name = course1.Name,
+                StartDate = course1.StartDate,
+                Description = course1.Description,
+                courseImgPath = course1.CourseImgPath,
+                Modules = Modules
+            };
+
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(course);
         }
         
+        [HttpGet("AfromMid")]
+        public async Task<ActionResult<ICollection<ActivityViewModel>>> GetActivitiesFromModulid(string id)
+        {
+            //   Guid idG = Guid.Parse(id);
+            var Activities =await  _context.LMSActivity
+                           .Include(a => a.ActivityType)
+                          .Where(a => a.ModuleId.ToString() == id)
+                          .ToArrayAsync();
+                          
+
+
+
+            var res = new List<ActivityViewModel>();
+            foreach (var activity in Activities)
+            {
+
+
+                res.Add(
+                     new ActivityViewModel
+                     {
+                         Id = activity.Id,
+                         Name = activity.Name,
+                         StartDate = activity.StartDate,
+                         EndDate = activity.EndDate,
+                         Description = activity.Description,
+                         ActivityType = activity.ActivityType.Name
+                     }
+                    );
+            }
+
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(res);
+        }
+
+        
+        [HttpGet("MAndAfromMid")]
+        public async Task<ActionResult<ModelAllViewModel>> GetModulesAndActivitiesFromModulid(string id)
+        {
+            //   Guid idG = Guid.Parse(id);
+    
+            var Module = await _context.Modules
+                            .Include(m => m.LMSActivities)
+                           .ThenInclude(a => a.ActivityType)
+                          .Where(m => m.Id.ToString() == id)
+                          .FirstOrDefaultAsync();
+
+
+
+
+            var res = new List<ActivityViewModel>();
+            foreach (var activity in Module.LMSActivities)
+            {
+
+
+                res.Add(
+                     new ActivityViewModel
+                     {
+                         Id = activity.Id,
+                         Name = activity.Name,
+                         StartDate = activity.StartDate,
+                         EndDate = activity.EndDate,
+                         Description = activity.Description,
+                         ActivityType = activity.ActivityType.Name,
+                         Name2 = (Guid.NewGuid()).ToString(),
+                         isExpanded = ""
+                     }
+                    );
+            }
+
+
+            ModelAllViewModel Module1 = new ModelAllViewModel
+            {
+                Id = Module.Id,
+                Name = Module.Name,
+                StartDate = Module.StartDate,
+                EndDate = Module.EndDate,
+                Description = Module.Description,
+                Activities = res
+            };
+
+            if (Module1 == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Module1);
+        }
+
+
         // PUT: api/Courses1/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse(Guid id, Course course)
