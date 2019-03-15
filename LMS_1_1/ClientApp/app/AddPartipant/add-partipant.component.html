@@ -34,8 +34,8 @@
                 </thead>
                 <tbody id="Bodyn_ChooseFrom" class="scrollContent" >
                       <tr *ngFor='let Choose of ChooseFrom'>
-                          <td width="49%" name="Add" (click)="chooseStudent(Choose.userid)">{{Choose.firstName}}</td>
-                          <td width="49%" name="Add" (click)="chooseStudent(Choose.userid)">{{Choose.lastName}}</td>
+                          <td width="49%" title="Add" (click)="chooseStudent(Choose.userid)">{{Choose.firstName}}</td>
+                          <td width="49%" title="Add" (click)="chooseStudent(Choose.userid)">{{Choose.lastName}}</td>
                       </tr>
 
                   </tbody>
@@ -60,8 +60,8 @@
               </thead>
               <tbody id="Bodyn_Choosed" class="scrollContent">
                     <tr *ngFor='let UnChoose of Choosed'>
-                        <td width="49%" name="Remove" (click)="unChooseStudent(UnChoose.userid)">{{UnChoose.firstName}}</td>
-                        <td width="49%" name="Remove" (click)="unChooseStudent(UnChoose.userid)">{{UnChoose.lastName}}</td>
+                        <td width="49%" title="Remove" (click)="unChooseStudent(UnChoose.userid)">{{UnChoose.firstName}}</td>
+                        <td width="49%" title="Remove" (click)="unChooseStudent(UnChoose.userid)">{{UnChoose.lastName}}</td>
                     </tr>
 
               </tbody>

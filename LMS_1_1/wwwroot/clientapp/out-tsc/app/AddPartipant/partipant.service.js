@@ -66,6 +66,45 @@ var PartipantService = /** @class */ (function () {
             this.Choosed.splice(index, 1);
         }
     };
+    PartipantService.prototype.GetCoursesOff = function (userid) {
+        var url = "https://localhost:44396/CourseUsers/GetCoursesOff";
+        var parmas = { "UserId": userid };
+        return this.http.post(url, parmas, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
+            .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    PartipantService.prototype.GetCoursesOn = function (userid) {
+        var url = "https://localhost:44396/CourseUsers/GetCoursesOn";
+        var parmas = { "UserId": userid };
+        return this.http.post(url, parmas, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
+            .pipe(
+        /* map(
+        (response:IPartipant[])=>
+    {this.Choosed=response;
+    }
+    ),*/
+        tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    PartipantService.prototype.GetUserName = function (userid) {
+        var url = "https://localhost:44396/CourseUsers/GetUserName";
+        var parmas = { "UserId": userid };
+        return this.http.post(url, parmas, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
+            .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    PartipantService.prototype.SaveCourses = function (userid, Choosed) {
+        var url = "https://localhost:44396/CourseUsers/AddCoursesToStudent";
+        var courseids = [];
+        for (var _i = 0, Choosed_1 = Choosed; _i < Choosed_1.length; _i++) {
+            var part = Choosed_1[_i];
+            courseids.push(part.id.toString());
+        }
+        //let parmas={"CourseId":this.CourseId,Userids};    
+        return this.http.post(url, { "CourseId": userid, courseids: courseids }, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
+            .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
     PartipantService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure
         // instead of just logging it to the console

@@ -1,10 +1,11 @@
 import { Injectable, OnInit } from '@angular/core';
 //import { JwtHelperService } from '@auth0/angular-jwt';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { User } from '../Login/login';
 import { tokenData } from './tokenData';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { RegisterUser } from '../Login/Register/registeruser';
 
 @Injectable(
   {
@@ -46,7 +47,7 @@ RealisTeacher : boolean = false;
 constructor(private http: HttpClient) {
   this.isAuthenticated.subscribe( i => this.RealisAuthenticated=i);
   this.isTeacher.subscribe(i => this.RealisTeacher=i);
-
+  this.token.subscribe(i => this.Realtoken=i);
 }
 /*
 ngOnInit(): void {
@@ -83,7 +84,12 @@ ngOnInit(): void {
  private url:string="https://localhost:44396";
 
   private _isTeacher:string="";
-
+  private Realtoken: string="";
+   
+  private getAuthHeader() : HttpHeaders
+  {
+    return  new HttpHeaders({ "Authorization": "Bearer " + this.Realtoken });
+  }
   
   public login(creds:User) : Observable<boolean> | undefined {
     return this.http.post(this.url+"/account/createtoken", creds)
@@ -125,10 +131,30 @@ ngOnInit(): void {
        return this.RealisTeacher;
      } 
 
- public logout()
+ public logout(): void
  {
     this.tokenData=new tokenData();
+    this.tokenSource.next('');
+    this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
+    this.firstNameSource.next('');
+    this.lastNameSource.next('');
+    this.isAuthenticatedSource.next(false);
+    this.isTeacherSource.next(false)
  }
+
+  public register(registeruser: RegisterUser) : Observable<boolean> | undefined
+  {
+    return this.http.post(this.url+"/account/RegisterNewUser", registeruser
+    ,{headers:this.getAuthHeader()}
+    )
+    .pipe(
+      map((response: any) => {
+      return true;
+    })
+    );
+    
+  }
+
 
   private checkisAuthenticated(token : string, tokenExpiration : Date ) :boolean {
     return !(token.length == 0 && tokenExpiration > new Date());

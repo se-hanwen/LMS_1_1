@@ -44,7 +44,9 @@ var CourseService = /** @class */ (function () {
     //Delete a course by a given guid.
     CourseService.prototype.DeleteCourse = function (id) {
         var urlString = this.courseUrl + "/" + id;
-        return this.http.delete(urlString, this.hpOptions).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+        return this.http.delete(urlString, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
+            .pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     CourseService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure

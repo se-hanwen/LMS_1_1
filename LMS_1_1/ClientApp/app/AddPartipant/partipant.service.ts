@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap, map} from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
+import { ICourse } from '../Courses/course';
 
 @Injectable({
     providedIn: 'root'
@@ -106,6 +107,71 @@ export class PartipantService{
             this.Choosed.splice(index,1);
         }
     }
+
+
+    public GetCoursesOff(userid: string): Observable<ICourse[] | undefined>
+    {
+        let url:string="https://localhost:44396/CourseUsers/GetCoursesOff";  
+        let parmas={"UserId":userid}; 
+        return this.http.post<ICourse[]>(url,parmas,
+            {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+    } )
+        .pipe(
+            tap(data => console.log('All: ' + JSON.stringify(data))),
+        catchError(this.handleError)
+        );    
+    }
+
+
+    public GetCoursesOn(userid: string): Observable<ICourse[] | undefined>
+    {
+        let url:string="https://localhost:44396/CourseUsers/GetCoursesOn";  
+        let parmas={"UserId":userid};   
+        return this.http.post<ICourse[]>(url,parmas
+            ,{headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+    })
+    .pipe(
+            /* map(
+            (response:IPartipant[])=>
+        {this.Choosed=response;
+        }
+        ),*/
+            tap(data => console.log('All: ' + JSON.stringify(data))),
+        catchError(this.handleError)
+        );  
+    }
+
+    public GetUserName(userid: string): Observable<ICourseNameData| undefined>
+    {
+        let url:string="https://localhost:44396/CourseUsers/GetUserName";  
+        let parmas={"UserId":userid}; 
+        return this.http.post<ICourseNameData>(url,parmas
+            ,{headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+        })
+        .pipe( 
+            tap(data => console.log('All: ' + JSON.stringify(data))),
+        catchError(this.handleError)
+        ); 
+
+     }
+
+     public SaveCourses(userid: string, Choosed: ICourse[] )
+     {
+         let url:string="https://localhost:44396/CourseUsers/AddCoursesToStudent";  
+         let courseids: string[] =[];
+         for(const part of Choosed )
+         {
+            courseids.push(part.id.toString());
+         }
+         //let parmas={"CourseId":this.CourseId,Userids};    
+         return this.http.post(url,{"CourseId":userid,courseids},
+         {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+     })
+         .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
+         catchError(this.handleError));
+ 
+     } 
+ 
 
     private handleError(err: HttpErrorResponse) {
         // in a real world app, we may send the server to some remote logging infrastructure

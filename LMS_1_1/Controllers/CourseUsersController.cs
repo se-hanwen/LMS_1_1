@@ -71,6 +71,74 @@ namespace LMS_1_1.Controllers
 
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<ICollection<Course>>> GetCoursesOff([FromBody] CourseIdViewModel UserId)
+        {
+
+            var res =await  _repository.GetCoursesOffAsync(UserId.CourseId);
+
+            /* var res = (await _repository.GetUsers(CourseId.CourseId, false))
+                 .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
+            return Ok(res);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<ICollection<Course>>> GetCoursesOn([FromBody] CourseIdViewModel UserId)
+        {
+
+            var res = await _repository.GetCoursesOnAsync(UserId.CourseId);
+
+            /* var res = (await _repository.GetUsers(CourseId.CourseId, false))
+                 .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
+            return Ok(res);
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<string>> GetUserName([FromBody] CourseIdViewModel UserId)
+        {
+
+            var res = (await _repository.GetUsers(UserId.CourseId, true))
+                .Select(u => u.FirstName + ' ' + u.LastName).FirstOrDefault();
+
+            /* var res = (await _repository.GetUsers(CourseId.CourseId, false))
+                 .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
+            return Ok(res);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<string>> AddCoursesToStudent([FromBody] SavecouseListViewmodel savecouseListViewmodel)
+        {
+            //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            try
+            {
+                await _repository.RemoveAllCourseUsersForCourse(savecouseListViewmodel.Courseid);
+
+                foreach (var userid in savecouseListViewmodel.Userids)
+                {
+                    await _repository.AddCourseUser(savecouseListViewmodel.Courseid, userid);
+                }
+
+                await _repository.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex.Message);
+            }
+
+            var res = Json(new
+            {
+                Name = "Ok"
+            });
+
+            return Ok(res);
+        }
+
         [HttpGet("{CourseId}")]
         [Authorize]
         public ActionResult<Guid> GetStart(Guid CourseId)
@@ -140,14 +208,16 @@ namespace LMS_1_1.Controllers
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<string>> AddStudentsToCourse([FromBody] SavecouseListViewmodel savecouseListViewmodel)
         {
-          //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            // atm SavecouseListViewmodel.Courseid is UserId
+            // and SavecouseListViewmodel.Userids is list of courseids
             try
             {
-                await _repository.RemoveAllCourseUsers(savecouseListViewmodel.Courseid);
+                await _repository.RemoveAllCourseUsersForUser(savecouseListViewmodel.Courseid);
 
                 foreach (var userid in savecouseListViewmodel.Userids)
                 {
-                    await _repository.AddCourseUser(savecouseListViewmodel.Courseid, userid);
+                    await _repository.AddCourseUser( userid, savecouseListViewmodel.Courseid);
                 }
 
                 await _repository.SaveChanges();

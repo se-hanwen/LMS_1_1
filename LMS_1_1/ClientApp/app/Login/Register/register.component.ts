@@ -16,13 +16,20 @@ export class RegisterComponent implements OnInit {
   courseForm: FormGroup;
   
   constructor(private db: AuthService
-    , private router: Router) { }
+   ) { }
 
   ngOnInit() {
+    
   }
 
   public onRegister()
   {
-
+    this.errorMessage = "";
+    this.db.register(this.user)
+      .subscribe(success => {
+        if (success) 
+            return  true;  
+      },
+         err =>  this.errorMessage = "Failed to Create user");
   }
 }

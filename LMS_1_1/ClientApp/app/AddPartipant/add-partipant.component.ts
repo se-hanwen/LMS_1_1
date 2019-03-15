@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 
 import { IPartipant } from './partipant';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PartipantService } from './partipant.service';
-import { throwError } from 'rxjs';
+import { throwError, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 
@@ -12,10 +13,14 @@ import { throwError } from 'rxjs';
   templateUrl: './add-partipant.component.html',
   styleUrls: ['./add-partipant.component.css']
 })
-export class AddPartipantComponent implements OnInit {
-private test:string ="";
+export class AddPartipantComponent implements OnInit, OnDestroy {
+
+
   pageTitle: string = "";
   BlackList: IPartipant[] =[];
+ private StudentsOff: Subscription;
+ private StudentsOn: Subscription;
+
   private _ChooseFrom: IPartipant[] =[];
   get ChooseFrom(): IPartipant[]  {
     return this._ChooseFrom;
@@ -50,7 +55,7 @@ private test:string ="";
   constructor(private route: ActivatedRoute,
     private router: Router,
     private  PartipantService: PartipantService,
-    
+    private cd: ChangeDetectorRef
   
     ) { }
 
@@ -58,10 +63,14 @@ private test:string ="";
 
       this.courseid = this.route.snapshot.paramMap.get('id');
       this.PartipantService.CourseId = this.courseid;
-    this.PartipantService.GetStudentsOff().subscribe
+   this.StudentsOff= this.PartipantService.GetStudentsOff()
+  
+   .subscribe
     (
-      Choose=> this.ChooseFrom=Choose
-
+      Choose=> {
+        this.ChooseFrom=Choose;
+        this.cd.markForCheck();
+      }
     
     );
     this.PartipantService.GetStudentsOn().subscribe
@@ -70,7 +79,7 @@ private test:string ="";
       { 
         this.Choosed=Choosed; 
         this.PartipantService.Choosed=this.Choosed;
-
+        this.cd.markForCheck();
       }
     );
     this.PartipantService.GetCourseName().subscribe
@@ -262,4 +271,9 @@ private test:string ="";
     return 0
   }
   */
+ ngOnDestroy(): void {
+  this.StudentsOff.unsubscribe();
+  this.StudentsOn.unsubscribe();
+}
+
 }

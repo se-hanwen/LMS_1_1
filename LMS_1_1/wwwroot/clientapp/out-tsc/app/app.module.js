@@ -12,6 +12,7 @@ import { CoursesModule } from './Courses/courses.module';
 import { NavbarModule } from './Navbar/navbar.module';
 import { LoginModule } from './Login/login.module';
 import { ModulesModule } from './Modules/modules.module';
+//import { LoginpartialComponent } from './Login/LoginPartial/loginpartial.component';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }

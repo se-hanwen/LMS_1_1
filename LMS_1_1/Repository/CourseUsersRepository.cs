@@ -73,7 +73,7 @@ namespace LMS_1_1.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveAllCourseUsers(string CouresID)
+        public async Task RemoveAllCourseUsersForCourse(string CouresID)
         {
               var temp = _context.CourseUsers.Where(cu => cu.CourseId.ToString() == CouresID);
 
@@ -84,6 +84,21 @@ namespace LMS_1_1.Repository
 
 
            // _context.CourseUsers
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task RemoveAllCourseUsersForUser(string UserID)
+        {
+            var temp = _context.CourseUsers.Where(cu => cu.LMSUserId.ToString() == UserID);
+
+            foreach (var cuser in temp)
+            {
+                _context.CourseUsers.Remove(cuser);
+            }
+
+
+            // _context.CourseUsers
             await _context.SaveChangesAsync();
         }
 
@@ -112,6 +127,26 @@ namespace LMS_1_1.Repository
             }
 
             return res;
+        }
+
+        public async Task<ICollection<Course>> GetCoursesOffAsync(string UserId)
+        {
+            var courseids = await _context.CourseUsers.Where(cu => cu.LMSUserId == UserId).Select(cu => cu.CourseId).ToListAsync();
+            var res = _context.Courses
+                    .Where(c => !courseids.Contains(c.Id));
+
+            return await res.ToListAsync();
+
+        }
+
+        public async Task<ICollection<Course>> GetCoursesOnAsync(string UserId)
+        {
+            var courseids = await _context.CourseUsers.Where(cu => cu.LMSUserId == UserId).Select(cu => cu.CourseId).ToListAsync();
+            var res = _context.Courses
+                    .Where(c => courseids.Contains(c.Id));
+
+            return await res.ToListAsync();
+
         }
     }
 }

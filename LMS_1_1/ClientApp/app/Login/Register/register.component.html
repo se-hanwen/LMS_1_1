@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-4 offset-md-4">
+    <div class="col-md-4 offset-md-2">
         <h4>Create a new account.</h4>
       <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
       <form (submit)="onRegister()" #theForm="ngForm" novalidate>
@@ -41,5 +41,8 @@
               <a routerLink="/" class="btn btn-default">Cancel</a>
           </div>    
         </form>
+  </div>
+  <div class="offset-md-1 col-md-4">
+      <add_student_to_course></add_student_to_course>
   </div>
 </div>

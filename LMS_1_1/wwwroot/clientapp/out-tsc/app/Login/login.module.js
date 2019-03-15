@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { LoginpartialComponent } from './LoginPartial/loginpartial.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { RegisterComponent } from './Register/register.component';
+import { AddStudentToCourseComponent } from './AddStudentToCourse/add_student_to_course.component';
 var LoginModule = /** @class */ (function () {
     function LoginModule() {
     }
@@ -14,13 +15,15 @@ var LoginModule = /** @class */ (function () {
         NgModule({
             declarations: [LoginComponent,
                 LoginpartialComponent,
-                RegisterComponent
+                RegisterComponent,
+                AddStudentToCourseComponent
             ],
             imports: [
                 CommonModule,
                 FormsModule,
                 RouterModule.forChild([{
-                        path: 'Account/Login', component: LoginComponent
+                        path: 'Account/Login',
+                        component: LoginComponent
                     },
                     {
                         path: 'Account/Register',

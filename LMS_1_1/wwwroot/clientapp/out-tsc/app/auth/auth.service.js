@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
 //import { JwtHelperService } from '@auth0/angular-jwt';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { tokenData } from './tokenData';
 import { BehaviorSubject } from 'rxjs';
@@ -62,9 +62,14 @@ var AuthService = /** @class */ (function () {
           */
         this.url = "https://localhost:44396";
         this._isTeacher = "";
+        this.Realtoken = "";
         this.isAuthenticated.subscribe(function (i) { return _this.RealisAuthenticated = i; });
         this.isTeacher.subscribe(function (i) { return _this.RealisTeacher = i; });
+        this.token.subscribe(function (i) { return _this.Realtoken = i; });
     }
+    AuthService.prototype.getAuthHeader = function () {
+        return new HttpHeaders({ "Authorization": "Bearer " + this.Realtoken });
+    };
     AuthService.prototype.login = function (creds) {
         var _this = this;
         return this.http.post(this.url + "/account/createtoken", creds)
@@ -95,6 +100,18 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.logout = function () {
         this.tokenData = new tokenData();
+        this.tokenSource.next('');
+        this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
+        this.firstNameSource.next('');
+        this.lastNameSource.next('');
+        this.isAuthenticatedSource.next(false);
+        this.isTeacherSource.next(false);
+    };
+    AuthService.prototype.register = function (registeruser) {
+        return this.http.post(this.url + "/account/RegisterNewUser", registeruser, { headers: this.getAuthHeader() })
+            .pipe(map(function (response) {
+            return true;
+        }));
     };
     AuthService.prototype.checkisAuthenticated = function (token, tokenExpiration) {
         return !(token.length == 0 && tokenExpiration > new Date());
