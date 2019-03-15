@@ -7,17 +7,23 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { RouterModule } from '@angular/router';
 import { PartipantListComponent } from '../PartipantList/partipant-list.component';
 import { detailList } from './detail_list/detail_list.component';
+import { UploadComponent } from '../documents/upload/upload.component';
+import { UploadDetailComponent } from '../documents/upload-detail/upload-detail.component';
 @NgModule({
     declarations: [
         CourseListComponent,
         CourseDetailComponent,
         CreateCourseComponent,
         PartipantListComponent,
-        detailList
+        detailList,
+        UploadComponent,
+        UploadDetailComponent
+
     ],
   imports: [
       CommonModule,
       FormsModule,
+    
       RouterModule.forChild(
           [{
               path: 'courses', component: CourseListComponent

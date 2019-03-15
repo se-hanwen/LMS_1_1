@@ -3,6 +3,8 @@ import { ICourse } from '../course';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../course.service';
 import { Guid } from 'guid-typescript';
+import { DocumentService } from 'ClientApp/app/documents/document.service';
+import { IDocument } from 'ClientApp/app/documents/document';
 
 @Component({
  
@@ -23,11 +25,9 @@ export class CourseDetailComponent implements OnInit {
                     this.course = course;
                 },
                 error => this.errorMessage = <any>error
-            );
+        );
 
-
-
-        
+    }
   }
 
-}
+

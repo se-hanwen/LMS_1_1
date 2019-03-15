@@ -13,28 +13,24 @@ namespace LMS_1_1.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public string Name { get; set; }
+        [DataType(DataType.Date)]
         public DateTime UploadDate { get; set; }
         public string  Description { get; set; }
         public string Path { get; set; }
 
         public string LMSUserId { get; set; }
-        [ForeignKey("LMSUserId")]
         public LMSUser LMSUser { get; set; }
 
         public Guid? CourseId { get; set; }
-        [ForeignKey("CourseId")]
         public Course Courses { get; set; }
 
         public Guid? ModuleId { get; set; }
-        [ForeignKey("ModuleId")]
         public Module Module { get; set; }
 
-        public Guid? ActivityId { get; set; }
-        [ForeignKey("ActivityId")]
-        public LMSActivity Activity { get; set; }
+        public Guid? LMSActivityId { get; set; }
+        public LMSActivity LMSActivity { get; set; }
 
         public int DocumentTypeId { get; set; }
-        [ForeignKey("DocumentTypeId")]
         public DocumentType DocumentType { get; set; }
 
      

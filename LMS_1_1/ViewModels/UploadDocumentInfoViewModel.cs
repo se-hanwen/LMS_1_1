@@ -16,7 +16,7 @@ namespace LMS_1_1.ViewModels
         public string UploaderId { get; set; }
         public int DocumentTypeId { get; set; }
         public int DocOwnerTypeId { get; set; }
-        public Guid DocOwnerId { get; set; }
+        public Guid? DocOwnerId { get; set; }
         public IFormFile FileData { get; set; }
     }
 

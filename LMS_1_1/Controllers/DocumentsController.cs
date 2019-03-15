@@ -22,7 +22,7 @@ namespace LMS_1_1.Controllers
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Documents.Include(d => d.Activity).Include(d => d.Courses).Include(d => d.DocumentType).Include(d => d.LMSUser).Include(d => d.Module);
+            var applicationDbContext = _context.Documents.Include(d => d.LMSActivity).Include(d => d.Courses).Include(d => d.DocumentType).Include(d => d.LMSUser).Include(d => d.Module);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace LMS_1_1.Controllers
             }
 
             var document = await _context.Documents
-                .Include(d => d.Activity)
+                .Include(d => d.LMSActivityId)
                 .Include(d => d.Courses)
                 .Include(d => d.DocumentType)
                 .Include(d => d.LMSUser)
@@ -74,7 +74,7 @@ namespace LMS_1_1.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ActivityId"] = new SelectList(_context.LMSActivity, "Id", "Description", document.ActivityId);
+            ViewData["ActivityId"] = new SelectList(_context.LMSActivity, "Id", "Description", document.LMSActivityId);
             ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Description", document.CourseId);
             ViewData["DocumentTypeId"] = new SelectList(_context.Set<DocumentType>(), "Id", "Id", document.DocumentTypeId);
             ViewData["LMSUserId"] = new SelectList(_context.LMSUsers, "Id", "Id", document.LMSUserId);
@@ -95,7 +95,7 @@ namespace LMS_1_1.Controllers
             {
                 return NotFound();
             }
-            ViewData["ActivityId"] = new SelectList(_context.LMSActivity, "Id", "Description", document.ActivityId);
+            ViewData["ActivityId"] = new SelectList(_context.LMSActivity, "Id", "Description", document.LMSActivityId);
             ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Description", document.CourseId);
             ViewData["DocumentTypeId"] = new SelectList(_context.Set<DocumentType>(), "Id", "Id", document.DocumentTypeId);
             ViewData["LMSUserId"] = new SelectList(_context.LMSUsers, "Id", "Id", document.LMSUserId);
@@ -135,7 +135,7 @@ namespace LMS_1_1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ActivityId"] = new SelectList(_context.LMSActivity, "Id", "Description", document.ActivityId);
+            ViewData["ActivityId"] = new SelectList(_context.LMSActivity, "Id", "Description", document.LMSActivityId);
             ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Description", document.CourseId);
             ViewData["DocumentTypeId"] = new SelectList(_context.Set<DocumentType>(), "Id", "Id", document.DocumentTypeId);
             ViewData["LMSUserId"] = new SelectList(_context.LMSUsers, "Id", "Id", document.LMSUserId);
@@ -152,7 +152,7 @@ namespace LMS_1_1.Controllers
             }
 
             var document = await _context.Documents
-                .Include(d => d.Activity)
+                .Include(d => d.LMSActivityId)
                 .Include(d => d.Courses)
                 .Include(d => d.DocumentType)
                 .Include(d => d.LMSUser)

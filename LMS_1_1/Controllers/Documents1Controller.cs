@@ -11,7 +11,7 @@ using LMS_1_1.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using LMS_1_1.ViewModels;
-using LMS_1_1.Utility;
+using System.IO;
 
 namespace LMS_1_1.Controllers
 {
@@ -20,15 +20,15 @@ namespace LMS_1_1.Controllers
     public class Documents1Controller : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly IHostingEnvironment _environment;
+       
         private readonly IDocumentRepository _repository;
         private readonly ILogger<Documents1Controller> _logger;
 
-        public Documents1Controller(IDocumentRepository repository, ILogger<Documents1Controller> logger, ApplicationDbContext context, IHostingEnvironment environment)
+        public Documents1Controller(IDocumentRepository repository, ILogger<Documents1Controller> logger, ApplicationDbContext context)
         {
             _repository = repository;
             _logger = logger;
-            _environment = environment;
+          
         }
 
         // GET: api/Documents1
@@ -39,18 +39,36 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: api/Documents1/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Document>> GetDocument(Guid id)
+      [HttpGet]
+        public async Task<ActionResult<Document>> GetDocument(string id)
         {
-            var document = await _repository.GetDocumentByIdAsync(id);
+            Guid idG = Guid.Parse(id);
+            var document = await _repository.GetDocumentByIdAsync(idG);
 
             if (document == null)
             {
                 return NotFound();
             }
 
-            return document;
+            return Ok(document);
         }
+
+        // GET: api/Documents1/5
+        [HttpGet("ByOwner")]
+        public async Task<ActionResult<IEnumerable<Document>>> GetDocumentByOwner(string id)
+        {
+            Guid idG = Guid.Parse(id);
+           var document = await _repository.GetDocumentsByIdOwnerAsync(idG);
+
+            if (document == null)
+            {
+                return NotFound();
+            }
+
+             return Ok(document);
+        }
+
+        
 
         // PUT: api/Documents1/5
         [HttpPut("{id}")]
@@ -99,30 +117,39 @@ namespace LMS_1_1.Controllers
                LMSUserId = documentVm.UploaderId,
                DocumentTypeId= documentVm.DocumentTypeId,
                 
-                CourseId = documentVm.DocOwnerTypeId==(int)DocOwnerType.Course ? documentVm.DocOwnerId : Guid.Empty,
-                ModuleId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Module ? documentVm.DocOwnerId : Guid.Empty,
-                ActivityId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Activity ? documentVm.DocOwnerId : Guid.Empty
+                CourseId = documentVm.DocOwnerTypeId==(int)DocOwnerType.Course ? documentVm.DocOwnerId : null,
+                ModuleId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Module ? documentVm.DocOwnerId : null,
+                LMSActivityId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Activity ? documentVm.DocOwnerId : null
             };
             await _repository.AddDocumentAsync(document);
-            await _repository.SaveAllAsync();
-            Upload.UploadFile(documentVm.FileData);
+            await _repository.UploadFile(documentVm.FileData);
+            _repository.SaveAllAsync();
+          
             return CreatedAtAction("GetDocument", new { id= document.Id}, document);
+        }
+
+        [HttpPost("DownloadFile"), DisableRequestSizeLimit]
+        public async Task<FileStream> DownloadFile (string fileName)
+        {      
+           
+            return  await _repository.DownloadFile(fileName);
         }
 
         // DELETE: api/Documents1/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Document>> DeleteDocument(Guid id)
+        public async Task<ActionResult<Document>> DeleteDocument(string id)
         {
-            var document = await _repository.GetDocumentByIdAsync(id);
+            Guid idG = Guid.Parse(id);
+            var document = await _repository.GetDocumentByIdAsync(idG);
             if (document == null)
             {
                 return NotFound();
             }
-
             _repository.RemoveDocumentAsync(document);
-            await _repository.SaveAllAsync();
+            await _repository.RemoveFile(document.Path);
+            _repository.SaveAllAsync();
 
-            return document;
+            return Ok(document);
         }
 
         private bool DocumentExists(Guid id)

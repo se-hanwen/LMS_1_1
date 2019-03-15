@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LMS_1_1.Data;
 using LMS_1_1.Models;
-using LMS_1_1.Utility;
 using LMS_1_1.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
@@ -22,12 +21,14 @@ namespace LMS_1_1.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _environment;
-        private readonly IProgramRepository _repository;
+        private readonly IProgramRepository _programrepository;
         private readonly ILogger<Courses1Controller> _logger;
+        private readonly IDocumentRepository _documentrepository;
 
-        public Courses1Controller (IProgramRepository repository, ILogger<Courses1Controller> logger, ApplicationDbContext context, IHostingEnvironment environment)
+        public Courses1Controller (IProgramRepository programrepository, IDocumentRepository documentrepository, ILogger<Courses1Controller> logger, ApplicationDbContext context, IHostingEnvironment environment)
         {
-            _repository = repository;
+            _programrepository = programrepository;
+            _documentrepository = documentrepository;
             _logger = logger;
             _context = context;
             _environment = environment;
@@ -38,7 +39,7 @@ namespace LMS_1_1.Controllers
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
         {
            
-            return Ok(await _repository.GetAllCoursesAsync(false));
+            return Ok(await _programrepository.GetAllCoursesAsync(false));
         }
 
         // GET: api/Courses1/5/true course , modules and activites
@@ -175,7 +176,7 @@ namespace LMS_1_1.Controllers
          
            _context.Courses.Add(course);
             await _context.SaveChangesAsync();
-            Upload.UploadFile(courseVm.FileData);
+            await _documentrepository.UploadFile(courseVm.FileData);
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
 

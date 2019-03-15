@@ -1,21 +1,66 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpClient } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { UploadDocumentInfoViewModel } from './document';
+import { throwError, Observable, Subject } from 'rxjs';
+import { IDocument} from './document';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
+
+    private subject = new Subject<any>();
+
+    isUploaded(message: boolean) {
+        this.subject.next({ message});
+    }
+    getUplaodtStatus(): Observable<any> {
+        return this.subject.asObservable();
+    }
+
+
     private documentUrl = "https://localhost:44396/api/documents1/";
+
+    private httpOptions = {
+        headers: new HttpHeaders({
+            'Accept': 'text/html, application/xhtml+xml, */*',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        responseType: 'blob' as'json'
+    };
 
     constructor(private http: HttpClient) { }
 
+    getDocumentsByOwnerId(id: string): Observable<IDocument[]> {
+        console.log(this.documentUrl);
+        return this.http.get<IDocument[]>(this.documentUrl + "ByOwner?id=" + id).pipe(
+            tap(data => console.log('All:' + JSON.stringify(data))),
+            catchError(this.handleError)
+        );
+    }
     uploadDocument(document: any) {
-        console.log(document);
         return this.http.post(this.documentUrl, document).pipe(
             tap(result => JSON.stringify(result)),
+            catchError(this.handleError)
+        );
+    }
+
+    downloadFile(filePath: string): Observable<Blob> {
+        let input = filePath;
+
+        return this.http.post<Blob>(this.documentUrl + "DownloadFile?fileName=" + input, {},
+            this.httpOptions).pipe
+            (
+            tap(
+                data => 
+                    console.log(data)),
+                     catchError(this.handleError)
+            );
+    }
+
+    deleteFileById(id: string) {
+        return this.http.delete(this.documentUrl + id).pipe(
+            tap(data => console.log(data)),
             catchError(this.handleError)
         );
     }

@@ -1,11 +1,11 @@
 import { Data } from '@angular/router';
 
-export interface UploadDocumentInfoViewModel {
-    Name: string;
-    Description: string;
-    /*DocumentTypeId: number;
-    UploaderId: string;
-    DocOwnerId: string;
-    DocOwnerTypeId: number;*/
-    FileData: any;
+export interface IDocument
+{
+    id?: string;
+    name: string;
+    description: string;
+    uploaderId: string;
+    docOwnerTypeId: number;
+    path: string;
 }
