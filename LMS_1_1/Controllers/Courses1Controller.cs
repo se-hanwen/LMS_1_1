@@ -194,23 +194,11 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            ////Delete connected activities.
-            //string Sqlstr1 = "DELETE FROM LMSActivity WHERE ModuleId IN " +
-            //    "(SELECT Id FROM Modules WHERE CourseId =@cid)";
-            //var parasql = new SqlParameter("@cid", iD);
-            //int num1 = _context.Database.ExecuteSqlCommand(Sqlstr1, parasql);
-            //_context.SaveChanges();
-
-            ////Delete connected modules.
-            //string Sqlstr2 = "DELETE FROM Modules WHERE CourseId =@cid";
-            //int num2 = _context.Database.ExecuteSqlCommand(Sqlstr2, parasql);
-            //_context.SaveChanges();
 
             //Delete course.
             _context.Courses.Remove(course);
             _context.SaveChanges();
-            //_logger.LogDebug("!!! {nums} activities had been deleted on LMSActivity.", num1);
-            //_logger.LogDebug("!!! {nums} modules had been deleted on Modules.", num2);
+
             _logger.LogDebug("!!! Course of {name} deleted.", course.Name);
 
 
