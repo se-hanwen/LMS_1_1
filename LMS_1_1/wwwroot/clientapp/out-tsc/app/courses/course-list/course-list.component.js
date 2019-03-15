@@ -3,17 +3,17 @@ import { Component } from '@angular/core';
 import { CourseService } from '../course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 var CourseListComponent = /** @class */ (function () {
+    // private userId: string;
     function CourseListComponent(CourseService, AuthService) {
-        var _this = this;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.courses = [];
-        this.AuthService.userid.subscribe(function (i) { return _this.userId = i; });
+        //   this.AuthService.userid.subscribe( i => this.userId=i);
     }
     CourseListComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.AuthService.isTeacher.subscribe(function (i) { return _this.isTeacher = i; });
-        this.CourseService.getCourses(this.userId).subscribe(function (courses) {
+        this.CourseService.getCourses().subscribe(function (courses) {
             _this.courses = courses;
         }, function (error) { return _this.errorMessage = error; });
     };

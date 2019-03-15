@@ -14,16 +14,16 @@ export class CourseListComponent implements OnInit {
     courses: ICourse[] = [];
     errorMessage: string;
     isTeacher: boolean;
-    private userId: string;
+   // private userId: string;
     constructor(private CourseService: CourseService, private AuthService : AuthService) {
-        this.AuthService.userid.subscribe( i => this.userId=i);
+     //   this.AuthService.userid.subscribe( i => this.userId=i);
     }
 
      
     ngOnInit(): void {
         this.AuthService.isTeacher.subscribe( i => this.isTeacher=i);
 
-        this.CourseService.getCourses(this.userId).subscribe(
+        this.CourseService.getCourses().subscribe(
             courses => {
                 this.courses = courses;
               

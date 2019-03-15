@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PartipantService } from './partipant.service';
 import { throwError } from 'rxjs';
 
+
+
 @Component({
   selector: 'add-partipant',
   templateUrl: './add-partipant.component.html',
@@ -47,7 +49,9 @@ private test:string ="";
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private  PartipantService: PartipantService
+    private  PartipantService: PartipantService,
+    
+  
     ) { }
 
   ngOnInit() {

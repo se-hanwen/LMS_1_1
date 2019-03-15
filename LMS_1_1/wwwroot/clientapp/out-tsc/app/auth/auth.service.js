@@ -19,8 +19,10 @@ var AuthService = /** @class */ (function () {
         this.firstName = this.firstNameSource.asObservable();
         this.lastNameSource = new BehaviorSubject(' ');
         this.lastName = this.lastNameSource.asObservable();
-        this.useridSource = new BehaviorSubject(' ');
-        this.userid = this.useridSource.asObservable();
+        /*
+        private useridSource = new BehaviorSubject(' ');
+        userid = this.useridSource.asObservable();
+        */
         this.isAuthenticatedSource = new BehaviorSubject(false);
         this.isAuthenticated = this.isAuthenticatedSource.asObservable();
         this.isTeacherSource = new BehaviorSubject(false);
@@ -72,7 +74,7 @@ var AuthService = /** @class */ (function () {
             _this.tokenExpirationSource.next(tokenInfo.tokenExpiration);
             _this.firstNameSource.next(tokenInfo.firstName);
             _this.lastNameSource.next(tokenInfo.lastName);
-            _this.useridSource.next(tokenInfo.userid);
+            //    this.useridSource.next(tokenInfo.userid);
             _this.isAuthenticatedSource.next(_this.checkisAuthenticated(tokenInfo.token, tokenInfo.tokenExpiration));
             _this.isTeacherSource.next(_this.checkisAuthenticated(tokenInfo.token, tokenInfo.tokenExpiration) ? _this.checkIsTeacher(tokenInfo.isTeacher) : false);
             _this.tokenData.token = tokenInfo.token;
