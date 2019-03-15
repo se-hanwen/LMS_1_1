@@ -1,16 +1,16 @@
 import { async, TestBed } from '@angular/core/testing';
-import { ModulDetailsComponent } from './details.component';
-describe('ModulDetailsComponent', function () {
+import { RegisterComponent } from './register.component';
+describe('RegisterComponent', function () {
     var component;
     var fixture;
     beforeEach(async(function () {
         TestBed.configureTestingModule({
-            declarations: [ModulDetailsComponent]
+            declarations: [RegisterComponent]
         })
             .compileComponents();
     }));
     beforeEach(function () {
-        fixture = TestBed.createComponent(ModulDetailsComponent);
+        fixture = TestBed.createComponent(RegisterComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
@@ -18,4 +18,4 @@ describe('ModulDetailsComponent', function () {
         expect(component).toBeTruthy();
     });
 });
-//# sourceMappingURL=details.component.spec.js.map
+//# sourceMappingURL=register.component.spec.js.map

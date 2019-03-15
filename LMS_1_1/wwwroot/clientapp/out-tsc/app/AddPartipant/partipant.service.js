@@ -1,30 +1,38 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 var PartipantService = /** @class */ (function () {
-    function PartipantService(http) {
+    function PartipantService(http, AuthService) {
+        var _this = this;
         this.http = http;
+        this.AuthService = AuthService;
         this.Choosed = [];
         this.CourseId = "";
+        this.token = "";
+        this.AuthService.token.subscribe(function (i) { return _this.token = i; });
     }
     PartipantService.prototype.GetStudentsOff = function () {
         var url = "https://localhost:44396/CourseUsers/GetusersOff";
         var parmas = { "CourseId": this.CourseId };
-        return this.http.post(url, parmas)
+        return this.http.post(url, parmas, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     PartipantService.prototype.GetCourseName = function () {
         var url = "https://localhost:44396/CourseUsers/GetCourseName";
         var parmas = { "CourseId": this.CourseId };
-        return this.http.post(url, parmas)
+        return this.http.post(url, parmas, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     PartipantService.prototype.GetStudentsOn = function () {
         var url = "https://localhost:44396/CourseUsers/GetusersOn";
         var parmas = { "CourseId": this.CourseId };
-        return this.http.post(url, parmas)
+        return this.http.post(url, parmas, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
             .pipe(
         /* map(
          (response:IPartipant[])=>
@@ -41,7 +49,8 @@ var PartipantService = /** @class */ (function () {
             Userids.push(part.userid);
         }
         //let parmas={"CourseId":this.CourseId,Userids};    
-        return this.http.post(url, { "CourseId": this.CourseId, Userids: Userids })
+        return this.http.post(url, { "CourseId": this.CourseId, Userids: Userids }, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     PartipantService.prototype.AddStudent = function (user) {
@@ -77,7 +86,7 @@ var PartipantService = /** @class */ (function () {
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient])
+        tslib_1.__metadata("design:paramtypes", [HttpClient, AuthService])
     ], PartipantService);
     return PartipantService;
 }());

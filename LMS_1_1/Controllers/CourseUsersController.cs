@@ -1,6 +1,7 @@
 ﻿using LMS_1_1.Data;
 using LMS_1_1.Models;
 using LMS_1_1.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+
 namespace LMS_1_1.Controllers
 {
-   // [Route("api/[controller]")]
-   // [ApiController]
+    // [Route("api/[controller]")]
+    // [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CourseUsersController : Controller
     //ControllerBase
     //Controller
@@ -59,6 +62,7 @@ namespace LMS_1_1.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<ICollection<CourseUserViewModel>>> GetusersOff([FromBody] CourseIdViewModel CourseId)
         {
             var res = (await _repository.GetUsers(CourseId.CourseId, false))
@@ -68,6 +72,7 @@ namespace LMS_1_1.Controllers
         }
 
         [HttpGet("{CourseId}")]
+        [Authorize]
         public ActionResult<Guid> GetStart(Guid CourseId)
         {
            
@@ -132,9 +137,10 @@ namespace LMS_1_1.Controllers
             return NoContent();
         }
         [HttpPost]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<string>> AddStudentsToCourse([FromBody] SavecouseListViewmodel savecouseListViewmodel)
         {
-
+          //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
             try
             {
                 await _repository.RemoveAllCourseUsers(savecouseListViewmodel.Courseid);

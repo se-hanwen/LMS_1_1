@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { IPartipant,ICourseNameData,ICourseNameSubdata } from './partipant';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import {Observable, throwError} from 'rxjs';
 import {catchError, tap, map} from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,16 +15,22 @@ export class PartipantService{
     public Choosed: IPartipant[] = [];
 
     public CourseId: string="";
+    private token: string="";
 
-    constructor(private http: HttpClient) {}
-    
+    constructor(private http: HttpClient,  private AuthService:AuthService) 
+    {
+        this.AuthService.token.subscribe( i => this.token=i);
+    }
+     
 
 
     public GetStudentsOff(): Observable<IPartipant[] | undefined>
     {
         let url:string="https://localhost:44396/CourseUsers/GetusersOff";  
         let parmas={"CourseId":this.CourseId}; 
-        return this.http.post<IPartipant[]>(url,parmas )
+        return this.http.post<IPartipant[]>(url,parmas,
+            {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+    } )
         .pipe(
             tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.handleError)
@@ -34,7 +41,9 @@ export class PartipantService{
     {
         let url:string="https://localhost:44396/CourseUsers/GetCourseName";  
         let parmas={"CourseId":this.CourseId}; 
-        return this.http.post<ICourseNameData>(url,parmas )
+        return this.http.post<ICourseNameData>(url,parmas
+            ,{headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+        })
         .pipe(
             tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.handleError)
@@ -45,7 +54,9 @@ export class PartipantService{
     {
         let url:string="https://localhost:44396/CourseUsers/GetusersOn";  
         let parmas={"CourseId":this.CourseId};   
-        return this.http.post<IPartipant[]>(url,parmas)
+        return this.http.post<IPartipant[]>(url,parmas
+            ,{headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+    })
         .pipe(
            /* map(
             (response:IPartipant[])=>
@@ -66,7 +77,9 @@ export class PartipantService{
             Userids.push(part.userid);
         }
         //let parmas={"CourseId":this.CourseId,Userids};    
-        return this.http.post(url,{"CourseId":this.CourseId,Userids})
+        return this.http.post(url,{"CourseId":this.CourseId,Userids},
+        {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+    })
         .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.handleError));
 

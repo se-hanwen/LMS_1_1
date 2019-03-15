@@ -95,7 +95,7 @@ namespace LMS_1_1.Controllers
                         claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""));
                         claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName ?? ""));
                         claims.Add(new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName ?? ""));
-                        claims.Add(new Claim(JwtRegisteredClaimNames.NameId, user.Id));
+                       // claims.Add(new Claim(JwtRegisteredClaimNames.NameId, user.Id));
 
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
                         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -113,10 +113,10 @@ namespace LMS_1_1.Controllers
                             expiration = token.ValidTo,
                             isTeacher = token.Claims.Where(c => c.Type == ClaimTypes.Role && c.Value == "Teacher").Select(c => c.Value).FirstOrDefault(),
                             FirstName = token.Claims.Where(c => c.Type == JwtRegisteredClaimNames.GivenName).Select(c => c.Value).FirstOrDefault(),
-                            LastName = token.Claims.Where(c => c.Type == JwtRegisteredClaimNames.FamilyName).Select(c => c.Value).FirstOrDefault(),
-                            Userid = token.Claims.Where(c => c.Type == JwtRegisteredClaimNames.NameId).Select(c => c.Value).FirstOrDefault()
+                            LastName = token.Claims.Where(c => c.Type == JwtRegisteredClaimNames.FamilyName).Select(c => c.Value).FirstOrDefault()
+                           // Userid = token.Claims.Where(c => c.Type == JwtRegisteredClaimNames.NameId).Select(c => c.Value).FirstOrDefault()
                         };
-                        await _programRepository.AddTokenUser(results.token, user.Id);
+                       // await _programRepository.AddTokenUser(results.token, user.Id);
 
                         return Created("", results);
                     }

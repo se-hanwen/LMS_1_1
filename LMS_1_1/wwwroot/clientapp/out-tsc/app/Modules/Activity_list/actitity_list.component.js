@@ -8,6 +8,7 @@ var ActitityListComponent = /** @class */ (function () {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
+        this.isTeacher = false;
     }
     ActitityListComponent.prototype.ngOnInit = function () {
         var _this = this;

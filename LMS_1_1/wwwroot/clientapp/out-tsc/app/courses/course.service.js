@@ -3,38 +3,43 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 var CourseService = /** @class */ (function () {
-    function CourseService(http) {
+    function CourseService(http, AuthService) {
+        var _this = this;
         this.http = http;
+        this.AuthService = AuthService;
         this.courseUrl = "https://localhost:44396/api/courses1";
-        //Used for http requests.
-        this.hpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': 'my-auth-token' //Set the right string.
-            })
-        };
+        this.token = "";
+        this.AuthService.token.subscribe(function (i) { return _this.token = i; });
     }
-    CourseService.prototype.getCourses = function (userid) {
-        return this.http.get(this.courseUrl + "/foruser?id=" + userid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    CourseService.prototype.getCourses = function () {
+        return this.http.get(this.courseUrl + "/foruser", { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.getCourseById = function (id) {
-        return this.http.get(this.courseUrl + "/" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+        return this.http.get(this.courseUrl + "/" + id, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.getCourseAllById = function (id) {
-        return this.http.get(this.courseUrl + "/All?id=" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+        return this.http.get(this.courseUrl + "/All?id=" + id, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.getCourseAndModulebyId = function (courseid) {
-        return this.http.get(this.courseUrl + "/CAndM?id=" + courseid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+        return this.http.get(this.courseUrl + "/CAndM?id=" + courseid, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.getActivitybymodulId = function (Moduleid) {
-        return this.http.get(this.courseUrl + "/AfromMid?id=" + Moduleid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+        return this.http.get(this.courseUrl + "/AfromMid?id=" + Moduleid, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.getModulAndActivitybyId = function (Moduleid) {
-        return this.http.get(this.courseUrl + "/MAndAfromMid?id=" + Moduleid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+        return this.http.get(this.courseUrl + "/MAndAfromMid?id=" + Moduleid, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.createCourse = function (course) {
-        return this.http.post(this.courseUrl, course).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+        return this.http.post(this.courseUrl, course, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     //Delete a course by a given guid.
     CourseService.prototype.DeleteCourse = function (id) {
@@ -61,7 +66,7 @@ var CourseService = /** @class */ (function () {
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient])
+        tslib_1.__metadata("design:paramtypes", [HttpClient, AuthService])
     ], CourseService);
     return CourseService;
 }());

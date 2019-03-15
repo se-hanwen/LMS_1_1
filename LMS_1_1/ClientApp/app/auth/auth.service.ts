@@ -30,10 +30,10 @@ firstName = this.firstNameSource.asObservable();
 private lastNameSource = new BehaviorSubject(' ');
 lastName = this.lastNameSource.asObservable();
 
-
+/*
 private useridSource = new BehaviorSubject(' ');
 userid = this.useridSource.asObservable();
-
+*/
 private isAuthenticatedSource = new BehaviorSubject(false);
 isAuthenticated = this.isAuthenticatedSource.asObservable();
 
@@ -95,7 +95,7 @@ ngOnInit(): void {
           this.tokenExpirationSource.next(tokenInfo.tokenExpiration);
           this.firstNameSource.next(tokenInfo.firstName);
           this.lastNameSource.next(tokenInfo.lastName);
-          this.useridSource.next(tokenInfo.userid);
+      //    this.useridSource.next(tokenInfo.userid);
           this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
           this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
 
