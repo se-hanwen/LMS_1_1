@@ -42,17 +42,19 @@ import { IsTeacherGuard } from '../Shared/is-teacher.guard';
               },
               {
 
-                  path: 'courses/:id', component: CourseDetailComponent
-              },
-              {
-                  path: 'courses/delete/:id', component: CourseDeleteComponent
-              },
-              {
-                  path: 'courses/edit/:id', component: CourseEditComponent
-
                   path: 'courses/:id'
                   ,canActivate: [IsAuthenticatedGuard]
-                  ,component: CourseDetailComponent
+                  , component: CourseDetailComponent
+              },
+              {
+                  path: 'courses/delete/:id'
+                  ,canActivate: [IsTeacherGuard] 
+                  , component: CourseDeleteComponent
+              },
+              {
+                  path: 'courses/edit/:id'
+                  ,canActivate: [IsTeacherGuard] 
+                  , component: CourseEditComponent
 
               }
           ]
