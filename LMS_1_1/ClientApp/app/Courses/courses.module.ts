@@ -7,7 +7,6 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { RouterModule } from '@angular/router';
 import { PartipantListComponent } from '../PartipantList/partipant-list.component';
 import { detailList } from './detail_list/detail_list.component';
-import { ExamplecompComponent } from './examplecomp/examplecomp.component';
 import { CourseDeleteComponent } from './course-delete/course-delete.component';
 import { CourseEditComponent } from './course-edit/course-edit.component';
 @NgModule({
@@ -17,7 +16,6 @@ import { CourseEditComponent } from './course-edit/course-edit.component';
         CreateCourseComponent,
         PartipantListComponent,
         detailList,
-        ExamplecompComponent,
         CourseDeleteComponent,
         CourseEditComponent
     ],
@@ -33,6 +31,12 @@ import { CourseEditComponent } from './course-edit/course-edit.component';
               },
               {
                   path: 'courses/:id', component: CourseDetailComponent
+              },
+              {
+                  path: 'courses/delete/:id', component: CourseDeleteComponent
+              },
+              {
+                  path: 'courses/edit/:id', component: CourseEditComponent
               }
           ]
       )

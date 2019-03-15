@@ -8,6 +8,8 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { RouterModule } from '@angular/router';
 import { PartipantListComponent } from '../PartipantList/partipant-list.component';
 import { detailList } from './detail_list/detail_list.component';
+import { CourseDeleteComponent } from './course-delete/course-delete.component';
+import { CourseEditComponent } from './course-edit/course-edit.component';
 var CoursesModule = /** @class */ (function () {
     function CoursesModule() {
     }
@@ -18,7 +20,9 @@ var CoursesModule = /** @class */ (function () {
                 CourseDetailComponent,
                 CreateCourseComponent,
                 PartipantListComponent,
-                detailList
+                detailList,
+                CourseDeleteComponent,
+                CourseEditComponent
             ],
             imports: [
                 CommonModule,
@@ -31,6 +35,12 @@ var CoursesModule = /** @class */ (function () {
                     },
                     {
                         path: 'courses/:id', component: CourseDetailComponent
+                    },
+                    {
+                        path: 'courses/delete/:id', component: CourseDeleteComponent
+                    },
+                    {
+                        path: 'courses/edit/:id', component: CourseEditComponent
                     }
                 ])
             ]

@@ -1,10 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
 import { ICourse } from './course';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { Guid } from 'guid-typescript';
 import { Data } from '@angular/router';
+
 
 @Injectable(
     {
@@ -13,6 +14,14 @@ import { Data } from '@angular/router';
 
 export class CourseService {
     private courseUrl = "https://localhost:44396/api/courses1";
+
+    //Used for http requests.
+    private hpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': 'my-auth-token'    //Set the right string.
+        })
+    };
    
     constructor(private http: HttpClient) {
 
@@ -45,7 +54,13 @@ export class CourseService {
         );
     }
 
-    
+    //Delete a course by a given guid.
+    DeleteCourse(id: Guid) {
+        let urlString = this.courseUrl +"/"+ id;
+        return this.http.delete(urlString, this.hpOptions).pipe(
+            tap(result=>JSON.stringify(result)),catchError(this.handleError)
+        );
+    }
 
 
     private handleError(err: HttpErrorResponse) {

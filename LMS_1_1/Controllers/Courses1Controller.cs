@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using LMS_1_1.Repository;
 using Microsoft.Extensions.Logging;
+using System.Data.SqlClient;
 
 namespace LMS_1_1.Controllers
 {
@@ -185,18 +186,35 @@ namespace LMS_1_1.Controllers
 
         // DELETE: api/Courses1/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Course>> DeleteCourse(Guid id)
+        public async Task<ActionResult<Course>> DeleteCourse(Guid iD)
         {
-            var course = await _context.Courses.FindAsync(id);
+            var course = await _context.Courses.FindAsync(iD);
             if (course == null)
             {
                 return NotFound();
             }
 
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
+            ////Delete connected activities.
+            //string Sqlstr1 = "DELETE FROM LMSActivity WHERE ModuleId IN " +
+            //    "(SELECT Id FROM Modules WHERE CourseId =@cid)";
+            //var parasql = new SqlParameter("@cid", iD);
+            //int num1 = _context.Database.ExecuteSqlCommand(Sqlstr1, parasql);
+            //_context.SaveChanges();
 
-            return course;
+            ////Delete connected modules.
+            //string Sqlstr2 = "DELETE FROM Modules WHERE CourseId =@cid";
+            //int num2 = _context.Database.ExecuteSqlCommand(Sqlstr2, parasql);
+            //_context.SaveChanges();
+
+            //Delete course.
+            _context.Courses.Remove(course);
+            _context.SaveChanges();
+            //_logger.LogDebug("!!! {nums} activities had been deleted on LMSActivity.", num1);
+            //_logger.LogDebug("!!! {nums} modules had been deleted on Modules.", num2);
+            _logger.LogDebug("!!! Course of {name} deleted.", course.Name);
+
+
+            return Ok(course);      //Send back 200.
         }
 
         private bool CourseExists(Guid id)
