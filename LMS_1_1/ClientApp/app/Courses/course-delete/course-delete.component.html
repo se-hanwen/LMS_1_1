@@ -1,0 +1,34 @@
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Course
+        </dt>
+        <dd class="col-sm-10">
+            {{course.name}}
+        </dd>
+        <dt class="col-sm-2">
+            Start Date
+        </dt>
+        <dd class="col-sm-10">
+            {{course.startDate |date: 'yyyy-MM-dd'}}
+        </dd>
+        <dt class="col-sm-2">
+            Description
+        </dt>
+        <dd class="col-sm-10">
+            {{course.description}}
+        </dd>
+    </dl>
+
+    <form #mycourse="ngForm" (ngSubmit)="ConfirmedDelete()">
+        <input type="hidden" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a [routerLink]="['/courses']" >Back to List</a>
+    </form>
+</div>
+<h4>NOTICE! All documents and activities connected to this course will be deleted.</h4>

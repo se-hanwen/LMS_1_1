@@ -23,7 +23,7 @@
                 </a>
                 <div class="card-body" *ngIf="isTeacher">
                     <a class="card-link">Edit Course</a>
-                    <a class="card-link">Delete Course</a>
+                    <a class="card-link" [routerLink]="['/courses/delete', course.id]">Delete Course</a>
                 </div>
             </div>
 

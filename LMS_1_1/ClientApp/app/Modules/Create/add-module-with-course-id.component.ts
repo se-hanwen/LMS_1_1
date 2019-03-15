@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';	
-import { IModule } from '../../courses/course';	
-import { ActivatedRoute } from '@angular/router';	
+import { Component, OnInit } from '@angular/core';
+import { IModule } from '../../courses/course';
+import { ActivatedRoute } from '@angular/router';
+
 
  @Component({	
   selector: 'app-add-module-with-course-id',	

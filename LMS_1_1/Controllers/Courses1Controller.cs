@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using LMS_1_1.Repository;
 using Microsoft.Extensions.Logging;
+using System.Data.SqlClient;
 
 namespace LMS_1_1.Controllers
 {
@@ -339,18 +340,23 @@ namespace LMS_1_1.Controllers
 
         // DELETE: api/Courses1/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Course>> DeleteCourse(Guid id)
+        public async Task<ActionResult<Course>> DeleteCourse(Guid iD)
         {
-            var course = await _context.Courses.FindAsync(id);
+            var course = await _context.Courses.FindAsync(iD);
             if (course == null)
             {
                 return NotFound();
             }
 
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
 
-            return course;
+            //Delete course.
+            _context.Courses.Remove(course);
+            _context.SaveChanges();
+
+            _logger.LogDebug("!!! Course of {name} deleted.", course.Name);
+
+
+            return Ok(course);      //Send back 200.
         }
 
         private bool CourseExists(Guid id)

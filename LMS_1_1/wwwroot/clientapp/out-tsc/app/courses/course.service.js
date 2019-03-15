@@ -1,12 +1,19 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 var CourseService = /** @class */ (function () {
     function CourseService(http) {
         this.http = http;
         this.courseUrl = "https://localhost:44396/api/courses1";
+        //Used for http requests.
+        this.hpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': 'my-auth-token' //Set the right string.
+            })
+        };
     }
     CourseService.prototype.getCourses = function (userid) {
         return this.http.get(this.courseUrl + "/foruser?id=" + userid).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
@@ -28,6 +35,11 @@ var CourseService = /** @class */ (function () {
     };
     CourseService.prototype.createCourse = function (course) {
         return this.http.post(this.courseUrl, course).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
+    //Delete a course by a given guid.
+    CourseService.prototype.DeleteCourse = function (id) {
+        var urlString = this.courseUrl + "/" + id;
+        return this.http.delete(urlString, this.hpOptions).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     CourseService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure
