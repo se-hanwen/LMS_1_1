@@ -42,7 +42,8 @@ export class UploadComponent implements OnInit {
        
         this.DocumentService.uploadDocument(formData).subscribe(
             (result) => {
-                this.DocumentService.isUploaded(true); 
+                this.DocumentService.isUploaded(true);
+                
             },
             error => this.errorMessage = <any>error
         );
