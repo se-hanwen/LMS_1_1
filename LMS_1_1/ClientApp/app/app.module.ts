@@ -17,13 +17,14 @@ import { ModulesModule } from './Modules/modules.module';
 @NgModule({
   declarations: [
     AppComponent
-    
+
   ],
     imports: [
     FormsModule,
     BrowserModule,
     AddPartipantModule,
     CoursesModule,
+   
     RouterModule.forRoot([
         
         {

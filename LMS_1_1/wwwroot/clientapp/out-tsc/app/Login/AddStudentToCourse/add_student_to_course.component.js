@@ -1,13 +1,16 @@
 import * as tslib_1 from "tslib";
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { PartipantService } from 'ClientApp/app/AddPartipant/partipant.service';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { throwError, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 var AddStudentToCourseComponent = /** @class */ (function () {
-    function AddStudentToCourseComponent(PartipantService, route) {
+    function AddStudentToCourseComponent(PartipantService, route, cd) {
         this.PartipantService = PartipantService;
         this.route = route;
+        this.cd = cd;
         this.test = "";
+        this.unsubscribe = new Subject();
         this.pageTitle = "";
         this.BlackList = [];
         this._ChooseFrom = [];
@@ -49,11 +52,24 @@ var AddStudentToCourseComponent = /** @class */ (function () {
         var _this = this;
         // this.userid= this.route.snapshot.paramMap.get('id');
         // getfrom save on regsiteruser
-        this.PartipantService.GetCoursesOff(this.userid).subscribe(function (Choose) { return _this.ChooseFrom = Choose; });
-        this.PartipantService.GetCoursesOn(this.userid).subscribe(function (Choosed) {
-            return _this.Choosed = Choosed;
+        this.PartipantService.GetCoursesOff(this.userid)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (Choose) {
+            _this.ChooseFrom = Choose;
+            _this.cd.markForCheck();
         });
-        this.PartipantService.GetUserName(this.userid).subscribe(function (UserName) { return _this.pageTitle = UserName.value.name; });
+        this.PartipantService.GetCoursesOn(this.userid)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (Choosed) {
+            _this.Choosed = Choosed;
+            _this.cd.markForCheck();
+        });
+        this.PartipantService.GetUserName(this.userid)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (UserName) {
+            _this.pageTitle = UserName.value.name;
+            _this.cd.markForCheck();
+        });
     };
     AddStudentToCourseComponent.prototype.chooseCourse = function (corseid) {
         var keyin = this.ChooseFrom.findIndex(function (cu) { return cu.id.toString() == corseid; });
@@ -92,7 +108,9 @@ var AddStudentToCourseComponent = /** @class */ (function () {
         }
     };
     AddStudentToCourseComponent.prototype.SaveCourses = function () {
-        this.PartipantService.SaveCourses(this.userid, this._Choosed).subscribe();
+        this.PartipantService.SaveCourses(this.userid, this._Choosed)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe();
         //this.router.navigate(['/courses', this.courseid]);
     };
     AddStudentToCourseComponent.prototype.performFilter = function (FilterBy) {
@@ -124,13 +142,18 @@ var AddStudentToCourseComponent = /** @class */ (function () {
             }
         }
     };
+    AddStudentToCourseComponent.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
     AddStudentToCourseComponent = tslib_1.__decorate([
         Component({
             selector: 'add_student_to_course',
             templateUrl: './add_student_to_course.component.html',
             styleUrls: ['./add_student_to_course.component.css']
         }),
-        tslib_1.__metadata("design:paramtypes", [PartipantService, Router])
+        tslib_1.__metadata("design:paramtypes", [PartipantService, Router,
+            ChangeDetectorRef])
     ], AddStudentToCourseComponent);
     return AddStudentToCourseComponent;
 }());

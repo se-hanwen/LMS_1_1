@@ -283,7 +283,8 @@ namespace LMS_1_1.Controllers
                 StartDate = Module.StartDate,
                 EndDate = Module.EndDate,
                 Description = Module.Description,
-                Activities = res
+                Activities = res,
+                CourseId=Module.CourseId
             };
 
             if (Module1 == null)

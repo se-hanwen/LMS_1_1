@@ -1,8 +1,8 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { throwError, Subject } from 'rxjs';
+import { catchError, tap, takeUntil } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 var PartipantService = /** @class */ (function () {
     function PartipantService(http, AuthService) {
@@ -12,7 +12,12 @@ var PartipantService = /** @class */ (function () {
         this.Choosed = [];
         this.CourseId = "";
         this.token = "";
-        this.AuthService.token.subscribe(function (i) { return _this.token = i; });
+        this.unsubscribe = new Subject();
+        this.AuthService.token
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (i) {
+            _this.token = i;
+        });
     }
     PartipantService.prototype.GetStudentsOff = function () {
         var url = "https://localhost:44396/CourseUsers/GetusersOff";
@@ -120,6 +125,9 @@ var PartipantService = /** @class */ (function () {
         }
         console.error(errorMessage);
         return throwError(errorMessage);
+    };
+    PartipantService.prototype.ngOnDestroy = function () {
+        throw new Error("Method not implemented.");
     };
     PartipantService = tslib_1.__decorate([
         Injectable({

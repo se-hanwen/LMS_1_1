@@ -25,6 +25,9 @@
                     <!-- <a [routerLink]="['/Activites/AddActivityWithModuleId', .id]">Activity/a> -->
                     <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Actitiy</a>
                   </div>
+                  <div class="col-6">
+                    <a [routerLink]="['/courses/', module.courseId]">Go back</a>
+                  </div>
                   </div>
                   </div>
             

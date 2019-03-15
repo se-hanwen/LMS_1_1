@@ -1,5 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'loginpartial',
@@ -12,7 +13,7 @@ export class LoginpartialComponent implements OnInit {
   isTeacher: boolean
   firstName: string;
   lastName: string;
-  constructor(private AuthService:AuthService) { }
+  constructor(private AuthService:AuthService,private router: Router) { }
 
   ngOnInit() {
     this.AuthService.isAuthenticated.subscribe( i => this.isAuthenticated=i);
@@ -26,5 +27,6 @@ export class LoginpartialComponent implements OnInit {
   public logout()
   {
     this.AuthService.logout();
+    this.router.navigate(['/Account/Login']);
   }
 }

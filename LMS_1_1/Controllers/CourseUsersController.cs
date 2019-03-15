@@ -111,7 +111,7 @@ namespace LMS_1_1.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<string>> AddCoursesToStudent([FromBody] SavecouseListViewmodel savecouseListViewmodel)
+        public async Task<ActionResult<bool>> AddCoursesToStudent([FromBody] SavecouseListViewmodel savecouseListViewmodel)
         {
             //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
             try
@@ -131,12 +131,12 @@ namespace LMS_1_1.Controllers
                 return StatusCode(500, ex.Message);
             }
 
-            var res = Json(new
+         /*   var res = Json(new
             {
                 Name = "Ok"
             });
-
-            return Ok(res);
+            */
+            return Ok(true);
         }
 
         [HttpGet("{CourseId}")]
@@ -206,7 +206,7 @@ namespace LMS_1_1.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<string>> AddStudentsToCourse([FromBody] SavecouseListViewmodel savecouseListViewmodel)
+        public async Task<ActionResult<Boolean>> AddStudentsToCourse([FromBody] SavecouseListViewmodel savecouseListViewmodel)
         {
             //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
             // atm SavecouseListViewmodel.Courseid is UserId
@@ -228,12 +228,12 @@ namespace LMS_1_1.Controllers
                 return StatusCode(500, ex.Message);
             }
 
-            var res = Json(new
+           /* var res = Json(new
             {
                 Name = "Ok"
-            });
+            });*/
 
-            return Ok(res);
+            return Ok(true);
         }
 
 

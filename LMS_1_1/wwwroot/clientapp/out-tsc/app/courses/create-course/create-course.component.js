@@ -1,13 +1,17 @@
 import * as tslib_1 from "tslib";
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../course.service';
 import { ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 var CreateCourseComponent = /** @class */ (function () {
-    function CreateCourseComponent(route, CourseService, router) {
+    function CreateCourseComponent(route, CourseService, router, cd) {
         this.route = route;
         this.CourseService = CourseService;
         this.router = router;
+        this.cd = cd;
+        this.unsubscribe = new Subject();
         this.showMsg = false;
     }
     CreateCourseComponent.prototype.ngOnInit = function () {
@@ -21,12 +25,19 @@ var CreateCourseComponent = /** @class */ (function () {
         formData.append('Description', formValues.description);
         formData.append('FileData', fileToUpload);
         console.log(formData);
-        this.CourseService.createCourse(formData).subscribe(function (result) {
+        this.CourseService.createCourse(formData)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (result) {
             _this.showMsg = true;
             _this.router.navigate(['/courses']);
             console.log(result);
             console.log("Created a Course");
+            _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });
+    };
+    CreateCourseComponent.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     };
     tslib_1.__decorate([
         ViewChild("fileInput"),
@@ -38,7 +49,8 @@ var CreateCourseComponent = /** @class */ (function () {
             templateUrl: './create-course.component.html',
             styleUrls: ['./create-course.component.css']
         }),
-        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, CourseService, Router])
+        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, CourseService,
+            Router, ChangeDetectorRef])
     ], CreateCourseComponent);
     return CreateCourseComponent;
 }());

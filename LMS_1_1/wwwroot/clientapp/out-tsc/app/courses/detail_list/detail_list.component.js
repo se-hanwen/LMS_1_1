@@ -1,20 +1,32 @@
 import * as tslib_1 from "tslib";
-import { Component, Input } from "@angular/core";
+import { Component, Input, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 var detailList = /** @class */ (function () {
-    function detailList(route, CourseService, AuthService) {
+    function detailList(route, CourseService, AuthService, cd) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
+        this.cd = cd;
+        this.unsubscribe = new Subject();
         this.savesubs = new Array();
     }
     detailList.prototype.ngOnInit = function () {
         var _this = this;
-        this.AuthService.isTeacher.subscribe(function (i) { return _this.isTeacher = i; });
-        this.CourseService.getCourseAndModulebyId(this.courseid).subscribe(function (course) {
+        this.AuthService.isTeacher
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (i) {
+            _this.isTeacher = i;
+            _this.cd.markForCheck();
+        });
+        this.CourseService.getCourseAndModulebyId(this.courseid)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (course) {
             _this.course = course;
+            _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });
     };
     detailList.prototype.TogggelCollapse = function (mid) {
@@ -28,8 +40,11 @@ var detailList = /** @class */ (function () {
         }
         else {
             this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = " show";
-            var temp = this.CourseService.getActivitybymodulId(mid).subscribe(function (activities) {
+            var temp = this.CourseService.getActivitybymodulId(mid)
+                .pipe(takeUntil(this.unsubscribe))
+                .subscribe(function (activities) {
                 _this.course.modules.find(function (m) { return m.id.toString() == mid; }).activities = activities;
+                _this.cd.markForCheck();
             }, function (error) { return _this.errorMessage = error; });
             if (this.savesubs.find(function (t) { return t[0] == mid; })) {
                 this.savesubs.find(function (t) { return t[0] == mid; })[1] = temp;
@@ -38,6 +53,10 @@ var detailList = /** @class */ (function () {
                 this.savesubs.push([mid, temp]);
             }
         }
+    };
+    detailList.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     };
     tslib_1.__decorate([
         Input(),
@@ -51,7 +70,8 @@ var detailList = /** @class */ (function () {
         }),
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute,
             CourseService,
-            AuthService])
+            AuthService,
+            ChangeDetectorRef])
     ], detailList);
     return detailList;
 }());

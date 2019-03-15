@@ -2,8 +2,9 @@ import { IModule } from 'ClientApp/app/Courses/course';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from 'ClientApp/app/Courses/course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
-import { Subscription } from 'rxjs';
-import { OnInit, Component, Input } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
+import { OnInit, Component, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: "activity_list",
@@ -11,16 +12,18 @@ import { OnInit, Component, Input } from '@angular/core';
     styleUrls:[]
 })
 
-export class ActitityListComponent implements OnInit {
+export class ActitityListComponent implements OnInit, OnDestroy  {
   module: IModule;
   errorMessage: string;
   @Input()   moduleid: string;
 
+  private unsubscribe : Subject<void> = new Subject();
 
   isTeacher: boolean=false;
  constructor(private route: ActivatedRoute,
      private CourseService: CourseService
      , private AuthService : AuthService
+     ,private cd: ChangeDetectorRef
      ) 
      { }
  
@@ -28,9 +31,12 @@ export class ActitityListComponent implements OnInit {
      this.AuthService.isTeacher.subscribe( i => this.isTeacher=i);
 
      //getModulAndActivitybyId(Moduleid: string) : Observable<IModule>
-     this.CourseService.getModulAndActivitybyId(this.moduleid).subscribe(
+     this.CourseService.getModulAndActivitybyId(this.moduleid)
+     .pipe(takeUntil(this.unsubscribe))
+     .subscribe(
       module => {
                  this.module = module;
+                 this.cd.markForCheck();
              },
              error => this.errorMessage = <any>error
          );
@@ -71,6 +77,10 @@ export class ActitityListComponent implements OnInit {
          */
      }
  }
-
+ ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+  
 
 }

@@ -1,9 +1,10 @@
-﻿import { Component, OnInit, Input } from "@angular/core";
+﻿import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { ICourse, course } from '../course';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: "detail_list",
@@ -11,27 +12,38 @@ import { Subscription } from 'rxjs';
     styleUrls:[]
 })
 
-export class detailList implements OnInit{
+export class detailList implements OnInit, OnDestroy {
 
      course: ICourse;
      errorMessage: string;
      @Input()   courseid: string;
+     private unsubscribe : Subject<void> = new Subject();
 
-    savesubs: Array<[string,Subscription]>= new Array<[string,Subscription]>();
+   private savesubs: Array<[string,Subscription]>= new Array<[string,Subscription]>();
      isTeacher: boolean;
     constructor(private route: ActivatedRoute,
         private CourseService: CourseService
         , private AuthService : AuthService
+        ,private cd: ChangeDetectorRef
         ) 
         { }
     
     ngOnInit() {
-        this.AuthService.isTeacher.subscribe( i => this.isTeacher=i);
+        this.AuthService.isTeacher
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe( i =>{
+             this.isTeacher=i;
+             this.cd.markForCheck();
+        }
+             );
 
 
-        this.CourseService.getCourseAndModulebyId(this.courseid).subscribe(
+        this.CourseService.getCourseAndModulebyId(this.courseid)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(
                 course => {
                     this.course = course;
+                    this.cd.markForCheck();
                 },
                 error => this.errorMessage = <any>error
             );
@@ -53,10 +65,13 @@ export class detailList implements OnInit{
          else
         {
            this.course.modules.find(m => m.id.toString()==mid).isExpanded=" show";
-           let temp=this.CourseService.getActivitybymodulId(mid).subscribe(
+           let temp=this.CourseService.getActivitybymodulId(mid)
+           .pipe(takeUntil(this.unsubscribe))
+           .subscribe(
                     activities=>
                     {
                         this.course.modules.find(m => m.id.toString()==mid).activities=activities;
+                        this.cd.markForCheck();
                     },
                     error => this.errorMessage = <any>error
                 );
@@ -70,6 +85,9 @@ export class detailList implements OnInit{
             }
         }
     }
-
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+      }
    
 }

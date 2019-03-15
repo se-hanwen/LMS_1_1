@@ -2,13 +2,14 @@ import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
 //import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { tokenData } from './tokenData';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 var AuthService = /** @class */ (function () {
     function AuthService(http) {
         var _this = this;
         this.http = http;
+        this.unsubscribe = new Subject();
         // ...public jwtHelper: JwtHelperService,
         this.tokenData = new tokenData();
         this.tokenSource = new BehaviorSubject(' ');
@@ -63,9 +64,24 @@ var AuthService = /** @class */ (function () {
         this.url = "https://localhost:44396";
         this._isTeacher = "";
         this.Realtoken = "";
-        this.isAuthenticated.subscribe(function (i) { return _this.RealisAuthenticated = i; });
-        this.isTeacher.subscribe(function (i) { return _this.RealisTeacher = i; });
-        this.token.subscribe(function (i) { return _this.Realtoken = i; });
+        this.isAuthenticated
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (i) {
+            _this.RealisAuthenticated = i;
+            //    this.cd.markForCheck();
+        });
+        this.isTeacher
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (i) {
+            _this.RealisTeacher = i;
+            //   this.cd.markForCheck();
+        });
+        this.token
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (i) {
+            _this.Realtoken = i;
+            //    this.cd.markForCheck();
+        });
     }
     AuthService.prototype.getAuthHeader = function () {
         return new HttpHeaders({ "Authorization": "Bearer " + this.Realtoken });
@@ -120,6 +136,10 @@ var AuthService = /** @class */ (function () {
         if (isTeacher == "Teacher")
             return true;
         return false;
+    };
+    AuthService.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     };
     AuthService = tslib_1.__decorate([
         Injectable({

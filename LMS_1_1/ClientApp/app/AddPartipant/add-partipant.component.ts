@@ -18,8 +18,7 @@ export class AddPartipantComponent implements OnInit, OnDestroy {
 
   pageTitle: string = "";
   BlackList: IPartipant[] =[];
- private StudentsOff: Subscription;
- private StudentsOn: Subscription;
+private unsubscribe : Subject<void> = new Subject();
 
   private _ChooseFrom: IPartipant[] =[];
   get ChooseFrom(): IPartipant[]  {
@@ -63,8 +62,8 @@ export class AddPartipantComponent implements OnInit, OnDestroy {
 
       this.courseid = this.route.snapshot.paramMap.get('id');
       this.PartipantService.CourseId = this.courseid;
-   this.StudentsOff= this.PartipantService.GetStudentsOff()
-  
+     this.PartipantService.GetStudentsOff()
+    .pipe(takeUntil(this.unsubscribe))
    .subscribe
     (
       Choose=> {
@@ -73,7 +72,9 @@ export class AddPartipantComponent implements OnInit, OnDestroy {
       }
     
     );
-    this.PartipantService.GetStudentsOn().subscribe
+    this.PartipantService.GetStudentsOn()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe
     (
       Choosed=>
       { 
@@ -82,9 +83,14 @@ export class AddPartipantComponent implements OnInit, OnDestroy {
         this.cd.markForCheck();
       }
     );
-    this.PartipantService.GetCourseName().subscribe
+    this.PartipantService.GetCourseName()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe
     (
-      CourseName => this.pageTitle=CourseName.value.name
+      CourseName => {
+        this.pageTitle=CourseName.value.name;
+        this.cd.markForCheck();
+      }
     );
     
   }
@@ -149,8 +155,17 @@ export class AddPartipantComponent implements OnInit, OnDestroy {
   }
   public SaveStudents()
   {
-    this.PartipantService.SaveStudents().subscribe();
-    //this.router.navigate(['/courses', this.courseid]);
+    this.PartipantService.SaveStudents()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(
+      status =>
+      {
+        this.cd.markForCheck();
+        this.router.navigate(['/courses', this.courseid])
+      }
+          
+    );
+    //;
   }
 
   private performFilter(FilterBy: string): void
@@ -272,8 +287,8 @@ export class AddPartipantComponent implements OnInit, OnDestroy {
   }
   */
  ngOnDestroy(): void {
-  this.StudentsOff.unsubscribe();
-  this.StudentsOn.unsubscribe();
+  this.unsubscribe.next();
+  this.unsubscribe.complete();
 }
 
 }

@@ -1,19 +1,20 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 //import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { User } from '../Login/login';
 import { tokenData } from './tokenData';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { RegisterUser } from '../Login/Register/registeruser';
 
 @Injectable(
   {
     providedIn: 'root'
 })
-export class AuthService  {
+export class AuthService implements  OnDestroy 
+{
 
-  
+  private unsubscribe : Subject<void> = new Subject();  
   // ...public jwtHelper: JwtHelperService,
 
 
@@ -44,10 +45,26 @@ isTeacher = this.isTeacherSource.asObservable();
 RealisAuthenticated : boolean = false;
 RealisTeacher : boolean = false;
 
-constructor(private http: HttpClient) {
-  this.isAuthenticated.subscribe( i => this.RealisAuthenticated=i);
-  this.isTeacher.subscribe(i => this.RealisTeacher=i);
-  this.token.subscribe(i => this.Realtoken=i);
+constructor(private http: HttpClient,
+) {
+  this.isAuthenticated
+  .pipe(takeUntil(this.unsubscribe))
+  .subscribe( i => {
+    this.RealisAuthenticated=i;
+//    this.cd.markForCheck();
+  });
+  this.isTeacher
+  .pipe(takeUntil(this.unsubscribe))
+  .subscribe(i => {
+      this.RealisTeacher=i;
+   //   this.cd.markForCheck();
+  });
+  this.token
+  .pipe(takeUntil(this.unsubscribe))
+  .subscribe(i =>{ 
+      this.Realtoken=i;
+  //    this.cd.markForCheck();
+  });
 }
 /*
 ngOnInit(): void {
@@ -169,5 +186,10 @@ ngOnInit(): void {
         return false;
 
   }
-  
+ 
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+
 }

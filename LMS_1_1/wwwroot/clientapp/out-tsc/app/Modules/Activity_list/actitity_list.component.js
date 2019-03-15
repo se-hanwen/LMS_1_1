@@ -2,20 +2,27 @@ import * as tslib_1 from "tslib";
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from 'ClientApp/app/Courses/course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
-import { Component, Input } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 var ActitityListComponent = /** @class */ (function () {
-    function ActitityListComponent(route, CourseService, AuthService) {
+    function ActitityListComponent(route, CourseService, AuthService, cd) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
+        this.cd = cd;
+        this.unsubscribe = new Subject();
         this.isTeacher = false;
     }
     ActitityListComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.AuthService.isTeacher.subscribe(function (i) { return _this.isTeacher = i; });
         //getModulAndActivitybyId(Moduleid: string) : Observable<IModule>
-        this.CourseService.getModulAndActivitybyId(this.moduleid).subscribe(function (module) {
+        this.CourseService.getModulAndActivitybyId(this.moduleid)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (module) {
             _this.module = module;
+            _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });
     };
     ActitityListComponent.prototype.TogggelCollapse = function (aid) {
@@ -50,6 +57,10 @@ var ActitityListComponent = /** @class */ (function () {
               */
         }
     };
+    ActitityListComponent.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
     tslib_1.__decorate([
         Input(),
         tslib_1.__metadata("design:type", String)
@@ -62,7 +73,8 @@ var ActitityListComponent = /** @class */ (function () {
         }),
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute,
             CourseService,
-            AuthService])
+            AuthService,
+            ChangeDetectorRef])
     ], ActitityListComponent);
     return ActitityListComponent;
 }());

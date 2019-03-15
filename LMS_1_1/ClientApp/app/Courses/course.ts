@@ -29,8 +29,9 @@ export interface IModule {
     endDate: Data;
     description: string;
     name2?:string;
- isExpanded?:string;
+    isExpanded?:string;
     activities?:IActivity2[];
+    courseid?: Guid;
 }
 
 export interface IActivity {
