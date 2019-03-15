@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IRegisterUser,RegisterUser } from './registeruser';
+import { FormGroup } from '@angular/forms';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -9,11 +12,15 @@ import { IRegisterUser,RegisterUser } from './registeruser';
 export class RegisterComponent implements OnInit {
 
   user:RegisterUser= new RegisterUser();
-
-  constructor() { }
+  errorMessage: string;
+  courseForm: FormGroup;
+  
+  constructor(private db: AuthService
+    , private router: Router) { }
 
   ngOnInit() {
   }
+
   public onRegister()
   {
 

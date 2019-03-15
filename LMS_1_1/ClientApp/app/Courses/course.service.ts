@@ -95,7 +95,10 @@ export class CourseService {
     //Delete a course by a given guid.
     DeleteCourse(id: Guid) {
         let urlString = this.courseUrl +"/"+ id;
-        return this.http.delete(urlString, this.hpOptions).pipe(
+        return this.http.delete(urlString,
+            {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+        })
+        .pipe(
             tap(result=>JSON.stringify(result)),catchError(this.handleError)
         );
     }
