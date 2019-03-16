@@ -15,9 +15,10 @@ import { LoginMessageHandlerService } from '../login-message-handler.service';
 export class RegisterComponent implements OnInit, OnDestroy  {
 
   private unsubscribe : Subject<void> = new Subject();
-  user:RegisterUser= new RegisterUser();
-  errorMessage: string;
-  courseForm: FormGroup;
+  private user:RegisterUser= new RegisterUser();
+  private errorMessage: string;
+  private courseForm: FormGroup;
+  private HasChoosedCourse: boolean = false;
   
   constructor(private db: AuthService
     , private cd: ChangeDetectorRef
@@ -25,7 +26,16 @@ export class RegisterComponent implements OnInit, OnDestroy  {
    ) { }
 
   ngOnInit() {
-    
+    this.messhandler.HasChoosedCourses
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(
+      status => {
+        this.HasChoosedCourse=status
+        this.cd.markForCheck();
+
+      }
+
+    )
   }
 
   public onRegister()
@@ -34,7 +44,10 @@ export class RegisterComponent implements OnInit, OnDestroy  {
     this.db.register(this.user)
     .pipe(takeUntil(this.unsubscribe))
       .subscribe(success => { 
-        this.messhandler.Send(success.value.name);  
+         if(this.user.role=="Student")
+         { // om student medella add
+            this.messhandler.SendUserId(success.value.name);
+         }  
         this.cd.markForCheck();
         return  true; 
       },
