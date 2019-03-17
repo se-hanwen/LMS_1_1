@@ -7,12 +7,14 @@ import { LoginpartialComponent } from './LoginPartial/loginpartial.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { RegisterComponent } from './Register/register.component';
 import { AddStudentToCourseComponent } from './AddStudentToCourse/add_student_to_course.component';
+import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-registed-user.component';
 
 @NgModule({
   declarations: [LoginComponent
   ,LoginpartialComponent
   ,RegisterComponent
   ,AddStudentToCourseComponent
+  ,ConfirmRegistedUserComponent 
 ],
   imports: [
     CommonModule,
@@ -26,7 +28,13 @@ import { AddStudentToCourseComponent } from './AddStudentToCourse/add_student_to
         path: 'Account/Register'
         ,canActivate: [IsTeacherGuard] 
        , component: RegisterComponent
+      },
+      {
+        path: 'Account/ConfirmRegistedUser'
+        ,canActivate: [IsTeacherGuard] 
+       , component: ConfirmRegistedUserComponent
       }
+
       ]
   )
   ],

@@ -1,5 +1,5 @@
 
-<div  >
+<div  *ngIf="!isTeacher">
 <div style="text-align:center"  >
      <span *ngIf="pageTitle">Add/Remove courses for {{pageTitle}}</span>
 </div>
@@ -47,7 +47,7 @@
 
  
 <div class="col-sm-6">
-
+<div>
   <div class="table-responsive tableContainer">
       <label>Click here to unchoose</label>
         <table class="table scrollTable table-hover" cellpadding="0" cellspacing="0" width="100%"  >
@@ -63,8 +63,11 @@
 
             </tbody>
         </table>
+      </div> 
         <button *ngIf="userid && userid!=' '" class="btn btn-success" (click)="SaveCourses()">Save</button>
-  </div>   
+        <button *ngIf="!CoursesChoosed && (!userid || userid==' ')" class="btn btn-success" (click)="ChooseCourses()">Lock Choosed</button>
+        <button *ngIf="CoursesChoosed && (!userid || userid==' ')" class="btn btn-success" (click)="ChooseCourses()">Unlock choosed</button>
+      </div>
   
    
   </div>

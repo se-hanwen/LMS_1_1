@@ -2,7 +2,7 @@
     <div class="col-md-4 offset-md-2">
         <h4>Create a new account.</h4>
       <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
-      <form (submit)="onRegister()" #theForm="ngForm" novalidate>
+      <form (submit)="onRegister(theForm)" #theForm="ngForm" novalidate>
           <div class="form-group">
               <label for="user.email">Email</label>
               <input type="text" class="form-control" name="email" [(ngModel)]="user.email" #email="ngModel" required />
@@ -37,10 +37,11 @@
               </select>
           </div>
           <div class="form-group">
-              <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
-              <a routerLink="/courses" class="btn btn-default">Cancel</a>
+              <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid || saveduser" />
+              <a [routerLink]="['/courses']" class="btn btn-default" *ngIf="!saveduser">Cancel</a>
           </div>    
         </form>
+         <div *ngIf="returnmessage">{{returnmessage}}</div>
   </div>
   <div class="offset-md-1 col-md-4">
       <add_student_to_course></add_student_to_course>

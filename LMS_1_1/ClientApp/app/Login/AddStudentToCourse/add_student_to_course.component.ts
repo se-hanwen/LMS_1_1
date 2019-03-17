@@ -23,6 +23,8 @@ export class AddStudentToCourseComponent implements OnInit, OnDestroy  {
   Saveoff: Subscription= null;
   SaveOn: Subscription= null;
   Saveusername: Subscription=null;
+  isTeacher: boolean=false;
+  CoursesChoosed: boolean=false;
   get ChooseFrom(): ICourse[]  {
     return this._ChooseFrom;
   }
@@ -60,71 +62,89 @@ export class AddStudentToCourseComponent implements OnInit, OnDestroy  {
   ngOnInit() {
    // this.userid= this.route.snapshot.paramMap.get('id');
    // getfrom save on regsiteruser
+
+   this.messhandler.Isteacher
+   .pipe(takeUntil(this.unsubscribe))
+   .subscribe(
+     status => {
+       this.isTeacher=status
+       this.cd.markForCheck();
+     }
+   )
+
     this.messhandler.userid
     .pipe(takeUntil(this.unsubscribe))
     .subscribe
     (
-       (resp: string) =>
-       {
-          if(resp != null && resp != " ")
+      (resp: string) =>
+      {
+       
+          if(resp != null && resp != "")
           {
-          this.userid=resp;
-          if(this.Saveoff != null)
-          {
-            this.Saveoff.unsubscribe;
-          }
-          this.Saveoff=this.PartipantService.GetCoursesOff(this.userid)
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe
-          (
-            Choose=> { 
-              this.ChooseFrom=Choose;
-              this.cd.markForCheck();
-            } 
-          );
-
-          if(this.SaveOn != null)
-          {
-            this.SaveOn.unsubscribe;
-          }
-          this.Saveoff=this.PartipantService.GetCoursesOff(this.userid)
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe
-          (
-            Choose=> { 
-              this.ChooseFrom=Choose;
-              this.cd.markForCheck();
-            } 
-          );
-          this.SaveOn=this.PartipantService.GetCoursesOn(this.userid)
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe
-          (
-            Choosed=>{
-              this.Choosed=Choosed;
-              this.cd.markForCheck();
+            this.userid=resp;
+            if(!this.isTeacher && this.CoursesChoosed)
+            {
+                this.SaveCourses();
             }
-          );
-          if(this.Saveusername != null)
-          {
-            this.Saveusername.unsubscribe();
-          }
-          this.Saveusername=this.PartipantService.GetUserName(this.userid)
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe
-          (
-            UserName => {
-              if(UserName != null)
+            else
+            {
+             
+              if(this.Saveoff != null)
               {
-                this.pageTitle=UserName.value.name;
+                this.Saveoff.unsubscribe;
               }
+              this.Saveoff=this.PartipantService.GetCoursesOff(this.userid)
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe
+              (
+                Choose=> { 
+                  this.ChooseFrom=Choose;
+                  this.cd.markForCheck();
+                } 
+              );
+
+              if(this.SaveOn != null)
+              {
+                this.SaveOn.unsubscribe;
+              }
+              this.Saveoff=this.PartipantService.GetCoursesOff(this.userid)
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe
+              (
+                Choose=> { 
+                  this.ChooseFrom=Choose;
+                  this.cd.markForCheck();
+                } 
+              );
+              this.SaveOn=this.PartipantService.GetCoursesOn(this.userid)
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe
+              (
+                Choosed=>{
+                  this.Choosed=Choosed;
+                  this.cd.markForCheck();
+                }
+              );
+              if(this.Saveusername != null)
+              {
+                this.Saveusername.unsubscribe();
+              }
+              this.Saveusername=this.PartipantService.GetUserName(this.userid)
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe
+              (
+                UserName => {
+                  if(UserName != null)
+                  {
+                    this.pageTitle=UserName.value.name;
+                  }
+                  this.cd.markForCheck();
+                }
+              );
               this.cd.markForCheck();
             }
-          );
-          this.cd.markForCheck();
-       }
+          }
       }
-
     )
     this.Saveoff=this.PartipantService.GetCoursesOff(this.userid)
     .pipe(takeUntil(this.unsubscribe))
@@ -153,6 +173,8 @@ export class AddStudentToCourseComponent implements OnInit, OnDestroy  {
   public chooseCourse(corseid : string) : void
   {
 
+    if(!this.CoursesChoosed)
+    {
       const keyin=this.ChooseFrom.findIndex(cu => cu.id.toString()==corseid );
       if(keyin == -1) throwError;
       const course=this.ChooseFrom.splice(+keyin,1);
@@ -172,9 +194,12 @@ export class AddStudentToCourseComponent implements OnInit, OnDestroy  {
       );
     }
   }
+  }
 
   public unChooseCourse(corseid : string) : void
   {
+    if(!this.CoursesChoosed)
+    {
       const keyin=this.Choosed.findIndex(cu => cu.id.toString()==corseid);
       if(keyin == -1) throwError;
       const course=this.Choosed.splice(+keyin,1);
@@ -193,14 +218,38 @@ export class AddStudentToCourseComponent implements OnInit, OnDestroy  {
       }
         );
       }
+    }
   }
   public SaveCourses()
   {
 
     this.PartipantService.SaveCourses(this.userid, this._Choosed)
     .pipe(takeUntil(this.unsubscribe))
-    .subscribe();
+    .subscribe(
+      success =>
+      {
+        let savedcourses: string="";
+        let workstart=false;
+        for(let work of this._Choosed)
+        {
+          savedcourses=savedcourses+(workstart?",":"")+ work.name;
+          workstart=true;
+        }
+
+        this.messhandler.SendHasSavedCoures(true);
+        this.messhandler.SendCourseSaved(savedcourses);
+
+        this.cd.markForCheck();
+      }
+
+    );
     //this.router.navigate(['/courses', this.courseid]);
+  }
+
+  public ChooseCourses()
+  {
+      this.CoursesChoosed = ! this.CoursesChoosed ;
+       this.messhandler.SendHasChoosedCourses(this.CoursesChoosed);
   }
 
   private performFilter(FilterBy: string): void

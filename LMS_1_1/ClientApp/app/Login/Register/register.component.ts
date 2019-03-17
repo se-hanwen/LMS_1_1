@@ -17,12 +17,15 @@ export class RegisterComponent implements OnInit, OnDestroy  {
   private unsubscribe : Subject<void> = new Subject();
   private user:RegisterUser= new RegisterUser();
   private errorMessage: string;
-  private courseForm: FormGroup;
+ // private theForm: FormGroup;
   private HasChoosedCourse: boolean = false;
-  
+  private returnmessage:string =null;
+
+  private saveduser: boolean=false;
   constructor(private db: AuthService
     , private cd: ChangeDetectorRef
     ,private messhandler: LoginMessageHandlerService
+    ,private router: Router
    ) { }
 
   ngOnInit() {
@@ -30,28 +33,66 @@ export class RegisterComponent implements OnInit, OnDestroy  {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(
       status => {
-        this.HasChoosedCourse=status
+        this.HasChoosedCourse=status;
         this.cd.markForCheck();
-
       }
+    )
+    this.messhandler.HasSavedCoures
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(
+      status => {
+        if(status)
+        {
+          if(this.saveduser)
+          {
+            this.messhandler.SendConfirm(this.returnmessage);
+            this.router.navigate(['/Account/ConfirmRegistedUser']);
+          }
 
+        }
+        this.cd.markForCheck();
+      }
     )
   }
 
-  public onRegister()
+   public OnToggleRole()
+   {
+
+      if(this.user.role=="Student")
+      {
+        this.messhandler.SendIsteacher(false);
+      }
+      else
+      {
+        this.messhandler.SendIsteacher(true);
+      }
+   }
+
+  public onRegister(TheForm)
   {
     this.errorMessage = "";
     this.db.register(this.user)
     .pipe(takeUntil(this.unsubscribe))
       .subscribe(success => { 
-         if(this.user.role=="Student")
-         { // om student medella add
-            this.messhandler.SendUserId(success.value.name);
-         }  
+        this.saveduser=true;
+        TheForm.form.disable();
         this.cd.markForCheck();
+        let msg="Created "+this.user.firstName+" "+this.user.lastName+" with the role "+this.user.role;
+        if(this.user.role=="Student")
+        {
+          // om student medella add
+          this.messhandler.SendUserId(success.value.name);
+          this.returnmessage=msg;
+        }
+        else
+        {
+          this.messhandler.SendConfirm(msg );
+            this.router.navigate(['/Account/ConfirmRegistedUser']);
+        }
+
         return  true; 
       },
-         err =>  this.errorMessage = "Failed to Create user");
+         err =>  this.errorMessage = <any>err);
   }
 
   ngOnDestroy(): void {
