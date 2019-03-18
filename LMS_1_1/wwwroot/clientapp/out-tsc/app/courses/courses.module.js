@@ -8,9 +8,11 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { RouterModule } from '@angular/router';
 import { PartipantListComponent } from '../PartipantList/partipant-list.component';
 import { detailList } from './detail_list/detail_list.component';
-import { UploadComponent } from '../documents/upload/upload.component';
-import { UploadDetailComponent } from '../documents/upload-detail/upload-detail.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { CourseDeleteComponent } from './course-delete/course-delete.component';
+import { CourseEditComponent } from './course-edit/course-edit.component';
+import { SharedModule } from '../Shared/shared.module';
+import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
+import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 var CoursesModule = /** @class */ (function () {
     function CoursesModule() {
     }
@@ -22,21 +24,37 @@ var CoursesModule = /** @class */ (function () {
                 CreateCourseComponent,
                 PartipantListComponent,
                 detailList,
-                UploadComponent,
-                UploadDetailComponent
+                CourseDeleteComponent,
+                CourseEditComponent
             ],
             imports: [
                 CommonModule,
                 FormsModule,
-                ReactiveFormsModule,
+                SharedModule,
                 RouterModule.forChild([{
-                        path: 'courses', component: CourseListComponent
+                        path: 'courses',
+                        canActivate: [IsAuthenticatedGuard],
+                        component: CourseListComponent
                     },
                     {
-                        path: 'courses/create', component: CreateCourseComponent
+                        path: 'courses/create',
+                        canActivate: [IsTeacherGuard],
+                        component: CreateCourseComponent
                     },
                     {
-                        path: 'courses/:id', component: CourseDetailComponent
+                        path: 'courses/:id',
+                        canActivate: [IsAuthenticatedGuard],
+                        component: CourseDetailComponent
+                    },
+                    {
+                        path: 'courses/delete/:id',
+                        canActivate: [IsTeacherGuard],
+                        component: CourseDeleteComponent
+                    },
+                    {
+                        path: 'courses/edit/:id',
+                        canActivate: [IsTeacherGuard],
+                        component: CourseEditComponent
                     }
                 ])
             ]

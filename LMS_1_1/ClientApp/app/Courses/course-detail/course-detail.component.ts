@@ -1,33 +1,72 @@
-import { Component, OnInit } from '@angular/core';
-import { ICourse } from '../course';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ICourse, course } from '../course';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../course.service';
 import { Guid } from 'guid-typescript';
-import { DocumentService } from 'ClientApp/app/documents/document.service';
-import { IDocument } from 'ClientApp/app/documents/document';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { PartipantService } from 'ClientApp/app/AddPartipant/partipant.service';
 
 @Component({
  
   templateUrl: './course-detail.component.html',
   styleUrls: ['./course-detail.component.css']
 })
-export class CourseDetailComponent implements OnInit {
+export class CourseDetailComponent implements OnInit, OnDestroy  {
 
     course: ICourse;
     errorMessage: string;
-    constructor(private route: ActivatedRoute, private CourseService: CourseService) { }
+    isTeacher: boolean=false;
+    showpartipantlist:boolean=false;
+  showpartipantlistmsg: string="Show";
+
+    private unsubscribe : Subject<void> = new Subject();
+    constructor(private route: ActivatedRoute, private CourseService: CourseService, private AuthService : AuthService
+      ,private cd: ChangeDetectorRef
+      ,private partipantservice:PartipantService
+      ) { }
 
     ngOnInit(): void {
-
+      this.isTeacher=this.AuthService.isTeacher;
+        /*this.AuthService.isTeacher
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe( i =>
+          { 
+            this.isTeacher=i;
+            this.cd.markForCheck(); 
+          });*/
         let id: string = this.route.snapshot.paramMap.get('id');
-        this.CourseService.getCourseAllById(id).subscribe(
+        this.CourseService.getCourseAndModulebyId(id)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(
                 course => {
                     this.course = course;
+                    this.cd.markForCheck();
                 },
                 error => this.errorMessage = <any>error
-        );
-
-    }
+            );
   }
 
+   public toggelPartipantList()
+   {
+      if(this.showpartipantlist)
+      {
+          this.showpartipantlist=false;
+          this.showpartipantlistmsg="Show";
+          
+      }
+      else
+      {
+        this.showpartipantlist=true;
+        this.showpartipantlistmsg="Hide";
+      }
+      this.partipantservice.SendPartipantList(this.showpartipantlist);
+   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+
+}

@@ -1,15 +1,18 @@
 import * as tslib_1 from "tslib";
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PartipantService } from './partipant.service';
-import { throwError } from 'rxjs';
+import { throwError, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 var AddPartipantComponent = /** @class */ (function () {
-    function AddPartipantComponent(route, router, PartipantService) {
+    function AddPartipantComponent(route, router, PartipantService, cd) {
         this.route = route;
         this.router = router;
         this.PartipantService = PartipantService;
+        this.cd = cd;
         this.pageTitle = "";
         this.BlackList = [];
+        this.unsubscribe = new Subject();
         this._ChooseFrom = [];
         this._Choosed = [];
         this._listFilter = '';
@@ -49,12 +52,25 @@ var AddPartipantComponent = /** @class */ (function () {
         var _this = this;
         this.courseid = this.route.snapshot.paramMap.get('id');
         this.PartipantService.CourseId = this.courseid;
-        this.PartipantService.GetStudentsOff().subscribe(function (Choose) { return _this.ChooseFrom = Choose; });
-        this.PartipantService.GetStudentsOn().subscribe(function (Choosed) {
+        this.PartipantService.GetStudentsOff()
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (Choose) {
+            _this.ChooseFrom = Choose;
+            _this.cd.markForCheck();
+        });
+        this.PartipantService.GetStudentsOn()
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (Choosed) {
             _this.Choosed = Choosed;
             _this.PartipantService.Choosed = _this.Choosed;
+            _this.cd.markForCheck();
         });
-        this.PartipantService.GetCourseName().subscribe(function (CourseName) { return _this.pageTitle = CourseName.value.name; });
+        this.PartipantService.GetCourseName()
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (CourseName) {
+            _this.pageTitle = CourseName.value.name;
+            _this.cd.markForCheck();
+        });
     };
     AddPartipantComponent.prototype.chooseStudent = function (userid) {
         var keyin = this.ChooseFrom.findIndex(function (cu) { return cu.userid == userid; });
@@ -107,8 +123,14 @@ var AddPartipantComponent = /** @class */ (function () {
         }
     };
     AddPartipantComponent.prototype.SaveStudents = function () {
-        this.PartipantService.SaveStudents().subscribe();
-        //this.router.navigate(['/courses', this.courseid]);
+        var _this = this;
+        this.PartipantService.SaveStudents()
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.cd.markForCheck();
+            _this.router.navigate(['/courses', _this.courseid]);
+        });
+        //;
     };
     AddPartipantComponent.prototype.performFilter = function (FilterBy) {
         var l1 = this.BlackList.length, i1;
@@ -187,6 +209,28 @@ var AddPartipantComponent = /** @class */ (function () {
         document.querySelector("#" + From_id).style.display = "none";
         element.style.display = "Block";
     };
+    /*
+       private sortfunction(a:IPartipant,b:IPartipant): -1|1|0
+       {
+        const FirstNameA=a.FirstName.toLocaleUpperCase();
+        const LastNameA=a.LastName.toLocaleUpperCase();
+        const FirstNameB=b.FirstName.toLocaleUpperCase();
+        const LastNameB=b.LastName.toLocaleUpperCase();
+        if(FirstNameA<FirstNameB)
+          return -1
+        if(FirstNameA>FirstNameB)
+          return 1
+        if(LastNameA<LastNameB)
+          return -1
+        if(LastNameA>LastNameB)
+          return 1
+        return 0
+      }
+      */
+    AddPartipantComponent.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
     AddPartipantComponent = tslib_1.__decorate([
         Component({
             selector: 'add-partipant',
@@ -195,7 +239,8 @@ var AddPartipantComponent = /** @class */ (function () {
         }),
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute,
             Router,
-            PartipantService])
+            PartipantService,
+            ChangeDetectorRef])
     ], AddPartipantComponent);
     return AddPartipantComponent;
 }());

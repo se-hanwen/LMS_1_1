@@ -28,7 +28,8 @@ namespace LMS_1_1.ViewModels
         public string Description { get; set; }
         public string Name2 { get; set; }
         public string isExpanded { get; set; }
-        public ICollection<ActivityAllViewModel> Activities { get; set; }
+        public ICollection<ActivityViewModel> Activities { get; set; }
+        public Guid? CourseId { get; set; }
     }
 
 
@@ -43,8 +44,19 @@ namespace LMS_1_1.ViewModels
 
     }
 
+    public class ActivityViewModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Description { get; set; }
+        public string ActivityType { get; set; }
+        public string Name2 { get; set; }
+        public string isExpanded { get; set; }
 
-   
+    }
+
 }
 
 

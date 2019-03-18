@@ -1,61 +1,64 @@
 import * as tslib_1 from "tslib";
-import { Component, Input } from "@angular/core";
+import { Component, Input, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../course.service';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 var detailList = /** @class */ (function () {
-    function detailList(route, CourseService) {
+    function detailList(route, CourseService, AuthService, cd) {
         this.route = route;
         this.CourseService = CourseService;
-        this.coulist = [
-            {
-                Name: "C# Basic",
-                StartDate: "2019.01.02 10:00",
-                Description: "A basic course of C#",
-                Modules: [
-                    {
-                        Name: "C# module 1",
-                        StartDate: "2019.01.02 10:00",
-                        Description: "Module 1 of C#"
-                    },
-                    {
-                        Name: "C# module 2",
-                        StartDate: "2019.01.02 10:00",
-                        Description: "Module 2 of C#"
-                    }
-                ]
-            },
-            {
-                Name: "C# Advanced",
-                StartDate: "2019.01.03 10:00",
-                Description: "A follow on course of C#",
-                Modules: [
-                    {
-                        Name: "C# module 3",
-                        StartDate: "2019.01.03 10:00",
-                        Description: "Module 3 of C#"
-                    },
-                    {
-                        Name: "C# module 4",
-                        StartDate: "2019.01.03 10:00",
-                        Description: "Module 4 of C#"
-                    }
-                ]
-            }
-        ];
+        this.AuthService = AuthService;
+        this.cd = cd;
+        this.unsubscribe = new Subject();
+        this.savesubs = new Array();
     }
     detailList.prototype.ngOnInit = function () {
         var _this = this;
-        this.CourseService.getCourseAllById(this.courseid).subscribe(function (course) {
+        this.isTeacher = this.AuthService.isTeacher;
+        /*this.AuthService.isTeacher
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe( i =>{
+             this.isTeacher=i;
+             this.cd.markForCheck();
+        }
+        );*/
+        this.CourseService.getCourseAndModulebyId(this.courseid)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (course) {
             _this.course = course;
+            _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });
     };
     detailList.prototype.TogggelCollapse = function (mid) {
+        var _this = this;
         if (this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded == " show") {
             this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = "";
+            if (this.savesubs.find(function (t) { return t[0] == mid; })) {
+                this.savesubs.find(function (t) { return t[0] == mid; })[1].unsubscribe();
+                this.savesubs.splice(this.savesubs.indexOf(this.savesubs.find(function (t) { return t[0] == mid; })), 1);
+            }
         }
         else {
             this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = " show";
+            var temp = this.CourseService.getActivitybymodulId(mid)
+                .pipe(takeUntil(this.unsubscribe))
+                .subscribe(function (activities) {
+                _this.course.modules.find(function (m) { return m.id.toString() == mid; }).activities = activities;
+                _this.cd.markForCheck();
+            }, function (error) { return _this.errorMessage = error; });
+            if (this.savesubs.find(function (t) { return t[0] == mid; })) {
+                this.savesubs.find(function (t) { return t[0] == mid; })[1] = temp;
+            }
+            else {
+                this.savesubs.push([mid, temp]);
+            }
         }
+    };
+    detailList.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     };
     tslib_1.__decorate([
         Input(),
@@ -68,7 +71,9 @@ var detailList = /** @class */ (function () {
             styleUrls: []
         }),
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute,
-            CourseService])
+            CourseService,
+            AuthService,
+            ChangeDetectorRef])
     ], detailList);
     return detailList;
 }());

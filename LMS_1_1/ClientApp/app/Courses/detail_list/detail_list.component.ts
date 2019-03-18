@@ -1,7 +1,10 @@
-﻿import { Component, OnInit, Input } from "@angular/core";
-import { ICourse } from '../course';
+﻿import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { ICourse, course } from '../course';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../course.service';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: "detail_list",
@@ -9,23 +12,39 @@ import { CourseService } from '../course.service';
     styleUrls:[]
 })
 
-export class detailList implements OnInit{
+export class detailList implements OnInit, OnDestroy {
 
      course: ICourse;
      errorMessage: string;
      @Input()   courseid: string;
+     private unsubscribe : Subject<void> = new Subject();
 
-
+   private savesubs: Array<[string,Subscription]>= new Array<[string,Subscription]>();
+     isTeacher: boolean;
     constructor(private route: ActivatedRoute,
         private CourseService: CourseService
+        , private AuthService : AuthService
+        ,private cd: ChangeDetectorRef
         ) 
         { }
     
     ngOnInit() {
-  
-        this.CourseService.getCourseAllById(this.courseid).subscribe(
+        this.isTeacher=this.AuthService.isTeacher;
+        /*this.AuthService.isTeacher
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe( i =>{
+             this.isTeacher=i;
+             this.cd.markForCheck();
+        }
+        );*/
+
+
+        this.CourseService.getCourseAndModulebyId(this.courseid)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(
                 course => {
                     this.course = course;
+                    this.cd.markForCheck();
                 },
                 error => this.errorMessage = <any>error
             );
@@ -36,51 +55,40 @@ export class detailList implements OnInit{
          if(this.course.modules.find(m => m.id.toString()==mid).isExpanded ==" show")
         {
               this.course.modules.find(m => m.id.toString()==mid).isExpanded="";
+              if (this.savesubs.find( t => t[0]==mid))
+              {
+
+                  this.savesubs.find( t => t[0]==mid)[1].unsubscribe();
+                  this.savesubs.splice(this.savesubs.indexOf(this.savesubs.find( t => t[0]==mid)),1);
+              }
+
         }
          else
         {
            this.course.modules.find(m => m.id.toString()==mid).isExpanded=" show";
+           let temp=this.CourseService.getActivitybymodulId(mid)
+           .pipe(takeUntil(this.unsubscribe))
+           .subscribe(
+                    activities=>
+                    {
+                        this.course.modules.find(m => m.id.toString()==mid).activities=activities;
+                        this.cd.markForCheck();
+                    },
+                    error => this.errorMessage = <any>error
+                );
+            if (this.savesubs.find( t => t[0]==mid))
+            {
+                this.savesubs.find( t => t[0]==mid)[1]=temp;
+            }
+            else
+            {
+                this.savesubs.push([mid,temp])  ;
+            }
         }
     }
-
-    public courseTitle: "C#";
-    public startDate: "2019.01.02 10:00";
-    public description: "There are no external authentication services configured. See this article for details on setting up this ASP.NET application to support logging in via external services.";
-    public coulist = [
-        {
-            Name: "C# Basic",
-            StartDate: "2019.01.02 10:00",
-            Description: "A basic course of C#",
-            Modules: [
-                {
-                    Name: "C# module 1",
-                    StartDate: "2019.01.02 10:00",
-                    Description: "Module 1 of C#"
-                },
-                {
-                    Name: "C# module 2",
-                    StartDate: "2019.01.02 10:00",
-                    Description: "Module 2 of C#"
-                }
-            ]
-        },
-        {
-            Name: "C# Advanced",
-            StartDate: "2019.01.03 10:00",
-            Description: "A follow on course of C#",
-            Modules: [
-                {
-                    Name: "C# module 3",
-                    StartDate: "2019.01.03 10:00",
-                    Description: "Module 3 of C#"
-                },
-                {
-                    Name: "C# module 4",
-                    StartDate: "2019.01.03 10:00",
-                    Description: "Module 4 of C#"
-                }
-            ]
-        }
-    ];
-
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+      }
+   
 }

@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
     
     RouterModule.forChild(
       [{path:'AddPartipant/:id' 
-    //  ,canActivate: [IsTeacherGuard]
+      ,canActivate: [IsTeacherGuard]
       ,component: AddPartipantComponent }
     ]
     )

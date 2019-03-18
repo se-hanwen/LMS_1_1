@@ -3,18 +3,17 @@
 
     <div class="col-md-4">
         <div class="card" style="width: 19rem;">
-            <img class="card-img-top" [src]="course.courseImgPath" alt="Card image cap">
+            <img class="card-img-top" [src]="course.courseImgPath==null?'':course.courseImgPath" alt="Card image cap">
             <div class="card-body">
                 <h3 class="card-title">{{course.name}}</h3>
                 <h5 class="card-title">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>
                 <p class="card-text"> {{course.description}}</p>
 
-            </div>
-
-            <app-partipant-list [courseid]='course.id'></app-partipant-list>
-
-     
-                <div class="card-body">
+    
+            <a href="javascript:void(0);" (click)="toggelPartipantList()">{{showpartipantlistmsg}}  partipantlist</a>
+                    <app-partipant-list [courseid]='course.id'></app-partipant-list>
+ 
+                <div class="card-body" *ngIf="isTeacher">
                     <div class="row">
                         <div class="col-6">
                   <!-- <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a> -->

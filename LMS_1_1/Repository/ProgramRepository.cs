@@ -68,6 +68,9 @@ namespace LMS_1_1.Repository
             return await courses.ToListAsync();
         }
 
+
+
+
         public async Task<Course> GetCourseByIdAsync (Guid courseId, bool includeModule)
         {
             var course = _ctx.Courses
@@ -87,6 +90,26 @@ namespace LMS_1_1.Repository
 
         }
 
+        public async Task<IEnumerable<Course>> GetCoursesForUserAsync(string userid)
+        {
+            var user =await  _userManager.FindByIdAsync(userid);
+            if ((await _userManager.GetRolesAsync(user)).Any(r => r == "Teacher"))
+            {
+                var courses = _ctx.Courses;
+                return await courses.ToListAsync();
+            }
+            else
+            {
+                var courseids =await _ctx.CourseUsers.Where(cu => cu.LMSUserId == userid).Select(cu=> cu.CourseId).ToListAsync();
+                var res = _ctx.Courses
+                        .Where(c => courseids.Contains(c.Id));
+
+                return await res.ToListAsync();
+
+            }
+       
+            
+        }
         public async Task<bool> CourseExistsAsync (Guid courseId)
         {
             return await _ctx.Courses.AnyAsync(e => e.Id == courseId);

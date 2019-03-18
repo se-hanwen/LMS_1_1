@@ -18,7 +18,7 @@ namespace LMS_1_1.Repository
         Task<IEnumerable<Module>> GetAllModulesAsync (bool includeActivities);
         Task<Module> GetModuleByIdAsync (Guid moduleId, bool includeActivity);
         Task<bool> ModuleExistsAsync (Guid id);
-
+        Task<IEnumerable<Course>> GetCoursesForUserAsync(string userid);
 
 
         Task<IEnumerable<LMSActivity>> GetAllActivitiesAsync ();

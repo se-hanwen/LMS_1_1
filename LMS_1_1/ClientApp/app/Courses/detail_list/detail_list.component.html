@@ -4,19 +4,30 @@
         <!--string name = Regex.Replace(@module.Name, @"[\W_]+", string.Empty);-->
         <div class="card" *ngFor="let module of course.modules">
             <div class="card-header" [id]="module.id">
-                <h5 class="mb-0">
-                    <div class="btn btn-link collapsed"
+                <div class="row">
+                
+                    <div class="btn btn-link collapsed col-6"
                         [attr.data-target]="'#'+ module.name2"
                         [attr.aria-controls]="module.name2"
                         data-toggle="collapse"
                         [attr.aria-expanded]="false"
                         (click)="TogggelCollapse(module.id)"
                         >
-                             
+                        <h5 class="mb-0">  
+                          
                             {{ module.name }}
-
+                        </h5>
+                        
+                     
                     </div>
-                </h5>
+                    
+                
+                <div class="col-6 somepadding">
+                        <h5 class="mb-0"> 
+                        <a [routerLink]="['/Modules/', module.id]">Details</a>
+                    </h5>
+                     </div>
+                    </div>
             </div>
 
             <div [id]="module.name2" [class]="'collapse'+ module.isExpanded" [attr.aria-labelledby]="module.id" data-parent="#accordion">
@@ -27,13 +38,18 @@
                         <li *ngFor="let activity of module.activities">
                             <a asp-controller="LMSActivities" asp-action="Details" [attr.asp-route-id]="activity.id">{{activity.name}}</a>
                             <span class="float-right"> {{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}}</span>
-                            <p>{{activity.description}}</p>
-                            <a asp-controller="LMSActivities" asp-action="Edit" [attr.asp-route-id]="activity.id">Edit Activity</a>&nbsp;|&nbsp;
-                            <a asp-controller="LMSActivities" asp-action="Delete" [attr.asp-route-id]="activity.id">Delete Activity</a>
+                            <p>{{activity.description}}
+                            <br>{{activity.activityType}}</p>
+                            <div *ngIf="isTeacher">
+                                <a asp-controller="LMSActivities" asp-action="Edit" [attr.asp-route-id]="activity.id">Edit Activity</a>&nbsp;|&nbsp;
+                                <a asp-controller="LMSActivities" asp-action="Delete" [attr.asp-route-id]="activity.id">Delete Activity</a>
+                            </div>
                         </li>
 
                     </ul>
-                    Add Activity
+                    <div *ngIf="isTeacher">
+                        Add Activity
+                    </div>
                 </div>
 
             </div>

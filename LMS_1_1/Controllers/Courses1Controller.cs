@@ -12,26 +12,39 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using LMS_1_1.Repository;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Data.SqlClient;
 
 namespace LMS_1_1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Courses1Controller : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _environment;
+        private readonly UserManager<LMSUser> _userManager;
+        private readonly IProgramRepository _repository;
+        private readonly ILogger<CoursesController> _logger;
         private readonly IProgramRepository _programrepository;
         private readonly ILogger<Courses1Controller> _logger;
         private readonly IDocumentRepository _documentrepository;
 
-        public Courses1Controller (IProgramRepository programrepository, IDocumentRepository documentrepository, ILogger<Courses1Controller> logger, ApplicationDbContext context, IHostingEnvironment environment)
+        public Courses1Controller (IProgramRepository repository
+            , ILogger<CoursesController> logger
+            , ApplicationDbContext context
+            , IHostingEnvironment environment
+            , UserManager<LMSUser> userManager)
         {
             _programrepository = programrepository;
             _documentrepository = documentrepository;
             _logger = logger;
             _context = context;
             _environment = environment;
+            _userManager = userManager;
         }
 
         // GET: api/Courses1
@@ -40,6 +53,17 @@ namespace LMS_1_1.Controllers
         {
            
             return Ok(await _programrepository.GetAllCoursesAsync(false));
+        }
+
+
+        [HttpGet("foruser")]
+        public async Task<ActionResult<IEnumerable<Course>>> GetCoursesforuser()
+        {
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+
+            return Ok(await _repository.GetCoursesForUserAsync(user.Id));
         }
 
         // GET: api/Courses1/5/true course , modules and activites
@@ -63,7 +87,7 @@ namespace LMS_1_1.Controllers
         public async Task<ActionResult<CourseAllViewModel>> GetCourseAll(string id)
         {
             //   Guid idG = Guid.Parse(id);
-            int i = 0;
+  
               var  course1 = await _context.Courses
                             .Include(c => c.Modules)
                             .ThenInclude(m => m.LMSActivities)
@@ -75,19 +99,21 @@ namespace LMS_1_1.Controllers
             var Modules = new List<ModelAllViewModel>();
             foreach (var Modul in course1.Modules)
             {
-                var Activities = new List<ActivityAllViewModel>();
+                var Activities = new List<ActivityViewModel>();
                 foreach (var Actitivity in Modul.LMSActivities)
                 {
                     Activities.Add(
-                            new ActivityAllViewModel
+                            new ActivityViewModel
                             {
                                 Id = Actitivity.Id,
                                 Name = Actitivity.Name,
                                 StartDate = Actitivity.StartDate,
                                 EndDate = Actitivity.EndDate,
                                 Description = Actitivity.Description,
-                                ActivityType = Actitivity.ActivityType
-                               
+                                ActivityType = Actitivity.ActivityType.Name,
+                                Name2 = (Guid.NewGuid()).ToString(),
+                                isExpanded = ""
+
                             }
 
                         );
@@ -101,9 +127,9 @@ namespace LMS_1_1.Controllers
                          StartDate = Modul.StartDate,
                          EndDate = Modul.EndDate,
                          Description = Modul.Description,
-                         Activities = Activities,
-                         // Name2=(Guid.NewGuid()).ToString(),
-                         Name2 = "C" + (i++).ToString(),
+                         Activities = (ICollection<ActivityViewModel>)Activities,
+                         Name2=(Guid.NewGuid()).ToString(),
+                        // Name2 = "C" + (i++).ToString(),
                          isExpanded = ""
                      }
                     );
@@ -125,9 +151,154 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
 
-            return course;
+            return Ok(course);
+        }
+
+        [HttpGet("CAndM")]
+        public async Task<ActionResult<CourseAllViewModel>> GetCourseAndModule(string id)
+        {
+            //   Guid idG = Guid.Parse(id);
+            var course1 = await _context.Courses
+                          .Include(c => c.Modules)
+                          .FirstOrDefaultAsync(c => c.Id.ToString() == id);
+
+
+
+            var Modules = new List<ModelAllViewModel>();
+            foreach (var Modul in course1.Modules)
+            {
+                
+
+                Modules.Add(
+                     new ModelAllViewModel
+                     {
+                         Id = Modul.Id,
+                         Name = Modul.Name,
+                         StartDate = Modul.StartDate,
+                         EndDate = Modul.EndDate,
+                         Description = Modul.Description,
+                         Activities = null,
+                         Name2=(Guid.NewGuid()).ToString(),
+                        // Name2 = "C" + (i++).ToString(),
+                         isExpanded = ""
+                     }
+                    );
+            }
+
+            CourseAllViewModel course = new CourseAllViewModel
+            {
+                Id = course1.Id,
+                Name = course1.Name,
+                StartDate = course1.StartDate,
+                Description = course1.Description,
+                courseImgPath = course1.CourseImgPath,
+                Modules = Modules
+            };
+
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(course);
         }
         
+        [HttpGet("AfromMid")]
+        public async Task<ActionResult<ICollection<ActivityViewModel>>> GetActivitiesFromModulid(string id)
+        {
+            //   Guid idG = Guid.Parse(id);
+            var Activities =await  _context.LMSActivity
+                           .Include(a => a.ActivityType)
+                          .Where(a => a.ModuleId.ToString() == id)
+                          .ToArrayAsync();
+                          
+
+
+
+            var res = new List<ActivityViewModel>();
+            foreach (var activity in Activities)
+            {
+
+
+                res.Add(
+                     new ActivityViewModel
+                     {
+                         Id = activity.Id,
+                         Name = activity.Name,
+                         StartDate = activity.StartDate,
+                         EndDate = activity.EndDate,
+                         Description = activity.Description,
+                         ActivityType = activity.ActivityType.Name
+                     }
+                    );
+            }
+
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(res);
+        }
+
+        
+        [HttpGet("MAndAfromMid")]
+        public async Task<ActionResult<ModelAllViewModel>> GetModulesAndActivitiesFromModulid(string id)
+        {
+            //   Guid idG = Guid.Parse(id);
+    
+            var Module = await _context.Modules
+                            .Include(m => m.LMSActivities)
+                           .ThenInclude(a => a.ActivityType)
+                          .Where(m => m.Id.ToString() == id)
+                          .FirstOrDefaultAsync();
+
+
+
+
+            var res = new List<ActivityViewModel>();
+            foreach (var activity in Module.LMSActivities)
+            {
+
+
+                res.Add(
+                     new ActivityViewModel
+                     {
+                         Id = activity.Id,
+                         Name = activity.Name,
+                         StartDate = activity.StartDate,
+                         EndDate = activity.EndDate,
+                         Description = activity.Description,
+                         ActivityType = activity.ActivityType.Name,
+                         Name2 = (Guid.NewGuid()).ToString(),
+                         isExpanded = ""
+                     }
+                    );
+            }
+
+
+            ModelAllViewModel Module1 = new ModelAllViewModel
+            {
+                Id = Module.Id,
+                Name = Module.Name,
+                StartDate = Module.StartDate,
+                EndDate = Module.EndDate,
+                Description = Module.Description,
+                Activities = res,
+                CourseId=Module.CourseId
+            };
+
+            if (Module1 == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Module1);
+        }
+
+
         // PUT: api/Courses1/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse(Guid id, Course course)
@@ -186,18 +357,23 @@ namespace LMS_1_1.Controllers
 
         // DELETE: api/Courses1/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Course>> DeleteCourse(Guid id)
+        public async Task<ActionResult<Course>> DeleteCourse(Guid iD)
         {
-            var course = await _context.Courses.FindAsync(id);
+            var course = await _context.Courses.FindAsync(iD);
             if (course == null)
             {
                 return NotFound();
             }
 
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
 
-            return course;
+            //Delete course.
+            _context.Courses.Remove(course);
+            _context.SaveChanges();
+
+            _logger.LogDebug("!!! Course of {name} deleted.", course.Name);
+
+
+            return Ok(course);      //Send back 200.
         }
 
         private bool CourseExists(Guid id)
