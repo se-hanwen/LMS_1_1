@@ -92,11 +92,11 @@ public SendPartipantList(arg:boolean)
         );  
     }
 
-    public GetUsers()
+    public GetUsers(id?:string)
     {
         let url:string="https://localhost:44396/CourseUsers/GetUsers";  
  
-        return this.http.get<RegisterUser[]>(url,
+        return this.http.get<RegisterUser[]>(url+"/"+id,
         {headers: this.getAuthHeader() 
     })
         .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
