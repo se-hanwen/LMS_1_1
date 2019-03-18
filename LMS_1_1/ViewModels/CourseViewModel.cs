@@ -9,8 +9,7 @@ namespace LMS_1_1.ViewModels
 {
     public class CourseViewModel
     {
-       
-        
+        public string criD { get; set; }      //For updating course id.
        
         [Required]
         public string Name { get; set; }
