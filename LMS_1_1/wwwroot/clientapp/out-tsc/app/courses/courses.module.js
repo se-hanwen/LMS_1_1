@@ -10,6 +10,7 @@ import { PartipantListComponent } from '../PartipantList/partipant-list.componen
 import { detailList } from './detail_list/detail_list.component';
 import { UploadComponent } from '../documents/upload/upload.component';
 import { UploadDetailComponent } from '../documents/upload-detail/upload-detail.component';
+import { ReactiveFormsModule } from '@angular/forms';
 var CoursesModule = /** @class */ (function () {
     function CoursesModule() {
     }
@@ -27,6 +28,7 @@ var CoursesModule = /** @class */ (function () {
             imports: [
                 CommonModule,
                 FormsModule,
+                ReactiveFormsModule,
                 RouterModule.forChild([{
                         path: 'courses', component: CourseListComponent
                     },

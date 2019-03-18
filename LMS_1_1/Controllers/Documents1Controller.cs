@@ -108,24 +108,29 @@ namespace LMS_1_1.Controllers
             {
                 return BadRequest(ModelState);
             }
-            Document document = new Document
-            {
-                Name = documentVm.Name,
-                Description = documentVm.Description,
-                UploadDate = DateTime.Now,
-                Path = documentVm.FileData.FileName,
-               LMSUserId = documentVm.UploaderId,
-               DocumentTypeId= documentVm.DocumentTypeId,
-                
-                CourseId = documentVm.DocOwnerTypeId==(int)DocOwnerType.Course ? documentVm.DocOwnerId : null,
-                ModuleId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Module ? documentVm.DocOwnerId : null,
-                LMSActivityId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Activity ? documentVm.DocOwnerId : null
-            };
-            await _repository.AddDocumentAsync(document);
-            await _repository.UploadFile(documentVm.FileData);
-            _repository.SaveAllAsync();
-          
-            return CreatedAtAction("GetDocument", new { id= document.Id}, document);
+           string fileName= await _repository.UploadFile(documentVm.FileData);
+            if(fileName!=null)
+                {
+                Document document = new Document
+                {
+                    Name = documentVm.Name,
+                    Description = documentVm.Description,
+                    UploadDate = DateTime.Now,
+                    Path = fileName,
+                    LMSUserId = documentVm.UploaderId,
+                    DocumentTypeId = documentVm.DocumentTypeId,
+
+                    CourseId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Course ? documentVm.DocOwnerId : null,
+                    ModuleId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Module ? documentVm.DocOwnerId : null,
+                    LMSActivityId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Activity ? documentVm.DocOwnerId : null
+                };
+                await _repository.AddDocumentAsync(document);
+
+                _repository.SaveAllAsync();
+
+                return CreatedAtAction("GetDocument", new { id = document.Id }, document);
+            }
+            return BadRequest();
         }
 
         [HttpPost("DownloadFile"), DisableRequestSizeLimit]

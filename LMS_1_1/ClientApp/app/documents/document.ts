@@ -4,6 +4,7 @@ export interface IDocument
 {
     id?: string;
     name: string;
+    uploadDate: Data;
     description: string;
     uploaderId: string;
     docOwnerTypeId: number;

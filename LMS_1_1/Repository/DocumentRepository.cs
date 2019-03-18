@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LMS_1_1.Data;
 using LMS_1_1.Models;
@@ -74,37 +75,73 @@ namespace LMS_1_1.Repository
         }
 
 
-        public async Task<bool> UploadFile (IFormFile file)
+        public async Task<string> UploadFile (IFormFile file)
         {
             try
             {
                 string rootPath = _environment.ContentRootPath;
                 var folderName = Path.Combine("Attachements", "Documents");
                 var path = Path.Combine(rootPath, folderName);
+
                 if (file.Length > 0)
                 {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                   
+                        var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     var fullPath = Path.Combine(path, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
+                    var uniqueFullPath = GetUniqueFilePath(fullPath);
 
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+
+                        using (var stream = new FileStream(uniqueFullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }
+                    string filename = Path.GetFileName(uniqueFullPath); ;
 
-                    return true;
+
+                    return filename;
 
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
 
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
+        }
+
+
+        public  string GetUniqueFilePath (string filepath)
+        {
+          
+
+            if (File.Exists(filepath))
+            {
+                string folder = Path.GetDirectoryName(filepath);
+                string filename = Path.GetFileNameWithoutExtension(filepath);
+                string extension = Path.GetExtension(filepath);
+                int number = 1;
+
+                Match regex = Regex.Match(filepath, @"(.+) \((\d+)\)\.\w+");
+
+                if (regex.Success)
+                {
+                    filename = regex.Groups[1].Value;
+                    number = int.Parse(regex.Groups[2].Value);
+                }
+
+                do
+                {
+                    number++;
+                    filepath = Path.Combine(folder, string.Format("{0} ({1}){2}", filename, number, extension));
+                }
+                while (File.Exists(filepath));
+            }
+
+            return filepath;
         }
 
         public async Task<FileStream> DownloadFile (string fileName)

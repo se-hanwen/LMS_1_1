@@ -10,7 +10,7 @@ namespace LMS_1_1.Repository
 {
     public interface IDocumentRepository
     {
-        Task<bool> UploadFile (IFormFile file);
+        Task<string> UploadFile (IFormFile file);
         Task<FileStream> DownloadFile (string fileName);
         Task<bool> RemoveFile (string fileName);
 

@@ -2,10 +2,11 @@ import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, Subject } from 'rxjs';
 var DocumentService = /** @class */ (function () {
     function DocumentService(http) {
         this.http = http;
+        this.subject = new Subject();
         this.documentUrl = "https://localhost:44396/api/documents1/";
         this.httpOptions = {
             headers: new HttpHeaders({
@@ -15,12 +16,17 @@ var DocumentService = /** @class */ (function () {
             responseType: 'blob'
         };
     }
+    DocumentService.prototype.isUploaded = function (message) {
+        this.subject.next({ message: message });
+    };
+    DocumentService.prototype.getUplaodtStatus = function () {
+        return this.subject.asObservable();
+    };
     DocumentService.prototype.getDocumentsByOwnerId = function (id) {
         console.log(this.documentUrl);
         return this.http.get(this.documentUrl + "ByOwner?id=" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     DocumentService.prototype.uploadDocument = function (document) {
-        console.log(document);
         return this.http.post(this.documentUrl, document).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     DocumentService.prototype.downloadFile = function (filePath) {

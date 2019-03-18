@@ -22,28 +22,44 @@
                     <div class="col-md-12">
 
                    
-                        <form #myupload="ngForm" (ngSubmit)="upload(myupload.value)">
+                        <form [formGroup]="uploadForm" (ngSubmit)="upload()">
 
-                            <div class="form-group">
-                                <label for="name" class="control-label">Name</label>
-                                <input (ngModel)="name" name="name" class="form-control" />
+                            <div *ngIf="isSubmitted && formControls.name.errors" class="alert alert-warning">
+                                <div *ngIf="formControls.name.errors.required">File name is required</div>
+                                <div *ngIf="formControls.name.errors.minlength">File name must be more than 4 characters</div>
+                                <div *ngIf="formControls.name.errors.maxlength">File name must be less than 25 characters</div>
+                            </div>
+
+                            <p [ngClass]="{ 'has-error': isSubmitted && formControls.name.errors }">
+
+                                <input type="text" formControlName="name" name="name" placeholder="File Name" class="form-control" />
+
+                            </p>
+
+                            <div *ngIf="isSubmitted && formControls.description.errors" class="alert alert-warning">
+                                <div *ngIf="formControls.description.errors.required">Description is required</div>
+                                <div *ngIf="formControls.description.errors.minlength">Description must be more than 4 characters</div>
+                                <div *ngIf="formControls.description.errors.maxlength">Description must be less than 200 characters</div>
+                            </div>
+                            <p [ngClass]="{ 'has-error': isSubmitted && formControls.description.errors }">
+
+                                <textarea formControlName="description" placeholder="Description" name="description" class="form-control"></textarea>
+
+                            </p>
+                            <div *ngIf="isSubmitted && formControls.fileData.errors" class="alert alert-warning">
+                                <div *ngIf="formControls.fileData.errors.required">File to be upload is required</div>
 
                             </div>
-                            <div class="form-group">
-                                <label for="description" class="control-label">Description</label>
-                                <textarea (ngModel)="description" name="description" class="form-control"></textarea>
+                            <p [ngClass]="{ 'has-error': isSubmitted && formControls.fileData.errors }">
 
-                            </div>
-                            <div class="form-group">
-                                <label for="fileData" class="control-label">File</label>
-                                <input type="file" #fileInput (ngModel)="fileData" name="fileData" class="form-control" />
+                                <input type="file" #fileInput formControlName="fileData" name="fileData" class="form-control" />
 
-                            </div>
+                            </p>
 
                             <div class="form-group">
                                 <input type="submit" value="Upload" class="btn btn-primary" />
                             </div>
-                          
+
                         </form>
                   </div>
                  </div>

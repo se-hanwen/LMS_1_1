@@ -5,9 +5,15 @@ import { DocumentService } from '../document.service';
 import { saveAs } from 'file-saver';
 var UploadDetailComponent = /** @class */ (function () {
     function UploadDetailComponent(route, DocumentService) {
+        var _this = this;
         this.route = route;
         this.DocumentService = DocumentService;
         this.documents = [];
+        this.subscription = this.DocumentService.getUplaodtStatus().subscribe(function (status) {
+            if (status) {
+                _this.loadDocument();
+            }
+        });
     }
     UploadDetailComponent.prototype.ngOnInit = function () {
         this.loadDocument();
@@ -33,6 +39,9 @@ var UploadDetailComponent = /** @class */ (function () {
                 _this.loadDocument();
             }, function (error) { return _this.errorMessage = error; });
         }
+    };
+    UploadDetailComponent.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
     };
     tslib_1.__decorate([
         Input(),
