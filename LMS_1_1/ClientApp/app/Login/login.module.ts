@@ -9,6 +9,9 @@ import { RegisterComponent } from './Register/register.component';
 import { AddStudentToCourseComponent } from './AddStudentToCourse/add_student_to_course.component';
 import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-registed-user.component';
 import { ManageusersComponent } from './ManageUsers/manageusers.component';
+import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
+import { EdituserComponent } from './EditUser/edituser.component';
+import { DeleteuserComponent } from './DeleteUser/deleteuser.component';
 
 @NgModule({
   declarations: [LoginComponent
@@ -18,6 +21,8 @@ import { ManageusersComponent } from './ManageUsers/manageusers.component';
   ,ConfirmRegistedUserComponent 
   ,LoginComponent
   ,ManageusersComponent
+  ,EdituserComponent
+  ,DeleteuserComponent 
 ],
   imports: [
     CommonModule,
@@ -41,7 +46,7 @@ import { ManageusersComponent } from './ManageUsers/manageusers.component';
         path: 'Account/ManageUsers'
         ,canActivate: [IsTeacherGuard] 
        , component: ManageusersComponent
-      },
+      }
       ]
   )
   ],
