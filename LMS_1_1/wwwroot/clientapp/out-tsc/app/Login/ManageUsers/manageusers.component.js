@@ -12,7 +12,7 @@ var ManageusersComponent = /** @class */ (function () {
         this.cd = cd;
         this.messhandler = messhandler;
         this.unsubscribe = new Subject();
-        this.Users = [];
+        this.users = [];
     }
     ManageusersComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -20,12 +20,12 @@ var ManageusersComponent = /** @class */ (function () {
         this.PartipantService.GetUsers()
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (status) {
-            _this.Users = status;
+            _this.users = status;
             _this.cd.markForCheck();
         });
     };
     ManageusersComponent.prototype.ChooseUser = function (id) {
-        if (this.Users.find(function (u) { return u.id == id; }).role != "Teacher") {
+        if (this.users.find(function (u) { return u.id == id; }).role != "Teacher") {
             this.messhandler.SendIsteacher(false);
             this.messhandler.SendUserId(id);
         }
