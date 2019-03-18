@@ -196,7 +196,7 @@ namespace LMS_1_1.Controllers
             //  var user = await _userManager.FindByNameAsync(User.Identity.Name);
             try
             {
-                await _repository.RemoveAllCourseUsersForCourse(savecouseListViewmodel.UserId);
+                await _repository.RemoveAllCourseUsersForUser(savecouseListViewmodel.UserId);
 
                 foreach (var courseid in savecouseListViewmodel.CourseIds)
                 {

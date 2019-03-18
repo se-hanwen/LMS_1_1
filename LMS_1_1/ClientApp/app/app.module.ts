@@ -12,6 +12,7 @@ import { NavbarModule } from './Navbar/navbar.module';
 import { LoginModule } from './Login/login.module';
 import { ModulesModule } from './Modules/modules.module';
 import {  LoginComponent} from './Login/Login/login.component';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 //import { LoginpartialComponent } from './Login/LoginPartial/loginpartial.component';
 
 
@@ -42,7 +43,7 @@ import {  LoginComponent} from './Login/Login/login.component';
       NavbarModule,
       LoginModule,
       ModulesModule,
-     
+      AngularFontAwesomeModule
    
   ],
   providers: [],

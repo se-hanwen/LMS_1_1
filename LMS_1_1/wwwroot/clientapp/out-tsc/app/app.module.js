@@ -13,6 +13,7 @@ import { NavbarModule } from './Navbar/navbar.module';
 import { LoginModule } from './Login/login.module';
 import { ModulesModule } from './Modules/modules.module';
 import { LoginComponent } from './Login/Login/login.component';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 //import { LoginpartialComponent } from './Login/LoginPartial/loginpartial.component';
 var AppModule = /** @class */ (function () {
     function AppModule() {
@@ -42,6 +43,7 @@ var AppModule = /** @class */ (function () {
                 NavbarModule,
                 LoginModule,
                 ModulesModule,
+                AngularFontAwesomeModule
             ],
             providers: [],
             bootstrap: [AppComponent]
