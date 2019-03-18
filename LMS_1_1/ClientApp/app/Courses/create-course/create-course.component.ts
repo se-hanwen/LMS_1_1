@@ -3,7 +3,7 @@ import { ICourse } from '../course';
 import { ActivatedRoute, Data, Router} from '@angular/router';
 
 import { CourseService } from '../course.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,45 +18,68 @@ export class CreateCourseComponent implements OnInit, OnDestroy  {
     course: ICourse;
     errorMessage: string;
     courseForm: FormGroup;
+    isSubmitted = false;
     @ViewChild("fileInput") fileInputVariable: any;
     showMsg: boolean = false;
     constructor(private route: ActivatedRoute, private CourseService: CourseService
       , private router: Router,  private cd: ChangeDetectorRef) { }
 
-  ngOnInit() {
+    ngOnInit() {
+        this.courseForm = new FormGroup({
+            name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
+            startDate: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
+            description: new FormControl('', [Validators.required]),
+            fileData: new FormControl('', [Validators.required, this.mimeTypeValidator])
+
+        });
     }
     
-    
-    
+    get formControls() { return this.courseForm.controls; }
 
-    register(formValues) {
+     mimeTypeValidator(control: AbstractControl) {
 
-       
+        if (control && (control.value !== null || control.value !== undefined)) {
+            let fileToUpload = this.fileInputVariable.nativeElement.files[0];
+            let MIMEtype = fileToUpload.type.split("/")[0];
+            
+            if (MIMEtype !== "Image") {
+                return {
+                    isError: true
+                }
+            }
+        }
+        return null;
+    }
+
+    register() {
+
+        this.isSubmitted = true;
+        if (this.courseForm.invalid) {
+            return;
+        }
      
         let fileToUpload = this.fileInputVariable.nativeElement.files[0];
         let formData = new FormData();
-       
-        formData.append('Name', formValues.name);
-        formData.append('StartDate', formValues.startDate);
-        formData.append('Description', formValues.description);
+        let MIMEtype = fileToUpload.type.split("/")[0];
+        console.log(MIMEtype);
+        formData.append('Name', this.courseForm.value.name);
+        formData.append('StartDate', this.courseForm.value.startDate);
+        formData.append('Description', this.courseForm.value.description);
         formData.append('FileData', fileToUpload);
         console.log(formData);
         this.CourseService.createCourse(formData)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe(
             (result) => {
-                this.showMsg = true;
+                this.isSubmitted = false;
+                this.courseForm.reset();
                 this.router.navigate(['/courses'])
-                
-                console.log(result);
-                console.log("Created a Course");
-
                 this.cd.markForCheck();
             },
             error => this.errorMessage = <any>error
         );
     }
-
+   
     ngOnDestroy(): void {
       this.unsubscribe.next();
       this.unsubscribe.complete();

@@ -3,15 +3,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 var DocumentService = /** @class */ (function () {
-    function DocumentService(http) {
+    function DocumentService(http, AuthService) {
         this.http = http;
+        this.AuthService = AuthService;
         this.subject = new Subject();
         this.documentUrl = "https://localhost:44396/api/documents1/";
         this.httpOptions = {
             headers: new HttpHeaders({
                 'Accept': 'text/html, application/xhtml+xml, */*',
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded',
+                "Authorization": "Bearer " + this.AuthService.getToken()
             }),
             responseType: 'blob'
         };
@@ -58,7 +61,7 @@ var DocumentService = /** @class */ (function () {
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient])
+        tslib_1.__metadata("design:paramtypes", [HttpClient, AuthService])
     ], DocumentService);
     return DocumentService;
 }());

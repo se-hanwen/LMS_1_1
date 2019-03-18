@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CourseListComponent } from './course-list/course-list.component';
 import { CourseDetailComponent } from './course-detail/course-detail.component';
 import { CreateCourseComponent } from './create-course/create-course.component';
@@ -10,7 +10,6 @@ import { PartipantListComponent } from '../PartipantList/partipant-list.componen
 import { detailList } from './detail_list/detail_list.component';
 import { UploadComponent } from '../documents/upload/upload.component';
 import { UploadDetailComponent } from '../documents/upload-detail/upload-detail.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CourseDeleteComponent } from './course-delete/course-delete.component';
 import { CourseEditComponent } from './course-edit/course-edit.component';
 import { SharedModule } from '../Shared/shared.module';

@@ -30,8 +30,6 @@ var CreateCourseComponent = /** @class */ (function () {
             .subscribe(function (result) {
             _this.showMsg = true;
             _this.router.navigate(['/courses']);
-            console.log(result);
-            console.log("Created a Course");
             _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });
     };

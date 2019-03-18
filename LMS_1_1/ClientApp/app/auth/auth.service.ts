@@ -113,23 +113,16 @@ ngOnInit(): void {
 
   private _isTeacher:string="";
   private Realtoken: string="";
-   
-  private getAuthHeader() : HttpHeaders
+    private httpOptions;
+  public getAuthHeader() : HttpHeaders
   {
     return  new HttpHeaders({ "Authorization": "Bearer " + this.Realtoken });
   }
 
-    public getHttpHeaderOptions(): HttpHeaders {
 
-        let httpOptions: any = {
-        headers: new HttpHeaders({
-            'Accept': 'text/html, application/xhtml+xml, */*',
-            'Content-Type': 'application/x-www-form-urlencoded',
-            "Authorization": "Bearer " + this.Realtoken
-        }),
-        responseType: 'blob' as 'json'
-    };
-        return httpOptions;
+
+    public getToken(){
+        return this.Realtoken;
     }
 
    

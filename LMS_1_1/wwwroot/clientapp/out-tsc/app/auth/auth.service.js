@@ -100,6 +100,9 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.getAuthHeader = function () {
         return new HttpHeaders({ "Authorization": "Bearer " + this.Realtoken });
     };
+    AuthService.prototype.getToken = function () {
+        return this.Realtoken;
+    };
     AuthService.prototype.login = function (creds) {
         var _this = this;
         return this.http.post(this.url + "/account/createtoken", creds)

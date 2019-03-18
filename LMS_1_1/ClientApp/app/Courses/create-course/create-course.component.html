@@ -9,28 +9,51 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form #mycourse="ngForm" (ngSubmit)="register(mycourse.value)">
+        <form [formGroup]="courseForm" (ngSubmit)="register()">
 
-            <div class="form-group">
+            <div *ngIf="isSubmitted && formControls.name.errors" class="alert alert-warning">
+                <div *ngIf="formControls.name.errors.required">Course name is required</div>
+                <div *ngIf="formControls.name.errors.minlength">Course name must be more than 4 characters</div>
+                <div *ngIf="formControls.name.errors.maxlength">Course name must be less than 25 characters</div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error': isSubmitted && formControls.name.errors }">
                 <label for="name" class="control-label">Name</label>
-                <input (ngModel)="name" name="name" class="form-control" />
+                <input formControlName="name" name="name" class="form-control" />
 
             </div>
 
-            <div class="form-group">
+
+            <div *ngIf="isSubmitted && formControls.name.errors" class="alert alert-warning">
+                <div *ngIf="formControls.name.errors.required">Course start date is required</div>
+
+            </div>
+
+            <div class="form-group" [ngClass]="{ 'has-error': isSubmitted && formControls.startDate.errors }">
                 <label for="startDate" class="control-label">StartDate</label>
-                <input type="date" (ngModel)="startDate"
+                <input type="date" formControlName="startDate"
                        name="startDate" class="form-control" />
 
             </div>
-            <div class="form-group">
+
+            <div *ngIf="isSubmitted && formControls.description.errors" class="alert alert-warning">
+                <div *ngIf="formControls.description.errors.required">Description is required</div>
+                <div *ngIf="formControls.description.errors.minlength">Description must be more than 4 characters</div>
+                <div *ngIf="formControls.description.errors.maxlength">Description must be less than 200 characters</div>
+            </div>
+            <div class="form-group"[ngClass]="{ 'has-error': isSubmitted && formControls.description.errors }">
                 <label for="description" class="control-label">Description</label>
 
-                <textarea (ngModel)="description" name="description" class="form-control" cols="30" rows="5"></textarea>
+                <textarea formControlName="description" name="description" class="form-control" cols="30" rows="5"></textarea>
             </div>
-            <div class="form-group">
+
+            <div *ngIf="isSubmitted && formControls.fileData.errors" class="alert alert-warning">
+                <div *ngIf="formControls.fileData.errors.required">Image to be upload is required</div>
+                <div *ngIf="formControls.fileData.errors.mimeTypeValidator">Image to be upload shoulde be image type</div>
+
+            </div>
+            <div class="form-group"[ngClass]="{ 'has-error': isSubmitted && formControls.fileData.errors }">
                 <label for="fileData" class="control-label">File</label>
-                <input type="file" #fileInput (ngModel)="fileData" name="fileData" class="form-control" />
+                <input type="file" #fileInput formControlName="fileData" name="fileData" class="form-control" />
 
             </div>
             <div class="form-group">
