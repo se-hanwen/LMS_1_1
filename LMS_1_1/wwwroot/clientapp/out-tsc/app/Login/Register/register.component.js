@@ -1,5 +1,4 @@
 import * as tslib_1 from "tslib";
-
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { RegisterUser } from './registeruser';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
@@ -19,7 +18,6 @@ var RegisterComponent = /** @class */ (function () {
         this.HasChoosedCourse = false;
         this.returnmessage = null;
         this.saveduser = false;
-
     }
     RegisterComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -74,8 +72,6 @@ var RegisterComponent = /** @class */ (function () {
     RegisterComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
         this.unsubscribe.complete();
-    };
-    RegisterComponent.prototype.onRegister = function () {
     };
     RegisterComponent = tslib_1.__decorate([
         Component({

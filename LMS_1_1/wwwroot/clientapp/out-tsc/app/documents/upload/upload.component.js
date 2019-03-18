@@ -3,14 +3,18 @@ import { Component, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentService } from '../document.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
 var UploadComponent = /** @class */ (function () {
-    function UploadComponent(route, DocumentService, router) {
+    function UploadComponent(route, DocumentService, router, AuthService) {
         this.route = route;
         this.DocumentService = DocumentService;
         this.router = router;
+        this.AuthService = AuthService;
         this.isSubmitted = false;
+        this.isTeacher = false;
     }
     UploadComponent.prototype.ngOnInit = function () {
+        this.isTeacher = this.AuthService.isTeacher;
         this.uploadForm = new FormGroup({
             name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
             description: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
@@ -65,7 +69,7 @@ var UploadComponent = /** @class */ (function () {
             templateUrl: './upload.component.html',
             styleUrls: ['./upload.component.css']
         }),
-        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, DocumentService, Router])
+        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, DocumentService, Router, AuthService])
     ], UploadComponent);
     return UploadComponent;
 }());

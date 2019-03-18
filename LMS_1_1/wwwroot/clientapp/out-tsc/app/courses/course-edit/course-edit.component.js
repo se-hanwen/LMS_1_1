@@ -13,13 +13,17 @@ var CourseEditComponent = /** @class */ (function () {
     CourseEditComponent.prototype.ngOnInit = function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
-        this.CourseService.getCourseById(id).subscribe(function (tcourse) { _this.editCourse = tcourse; }, function (error) { _this.errorMsg = error; });
+        this.CourseService.getCourseById(id).subscribe(function (tcourse) {
+            _this.editCourse = tcourse;
+        }, function (error) { _this.errorMsg = error; });
+        this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
     };
     CourseEditComponent.prototype.UpdateCourse = function () {
         var fileToUpload = this.fileInputVariable.nativeElement.files[0];
-        console.log("XXXXXXXXXXXX :" + fileToUpload.name);
         var upfile = fileToUpload.name;
-        console.log("XXXXXXXXXXXX :" + upfile);
+        if (upfile == null) {
+            fileToUpload.name = this.editCourse.courseImgPath;
+        }
         var formData = new FormData();
         formData.append('criD', this.editCourse.id.toString());
         formData.append('Name', this.editCourse.name);
