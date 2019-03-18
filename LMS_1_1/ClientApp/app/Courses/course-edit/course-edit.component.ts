@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ICourse } from '../course';
+import { CourseService } from '../course.service';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
+import { NgForm } from '@angular/forms';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-course-edit',
@@ -6,10 +12,39 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./course-edit.component.css']
 })
 export class CourseEditComponent implements OnInit {
+    editCourse: ICourse;
+    errorMsg: string;
+    @ViewChild("fileInput") fileInputVariable: any;
+    isTeacher: boolean;
 
-  constructor() { }
+    constructor(private route: ActivatedRoute, private router: Router, private CourseService: CourseService, private AuthService: AuthService) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        let id = this.route.snapshot.paramMap.get("id");
+        this.CourseService.getCourseById(id).subscribe(
+            tcourse => { 
+                this.editCourse = tcourse;
+            },
+            error => { this.errorMsg = <any>error; });
+        this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
+    } 
+
+    UpdateCourse() {
+        let fileToUpload = this.fileInputVariable.nativeElement.files[0];
+        let upfile = fileToUpload.name;
+        if (upfile==null) {
+            fileToUpload.name = this.editCourse.courseImgPath;
+        }
+        let formData = new FormData();
+
+        formData.append('criD', this.editCourse.id.toString());
+        formData.append('Name', this.editCourse.name);
+        formData.append('StartDate', this.editCourse.startDate.toString());
+        formData.append('Description', this.editCourse.description);
+        formData.append('FileData', fileToUpload);
+
+        this.CourseService.EditCourse(this.editCourse.id, formData).subscribe();
+        this.router.navigate(['/courses']);
+    }
 
 }

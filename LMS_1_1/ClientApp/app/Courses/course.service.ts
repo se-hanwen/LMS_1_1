@@ -103,6 +103,18 @@ export class CourseService {
         );
     }
 
+    //Edit a course with a given guid.
+    EditCourse(id: Guid, editCourse: any) {
+        //console.log("COURSE FORM EDIT COURSE" + editCourse);
+        let urlString = this.courseUrl + "/" + id;
+        return this.http.put(urlString, editCourse,
+            {
+                headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+            })
+            .pipe(
+                tap(result => JSON.stringify(result)), catchError(this.handleError)
+            );
+    }
 
     private handleError(err: HttpErrorResponse) {
         // in a real world app, we may send the server to some remote logging infrastructure

@@ -295,16 +295,27 @@ namespace LMS_1_1.Controllers
         }
 
 
-        // PUT: api/Courses1/5
+        // PUT: api/Courses1
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(Guid id, Course course)
+        public async Task<IActionResult> PutCourse(string id, [FromForm] CourseViewModel editModel)
         {
-            if (id != course.Id)
+            //if (editModel.criD==null)
+            if(id != editModel.criD)
             {
                 return BadRequest();
             }
 
-            _context.Entry(course).State = EntityState.Modified;
+            Guid Crid = new Guid(editModel.criD);
+
+            Course edCourse = new Course {
+                Id = Crid,
+                Name = editModel.Name,
+                StartDate = editModel.StartDate,
+                Description = editModel.Description,
+                CourseImgPath = editModel.FileData.FileName
+            };
+
+            _context.Entry(edCourse).State = EntityState.Modified;
 
             try
             {
@@ -312,7 +323,7 @@ namespace LMS_1_1.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CourseExists(id))
+                if (!CourseExists(Crid))
                 {
                     return NotFound();
                 }
@@ -362,7 +373,7 @@ namespace LMS_1_1.Controllers
             }
 
 
-            //Delete course.
+            //Delete course. Data related in Modules and LMSActivity also are deleted.
             _context.Courses.Remove(course);
             _context.SaveChanges();
 
