@@ -50,7 +50,7 @@ var CourseService = /** @class */ (function () {
     //Delete a course by a given guid.
     CourseService.prototype.DeleteCourse = function (id) {
         var urlString = this.courseUrl + "/" + id;
-        return this.http.delete(urlString, { headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        return this.http.delete(urlString, { headers: this.getAuthHeader()
         })
             .pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };

@@ -195,6 +195,8 @@ namespace LMS_1_1.Controllers
             return Ok(res);
         }
 
+
+
         [HttpGet]
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<string>> GetUsers()

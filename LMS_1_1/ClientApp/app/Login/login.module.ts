@@ -46,7 +46,22 @@ import { DeleteuserComponent } from './DeleteUser/deleteuser.component';
         path: 'Account/ManageUsers'
         ,canActivate: [IsTeacherGuard] 
        , component: ManageusersComponent
-      }
+      },
+      {
+        path: 'Account/Confirm'
+        ,canActivate: [IsAuthenticatedGuard] 
+       , component: ConfirmRegistedUserComponent
+      },
+      {
+        path: 'Account/Delete/:id'
+        ,canActivate: [IsTeacherGuard] 
+       , component: DeleteuserComponent
+      },
+      {
+        path: 'Account/Edit/:id'
+        ,canActivate: [IsTeacherGuard] 
+       , component: EdituserComponent
+      },
       ]
   )
   ],

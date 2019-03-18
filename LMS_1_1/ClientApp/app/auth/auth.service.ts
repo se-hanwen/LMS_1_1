@@ -1,10 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 //import { JwtHelperService } from '@auth0/angular-jwt';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, takeUntil } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { map, takeUntil, catchError } from 'rxjs/operators';
 import { User } from '../Login/login';
 import { tokenData } from './tokenData';
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, throwError } from 'rxjs';
 import { RegisterUser } from '../Login/Register/registeruser';
 import { ICourseNameData } from '../AddPartipant/partipant';
 
@@ -21,16 +21,16 @@ export class AuthService implements  OnDestroy
 
    private tokenData: tokenData=new tokenData();
 
-private tokenSource = new BehaviorSubject(' ');
+private tokenSource = new BehaviorSubject<string>('');
 token = this.tokenSource.asObservable();
 
-private tokenExpirationSource = new BehaviorSubject(new Date());
+private tokenExpirationSource = new BehaviorSubject<Date>(new Date());
 tokenExpiration = this.tokenExpirationSource.asObservable();
 
-private firstNameSource = new BehaviorSubject(' ');
+private firstNameSource = new BehaviorSubject<string>('');
 firstName = this.firstNameSource.asObservable();
 
-private lastNameSource = new BehaviorSubject(' ');
+private lastNameSource = new BehaviorSubject<string>('');
 lastName = this.lastNameSource.asObservable();
 
 /*
@@ -183,9 +183,35 @@ ngOnInit(): void {
     
   }
 
+  public DeleteUser(id: string) {
+    let url:string="https://localhost:44396/account/DeleteUser";  
+    return this.http.post(url,{"UserId":id},
+    {headers: this.getAuthHeader() 
+})
+.pipe(catchError(this.handleError));
+
+  }
+
+  UpdateUser(user: RegisterUser) {
+    let url:string="https://localhost:44396/account/UpdateUser";  
+    return this.http.post(url,{"user":user},
+    {headers: this.getAuthHeader() 
+})
+.pipe(catchError(this.handleError));
+
+  }
+  UpdateUserAdmin(user: RegisterUser) {
+    let url:string="https://localhost:44396/account/UpdateUserAdmin";  
+    return this.http.post(url,{"user":user},
+    {headers: this.getAuthHeader() 
+})
+.pipe(catchError(this.handleError));
+
+  }
+
 
   private checkisAuthenticated(token : string, tokenExpiration : Date ) :boolean {
-    return !(token.length == 0 && tokenExpiration > new Date());
+    return !(token.length == 0 || tokenExpiration < new Date());
   }
 
   
@@ -196,6 +222,22 @@ ngOnInit(): void {
           return true;
         return false;
 
+  }
+
+  private handleError(err: HttpErrorResponse) {
+    // in a real world app, we may send the server to some remote logging infrastructure
+    // instead of just logging it to the console
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      errorMessage = `An error occurred: ${err.error.message}`;
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+    }
+    console.error(errorMessage);
+    return throwError(errorMessage);
   }
  
   ngOnDestroy(): void {

@@ -16,12 +16,13 @@ export class ConfirmRegistedUserComponent implements OnInit,OnDestroy {
 
   message: string="";
 
+
   constructor(private route:Router
     ,private cd: ChangeDetectorRef
     ,private messhandler: LoginMessageHandlerService) { }
 
   ngOnInit() {
-    this.messhandler.Confirm
+    this.messhandler.ConfirmMessage
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(
       status => {

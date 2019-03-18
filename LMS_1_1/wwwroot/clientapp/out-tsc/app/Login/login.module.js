@@ -24,7 +24,9 @@ var LoginModule = /** @class */ (function () {
                 AddStudentToCourseComponent,
                 ConfirmRegistedUserComponent,
                 LoginComponent,
-                ManageusersComponent
+                ManageusersComponent,
+                EdituserComponent,
+                DeleteuserComponent
             ],
             imports: [
                 CommonModule,
@@ -49,20 +51,19 @@ var LoginModule = /** @class */ (function () {
                         component: ManageusersComponent
                     },
                     {
-                        path: 'Account/Edit',
+                        path: 'Account/Confirm',
                         canActivate: [IsAuthenticatedGuard],
-                        component: EdituserComponent
+                        component: ConfirmRegistedUserComponent
+                    },
+                    {
+                        path: 'Account/Delete/:id',
+                        canActivate: [IsTeacherGuard],
+                        component: DeleteuserComponent
                     },
                     {
                         path: 'Account/Edit/:id',
                         canActivate: [IsTeacherGuard],
                         component: EdituserComponent
-                    },
-                    ,
-                    {
-                        path: 'Account/Delete/:id',
-                        canActivate: [IsTeacherGuard],
-                        component: DeleteuserComponent
                     },
                 ])
             ],

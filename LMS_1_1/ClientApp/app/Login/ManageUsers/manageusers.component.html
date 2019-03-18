@@ -18,8 +18,8 @@
                           <td>{{user.lastName}}</td>
                           <td style="min-width: 5em" >{{user.role}}</td>
                           <td style="min-width: 30em"  >
-                              <a [routerLink]="['/Edit', user.id]">edit</a>|
-                              <a [routerLink]="['/Delete', user.id]">delete</a>|
+                              <a [routerLink]="['/Account/Edit', user.id]">edit</a>|
+                              <a [routerLink]="['/Account/Delete', user.id]">delete</a>|
                               <a href="javascript:void(0);" (click)="ChooseUser(user.id)">choose</a>
                           </td>
                       </tr>
@@ -33,3 +33,4 @@
         <add_student_to_course></add_student_to_course>
     </div>
 </div> 
+

@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col-md-4 offset-md-2">
+  <div *ngIf="message">{{message}}</div>
+
+      
+  <a [routerLink]="'['+goonurl.join(',')+']''" class="btn btn-default" >{{goonmess}}</a>
+  <a [routerLink]="'['+gobackurl.join(',')+']''"  class="btn btn-default" >Go back</a>
+
+  </div>
+
+</div>
