@@ -54,6 +54,12 @@ var PartipantService = /** @class */ (function () {
      ),*/
         tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
+    PartipantService.prototype.GetUsers = function () {
+        var url = "https://localhost:44396/CourseUsers/GetUsers";
+        return this.http.get(url, { headers: this.getAuthHeader()
+        })
+            .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
     PartipantService.prototype.SaveStudents = function () {
         var url = "https://localhost:44396/CourseUsers/AddStudentsToCourse";
         var Userids = [];

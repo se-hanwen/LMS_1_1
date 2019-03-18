@@ -8,6 +8,7 @@ import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { RegisterComponent } from './Register/register.component';
 import { AddStudentToCourseComponent } from './AddStudentToCourse/add_student_to_course.component';
 import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-registed-user.component';
+import { ManageusersComponent } from './ManageUsers/manageusers.component';
 
 @NgModule({
   declarations: [LoginComponent
@@ -16,6 +17,7 @@ import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-regi
   ,AddStudentToCourseComponent
   ,ConfirmRegistedUserComponent 
   ,LoginComponent
+  ,ManageusersComponent
 ],
   imports: [
     CommonModule,
@@ -34,8 +36,12 @@ import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-regi
         path: 'Account/ConfirmRegistedUser'
         ,canActivate: [IsTeacherGuard] 
        , component: ConfirmRegistedUserComponent
-      }
-
+      },
+      {
+        path: 'Account/ManageUsers'
+        ,canActivate: [IsTeacherGuard] 
+       , component: ManageusersComponent
+      },
       ]
   )
   ],

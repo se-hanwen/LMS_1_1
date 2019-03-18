@@ -9,6 +9,7 @@ import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { RegisterComponent } from './Register/register.component';
 import { AddStudentToCourseComponent } from './AddStudentToCourse/add_student_to_course.component';
 import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-registed-user.component';
+import { ManageusersComponent } from './ManageUsers/manageusers.component';
 var LoginModule = /** @class */ (function () {
     function LoginModule() {
     }
@@ -19,7 +20,8 @@ var LoginModule = /** @class */ (function () {
                 RegisterComponent,
                 AddStudentToCourseComponent,
                 ConfirmRegistedUserComponent,
-                LoginComponent
+                LoginComponent,
+                ManageusersComponent
             ],
             imports: [
                 CommonModule,
@@ -37,7 +39,12 @@ var LoginModule = /** @class */ (function () {
                         path: 'Account/ConfirmRegistedUser',
                         canActivate: [IsTeacherGuard],
                         component: ConfirmRegistedUserComponent
-                    }
+                    },
+                    {
+                        path: 'Account/ManageUsers',
+                        canActivate: [IsTeacherGuard],
+                        component: ManageusersComponent
+                    },
                 ])
             ],
             exports: [LoginpartialComponent,

@@ -10,6 +10,9 @@
       </li>
           <li class="nav-item" *ngIf="isTeacher">
               <a [routerLink]="['/Account/Register']">Register</a>
+            </li>
+              <li class="nav-item" *ngIf="isTeacher">  
+              <a [routerLink]="['/Account/ManageUsers']">Manage Users</a>
           </li>
       
       <li class="nav-item">

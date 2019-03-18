@@ -6,6 +6,7 @@ import {Observable, throwError, Subject, BehaviorSubject} from 'rxjs';
 import {catchError, tap, map, takeUntil} from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { ICourse } from '../Courses/course';
+import { RegisterUser } from '../Login/Register/registeruser';
 
 @Injectable({
     providedIn: 'root'
@@ -90,6 +91,19 @@ public SendPartipantList(arg:boolean)
         catchError(this.handleError)
         );  
     }
+
+    public GetUsers()
+    {
+        let url:string="https://localhost:44396/CourseUsers/GetUsers";  
+ 
+        return this.http.get<RegisterUser[]>(url,
+        {headers: this.getAuthHeader() 
+    })
+        .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
+        catchError(this.handleError));
+
+    } 
+
 
     public SaveStudents()
     {

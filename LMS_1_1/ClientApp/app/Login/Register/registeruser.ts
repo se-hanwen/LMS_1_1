@@ -6,6 +6,7 @@ export interface IRegisterUser
     password: string,
     confirmpassword: string,
     role:string
+    id?: string
 }
 
 export class RegisterUser implements IRegisterUser
@@ -16,4 +17,5 @@ export class RegisterUser implements IRegisterUser
     password: string="";
     confirmpassword: string="";
     role: string="Student";  
+    id=null;
 }
