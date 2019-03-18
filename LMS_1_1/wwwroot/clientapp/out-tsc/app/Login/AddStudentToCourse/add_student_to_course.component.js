@@ -87,12 +87,6 @@ var AddStudentToCourseComponent = /** @class */ (function () {
                     if (_this.SaveOn != null) {
                         _this.SaveOn.unsubscribe;
                     }
-                    _this.Saveoff = _this.PartipantService.GetCoursesOff(_this.userid)
-                        .pipe(takeUntil(_this.unsubscribe))
-                        .subscribe(function (Choose) {
-                        _this.ChooseFrom = Choose;
-                        _this.cd.markForCheck();
-                    });
                     _this.SaveOn = _this.PartipantService.GetCoursesOn(_this.userid)
                         .pipe(takeUntil(_this.unsubscribe))
                         .subscribe(function (Choosed) {
@@ -176,7 +170,7 @@ var AddStudentToCourseComponent = /** @class */ (function () {
             var workstart = false;
             for (var _i = 0, _a = _this._Choosed; _i < _a.length; _i++) {
                 var work = _a[_i];
-                savedcourses = savedcourses + (workstart ? "," : "") + work.name;
+                savedcourses = savedcourses + (workstart ? ", " : "") + work.name;
                 workstart = true;
             }
             _this.messhandler.SendHasSavedCoures(true);

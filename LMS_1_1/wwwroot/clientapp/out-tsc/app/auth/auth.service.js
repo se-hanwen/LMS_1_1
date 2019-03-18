@@ -20,14 +20,6 @@ var AuthService = /** @class */ (function () {
         this.firstName = this.firstNameSource.asObservable();
         this.lastNameSource = new BehaviorSubject(' ');
         this.lastName = this.lastNameSource.asObservable();
-        /*
-        private useridSource = new BehaviorSubject(' ');
-        userid = this.useridSource.asObservable();
-        */
-        this.isAuthenticatedSource = new BehaviorSubject(false);
-        this.isAuthenticated = this.isAuthenticatedSource.asObservable();
-        this.isTeacherSource = new BehaviorSubject(false);
-        this.isTeacher = this.isTeacherSource.asObservable();
         this.RealisAuthenticated = false;
         this.RealisTeacher = false;
         /*
@@ -64,18 +56,18 @@ var AuthService = /** @class */ (function () {
         this.url = "https://localhost:44396";
         this._isTeacher = "";
         this.Realtoken = "";
-        this.isAuthenticated
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (i) {
-            _this.RealisAuthenticated = i;
-            //    this.cd.markForCheck();
+        /*this.isAuthenticated
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe( i => {
+          this.RealisAuthenticated=i;
+      //    this.cd.markForCheck();
         });
         this.isTeacher
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (i) {
-            _this.RealisTeacher = i;
-            //   this.cd.markForCheck();
-        });
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(i => {
+            this.RealisTeacher=i;
+         //   this.cd.markForCheck();
+        });*/
         this.token
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (i) {
@@ -83,6 +75,28 @@ var AuthService = /** @class */ (function () {
             //    this.cd.markForCheck();
         });
     }
+    Object.defineProperty(AuthService.prototype, "isAuthenticated", {
+        /*
+        private useridSource = new BehaviorSubject(' ');
+        userid = this.useridSource.asObservable();
+        */
+        /*private isAuthenticatedSource = new BehaviorSubject<boolean>(false);
+        private _isAuthenticated = this.isAuthenticatedSource.asObservable();*/
+        get: function () {
+            return this.checkisAuthenticated(this.tokenData.token, this.tokenData.tokenExpiration);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AuthService.prototype, "isTeacher", {
+        /*private isTeacherSource = new BehaviorSubject<boolean>(false);
+        private _isTeacher = this.isTeacherSource.asObservable();*/
+        get: function () {
+            return this.checkisAuthenticated(this.tokenData.token, this.tokenData.tokenExpiration) ? this.checkIsTeacher(this.tokenData.isTeacher) : false;
+        },
+        enumerable: true,
+        configurable: true
+    });
     AuthService.prototype.getAuthHeader = function () {
         return new HttpHeaders({ "Authorization": "Bearer " + this.Realtoken });
     };
@@ -96,8 +110,8 @@ var AuthService = /** @class */ (function () {
             _this.firstNameSource.next(tokenInfo.firstName);
             _this.lastNameSource.next(tokenInfo.lastName);
             //    this.useridSource.next(tokenInfo.userid);
-            _this.isAuthenticatedSource.next(_this.checkisAuthenticated(tokenInfo.token, tokenInfo.tokenExpiration));
-            _this.isTeacherSource.next(_this.checkisAuthenticated(tokenInfo.token, tokenInfo.tokenExpiration) ? _this.checkIsTeacher(tokenInfo.isTeacher) : false);
+            // this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
+            //  this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
             _this.tokenData.token = tokenInfo.token;
             _this.tokenData.tokenExpiration = tokenInfo.expiration;
             _this.tokenData.isTeacher = tokenInfo.isTeacher;
@@ -108,20 +122,24 @@ var AuthService = /** @class */ (function () {
         }));
     };
     //  
-    AuthService.prototype.IsAuthenticated = function () {
-        return this.RealisAuthenticated;
-    };
-    AuthService.prototype.IsTeacher = function () {
-        return this.RealisTeacher;
-    };
+    /*   public IsAuthenticated(): boolean
+       {
+         return this.RealisAuthenticated;
+       }
+  
+       public IsTeacher(): boolean
+       {
+         return this.RealisTeacher;
+       }
+  */
     AuthService.prototype.logout = function () {
         this.tokenData = new tokenData();
         this.tokenSource.next('');
         this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
         this.firstNameSource.next('');
         this.lastNameSource.next('');
-        this.isAuthenticatedSource.next(false);
-        this.isTeacherSource.next(false);
+        //  this.isAuthenticatedSource.next(false);
+        //  this.isTeacherSource.next(false)
     };
     AuthService.prototype.register = function (registeruser) {
         return this.http.post(this.url + "/account/RegisterNewUser", registeruser, { headers: this.getAuthHeader() })

@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { throwError, Subject } from 'rxjs';
+import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { catchError, tap, takeUntil } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 var PartipantService = /** @class */ (function () {
@@ -13,12 +13,17 @@ var PartipantService = /** @class */ (function () {
         this.CourseId = "";
         this.token = "";
         this.unsubscribe = new Subject();
+        this.ShowPartipantListSource = new BehaviorSubject(false);
+        this.ShowPartipantList = this.ShowPartipantListSource.asObservable();
         this.AuthService.token
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (i) {
             _this.token = i;
         });
     }
+    PartipantService.prototype.SendPartipantList = function (arg) {
+        this.ShowPartipantListSource.next(arg);
+    };
     PartipantService.prototype.getAuthHeader = function () {
         return new HttpHeaders({ "Authorization": "Bearer " + this.token });
     };

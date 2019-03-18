@@ -18,7 +18,8 @@ var LoginModule = /** @class */ (function () {
                 LoginpartialComponent,
                 RegisterComponent,
                 AddStudentToCourseComponent,
-                ConfirmRegistedUserComponent
+                ConfirmRegistedUserComponent,
+                LoginComponent
             ],
             imports: [
                 CommonModule,
@@ -39,7 +40,9 @@ var LoginModule = /** @class */ (function () {
                     }
                 ])
             ],
-            exports: [LoginpartialComponent]
+            exports: [LoginpartialComponent,
+                LoginComponent
+            ]
         })
     ], LoginModule);
     return LoginModule;

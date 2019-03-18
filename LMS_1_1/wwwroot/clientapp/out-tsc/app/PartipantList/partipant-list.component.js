@@ -14,6 +14,12 @@ var PartipantListComponent = /** @class */ (function () {
     }
     PartipantListComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.PartipantService.ShowPartipantList
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.show = status;
+            _this.cd.markForCheck();
+        });
         this.PartipantService.CourseId = this.courseid;
         this.PartipantService.GetStudentsOn()
             .pipe(takeUntil(this.unsubscribe))

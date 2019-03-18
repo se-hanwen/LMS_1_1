@@ -16,12 +16,14 @@ var detailList = /** @class */ (function () {
     }
     detailList.prototype.ngOnInit = function () {
         var _this = this;
-        this.AuthService.isTeacher
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (i) {
-            _this.isTeacher = i;
-            _this.cd.markForCheck();
-        });
+        this.isTeacher = this.AuthService.isTeacher;
+        /*this.AuthService.isTeacher
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe( i =>{
+             this.isTeacher=i;
+             this.cd.markForCheck();
+        }
+        );*/
         this.CourseService.getCourseAndModulebyId(this.courseid)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (course) {

@@ -5,22 +5,29 @@ import { CourseService } from '../course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PartipantService } from 'ClientApp/app/AddPartipant/partipant.service';
 var CourseDetailComponent = /** @class */ (function () {
-    function CourseDetailComponent(route, CourseService, AuthService, cd) {
+    function CourseDetailComponent(route, CourseService, AuthService, cd, partipantservice) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
+        this.partipantservice = partipantservice;
+        this.isTeacher = false;
+        this.showpartipantlist = false;
+        this.showpartipantlistmsg = "Show";
         this.unsubscribe = new Subject();
     }
     CourseDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.AuthService.isTeacher
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (i) {
-            _this.isTeacher = i;
-            _this.cd.markForCheck();
-        });
+        this.isTeacher = this.AuthService.isTeacher;
+        /*this.AuthService.isTeacher
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe( i =>
+          {
+            this.isTeacher=i;
+            this.cd.markForCheck();
+          });*/
         var id = this.route.snapshot.paramMap.get('id');
         this.CourseService.getCourseAndModulebyId(id)
             .pipe(takeUntil(this.unsubscribe))
@@ -28,6 +35,17 @@ var CourseDetailComponent = /** @class */ (function () {
             _this.course = course;
             _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });
+    };
+    CourseDetailComponent.prototype.toggelPartipantList = function () {
+        if (this.showpartipantlist) {
+            this.showpartipantlist = false;
+            this.showpartipantlistmsg = "Show";
+        }
+        else {
+            this.showpartipantlist = true;
+            this.showpartipantlistmsg = "Hide";
+        }
+        this.partipantservice.SendPartipantList(this.showpartipantlist);
     };
     CourseDetailComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
@@ -39,7 +57,8 @@ var CourseDetailComponent = /** @class */ (function () {
             styleUrls: ['./course-detail.component.css']
         }),
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute, CourseService, AuthService,
-            ChangeDetectorRef])
+            ChangeDetectorRef,
+            PartipantService])
     ], CourseDetailComponent);
     return CourseDetailComponent;
 }());

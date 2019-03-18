@@ -15,9 +15,11 @@ var ModulDetailsComponent = /** @class */ (function () {
     }
     ModulDetailsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.AuthService.isTeacher
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (i) { return _this.isTeacher = i; });
+        this.isTeacher = this.AuthService.isTeacher;
+        /* this.AuthService.isTeacher
+         .pipe(takeUntil(this.unsubscribe))
+         .subscribe( i => this.isTeacher=i);
+         */
         var Modulid = this.route.snapshot.paramMap.get('id');
         this.CourseService.getModulAndActivitybyId(Modulid)
             .pipe(takeUntil(this.unsubscribe))

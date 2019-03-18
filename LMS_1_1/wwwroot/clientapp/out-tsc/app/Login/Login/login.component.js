@@ -5,11 +5,13 @@ import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoginMessageHandlerService } from '../login-message-handler.service';
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent(db, router, cd) {
+    function LoginComponent(db, router, cd, messhandler) {
         this.db = db;
         this.router = router;
         this.cd = cd;
+        this.messhandler = messhandler;
         this.unsubscribe = new Subject();
         this.user = new User();
         this.errorMessage = "";
@@ -25,8 +27,11 @@ var LoginComponent = /** @class */ (function () {
         this.db.login(this.user)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (success) {
-            if (success)
+            if (success) {
+                _this.messhandler.SendCurrUserAuth(_this.db.isAuthenticated);
+                _this.messhandler.SendCurrUserTeacher(_this.db.isTeacher);
                 _this.router.navigate(["courses"]);
+            }
             _this.cd.markForCheck();
         }, function (err) { return _this.errorMessage = "Failed to login"; });
     };
@@ -42,7 +47,8 @@ var LoginComponent = /** @class */ (function () {
         }),
         tslib_1.__metadata("design:paramtypes", [AuthService,
             Router,
-            ChangeDetectorRef])
+            ChangeDetectorRef,
+            LoginMessageHandlerService])
     ], LoginComponent);
     return LoginComponent;
 }());

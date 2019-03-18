@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
-import { takeUntil } from 'rxjs/operators';
 var IsTeacherGuard = /** @class */ (function () {
     function IsTeacherGuard(auth, router) {
         this.auth = auth;
@@ -16,15 +15,18 @@ var IsTeacherGuard = /** @class */ (function () {
         return this.isTeacher;
     };
     IsTeacherGuard.prototype.CheckTeacher = function () {
-        var _this = this;
-        this.auth.isTeacher
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (i) {
-            _this.isTeacher = i;
-            if (!i) {
-                _this.router.navigate(['/Account/Login']);
-            }
-        });
+        /*this.auth.isTeacher
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((i:boolean) =>
+        {
+          this.isTeacher=i;
+          if(!i)
+          {
+            this.router.navigate(['/Account/Login']);
+           
+          }
+        });*/
+        this.isTeacher = this.auth.isTeacher;
     };
     IsTeacherGuard.prototype.canActivate = function () {
         return this.isTeacher;

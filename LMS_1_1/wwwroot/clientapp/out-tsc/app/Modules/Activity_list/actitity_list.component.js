@@ -16,7 +16,8 @@ var ActitityListComponent = /** @class */ (function () {
     }
     ActitityListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.AuthService.isTeacher.subscribe(function (i) { return _this.isTeacher = i; });
+        this.isTeacher = this.AuthService.isTeacher;
+        //this.AuthService.isTeacher.subscribe( i => this.isTeacher=i);
         //getModulAndActivitybyId(Moduleid: string) : Observable<IModule>
         this.CourseService.getModulAndActivitybyId(this.moduleid)
             .pipe(takeUntil(this.unsubscribe))

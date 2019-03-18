@@ -18,6 +18,10 @@ var LoginMessageHandlerService = /** @class */ (function () {
         this.CourseSaved = this.CourseSavedSource.asObservable();
         this.ConfirmSource = new BehaviorSubject(this.startstring);
         this.Confirm = this.ConfirmSource.asObservable();
+        this.CurrUserAuthSource = new BehaviorSubject(false);
+        this.CurrUserAuth = this.CurrUserAuthSource.asObservable();
+        this.CurrUserTeacherSource = new BehaviorSubject(false);
+        this.CurrUserTeacher = this.CurrUserTeacherSource.asObservable();
     }
     LoginMessageHandlerService.prototype.SendUserId = function (userid) {
         this.useridSource.next(userid == null ? '' : userid);
@@ -41,6 +45,14 @@ var LoginMessageHandlerService = /** @class */ (function () {
     };
     LoginMessageHandlerService.prototype.SendCourseSaved = function (arg) {
         this.CourseSavedSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendCurrUserAuth = function (status) {
+        this.CurrUserAuthSource.next(status == null ? false : status);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendCurrUserTeacher = function (status) {
+        this.CurrUserTeacherSource.next(status == null ? false : status);
         return true;
     };
     LoginMessageHandlerService = tslib_1.__decorate([

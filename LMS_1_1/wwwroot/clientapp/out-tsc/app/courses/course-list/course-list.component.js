@@ -16,12 +16,15 @@ var CourseListComponent = /** @class */ (function () {
     }
     CourseListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.AuthService.isTeacher
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (i) {
-            _this.isTeacher = i;
-            _this.cd.markForCheck();
-        });
+        this.isTeacher = this.AuthService.isTeacher;
+        /* this.AuthService.isTeacher
+         .pipe(takeUntil(this.unsubscribe))
+         .subscribe( i =>
+             {
+                 this.isTeacher=i;
+                 this.cd.markForCheck();
+             }
+         );*/
         this.CourseService.getCourses()
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (courses) {
