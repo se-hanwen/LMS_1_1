@@ -3,6 +3,7 @@ import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, Observable, Subject } from 'rxjs';
 import { IDocument} from './document';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class DocumentService {
         responseType: 'blob' as'json'
     };
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private AuthService: AuthService) { }
 
     getDocumentsByOwnerId(id: string): Observable<IDocument[]> {
         console.log(this.documentUrl);

@@ -118,6 +118,21 @@ ngOnInit(): void {
   {
     return  new HttpHeaders({ "Authorization": "Bearer " + this.Realtoken });
   }
+
+    public getHttpHeaderOptions(): HttpHeaders {
+
+        let httpOptions: any = {
+        headers: new HttpHeaders({
+            'Accept': 'text/html, application/xhtml+xml, */*',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Authorization": "Bearer " + this.Realtoken
+        }),
+        responseType: 'blob' as 'json'
+    };
+        return httpOptions;
+    }
+
+   
   
   public login(creds:User) : Observable<boolean> | undefined {
     return this.http.post(this.url+"/account/createtoken", creds)

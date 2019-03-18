@@ -3,12 +3,15 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentService } from '../document.service';
 import { saveAs } from 'file-saver';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
 var UploadDetailComponent = /** @class */ (function () {
-    function UploadDetailComponent(route, DocumentService) {
+    function UploadDetailComponent(route, DocumentService, AuthService) {
         var _this = this;
         this.route = route;
         this.DocumentService = DocumentService;
+        this.AuthService = AuthService;
         this.documents = [];
+        this.isTeacher = false;
         this.subscription = this.DocumentService.getUplaodtStatus().subscribe(function (status) {
             if (status) {
                 _this.loadDocument();
@@ -16,6 +19,7 @@ var UploadDetailComponent = /** @class */ (function () {
         });
     }
     UploadDetailComponent.prototype.ngOnInit = function () {
+        this.isTeacher = this.AuthService.isTeacher;
         this.loadDocument();
     };
     UploadDetailComponent.prototype.loadDocument = function () {
@@ -53,7 +57,7 @@ var UploadDetailComponent = /** @class */ (function () {
             templateUrl: './upload-detail.component.html',
             styleUrls: ['./upload-detail.component.css']
         }),
-        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, DocumentService])
+        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, DocumentService, AuthService])
     ], UploadDetailComponent);
     return UploadDetailComponent;
 }());
