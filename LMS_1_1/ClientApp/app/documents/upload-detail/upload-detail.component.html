@@ -15,7 +15,7 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">{{document.description}}</p>
-                        <p class="card-title btn btn-info" (click)="DeleteFile(document.id)">Remove</p>
+                        <p *ngIf="isTeacher" class="card-title btn btn-info" (click)="DeleteFile(document.id)">Remove</p>
                     </div>
                     <div class="card-footer text-muted">
                         {{document.uploadDate |date: 'yyyy-MM-dd'}}

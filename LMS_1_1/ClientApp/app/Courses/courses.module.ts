@@ -24,9 +24,8 @@ import { IsTeacherGuard } from '../Shared/is-teacher.guard';
         CourseDetailComponent,
         CreateCourseComponent,
         PartipantListComponent,
-        detailList,
         CourseDeleteComponent,
-        CourseEditComponent
+        CourseEditComponent,
         detailList,
         UploadComponent,
         UploadDetailComponent

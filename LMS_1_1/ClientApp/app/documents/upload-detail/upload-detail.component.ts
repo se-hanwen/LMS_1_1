@@ -4,6 +4,7 @@ import { DocumentService } from '../document.service';
 import { IDocument } from '../document';
 import { saveAs } from 'file-saver';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
 @Component({
   selector: 'upload-detail',
   templateUrl: './upload-detail.component.html',
@@ -14,8 +15,9 @@ export class UploadDetailComponent implements OnInit,OnDestroy {
     documents: IDocument[] = [];
     errorMessage: string;
     subscription: Subscription;
+    isTeacher: boolean = false;
 
-    constructor(private route: ActivatedRoute, private DocumentService: DocumentService) {
+    constructor(private route: ActivatedRoute, private DocumentService: DocumentService, private AuthService: AuthService) {
 
 
         this.subscription = this.DocumentService.getUplaodtStatus().subscribe(status => {
@@ -26,6 +28,7 @@ export class UploadDetailComponent implements OnInit,OnDestroy {
     }
 
     ngOnInit() {
+        this.isTeacher = this.AuthService.isTeacher;
         this.loadDocument();
     }
 

@@ -27,13 +27,12 @@ namespace LMS_1_1.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _environment;
         private readonly UserManager<LMSUser> _userManager;
-        private readonly IProgramRepository _repository;
         private readonly ILogger<CoursesController> _logger;
         private readonly IProgramRepository _programrepository;
-        private readonly ILogger<Courses1Controller> _logger;
         private readonly IDocumentRepository _documentrepository;
 
-        public Courses1Controller (IProgramRepository repository
+        public Courses1Controller (IProgramRepository programrepository 
+            ,IDocumentRepository documentrepository
             , ILogger<CoursesController> logger
             , ApplicationDbContext context
             , IHostingEnvironment environment
@@ -63,7 +62,7 @@ namespace LMS_1_1.Controllers
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
 
-            return Ok(await _repository.GetCoursesForUserAsync(user.Id));
+            return Ok(await _programrepository.GetCoursesForUserAsync(user.Id));
         }
 
         // GET: api/Courses1/5/true course , modules and activites

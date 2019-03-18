@@ -31,15 +31,15 @@ export class CourseDeleteComponent implements OnInit, OnDestroy  {
             error => { this.errorMsg = <any>error; });
     }
 
-    ConfirmedDelete() {
-        this.CourseService.DeleteCourse(this.course.id)
-        .pipe(takeUntil(this.unsubscribe))
-        .subscribe( c => {
-            this.cd.markForCheck();
-            this.router.navigate(['/courses']);
-        });
+    //ConfirmedDelete() {
+    //    this.CourseService.DeleteCourse(this.course.id)
+    //    .pipe(takeUntil(this.unsubscribe))
+    //    .subscribe( c => {
+    //        this.cd.markForCheck();
+    //        this.router.navigate(['/courses']);
+    //    });
         
-    }
+    //}
 
     ngOnDestroy(): void {
         this.unsubscribe.next();

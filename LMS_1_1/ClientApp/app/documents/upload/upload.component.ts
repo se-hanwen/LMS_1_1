@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentService } from '../document.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { flatten } from '@angular/router/src/utils/collection';
+import { AuthService } from 'ClientApp/app/auth/auth.service';
 
 
 @Component({
@@ -16,14 +18,14 @@ export class UploadComponent implements OnInit {
     @Input() DocOwnerTypeId: string;
     uploadForm: FormGroup;
     isSubmitted = false;
-    
+    isTeacher: boolean = false;
 
     errorMessage: string;
     @ViewChild("fileInput") fileInputVariable: any;
-    constructor(private route: ActivatedRoute, private DocumentService: DocumentService, private router: Router) { }
+    constructor(private route: ActivatedRoute, private DocumentService: DocumentService, private router: Router, private AuthService: AuthService) { }
 
     ngOnInit() {
-      
+        this.isTeacher = this.AuthService.isTeacher;
        this.uploadForm = new FormGroup({
            name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
            description: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
