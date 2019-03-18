@@ -7,6 +7,9 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { RouterModule } from '@angular/router';
 import { PartipantListComponent } from '../PartipantList/partipant-list.component';
 import { detailList } from './detail_list/detail_list.component';
+import { UploadComponent } from '../documents/upload/upload.component';
+import { UploadDetailComponent } from '../documents/upload-detail/upload-detail.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { CourseDeleteComponent } from './course-delete/course-delete.component';
 import { CourseEditComponent } from './course-edit/course-edit.component';
@@ -21,13 +24,18 @@ import { IsTeacherGuard } from '../Shared/is-teacher.guard';
         CourseDetailComponent,
         CreateCourseComponent,
         PartipantListComponent,
-        detailList,
         CourseDeleteComponent,
-        CourseEditComponent
+        CourseEditComponent,
+        detailList,
+        UploadComponent,
+        UploadDetailComponent
+
     ],
   imports: [
       CommonModule,
       FormsModule,
+      ReactiveFormsModule,
+    
       SharedModule,
       RouterModule.forChild(
           [{

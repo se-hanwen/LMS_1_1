@@ -29,6 +29,7 @@ namespace LMS_1_1.ViewModels
         public string Name2 { get; set; }
         public string isExpanded { get; set; }
         public ICollection<ActivityViewModel> Activities { get; set; }
+        public Guid? CourseId { get; set; }
     }
 
 

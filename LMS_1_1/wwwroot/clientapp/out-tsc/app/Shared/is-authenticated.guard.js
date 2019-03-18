@@ -8,7 +8,7 @@ var IsAuthenticatedGuard = /** @class */ (function () {
         this.router = router;
     }
     IsAuthenticatedGuard.prototype.canLoad = function (route, segments) {
-        if (!(this.auth.IsAuthenticated())) {
+        if (!(this.auth.isAuthenticated)) {
             this.router.navigate(['/Account/Login']);
             return false;
         }
@@ -16,7 +16,7 @@ var IsAuthenticatedGuard = /** @class */ (function () {
     };
     IsAuthenticatedGuard.prototype.canActivate = function () {
         //  this.auth.isTeacher.subscribe((i:Boolean) => {return i});
-        if (!(this.auth.IsAuthenticated())) {
+        if (!(this.auth.isAuthenticated)) {
             this.router.navigate(['/Account/Login']);
             return false;
         }

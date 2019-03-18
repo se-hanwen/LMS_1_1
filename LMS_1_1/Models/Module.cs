@@ -31,6 +31,7 @@ namespace LMS_1_1.Models
         public Guid CourseId { get; set; }
         public Course Courses { get; set; }
 
+        public ICollection<Document> Documents { get; set; }
         public ICollection<LMSActivity> LMSActivities { get; set; }
 
     }

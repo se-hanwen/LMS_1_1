@@ -1,18 +1,21 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 //import { JwtHelperService } from '@auth0/angular-jwt';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map, takeUntil } from 'rxjs/operators';
 import { User } from '../Login/login';
 import { tokenData } from './tokenData';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { RegisterUser } from '../Login/Register/registeruser';
+import { ICourseNameData } from '../AddPartipant/partipant';
 
 @Injectable(
   {
     providedIn: 'root'
 })
-export class AuthService  {
+export class AuthService implements  OnDestroy 
+{
 
-  
+  private unsubscribe : Subject<void> = new Subject();  
   // ...public jwtHelper: JwtHelperService,
 
 
@@ -34,19 +37,45 @@ lastName = this.lastNameSource.asObservable();
 private useridSource = new BehaviorSubject(' ');
 userid = this.useridSource.asObservable();
 */
-private isAuthenticatedSource = new BehaviorSubject(false);
-isAuthenticated = this.isAuthenticatedSource.asObservable();
+/*private isAuthenticatedSource = new BehaviorSubject<boolean>(false);
+private _isAuthenticated = this.isAuthenticatedSource.asObservable();*/
+get isAuthenticated(): boolean
+{
+  return this.checkisAuthenticated(this.tokenData.token,this.tokenData.tokenExpiration);
+}
 
-private isTeacherSource = new BehaviorSubject(false);
-isTeacher = this.isTeacherSource.asObservable();
+/*private isTeacherSource = new BehaviorSubject<boolean>(false);
+private _isTeacher = this.isTeacherSource.asObservable();*/
+
+get isTeacher()
+{
+  return this.checkisAuthenticated(this.tokenData.token,this.tokenData.tokenExpiration)?this.checkIsTeacher(this.tokenData.isTeacher):false;
+}
+
 
 RealisAuthenticated : boolean = false;
 RealisTeacher : boolean = false;
 
-constructor(private http: HttpClient) {
-  this.isAuthenticated.subscribe( i => this.RealisAuthenticated=i);
-  this.isTeacher.subscribe(i => this.RealisTeacher=i);
-
+constructor(private http: HttpClient,
+) {
+  /*this.isAuthenticated
+  .pipe(takeUntil(this.unsubscribe))
+  .subscribe( i => {
+    this.RealisAuthenticated=i;
+//    this.cd.markForCheck();
+  });
+  this.isTeacher
+  .pipe(takeUntil(this.unsubscribe))
+  .subscribe(i => {
+      this.RealisTeacher=i;
+   //   this.cd.markForCheck();
+  });*/
+  this.token
+  .pipe(takeUntil(this.unsubscribe))
+  .subscribe(i =>{ 
+      this.Realtoken=i;
+  //    this.cd.markForCheck();
+  });
 }
 /*
 ngOnInit(): void {
@@ -83,7 +112,12 @@ ngOnInit(): void {
  private url:string="https://localhost:44396";
 
   private _isTeacher:string="";
-
+  private Realtoken: string="";
+   
+  private getAuthHeader() : HttpHeaders
+  {
+    return  new HttpHeaders({ "Authorization": "Bearer " + this.Realtoken });
+  }
   
   public login(creds:User) : Observable<boolean> | undefined {
     return this.http.post(this.url+"/account/createtoken", creds)
@@ -96,8 +130,8 @@ ngOnInit(): void {
           this.firstNameSource.next(tokenInfo.firstName);
           this.lastNameSource.next(tokenInfo.lastName);
       //    this.useridSource.next(tokenInfo.userid);
-          this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
-          this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
+         // this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
+        //  this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
 
 
           
@@ -115,7 +149,7 @@ ngOnInit(): void {
   }
 
      //  
-     public IsAuthenticated(): boolean
+  /*   public IsAuthenticated(): boolean
      {
        return this.RealisAuthenticated;
      } 
@@ -124,11 +158,31 @@ ngOnInit(): void {
      {
        return this.RealisTeacher;
      } 
-
- public logout()
+*/
+ public logout(): void
  {
     this.tokenData=new tokenData();
+    this.tokenSource.next('');
+    this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
+    this.firstNameSource.next('');
+    this.lastNameSource.next('');
+  //  this.isAuthenticatedSource.next(false);
+  //  this.isTeacherSource.next(false)
  }
+
+  public register(registeruser: RegisterUser) : Observable<ICourseNameData> | undefined
+  {
+    return this.http.post(this.url+"/account/RegisterNewUser", registeruser
+    ,{headers:this.getAuthHeader()}
+    )
+    .pipe(
+      map((response: any) => {
+      return response;
+    })
+    );
+    
+  }
+
 
   private checkisAuthenticated(token : string, tokenExpiration : Date ) :boolean {
     return !(token.length == 0 && tokenExpiration > new Date());
@@ -143,5 +197,10 @@ ngOnInit(): void {
         return false;
 
   }
-  
+ 
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+
 }

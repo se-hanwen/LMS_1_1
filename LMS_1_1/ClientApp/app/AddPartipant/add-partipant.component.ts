@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 
 import { IPartipant } from './partipant';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PartipantService } from './partipant.service';
-import { throwError } from 'rxjs';
+import { throwError, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 
@@ -12,10 +13,13 @@ import { throwError } from 'rxjs';
   templateUrl: './add-partipant.component.html',
   styleUrls: ['./add-partipant.component.css']
 })
-export class AddPartipantComponent implements OnInit {
-private test:string ="";
+export class AddPartipantComponent implements OnInit, OnDestroy {
+
+
   pageTitle: string = "";
   BlackList: IPartipant[] =[];
+private unsubscribe : Subject<void> = new Subject();
+
   private _ChooseFrom: IPartipant[] =[];
   get ChooseFrom(): IPartipant[]  {
     return this._ChooseFrom;
@@ -50,7 +54,7 @@ private test:string ="";
   constructor(private route: ActivatedRoute,
     private router: Router,
     private  PartipantService: PartipantService,
-    
+    private cd: ChangeDetectorRef
   
     ) { }
 
@@ -58,24 +62,35 @@ private test:string ="";
 
       this.courseid = this.route.snapshot.paramMap.get('id');
       this.PartipantService.CourseId = this.courseid;
-    this.PartipantService.GetStudentsOff().subscribe
+     this.PartipantService.GetStudentsOff()
+    .pipe(takeUntil(this.unsubscribe))
+   .subscribe
     (
-      Choose=> this.ChooseFrom=Choose
-
+      Choose=> {
+        this.ChooseFrom=Choose;
+        this.cd.markForCheck();
+      }
     
     );
-    this.PartipantService.GetStudentsOn().subscribe
+    this.PartipantService.GetStudentsOn()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe
     (
       Choosed=>
       { 
         this.Choosed=Choosed; 
         this.PartipantService.Choosed=this.Choosed;
-
+        this.cd.markForCheck();
       }
     );
-    this.PartipantService.GetCourseName().subscribe
+    this.PartipantService.GetCourseName()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe
     (
-      CourseName => this.pageTitle=CourseName.value.name
+      CourseName => {
+        this.pageTitle=CourseName.value.name;
+        this.cd.markForCheck();
+      }
     );
     
   }
@@ -140,8 +155,17 @@ private test:string ="";
   }
   public SaveStudents()
   {
-    this.PartipantService.SaveStudents().subscribe();
-    //this.router.navigate(['/courses', this.courseid]);
+    this.PartipantService.SaveStudents()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(
+      status =>
+      {
+        this.cd.markForCheck();
+        this.router.navigate(['/courses', this.courseid])
+      }
+          
+    );
+    //;
   }
 
   private performFilter(FilterBy: string): void
@@ -262,4 +286,9 @@ private test:string ="";
     return 0
   }
   */
+ ngOnDestroy(): void {
+  this.unsubscribe.next();
+  this.unsubscribe.complete();
+}
+
 }

@@ -9,8 +9,7 @@ import { CourseService } from '../course.service';
     styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
-    public progress: number;
-    public message: string;
+
     @Output() public onUploadFinished = new EventEmitter();
 
     constructor(private http: HttpClient) { }

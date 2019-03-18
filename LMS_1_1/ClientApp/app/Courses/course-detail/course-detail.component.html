@@ -1,45 +1,49 @@
 <div *ngIf="course">
-<div class="row">
+    <div class="row">
 
-    <div class="col-md-4">
-        <div class="card" style="width: 19rem;">
-            <img class="card-img-top" [src]="course.courseImgPath" alt="Card image cap">
-            <div class="card-body">
-                <h3 class="card-title">{{course.name}}</h3>
-                <h5 class="card-title">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>
-                <p class="card-text"> {{course.description}}</p>
+        <div class="col-md-4">
+            <div class="card" style="width: 19rem;">
+                <img class="card-img-top" [src]="course.courseImgPath==null?'':course.courseImgPath" alt="Card image cap">
+                <div class="card-body">
+                    <h3 class="card-title">{{course.name}}</h3>
+                    <h5 class="card-title">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>
+                    <p class="card-text"> {{course.description}}</p>
 
+
+                    <a href="javascript:void(0);" (click)="toggelPartipantList()">{{showpartipantlistmsg}}  partipantlist</a>
+                    <app-partipant-list [courseid]='course.id'></app-partipant-list>
+
+                    <div class="card-body" *ngIf="isTeacher">
+                        <div class="row">
+                            <div class="col-6">
+                                <!-- <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a> -->
+                                <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Module</a>
+                            </div>
+                            <div class="col-6">
+                                <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+              
+            </div>
             </div>
 
-            <app-partipant-list [courseid]='course.id'></app-partipant-list>
-
-     
-                <div class="card-body" *ngIf="isTeacher">
-                    <div class="row">
-                        <div class="col-6">
-                  <!-- <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a> -->
-                  <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Module</a>
+            <div class="col-md-4">
+                <detail_list [courseid]="course.id"></detail_list>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <upload-detail [DocOwnerId]="course.id"></upload-detail>
                 </div>
-                <div class="col-6">
-                    <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
-                </div>
-                </div>
-                </div>
-          
-        </div>
-
-
-            <div>
+                <doc-upload [DocOwnerId]="course.id" [DocOwnerTypeId]="1" [DocumentTypeId]="2"></doc-upload>
 
 
             </div>
-
         </div>
 
-    <div class="col-md-6">
-         <detail_list [courseid]="course.id"></detail_list>
     </div>
-        <div class="col-md-2">
 
-        </div>
-    </div>

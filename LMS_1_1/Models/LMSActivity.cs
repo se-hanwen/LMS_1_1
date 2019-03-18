@@ -37,5 +37,6 @@ namespace LMS_1_1.Models
         public int ActivityTypeId { get; set; }
         public ActivityType ActivityType { get; set; }
 
+        public ICollection<Document> Documents { get; set; }
     }
 }

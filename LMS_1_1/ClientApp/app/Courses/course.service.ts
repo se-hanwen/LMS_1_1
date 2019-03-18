@@ -1,10 +1,10 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, OnDestroy } from '@angular/core';
 
 import { ICourse,course, IModule, IActivity2 } from './course';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
 
-import { tap, catchError, map } from 'rxjs/operators';
+import { tap, catchError, map, takeUntil } from 'rxjs/operators';
 import { Guid } from 'guid-typescript';
 import { Data } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
@@ -15,16 +15,26 @@ import { AuthService } from '../auth/auth.service';
         providedIn: 'root'
     })
 
-export class CourseService {
+export class CourseService implements  OnDestroy {
     private courseUrl = "https://localhost:44396/api/courses1";
     private token: string="";
+    private unsubscribe : Subject<void> = new Subject();
+
+
+    
+    private getAuthHeader() : HttpHeaders
+    {
+      return  new HttpHeaders({ "Authorization": "Bearer " + this.token });
+    }
 
     constructor(private http: HttpClient,  private AuthService:AuthService) {
-        this.AuthService.token.subscribe( i => this.token=i);
+        this.AuthService.token
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe( i => this.token=i);
     }
     getCourses(): Observable<ICourse[]> {
         return this.http.get<ICourse[]>(this.courseUrl+"/foruser",
-        {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+        {headers: this.getAuthHeader() 
 }).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
@@ -32,7 +42,7 @@ export class CourseService {
     }
     getCourseById(id: string): Observable<ICourse> {
         return this.http.get<ICourse>(this.courseUrl +"/"+id,
-        {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+        {headers: this.getAuthHeader()  
 }).pipe(
 
             tap(data => console.log('All:' + JSON.stringify(data))),
@@ -42,7 +52,7 @@ export class CourseService {
 
     getCourseAllById(id: string): Observable<ICourse> {
         return this.http.get<ICourse>(this.courseUrl +"/All?id=" +id,
-        {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+        {headers: this.getAuthHeader() 
 }).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
@@ -52,7 +62,7 @@ export class CourseService {
     getCourseAndModulebyId(courseid: string) : Observable<ICourse>
     {
         return this.http.get<ICourse>(this.courseUrl +"/CAndM?id=" +courseid,
-        {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+        {headers: this.getAuthHeader() 
 }).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
@@ -63,7 +73,7 @@ export class CourseService {
     getActivitybymodulId(Moduleid: string) : Observable<IActivity2[]>
     {
         return this.http.get<IActivity2[]>(this.courseUrl +"/AfromMid?id=" +Moduleid,
-        {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+        {headers: this.getAuthHeader() 
 }).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
@@ -73,7 +83,7 @@ export class CourseService {
     getModulAndActivitybyId(Moduleid: string) : Observable<IModule>
     {
         return this.http.get<IModule>(this.courseUrl +"/MAndAfromMid?id=" +Moduleid,
-        {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+        {headers: this.getAuthHeader() 
 }).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
@@ -85,7 +95,7 @@ export class CourseService {
     createCourse(course: any) {
 
         return this.http.post(this.courseUrl,  course,
-            {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+            {headers: this.getAuthHeader() 
     }).pipe(
             tap(result => JSON.stringify(result)),
             catchError(this.handleError)
@@ -96,7 +106,7 @@ export class CourseService {
     DeleteCourse(id: Guid) {
         let urlString = this.courseUrl +"/"+ id;
         return this.http.delete(urlString,
-            {headers: new HttpHeaders({ "Authorization": "Bearer " + this.token }) 
+            {headers: this.getAuthHeader() 
         })
         .pipe(
             tap(result=>JSON.stringify(result)),catchError(this.handleError)
@@ -131,4 +141,9 @@ export class CourseService {
         console.error(errorMessage);
         return throwError(errorMessage);
     }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+      }
 }

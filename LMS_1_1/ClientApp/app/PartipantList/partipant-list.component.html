@@ -1,4 +1,4 @@
-<div *ngIf="users && users.length>0">
+<div *ngIf="show && users && users.length>0">
   <ul  *ngFor="let user of users">
     <li>{{user.firstName}} {{user.lastName}}</li>
   </ul>

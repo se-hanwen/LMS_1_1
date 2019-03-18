@@ -44,5 +44,9 @@ namespace LMS_1_1.Data
 
         public DbSet<TokenUser> TokenUsers { get; set; }
 
+        public DbSet<Document> Documents { get; set; }
+
+        public DbSet<DocumentType> DocumentTypes { get; set; }
+
     }
 }
