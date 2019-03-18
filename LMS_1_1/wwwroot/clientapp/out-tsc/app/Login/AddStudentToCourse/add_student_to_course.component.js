@@ -19,6 +19,8 @@ var AddStudentToCourseComponent = /** @class */ (function () {
         this.Saveoff = null;
         this.SaveOn = null;
         this.Saveusername = null;
+        this.isTeacher = false;
+        this.CoursesChoosed = false;
         this._Choosed = [];
         this.userid = null;
         this._listFilter = '';
@@ -55,50 +57,61 @@ var AddStudentToCourseComponent = /** @class */ (function () {
         configurable: true
     });
     AddStudentToCourseComponent.prototype.ngOnInit = function () {
-        var _this = this;
         // this.userid= this.route.snapshot.paramMap.get('id');
         // getfrom save on regsiteruser
+        var _this = this;
+        this.messhandler.Isteacher
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.isTeacher = status;
+            _this.cd.markForCheck();
+        });
         this.messhandler.userid
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (resp) {
-            if (resp != null && resp != " ") {
+            if (resp != null && resp != "") {
                 _this.userid = resp;
-                if (_this.Saveoff != null) {
-                    _this.Saveoff.unsubscribe;
+                if (!_this.isTeacher && _this.CoursesChoosed) {
+                    _this.SaveCourses();
                 }
-                _this.Saveoff = _this.PartipantService.GetCoursesOff(_this.userid)
-                    .pipe(takeUntil(_this.unsubscribe))
-                    .subscribe(function (Choose) {
-                    _this.ChooseFrom = Choose;
-                    _this.cd.markForCheck();
-                });
-                if (_this.SaveOn != null) {
-                    _this.SaveOn.unsubscribe;
-                }
-                _this.Saveoff = _this.PartipantService.GetCoursesOff(_this.userid)
-                    .pipe(takeUntil(_this.unsubscribe))
-                    .subscribe(function (Choose) {
-                    _this.ChooseFrom = Choose;
-                    _this.cd.markForCheck();
-                });
-                _this.SaveOn = _this.PartipantService.GetCoursesOn(_this.userid)
-                    .pipe(takeUntil(_this.unsubscribe))
-                    .subscribe(function (Choosed) {
-                    _this.Choosed = Choosed;
-                    _this.cd.markForCheck();
-                });
-                if (_this.Saveusername != null) {
-                    _this.Saveusername.unsubscribe();
-                }
-                _this.Saveusername = _this.PartipantService.GetUserName(_this.userid)
-                    .pipe(takeUntil(_this.unsubscribe))
-                    .subscribe(function (UserName) {
-                    if (UserName != null) {
-                        _this.pageTitle = UserName.value.name;
+                else {
+                    if (_this.Saveoff != null) {
+                        _this.Saveoff.unsubscribe;
                     }
+                    _this.Saveoff = _this.PartipantService.GetCoursesOff(_this.userid)
+                        .pipe(takeUntil(_this.unsubscribe))
+                        .subscribe(function (Choose) {
+                        _this.ChooseFrom = Choose;
+                        _this.cd.markForCheck();
+                    });
+                    if (_this.SaveOn != null) {
+                        _this.SaveOn.unsubscribe;
+                    }
+                    _this.Saveoff = _this.PartipantService.GetCoursesOff(_this.userid)
+                        .pipe(takeUntil(_this.unsubscribe))
+                        .subscribe(function (Choose) {
+                        _this.ChooseFrom = Choose;
+                        _this.cd.markForCheck();
+                    });
+                    _this.SaveOn = _this.PartipantService.GetCoursesOn(_this.userid)
+                        .pipe(takeUntil(_this.unsubscribe))
+                        .subscribe(function (Choosed) {
+                        _this.Choosed = Choosed;
+                        _this.cd.markForCheck();
+                    });
+                    if (_this.Saveusername != null) {
+                        _this.Saveusername.unsubscribe();
+                    }
+                    _this.Saveusername = _this.PartipantService.GetUserName(_this.userid)
+                        .pipe(takeUntil(_this.unsubscribe))
+                        .subscribe(function (UserName) {
+                        if (UserName != null) {
+                            _this.pageTitle = UserName.value.name;
+                        }
+                        _this.cd.markForCheck();
+                    });
                     _this.cd.markForCheck();
-                });
-                _this.cd.markForCheck();
+                }
             }
         });
         this.Saveoff = this.PartipantService.GetCoursesOff(this.userid)
@@ -115,46 +128,66 @@ var AddStudentToCourseComponent = /** @class */ (function () {
         });
     };
     AddStudentToCourseComponent.prototype.chooseCourse = function (corseid) {
-        var keyin = this.ChooseFrom.findIndex(function (cu) { return cu.id.toString() == corseid; });
-        if (keyin == -1)
-            throwError;
-        var course = this.ChooseFrom.splice(+keyin, 1);
-        this.Choosed.push(course[0]);
-        if (this.Choosed.length > 1) {
-            this.Choosed.sort(function (a, b) {
-                var FirstNameA = a.name.toLocaleUpperCase();
-                var FirstNameB = b.name.toLocaleUpperCase();
-                if (FirstNameA < FirstNameB)
-                    return -1;
-                if (FirstNameA > FirstNameB)
-                    return 1;
-                return 0;
-            });
+        if (!this.CoursesChoosed) {
+            var keyin = this.ChooseFrom.findIndex(function (cu) { return cu.id.toString() == corseid; });
+            if (keyin == -1)
+                throwError;
+            var course = this.ChooseFrom.splice(+keyin, 1);
+            this.Choosed.push(course[0]);
+            if (this.Choosed.length > 1) {
+                this.Choosed.sort(function (a, b) {
+                    var FirstNameA = a.name.toLocaleUpperCase();
+                    var FirstNameB = b.name.toLocaleUpperCase();
+                    if (FirstNameA < FirstNameB)
+                        return -1;
+                    if (FirstNameA > FirstNameB)
+                        return 1;
+                    return 0;
+                });
+            }
         }
     };
     AddStudentToCourseComponent.prototype.unChooseCourse = function (corseid) {
-        var keyin = this.Choosed.findIndex(function (cu) { return cu.id.toString() == corseid; });
-        if (keyin == -1)
-            throwError;
-        var course = this.Choosed.splice(+keyin, 1);
-        this.ChooseFrom.push(course[0]);
-        if (this.ChooseFrom.length > 1) {
-            this.Choosed.sort(function (a, b) {
-                var FirstNameA = a.name.toLocaleUpperCase();
-                var FirstNameB = b.name.toLocaleUpperCase();
-                if (FirstNameA < FirstNameB)
-                    return -1;
-                if (FirstNameA > FirstNameB)
-                    return 1;
-                return 0;
-            });
+        if (!this.CoursesChoosed) {
+            var keyin = this.Choosed.findIndex(function (cu) { return cu.id.toString() == corseid; });
+            if (keyin == -1)
+                throwError;
+            var course = this.Choosed.splice(+keyin, 1);
+            this.ChooseFrom.push(course[0]);
+            if (this.ChooseFrom.length > 1) {
+                this.Choosed.sort(function (a, b) {
+                    var FirstNameA = a.name.toLocaleUpperCase();
+                    var FirstNameB = b.name.toLocaleUpperCase();
+                    if (FirstNameA < FirstNameB)
+                        return -1;
+                    if (FirstNameA > FirstNameB)
+                        return 1;
+                    return 0;
+                });
+            }
         }
     };
     AddStudentToCourseComponent.prototype.SaveCourses = function () {
+        var _this = this;
         this.PartipantService.SaveCourses(this.userid, this._Choosed)
             .pipe(takeUntil(this.unsubscribe))
-            .subscribe();
+            .subscribe(function (success) {
+            var savedcourses = "";
+            var workstart = false;
+            for (var _i = 0, _a = _this._Choosed; _i < _a.length; _i++) {
+                var work = _a[_i];
+                savedcourses = savedcourses + (workstart ? "," : "") + work.name;
+                workstart = true;
+            }
+            _this.messhandler.SendHasSavedCoures(true);
+            _this.messhandler.SendCourseSaved(savedcourses);
+            _this.cd.markForCheck();
+        });
         //this.router.navigate(['/courses', this.courseid]);
+    };
+    AddStudentToCourseComponent.prototype.ChooseCourses = function () {
+        this.CoursesChoosed = !this.CoursesChoosed;
+        this.messhandler.SendHasChoosedCourses(this.CoursesChoosed);
     };
     AddStudentToCourseComponent.prototype.performFilter = function (FilterBy) {
         var l1 = this.BlackList.length, i1;

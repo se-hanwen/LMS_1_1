@@ -15,11 +15,21 @@ export class PartipantListComponent implements OnInit, OnDestroy  {
   private unsubscribe : Subject<void> = new Subject();
    users: IPartipant[];
    @Input()   courseid: string="";
+  show: boolean;
 
   constructor(private route: ActivatedRoute, private  PartipantService: PartipantService
     ,private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
+
+     this.PartipantService.ShowPartipantList
+     .pipe(takeUntil(this.unsubscribe))
+     .subscribe( status =>
+      {
+        this.show=status;
+        this.cd.markForCheck();
+      }
+     );
 
     this.PartipantService.CourseId=this.courseid;
     this.PartipantService.GetStudentsOn()

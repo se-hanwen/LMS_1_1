@@ -20,6 +20,8 @@ export class CourseService implements  OnDestroy {
     private token: string="";
     private unsubscribe : Subject<void> = new Subject();
 
+
+    
     private getAuthHeader() : HttpHeaders
     {
       return  new HttpHeaders({ "Authorization": "Bearer " + this.token });

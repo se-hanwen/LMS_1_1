@@ -5,6 +5,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoginMessageHandlerService } from '../login-message-handler.service';
 
 
 
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy  {
   constructor(private db: AuthService
     , private router: Router
     ,private cd: ChangeDetectorRef
+    ,private messhandler: LoginMessageHandlerService
     ) { 
 
     }
@@ -37,7 +39,11 @@ export class LoginComponent implements OnInit, OnDestroy  {
     .pipe(takeUntil(this.unsubscribe))
       .subscribe(success => {
         if (success) 
-            this.router.navigate(["courses"]); 
+        {
+          this.messhandler.SendCurrUserAuth(this.db.isAuthenticated);
+          this.messhandler.SendCurrUserTeacher(this.db.isTeacher);
+          this.router.navigate(["courses"]); 
+        }
         this.cd.markForCheck(); 
       },
          err => this.errorMessage = "Failed to login");

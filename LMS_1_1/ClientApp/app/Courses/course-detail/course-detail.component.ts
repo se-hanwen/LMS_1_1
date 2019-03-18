@@ -6,6 +6,7 @@ import { Guid } from 'guid-typescript';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PartipantService } from 'ClientApp/app/AddPartipant/partipant.service';
 
 @Component({
  
@@ -16,20 +17,25 @@ export class CourseDetailComponent implements OnInit, OnDestroy  {
 
     course: ICourse;
     errorMessage: string;
-    isTeacher: boolean;
+    isTeacher: boolean=false;
+    showpartipantlist:boolean=false;
+  showpartipantlistmsg: string="Show";
 
     private unsubscribe : Subject<void> = new Subject();
     constructor(private route: ActivatedRoute, private CourseService: CourseService, private AuthService : AuthService
-      ,private cd: ChangeDetectorRef) { }
+      ,private cd: ChangeDetectorRef
+      ,private partipantservice:PartipantService
+      ) { }
 
     ngOnInit(): void {
-        this.AuthService.isTeacher
+      this.isTeacher=this.AuthService.isTeacher;
+        /*this.AuthService.isTeacher
         .pipe(takeUntil(this.unsubscribe))
         .subscribe( i =>
           { 
             this.isTeacher=i;
             this.cd.markForCheck(); 
-          });
+          });*/
         let id: string = this.route.snapshot.paramMap.get('id');
         this.CourseService.getCourseAndModulebyId(id)
         .pipe(takeUntil(this.unsubscribe))
@@ -41,6 +47,22 @@ export class CourseDetailComponent implements OnInit, OnDestroy  {
                 error => this.errorMessage = <any>error
             );
   }
+
+   public toggelPartipantList()
+   {
+      if(this.showpartipantlist)
+      {
+          this.showpartipantlist=false;
+          this.showpartipantlistmsg="Show";
+          
+      }
+      else
+      {
+        this.showpartipantlist=true;
+        this.showpartipantlistmsg="Hide";
+      }
+      this.partipantservice.SendPartipantList(this.showpartipantlist);
+   }
 
   ngOnDestroy(): void {
     this.unsubscribe.next();

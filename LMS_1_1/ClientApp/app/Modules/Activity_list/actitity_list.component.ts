@@ -28,7 +28,9 @@ export class ActitityListComponent implements OnInit, OnDestroy  {
      { }
  
  ngOnInit() {
-     this.AuthService.isTeacher.subscribe( i => this.isTeacher=i);
+
+    this.isTeacher=this.AuthService.isTeacher;
+     //this.AuthService.isTeacher.subscribe( i => this.isTeacher=i);
 
      //getModulAndActivitybyId(Moduleid: string) : Observable<IModule>
      this.CourseService.getModulAndActivitybyId(this.moduleid)

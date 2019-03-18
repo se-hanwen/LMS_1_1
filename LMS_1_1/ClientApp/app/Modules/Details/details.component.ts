@@ -21,9 +21,11 @@ export class ModulDetailsComponent implements OnInit, OnDestroy  {
     , private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-      this.AuthService.isTeacher
+    this.isTeacher=this.AuthService.isTeacher;
+     /* this.AuthService.isTeacher
       .pipe(takeUntil(this.unsubscribe))
       .subscribe( i => this.isTeacher=i);
+      */
       let Modulid: string = this.route.snapshot.paramMap.get('id');
       this.CourseService.getModulAndActivitybyId(Modulid)
       .pipe(takeUntil(this.unsubscribe))

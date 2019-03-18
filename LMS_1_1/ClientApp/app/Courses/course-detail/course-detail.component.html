@@ -9,11 +9,10 @@
                 <h5 class="card-title">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>
                 <p class="card-text"> {{course.description}}</p>
 
-            </div>
-
-            <app-partipant-list [courseid]='course.id'></app-partipant-list>
-
-     
+    
+            <a href="javascript:void(0);" (click)="toggelPartipantList()">{{showpartipantlistmsg}}  partipantlist</a>
+                    <app-partipant-list [courseid]='course.id'></app-partipant-list>
+ 
                 <div class="card-body" *ngIf="isTeacher">
                     <div class="row">
                         <div class="col-6">

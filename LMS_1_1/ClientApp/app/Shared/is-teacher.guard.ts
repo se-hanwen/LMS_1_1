@@ -27,7 +27,7 @@ export class IsTeacherGuard implements CanActivate , CanLoad, OnDestroy {
 
  private CheckTeacher()
  {
-  this.auth.isTeacher
+  /*this.auth.isTeacher
   .pipe(takeUntil(this.unsubscribe))
   .subscribe((i:boolean) => 
   {
@@ -37,7 +37,8 @@ export class IsTeacherGuard implements CanActivate , CanLoad, OnDestroy {
       this.router.navigate(['/Account/Login']);
      
     }
-  });
+  });*/
+  this.isTeacher= this.auth.isTeacher;
 
  }
 

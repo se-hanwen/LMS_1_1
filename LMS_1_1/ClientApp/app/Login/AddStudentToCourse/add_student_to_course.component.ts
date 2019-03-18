@@ -107,15 +107,6 @@ export class AddStudentToCourseComponent implements OnInit, OnDestroy  {
               {
                 this.SaveOn.unsubscribe;
               }
-              this.Saveoff=this.PartipantService.GetCoursesOff(this.userid)
-              .pipe(takeUntil(this.unsubscribe))
-              .subscribe
-              (
-                Choose=> { 
-                  this.ChooseFrom=Choose;
-                  this.cd.markForCheck();
-                } 
-              );
               this.SaveOn=this.PartipantService.GetCoursesOn(this.userid)
               .pipe(takeUntil(this.unsubscribe))
               .subscribe
@@ -232,7 +223,7 @@ export class AddStudentToCourseComponent implements OnInit, OnDestroy  {
         let workstart=false;
         for(let work of this._Choosed)
         {
-          savedcourses=savedcourses+(workstart?",":"")+ work.name;
+          savedcourses=savedcourses+(workstart?", ":"")+ work.name;
           workstart=true;
         }
 

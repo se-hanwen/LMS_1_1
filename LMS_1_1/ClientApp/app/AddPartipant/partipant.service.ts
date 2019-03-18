@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { IPartipant,ICourseNameData,ICourseNameSubdata } from './partipant';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
-import {Observable, throwError, Subject} from 'rxjs';
+import {Observable, throwError, Subject, BehaviorSubject} from 'rxjs';
 import {catchError, tap, map, takeUntil} from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { ICourse } from '../Courses/course';
@@ -20,6 +20,9 @@ export class PartipantService implements  OnDestroy{
     private token: string="";
     private unsubscribe : Subject<void> = new Subject();
     
+    private ShowPartipantListSource = new BehaviorSubject<boolean>(false);
+    ShowPartipantList = this.ShowPartipantListSource.asObservable();
+
     constructor(private http: HttpClient,  private AuthService:AuthService) 
     {
         this.AuthService.token
@@ -32,6 +35,11 @@ export class PartipantService implements  OnDestroy{
          );
     }
      
+public SendPartipantList(arg:boolean)
+{
+    this.ShowPartipantListSource.next(arg);
+}
+
 
     private getAuthHeader() : HttpHeaders
     {

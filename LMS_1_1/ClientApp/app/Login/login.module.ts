@@ -15,6 +15,7 @@ import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-regi
   ,RegisterComponent
   ,AddStudentToCourseComponent
   ,ConfirmRegistedUserComponent 
+  ,LoginComponent
 ],
   imports: [
     CommonModule,
@@ -38,6 +39,10 @@ import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-regi
       ]
   )
   ],
-  exports: [LoginpartialComponent]
+  exports: [LoginpartialComponent
+  ,LoginComponent
+  ]
+
+
 })
 export class LoginModule { }

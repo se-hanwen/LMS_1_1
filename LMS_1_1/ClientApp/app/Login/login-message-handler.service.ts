@@ -8,28 +8,33 @@ export class LoginMessageHandlerService {
 
   private startstring?:string="";
    // To add And make choose to save
-  private useridSource = new BehaviorSubject(this.startstring);
+  private useridSource = new BehaviorSubject<string>(this.startstring);
   userid = this.useridSource.asObservable();
 
   // to 
-  private HasChoosedCoursesSource = new BehaviorSubject(false);
+  private HasChoosedCoursesSource = new BehaviorSubject<boolean>(false);
   HasChoosedCourses = this.HasChoosedCoursesSource.asObservable();
 
-  private IsteacherSource = new BehaviorSubject(false);
+  private IsteacherSource = new BehaviorSubject<boolean>(false);
   Isteacher = this.IsteacherSource.asObservable();
 
    
-  private HasSavedCouresSource = new BehaviorSubject(false);
+  private HasSavedCouresSource = new BehaviorSubject<boolean>(false);
   HasSavedCoures = this.HasSavedCouresSource.asObservable();
 
 
-  private CourseSavedSource = new BehaviorSubject(this.startstring);
+  private CourseSavedSource = new BehaviorSubject<string>(this.startstring);
   CourseSaved = this.CourseSavedSource.asObservable();
 
 
-  private ConfirmSource = new BehaviorSubject(this.startstring);
+  private ConfirmSource = new BehaviorSubject<string>(this.startstring);
   Confirm = this.ConfirmSource.asObservable();
 
+ private CurrUserAuthSource = new BehaviorSubject<boolean>(false);
+ CurrUserAuth = this.CurrUserAuthSource.asObservable();
+
+ private CurrUserTeacherSource = new BehaviorSubject<boolean>(false);
+ CurrUserTeacher = this.CurrUserTeacherSource.asObservable();
 
   constructor() { }
 
@@ -64,6 +69,18 @@ export class LoginMessageHandlerService {
 
   public SendCourseSaved(arg?: string): boolean {
     this.CourseSavedSource.next(arg);
+    return true;
+  }
+
+  public SendCurrUserAuth(status:boolean) : boolean 
+  {      
+    this.CurrUserAuthSource.next( status==null?false: status);
+    return true;
+  }
+
+  public SendCurrUserTeacher(status:boolean) : boolean 
+  {      
+    this.CurrUserTeacherSource.next( status==null?false: status);
     return true;
   }
 }

@@ -11,8 +11,8 @@
               </div>
   
        
-                  <div class="card-body" *ngIf="isTeacher">
-                      <div class="row">
+                  <div class="card-body" >
+                      <div class="row" *ngIf="isTeacher">
                           <div class="col-6">
                     <!-- <a [routerLink]="['/Modules/Edit', module.id]">Activity/a> -->
                     <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Edit module</a>
@@ -25,15 +25,16 @@
                     <!-- <a [routerLink]="['/Activites/AddActivityWithModuleId', .id]">Activity/a> -->
                     <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Actitiy</a>
                   </div>
+                </div>
+                  <div class="row" >
                   <div class="col-6">
-                    <a [routerLink]="['/courses/', module.courseId]">Go back</a>
-                  </div>
-                  </div>
-                  </div>
-            
-          </div>
+                      <a [routerLink]="['/courses/', module.courseId]">Go back</a>
+                    </div>
+                </div>
+                </div>   
+          
         </div>
-  
+      </div>
       <div class="col-md-6">
            <activity_list [moduleid]="module.id"></activity_list>
       </div>

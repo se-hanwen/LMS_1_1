@@ -25,14 +25,15 @@ export class CourseListComponent implements OnInit, OnDestroy  {
 
      
     ngOnInit(): void {
-        this.AuthService.isTeacher
+        this.isTeacher=this.AuthService.isTeacher;
+       /* this.AuthService.isTeacher
         .pipe(takeUntil(this.unsubscribe))
         .subscribe( i =>
             { 
                 this.isTeacher=i;
                 this.cd.markForCheck();
             }
-                );
+        );*/
 
         this.CourseService.getCourses()
         .pipe(takeUntil(this.unsubscribe))

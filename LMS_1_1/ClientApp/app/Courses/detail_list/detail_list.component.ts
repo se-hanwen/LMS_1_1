@@ -29,13 +29,14 @@ export class detailList implements OnInit, OnDestroy {
         { }
     
     ngOnInit() {
-        this.AuthService.isTeacher
+        this.isTeacher=this.AuthService.isTeacher;
+        /*this.AuthService.isTeacher
         .pipe(takeUntil(this.unsubscribe))
         .subscribe( i =>{
              this.isTeacher=i;
              this.cd.markForCheck();
         }
-             );
+        );*/
 
 
         this.CourseService.getCourseAndModulebyId(this.courseid)

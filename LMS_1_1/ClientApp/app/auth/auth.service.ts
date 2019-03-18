@@ -37,18 +37,28 @@ lastName = this.lastNameSource.asObservable();
 private useridSource = new BehaviorSubject(' ');
 userid = this.useridSource.asObservable();
 */
-private isAuthenticatedSource = new BehaviorSubject(false);
-isAuthenticated = this.isAuthenticatedSource.asObservable();
+/*private isAuthenticatedSource = new BehaviorSubject<boolean>(false);
+private _isAuthenticated = this.isAuthenticatedSource.asObservable();*/
+get isAuthenticated(): boolean
+{
+  return this.checkisAuthenticated(this.tokenData.token,this.tokenData.tokenExpiration);
+}
 
-private isTeacherSource = new BehaviorSubject(false);
-isTeacher = this.isTeacherSource.asObservable();
+/*private isTeacherSource = new BehaviorSubject<boolean>(false);
+private _isTeacher = this.isTeacherSource.asObservable();*/
+
+get isTeacher()
+{
+  return this.checkisAuthenticated(this.tokenData.token,this.tokenData.tokenExpiration)?this.checkIsTeacher(this.tokenData.isTeacher):false;
+}
+
 
 RealisAuthenticated : boolean = false;
 RealisTeacher : boolean = false;
 
 constructor(private http: HttpClient,
 ) {
-  this.isAuthenticated
+  /*this.isAuthenticated
   .pipe(takeUntil(this.unsubscribe))
   .subscribe( i => {
     this.RealisAuthenticated=i;
@@ -59,7 +69,7 @@ constructor(private http: HttpClient,
   .subscribe(i => {
       this.RealisTeacher=i;
    //   this.cd.markForCheck();
-  });
+  });*/
   this.token
   .pipe(takeUntil(this.unsubscribe))
   .subscribe(i =>{ 
@@ -120,8 +130,8 @@ ngOnInit(): void {
           this.firstNameSource.next(tokenInfo.firstName);
           this.lastNameSource.next(tokenInfo.lastName);
       //    this.useridSource.next(tokenInfo.userid);
-          this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
-          this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
+         // this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
+        //  this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
 
 
           
@@ -139,7 +149,7 @@ ngOnInit(): void {
   }
 
      //  
-     public IsAuthenticated(): boolean
+  /*   public IsAuthenticated(): boolean
      {
        return this.RealisAuthenticated;
      } 
@@ -148,7 +158,7 @@ ngOnInit(): void {
      {
        return this.RealisTeacher;
      } 
-
+*/
  public logout(): void
  {
     this.tokenData=new tokenData();
@@ -156,8 +166,8 @@ ngOnInit(): void {
     this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
     this.firstNameSource.next('');
     this.lastNameSource.next('');
-    this.isAuthenticatedSource.next(false);
-    this.isTeacherSource.next(false)
+  //  this.isAuthenticatedSource.next(false);
+  //  this.isTeacherSource.next(false)
  }
 
   public register(registeruser: RegisterUser) : Observable<ICourseNameData> | undefined

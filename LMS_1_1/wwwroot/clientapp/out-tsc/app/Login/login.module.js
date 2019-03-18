@@ -8,6 +8,7 @@ import { LoginpartialComponent } from './LoginPartial/loginpartial.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { RegisterComponent } from './Register/register.component';
 import { AddStudentToCourseComponent } from './AddStudentToCourse/add_student_to_course.component';
+import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-registed-user.component';
 var LoginModule = /** @class */ (function () {
     function LoginModule() {
     }
@@ -16,7 +17,8 @@ var LoginModule = /** @class */ (function () {
             declarations: [LoginComponent,
                 LoginpartialComponent,
                 RegisterComponent,
-                AddStudentToCourseComponent
+                AddStudentToCourseComponent,
+                ConfirmRegistedUserComponent
             ],
             imports: [
                 CommonModule,
@@ -29,6 +31,11 @@ var LoginModule = /** @class */ (function () {
                         path: 'Account/Register',
                         canActivate: [IsTeacherGuard],
                         component: RegisterComponent
+                    },
+                    {
+                        path: 'Account/ConfirmRegistedUser',
+                        canActivate: [IsTeacherGuard],
+                        component: ConfirmRegistedUserComponent
                     }
                 ])
             ],

@@ -10,7 +10,7 @@ export class IsAuthenticatedGuard implements CanActivate, CanLoad {
 
   canLoad(route: import("@angular/router").Route, segments: import("@angular/router").UrlSegment[]): boolean 
   {
-    if(!(this.auth.IsAuthenticated()))
+    if(!(this.auth.isAuthenticated))
     {
       this.router.navigate(['/Account/Login']);
       return false;
@@ -26,7 +26,7 @@ export class IsAuthenticatedGuard implements CanActivate, CanLoad {
   canActivate(): boolean   {
    //  this.auth.isTeacher.subscribe((i:Boolean) => {return i});
    
-    if(!(this.auth.IsAuthenticated()))
+    if(!(this.auth.isAuthenticated))
     {
       this.router.navigate(['/Account/Login']);
       return false;
