@@ -1,3 +1,37 @@
-<p>
-  edituser works!
-</p>
+<div class="row">
+    <div class="col-md-4 offset-md-2">
+        <h4>Edit a account.</h4>
+      <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
+      <form (submit)="onRegister(theForm)" #theForm="ngForm" novalidate>
+        <input type="hidden" name="id"  [(ngModel)]="user.id">
+          <div class="form-group">
+              <label for="user.email">Email</label>
+              <input type="text" class="form-control" name="email" [(ngModel)]="user.email" #email="ngModel" required readonly />
+              <div class="text-danger" *ngIf="user.email.touched && user.email.invalid && user.email.errors.required" >Email is required!</div>
+          </div>
+          <div class="form-group">
+                <label for="user.firstName">First Name</label>
+                <input type="text" class="form-control" name="firstName" [(ngModel)]="user.firstName" #firstName="ngModel" required />
+                <div class="text-danger" *ngIf="user.firstName.touched && user.firstName.invalid && user.firstName.errors.required" >First Name is required!</div>
+          </div>
+          <div class="form-group">
+                  <label for="user.lastName">Last Name</label>
+                  <input type="text" class="form-control" name="lastName" [(ngModel)]="user.lastName" #lastName="ngModel" required />
+                  <div class="text-danger" *ngIf="user.lastName.touched && user.lastName.invalid && user.lastName.errors.required" >Last Name is required!</div>
+          </div>
+
+          <div class="form-group" *ngIf="isTeacher">  
+              <label for="user.role">Role</label>
+              <select class="form-control" id="role" [(ngModel)]="user.role" name="role" required #role="ngModel">
+                  <option value="Student">Student</option>
+                  <option value="Teacher">Teacher</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid || saveduser" />
+              <a [routerLink]="['/Account/ManageUsers']" >Back to List</a>
+          </div>    
+        </form>
+         <div *ngIf="returnmessage">{{returnmessage}}</div>
+  </div>
+</div>

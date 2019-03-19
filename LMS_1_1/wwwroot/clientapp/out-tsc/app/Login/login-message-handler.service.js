@@ -17,11 +17,17 @@ var LoginMessageHandlerService = /** @class */ (function () {
         this.CourseSavedSource = new BehaviorSubject(this.startstring);
         this.CourseSaved = this.CourseSavedSource.asObservable();
         this.ConfirmSource = new BehaviorSubject(this.startstring);
-        this.Confirm = this.ConfirmSource.asObservable();
+        this.ConfirmMessage = this.ConfirmSource.asObservable();
         this.CurrUserAuthSource = new BehaviorSubject(false);
         this.CurrUserAuth = this.CurrUserAuthSource.asObservable();
         this.CurrUserTeacherSource = new BehaviorSubject(false);
         this.CurrUserTeacher = this.CurrUserTeacherSource.asObservable();
+        this.ConfirmGoOnUrlSource = new BehaviorSubject([]);
+        this.ConfirmGoOnUrl = this.ConfirmGoOnUrlSource.asObservable();
+        this.ConfirmGoOnMessageSource = new BehaviorSubject(this.startstring);
+        this.ConfirmGoOnMessage = this.ConfirmGoOnMessageSource.asObservable();
+        this.ConfirmGoBackUrlSource = new BehaviorSubject([]);
+        this.ConfirmGoBackUrl = this.ConfirmGoBackUrlSource.asObservable();
     }
     LoginMessageHandlerService.prototype.SendUserId = function (userid) {
         this.useridSource.next(userid == null ? '' : userid);
@@ -53,6 +59,18 @@ var LoginMessageHandlerService = /** @class */ (function () {
     };
     LoginMessageHandlerService.prototype.SendCurrUserTeacher = function (status) {
         this.CurrUserTeacherSource.next(status == null ? false : status);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendConfirmGoOnUrl = function (arg) {
+        this.ConfirmGoOnUrlSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendConfirmGoOnMessage = function (arg) {
+        this.ConfirmGoOnMessageSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendConfirmGoBackUrl = function (arg) {
+        this.ConfirmGoBackUrlSource.next(arg);
         return true;
     };
     LoginMessageHandlerService = tslib_1.__decorate([

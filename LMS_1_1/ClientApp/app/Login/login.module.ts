@@ -12,6 +12,7 @@ import { ManageusersComponent } from './ManageUsers/manageusers.component';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { EdituserComponent } from './EditUser/edituser.component';
 import { DeleteuserComponent } from './DeleteUser/deleteuser.component';
+import { ConfirmComponent } from './Confirm/confirm.component';
 
 @NgModule({
   declarations: [LoginComponent
@@ -23,6 +24,7 @@ import { DeleteuserComponent } from './DeleteUser/deleteuser.component';
   ,ManageusersComponent
   ,EdituserComponent
   ,DeleteuserComponent 
+  ,ConfirmComponent
 ],
   imports: [
     CommonModule,
@@ -46,7 +48,22 @@ import { DeleteuserComponent } from './DeleteUser/deleteuser.component';
         path: 'Account/ManageUsers'
         ,canActivate: [IsTeacherGuard] 
        , component: ManageusersComponent
-      }
+      },
+      {
+        path: 'Account/Confirm'
+        ,canActivate: [IsAuthenticatedGuard] 
+       , component: ConfirmComponent
+      },
+      {
+        path: 'Account/Delete/:id'
+        ,canActivate: [IsTeacherGuard] 
+       , component: DeleteuserComponent
+      },
+      {
+        path: 'Account/Edit/:id'
+        ,canActivate: [IsTeacherGuard] 
+       , component: EdituserComponent
+      },
       ]
   )
   ],

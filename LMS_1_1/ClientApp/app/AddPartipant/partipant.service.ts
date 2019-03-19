@@ -104,6 +104,17 @@ public SendPartipantList(arg:boolean)
 
     } 
 
+    public GetUser(id:string)
+    {
+        let url:string="https://localhost:44396/CourseUsers/GetUser";  
+        let parmas={"CourseId":id}; 
+        return this.http.post<RegisterUser[]>(url,parmas,
+        {headers: this.getAuthHeader() 
+    })
+        .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
+        catchError(this.handleError));
+
+    } 
 
     public SaveStudents()
     {
@@ -121,6 +132,17 @@ public SendPartipantList(arg:boolean)
         catchError(this.handleError));
 
     } 
+/*
+    public DeleteUser(id: string) {
+        let url:string="https://localhost:44396/CourseUsers/DeleteUser";  
+        return this.http.post(url,{"UserId":id,},
+        {headers: this.getAuthHeader() 
+    })
+        .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
+        catchError(this.handleError));
+
+      }
+    */
 
     public AddStudent(user: IPartipant ):void
     {

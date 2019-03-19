@@ -12,7 +12,7 @@ var IsTeacherGuard = /** @class */ (function () {
         this.CheckTeacher();
     }
     IsTeacherGuard.prototype.canLoad = function (route, segments) {
-        return this.isTeacher;
+        return this.auth.isTeacher;
     };
     IsTeacherGuard.prototype.CheckTeacher = function () {
         /*this.auth.isTeacher
@@ -29,7 +29,7 @@ var IsTeacherGuard = /** @class */ (function () {
         this.isTeacher = this.auth.isTeacher;
     };
     IsTeacherGuard.prototype.canActivate = function () {
-        return this.isTeacher;
+        return this.auth.isTeacher;
     };
     IsTeacherGuard.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();

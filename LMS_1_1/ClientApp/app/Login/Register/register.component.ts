@@ -29,6 +29,8 @@ export class RegisterComponent implements OnInit, OnDestroy  {
    ) { }
 
   ngOnInit() {
+    this.messhandler.SendUserId("");
+    this.messhandler.SendIsteacher(false);
     this.messhandler.HasChoosedCourses
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(

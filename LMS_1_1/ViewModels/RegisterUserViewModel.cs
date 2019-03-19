@@ -25,6 +25,6 @@ namespace LMS_1_1.ViewModels
         public string Confirmpassword { get; set; }
         public string Role { get; set; }
         public string Id { get; set; }
-
+        public string Oldpassword { get; set; }
     }
 }

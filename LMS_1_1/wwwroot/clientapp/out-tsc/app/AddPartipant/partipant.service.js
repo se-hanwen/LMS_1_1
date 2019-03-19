@@ -60,6 +60,13 @@ var PartipantService = /** @class */ (function () {
         })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
+    PartipantService.prototype.GetUser = function (id) {
+        var url = "https://localhost:44396/CourseUsers/GetUser";
+        var parmas = { "CourseId": id };
+        return this.http.post(url, parmas, { headers: this.getAuthHeader()
+        })
+            .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
     PartipantService.prototype.SaveStudents = function () {
         var url = "https://localhost:44396/CourseUsers/AddStudentsToCourse";
         var Userids = [];
@@ -72,6 +79,17 @@ var PartipantService = /** @class */ (function () {
         })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
+    /*
+        public DeleteUser(id: string) {
+            let url:string="https://localhost:44396/CourseUsers/DeleteUser";
+            return this.http.post(url,{"UserId":id,},
+            {headers: this.getAuthHeader()
+        })
+            .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
+            catchError(this.handleError));
+    
+          }
+        */
     PartipantService.prototype.AddStudent = function (user) {
         var item = this.Choosed.find(function (i) { return i.userid == user.userid; });
         if (!item) {

@@ -7,6 +7,7 @@ var RegisterUser = /** @class */ (function () {
         this.confirmpassword = "";
         this.role = "Student";
         this.id = null;
+        this.oldpassword = "";
     }
     return RegisterUser;
 }());

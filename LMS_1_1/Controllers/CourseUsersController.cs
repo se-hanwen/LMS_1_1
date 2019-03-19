@@ -115,12 +115,19 @@ namespace LMS_1_1.Controllers
                  .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
             return Ok(res);
         }
-        [HttpGet]
-        [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<string>> GetUsers()
+        [HttpPost]
+        public async Task<ActionResult<string>> GetUser([FromBody] CourseIdViewModel userid)
         {
-
-            List<LMSUser> workonuser = await _userManager.Users
+            var id = userid.CourseId;
+            if (!User.IsInRole("Teacher"))
+            {
+                 if(id == null)
+                    throw new AccessViolationException("A student may just access him/her-self");
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                if (user.Id != id)
+                    throw new AccessViolationException("A student may just access him/her-self");
+            }
+            List<LMSUser> workonuser = await _userManager.Users.Where(u => id==null || u.Id==id)
                 
                 .ToListAsync();
             /* var res = workonuser.Select(
@@ -188,6 +195,83 @@ namespace LMS_1_1.Controllers
                  .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
             return Ok(res);
         }
+
+
+
+        [HttpGet]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<string>> GetUsers()
+        {
+
+            List<LMSUser> workonuser = await _userManager.Users
+
+                .ToListAsync();
+            /* var res = workonuser.Select(
+                    u => new ManageUserViewModel
+                   {
+                         Id = u.Id,
+                         Email = u.Email,
+                         FirstName = u.FirstName,
+                         LastName = u.LastName,
+                         Password = "",
+                         Confirmpassword = "",
+
+                     }
+
+
+                 );*/
+            var res = new List<ManageUserViewModel>();
+
+            foreach (var user in workonuser)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Count == 1)
+                {
+                    res.Add(
+                            new ManageUserViewModel
+                            {
+                                Id = user.Id,
+                                Email = user.Email,
+                                FirstName = user.FirstName,
+                                LastName = user.LastName,
+                                Password = "",
+                                Confirmpassword = "",
+                                Role = roles[0]
+                            }
+                        );
+                }
+                else
+                {
+                    res.Add(
+                            new ManageUserViewModel
+                            {
+                                Id = user.Id,
+                                Email = user.Email,
+                                FirstName = user.FirstName,
+                                LastName = user.LastName,
+                                Password = "",
+                                Confirmpassword = "",
+                                Role = string.Join(", ", roles)
+                            }
+                        );
+                }
+
+            }
+
+            /*   var res = Json(new
+               {
+                   Name = workonuser.FirstName + " " + workonuser.LastName
+
+
+               });
+
+               */
+
+            /* var res = (await _repository.GetUsers(CourseId.CourseId, false))
+                 .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
+            return Ok(res);
+        }
+
 
         [HttpPost]
         [Authorize(Roles = "Teacher")]
