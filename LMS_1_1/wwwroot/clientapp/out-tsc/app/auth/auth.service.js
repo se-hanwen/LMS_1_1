@@ -5,11 +5,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, takeUntil, catchError } from 'rxjs/operators';
 import { tokenData } from './tokenData';
 import { BehaviorSubject, Subject, throwError } from 'rxjs';
+import { LoginMessageHandlerService } from '../Login/login-message-handler.service';
 var AuthService = /** @class */ (function () {
-    function AuthService(http, jwtHelper) {
+    function AuthService(http, jwtHelper, MessageHandler) {
         var _this = this;
         this.http = http;
         this.jwtHelper = jwtHelper;
+        this.MessageHandler = MessageHandler;
         this.unsubscribe = new Subject();
         // ...public jwtHelper: JwtHelperService,
         this.tokenData = new tokenData();
@@ -96,6 +98,8 @@ var AuthService = /** @class */ (function () {
                     this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
                     this.firstNameSource.next(this.tokenData.firstName);
                     this.lastNameSource.next(this.tokenData.lastName);
+                    this.MessageHandler.SendCurrUserAuth(this.checkisAuthenticated(this.tokenData.token, this.tokenData.tokenExpiration));
+                    this.MessageHandler.SendCurrUserTeacher(this.checkisAuthenticated(this.tokenData.token, this.tokenData.tokenExpiration) ? this.checkIsTeacher(this.tokenData.isTeacher) : false);
                 }
             }
             /*
@@ -135,11 +139,11 @@ var AuthService = /** @class */ (function () {
             .pipe(map(function (response) {
             var tokenInfo = response;
             _this.tokenSource.next(tokenInfo.token == null ? '' : tokenInfo.token);
-            _this.tokenExpirationSource.next(tokenInfo.tokenExpiration);
+            _this.tokenExpirationSource.next(tokenInfo.expiration);
             _this.firstNameSource.next(tokenInfo.firstName);
             _this.lastNameSource.next(tokenInfo.lastName);
             localStorage.setItem('id_token', tokenInfo.token);
-            localStorage.setItem("expires_at", JSON.stringify(tokenInfo.tokenExpiration));
+            localStorage.setItem("expires_at", tokenInfo.expiration);
             //    this.useridSource.next(tokenInfo.userid);
             // this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
             //  this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
@@ -204,6 +208,9 @@ var AuthService = /** @class */ (function () {
         if (!res && token.length > 0)
             this.logout();
         // Add time to expiration
+        // this.tokenData.tokenExpiration= new Date(Date.now().valueOf()+30*60*1000);
+        //localStorage.setItem("expires_at",this.tokenData.tokenExpiration.toISOString());
+        // need also change in backend/ token somehow..
         return res;
     };
     AuthService.prototype.checkIsTeacher = function (isTeacher) {
@@ -235,7 +242,7 @@ var AuthService = /** @class */ (function () {
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient, JwtHelperService])
+        tslib_1.__metadata("design:paramtypes", [HttpClient, JwtHelperService, LoginMessageHandlerService])
     ], AuthService);
     return AuthService;
 }());

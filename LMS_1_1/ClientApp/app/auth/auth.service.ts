@@ -8,6 +8,7 @@ import { Observable, BehaviorSubject, Subject, throwError } from 'rxjs';
 import { RegisterUser } from '../Login/Register/registeruser';
 import { ICourseNameData } from '../AddPartipant/partipant';
 import { LoginMessageHandlerService } from '../Login/login-message-handler.service';
+import { Router } from '@angular/router';
 
 @Injectable(
   {
@@ -93,6 +94,7 @@ RealisAuthenticated : boolean = false;
 RealisTeacher : boolean = false;
 
 constructor(private http: HttpClient,private jwtHelper: JwtHelperService, private MessageHandler : LoginMessageHandlerService
+  ,private router: Router
 ) {
   /*this.isAuthenticated
   .pipe(takeUntil(this.unsubscribe))
@@ -207,6 +209,8 @@ ngOnInit(): void {
     this.lastNameSource.next('');
     localStorage.removeItem("id_token");
     localStorage.removeItem("expires_at");
+    
+
   //  this.isAuthenticatedSource.next(false);
   //  this.isTeacherSource.next(false)
  }
@@ -255,7 +259,10 @@ ngOnInit(): void {
   private checkisAuthenticated(token : string, tokenExpiration : Date ) :boolean {
     let res=!(token.length == 0 || tokenExpiration < new Date());
     if (!res && token.length>0)
-        this.logout();
+     {   
+       this.logout();
+       this.router.navigate(['/Account/Login']);
+     }
     // Add time to expiration
    // this.tokenData.tokenExpiration= new Date(Date.now().valueOf()+30*60*1000);
     //localStorage.setItem("expires_at",this.tokenData.tokenExpiration.toISOString());
