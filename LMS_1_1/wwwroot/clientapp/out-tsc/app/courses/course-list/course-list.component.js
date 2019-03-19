@@ -12,6 +12,7 @@ var CourseListComponent = /** @class */ (function () {
         this.cd = cd;
         this.unsubscribe = new Subject();
         this.courses = [];
+        this.isTeacher = false;
         //   this.AuthService.userid.subscribe( i => this.userId=i);
     }
     CourseListComponent.prototype.ngOnInit = function () {
