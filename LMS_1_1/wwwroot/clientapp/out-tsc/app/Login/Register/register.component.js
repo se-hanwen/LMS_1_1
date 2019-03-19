@@ -22,6 +22,7 @@ var RegisterComponent = /** @class */ (function () {
     RegisterComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.messhandler.SendUserId("");
+        this.messhandler.SendIsteacher(false);
         this.messhandler.HasChoosedCourses
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (status) {

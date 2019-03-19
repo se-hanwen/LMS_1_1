@@ -13,7 +13,7 @@ export class IsTeacherGuard implements CanActivate , CanLoad, OnDestroy {
   private unsubscribe : Subject<void> = new Subject();
   canLoad(route: import("@angular/router").Route, segments: import("@angular/router").UrlSegment[]): boolean 
   {
-    return  this.isTeacher;
+    return  this.auth.isTeacher;
   }
   
   isTeacher: boolean= false;
@@ -44,7 +44,7 @@ export class IsTeacherGuard implements CanActivate , CanLoad, OnDestroy {
 
   canActivate(): boolean   {
 
- return  this.isTeacher;
+ return  this.auth.isTeacher;
  
    
   }

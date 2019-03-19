@@ -41,9 +41,9 @@ export class DeleteuserComponent implements OnInit, OnDestroy  {
           this.errtext="User Deleted"
           this.cd.markForCheck();
           this.messagehandler.SendConfirm("User "+this.user.firstName+' '+this.user.lastName+" Deleted")
-          this.messagehandler.SendConfirmGoOnUrl(["Account/Delete"]);
+          this.messagehandler.SendConfirmGoOnUrl(["/Account/Delete"]);
           this.messagehandler.SendConfirmGoOnMessage("Delete another user?");
-          this.messagehandler.SendConfirmGoBackUrl(["Account/ManageUsers"]);
+          this.messagehandler.SendConfirmGoBackUrl(["/Account/ManageUsers"]);
           this.router.navigate(['Account/Confirm']);
       }
       
