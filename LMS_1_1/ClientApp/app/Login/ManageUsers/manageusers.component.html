@@ -32,5 +32,10 @@
     <div class="offset-md-1 col-md-4">
         <add_student_to_course></add_student_to_course>
     </div>
-</div> 
 
+</div> 
+<div class="row">
+    
+    <a [routerLink]="['/courses']" class="btn btn-default" *ngIf="!saveduser">Cancel</a>
+
+</div>
