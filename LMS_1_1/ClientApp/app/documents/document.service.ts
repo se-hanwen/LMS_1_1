@@ -13,7 +13,6 @@ export class DocumentService {
     private subject = new Subject<any>();
     private token: string = "";
     private unsubscribe: Subject<void> = new Subject();
-
     isUploaded(message: boolean) {
         this.subject.next({ message});
     }
@@ -25,20 +24,19 @@ export class DocumentService {
 
     private documentUrl = "https://localhost:44396/api/documents1/";
 
-    private httpOptions = {
-        headers: new HttpHeaders({
-            'Accept': 'text/html, application/xhtml+xml, */*',
-            'Content-Type': 'application/x-www-form-urlencoded',
-            "Authorization": "Bearer " + this.token
-        }),
-        responseType: 'blob' as'json'
-    };
+    private getAuthHeader(): HttpHeaders {
+        return new HttpHeaders({ "Authorization": "Bearer " + this.token });
+    }
 
-    private httpOptions2 = {
-        headers: new HttpHeaders({
-            "Authorization": "Bearer " + this.token
-        })
-       
+   
+
+ private httpOptions = {
+            headers: new HttpHeaders({
+                'Accept': 'text/html, application/xhtml+xml, */*',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                "Authorization": "Bearer " + this.token
+            }),
+            responseType: 'blob' as 'json'
     };
 
     constructor(private http: HttpClient, private AuthService: AuthService) {
@@ -51,13 +49,13 @@ export class DocumentService {
 
     getDocumentsByOwnerId(id: string): Observable<IDocument[]> {
         console.log(this.documentUrl);
-        return this.http.get<IDocument[]>(this.documentUrl + "ByOwner?id=" + id, this.httpOptions2).pipe(
+        return this.http.get<IDocument[]>(this.documentUrl + "ByOwner?id=" + id, { headers: this.getAuthHeader() }).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
         );
     }
     uploadDocument(document: any) {
-        return this.http.post(this.documentUrl, document, this.httpOptions2).pipe(
+        return this.http.post(this.documentUrl, document, { headers: this.getAuthHeader() }).pipe(
             tap(result => JSON.stringify(result)),
             catchError(this.handleError)
         );
@@ -65,8 +63,8 @@ export class DocumentService {
 
     downloadFile(filePath: string): Observable<Blob> {
         let input = filePath;
-        return this.http.post<Blob>(this.documentUrl + "DownloadFile?fileName=" + input, {},
-            this.httpOptions).pipe
+        return this.http.post<Blob>(this.documentUrl + "DownloadFile?fileName=" + input, {}, this.httpOptions
+            ).pipe
             (
             tap(
                 data => 
@@ -76,7 +74,7 @@ export class DocumentService {
     }
 
     deleteFileById(id: string) {
-        return this.http.delete(this.documentUrl + id, this.httpOptions2).pipe(
+        return this.http.delete(this.documentUrl + id, { headers: this.getAuthHeader() }).pipe(
             tap(data => console.log(data)),
             catchError(this.handleError)
         );

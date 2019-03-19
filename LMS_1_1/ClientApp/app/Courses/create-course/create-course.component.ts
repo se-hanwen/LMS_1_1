@@ -26,11 +26,12 @@ export class CreateCourseComponent implements OnInit, OnDestroy  {
       , private router: Router,  private cd: ChangeDetectorRef) { }
 
     ngOnInit() {
+      
         this.courseForm = new FormGroup({
             name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
             startDate: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
             description: new FormControl('', [Validators.required]),
-            fileData: new FormControl('', [Validators.required, mimeTypeValidator(this.fileInputVariable.nativeElement.files[0].type)])
+            fileData: new FormControl('', [Validators.required, mimeTypeValidator()])
 
         });
     }
@@ -47,8 +48,8 @@ export class CreateCourseComponent implements OnInit, OnDestroy  {
      
         let fileToUpload = this.fileInputVariable.nativeElement.files[0];
         let formData = new FormData();
-        let MIMEtype = fileToUpload.type.split("/")[0];
-        console.log(MIMEtype);
+       /* let MIMEtype = fileToUpload.type.split("/")[0];
+        console.log(MIMEtype);*/
         formData.append('Name', this.courseForm.value.name);
         formData.append('StartDate', this.courseForm.value.startDate);
         formData.append('Description', this.courseForm.value.description);
@@ -59,8 +60,9 @@ export class CreateCourseComponent implements OnInit, OnDestroy  {
         .subscribe(
             (result) => {
                 this.isSubmitted = false;
-                this.courseForm.reset();
+             
                 this.router.navigate(['/courses'])
+                
                 this.cd.markForCheck();
             },
             error => this.errorMessage = <any>error

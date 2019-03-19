@@ -2,13 +2,13 @@
 
 
 
-export function mimeTypeValidator(mimeType: string): ValidatorFn {
+export function mimeTypeValidator(): ValidatorFn {
    return  (control: AbstractControl) =>{
 
         if (control && (control.value !== null || control.value !== undefined)) {
-           
-            let MIMEtype = mimeType.split("/")[0];
-            if (MIMEtype !== "Image") {
+            let mimeType = control.value;
+            console.log(mimeType.endsWith('jpg'));
+            if (!mimeType.endsWith('jpg')) {
                 return {
                     isError: true
                 }
