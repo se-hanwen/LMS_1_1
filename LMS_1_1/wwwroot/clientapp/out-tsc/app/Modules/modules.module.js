@@ -2,11 +2,12 @@ import * as tslib_1 from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddModuleWithCourseIdComponent } from './Create/add-module-with-course-id.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ActitityListComponent } from './Activity_list/actitity_list.component';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { ModulDetailsComponent } from './Details/details.component';
+import { DocumentsModule } from '../documents/documents.module';
 var ModulesModule = /** @class */ (function () {
     function ModulesModule() {
     }
@@ -15,11 +16,13 @@ var ModulesModule = /** @class */ (function () {
             declarations: [
                 AddModuleWithCourseIdComponent,
                 ActitityListComponent,
-                ModulDetailsComponent
+                ModulDetailsComponent,
             ],
             imports: [
                 CommonModule,
+                ReactiveFormsModule,
                 FormsModule,
+                DocumentsModule,
                 RouterModule.forChild([
                     {
                         path: 'Modules/create', component: AddModuleWithCourseIdComponent

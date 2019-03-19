@@ -25,6 +25,17 @@ var CreateCourseComponent = /** @class */ (function () {
             fileData: new FormControl('', [Validators.required, mimeTypeValidator()])
         });
     };
+    CreateCourseComponent.prototype.preview = function (files) {
+        var _this = this;
+        if (files.length === 0)
+            return;
+        var reader = new FileReader();
+        this.imagePath = files;
+        reader.readAsDataURL(files[0]);
+        reader.onload = function (_event) {
+            _this.imgURL = reader.result;
+        };
+    };
     Object.defineProperty(CreateCourseComponent.prototype, "formControls", {
         get: function () { return this.courseForm.controls; },
         enumerable: true,

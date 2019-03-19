@@ -7,8 +7,6 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { RouterModule } from '@angular/router';
 import { PartipantListComponent } from '../PartipantList/partipant-list.component';
 import { detailList } from './detail_list/detail_list.component';
-import { UploadComponent } from '../documents/upload/upload.component';
-import { UploadDetailComponent } from '../documents/upload-detail/upload-detail.component';
 
 
 import { CourseDeleteComponent } from './course-delete/course-delete.component';
@@ -17,6 +15,8 @@ import { CourseEditComponent } from './course-edit/course-edit.component';
 import { SharedModule } from '../Shared/shared.module';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
+import { UploadComponent } from '../documents/upload/upload.component';
+import { DocumentsModule } from '../documents/documents.module';
 
 @NgModule({
     declarations: [
@@ -27,15 +27,14 @@ import { IsTeacherGuard } from '../Shared/is-teacher.guard';
         CourseDeleteComponent,
         CourseEditComponent,
         detailList,
-        UploadComponent,
-        UploadDetailComponent
+      
 
     ],
   imports: [
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
-    
+      DocumentsModule,
       SharedModule,
       RouterModule.forChild(
           [{

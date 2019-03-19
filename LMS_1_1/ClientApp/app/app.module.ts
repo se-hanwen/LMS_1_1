@@ -18,15 +18,13 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
   declarations: [
-    AppComponent
-
+      AppComponent,
   ],
     imports: [
     FormsModule,
     BrowserModule,
     AddPartipantModule,
     CoursesModule,
-   
     RouterModule.forRoot([
       {
         path: '', component: LoginComponent

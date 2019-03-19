@@ -50,7 +50,7 @@ export class UploadComponent implements OnInit {
         formData.append('DocOwnerTypeId', this.DocOwnerTypeId);
         formData.append('DocOwnerId', this.DocOwnerId);
         formData.append('FileData', fileToUpload);
-
+       
         this.DocumentService.uploadDocument(formData).subscribe(
             (result) => {
                 this.DocumentService.isUploaded(true);

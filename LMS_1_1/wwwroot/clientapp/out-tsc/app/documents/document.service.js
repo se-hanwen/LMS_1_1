@@ -13,14 +13,6 @@ var DocumentService = /** @class */ (function () {
         this.token = "";
         this.unsubscribe = new Subject();
         this.documentUrl = "https://localhost:44396/api/documents1/";
-        this.httpOptions = {
-            headers: new HttpHeaders({
-                'Accept': 'text/html, application/xhtml+xml, */*',
-                'Content-Type': 'application/x-www-form-urlencoded',
-                "Authorization": "Bearer " + this.token
-            }),
-            responseType: 'blob'
-        };
         this.AuthService.token
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (i) { return _this.token = i; });
@@ -34,6 +26,16 @@ var DocumentService = /** @class */ (function () {
     DocumentService.prototype.getAuthHeader = function () {
         return new HttpHeaders({ "Authorization": "Bearer " + this.token });
     };
+    DocumentService.prototype.getAuthHeader2 = function () {
+        return {
+            headers: new HttpHeaders({
+                'Accept': 'text/html, application/xhtml+xml, */*',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                "Authorization": "Bearer " + this.token
+            }),
+            responseType: 'blob'
+        };
+    };
     DocumentService.prototype.getDocumentsByOwnerId = function (id) {
         console.log(this.documentUrl);
         return this.http.get(this.documentUrl + "ByOwner?id=" + id, { headers: this.getAuthHeader() }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
@@ -43,7 +45,7 @@ var DocumentService = /** @class */ (function () {
     };
     DocumentService.prototype.downloadFile = function (filePath) {
         var input = filePath;
-        return this.http.post(this.documentUrl + "DownloadFile?fileName=" + input, {}, this.httpOptions).pipe(tap(function (data) {
+        return this.http.post(this.documentUrl + "DownloadFile?fileName=" + input, {}, this.getAuthHeader2()).pipe(tap(function (data) {
             return console.log(data);
         }), catchError(this.handleError));
     };

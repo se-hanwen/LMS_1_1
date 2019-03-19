@@ -21,7 +21,7 @@ var AppModule = /** @class */ (function () {
     AppModule = tslib_1.__decorate([
         NgModule({
             declarations: [
-                AppComponent
+                AppComponent,
             ],
             imports: [
                 FormsModule,
