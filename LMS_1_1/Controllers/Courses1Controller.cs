@@ -335,8 +335,11 @@ namespace LMS_1_1.Controllers
                     throw;
                 }
             }
-            //Upload...
-            await _documentrepository.UploadFile(editModel.FileData);
+            //Upload...But skip the empty one from edit course.
+            if (editModel.FileData.Length>0)
+            {
+                await _documentrepository.UploadFile(editModel.FileData);
+            }
 
             return NoContent();
         }
