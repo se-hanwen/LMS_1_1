@@ -31,6 +31,12 @@
             </div>
 
             <div [id]="module.name2" [class]="'collapse'+ module.isExpanded" [attr.aria-labelledby]="module.id" data-parent="#accordion">
+               
+                <span class="float-right"> {{module.startDate |date: 'yyyy-MM-dd'}} -{{module.endDate |date: 'yyyy-MM-dd'}}</span>
+                <p>
+                    {{module.description}}
+                 
+                </p>
                 <div class="card-body" *ngIf="module.activities && module.activities.length >0">
                     <h4>Activities</h4>
                     <ul class="timeline">
@@ -38,8 +44,10 @@
                         <li *ngFor="let activity of module.activities">
                             <a asp-controller="LMSActivities" asp-action="Details" [attr.asp-route-id]="activity.id">{{activity.name}}</a>
                             <span class="float-right"> {{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}}</span>
-                            <p>{{activity.description}}
-                            <br>{{activity.activityType}}</p>
+                            <p>
+                                {{activity.description}}
+                                <br>{{activity.activityType}}
+                            </p>
                             <div *ngIf="isTeacher">
                                 <a asp-controller="LMSActivities" asp-action="Edit" [attr.asp-route-id]="activity.id">Edit Activity</a>&nbsp;|&nbsp;
                                 <a asp-controller="LMSActivities" asp-action="Delete" [attr.asp-route-id]="activity.id">Delete Activity</a>

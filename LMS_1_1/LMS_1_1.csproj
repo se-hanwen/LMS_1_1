@@ -39,8 +39,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Attachements\Documents\" />
-    <Folder Include="Attachements\Images\" />
     <Folder Include="wwwroot\clientapp\dist\assets\img\" />
   </ItemGroup>
 

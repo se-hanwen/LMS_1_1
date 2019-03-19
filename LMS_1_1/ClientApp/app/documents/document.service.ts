@@ -21,6 +21,7 @@ export class DocumentService {
     }
 
    
+   
 
     private documentUrl = "https://localhost:44396/api/documents1/";
 
@@ -28,16 +29,19 @@ export class DocumentService {
         return new HttpHeaders({ "Authorization": "Bearer " + this.token });
     }
 
-   
 
- private httpOptions = {
+    private getAuthHeader2() {
+        return {
             headers: new HttpHeaders({
                 'Accept': 'text/html, application/xhtml+xml, */*',
                 'Content-Type': 'application/x-www-form-urlencoded',
                 "Authorization": "Bearer " + this.token
             }),
             responseType: 'blob' as 'json'
-    };
+        };
+    }
+
+
 
     constructor(private http: HttpClient, private AuthService: AuthService) {
         this.AuthService.token
@@ -63,7 +67,7 @@ export class DocumentService {
 
     downloadFile(filePath: string): Observable<Blob> {
         let input = filePath;
-        return this.http.post<Blob>(this.documentUrl + "DownloadFile?fileName=" + input, {}, this.httpOptions
+        return this.http.post<Blob>(this.documentUrl + "DownloadFile?fileName=" + input, {}, this.getAuthHeader2()
             ).pipe
             (
             tap(

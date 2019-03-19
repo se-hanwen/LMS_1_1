@@ -360,11 +360,6 @@ namespace LMS_1_1.Controllers
             await _documentrepository.UploadFile(courseVm.FileData);
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
-
-
-        
-
-
         // DELETE: api/Courses1/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Course>> DeleteCourse(Guid iD)
@@ -374,8 +369,6 @@ namespace LMS_1_1.Controllers
             {
                 return NotFound();
             }
-
-
             //Delete course. Data related in Modules and LMSActivity also are deleted.
             _context.Courses.Remove(course);
             _context.SaveChanges();

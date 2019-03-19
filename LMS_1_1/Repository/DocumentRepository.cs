@@ -29,6 +29,7 @@ namespace LMS_1_1.Repository
         public async Task AddDocumentAsync (Document model)
         {
             await _ctx.AddAsync(model);
+
         }
 
         public async Task<IEnumerable<Document>> GetAllDocumentsAsync ()
