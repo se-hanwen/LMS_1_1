@@ -16,7 +16,7 @@ export class CourseListComponent implements OnInit, OnDestroy  {
     private unsubscribe : Subject<void> = new Subject();
     courses: ICourse[] = [];
     errorMessage: string;
-    isTeacher: boolean;
+    isTeacher: boolean=false;
    // private userId: string;
     constructor(private CourseService: CourseService, private AuthService : AuthService
         ,private cd: ChangeDetectorRef) {

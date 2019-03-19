@@ -1,3 +1,36 @@
-<p>
-  course-edit works!
-</p>
+<h1>Edit</h1>
+
+<h4>Course</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form #mycourse="ngForm" (ngSubmit)="UpdateCourse()">
+                <div class="form-group">
+                    <label for="cname" class="control-label">Course Name</label>
+                    <input type="text" required [(ngModel)]="editCourse.name" name="cname" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="startDate" class="control-label">Start Date</label>
+                    <input required type="datetime-local" [(ngModel)]="editCourse.startDate" name="startDate" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="Description" class="control-label">Description</label>
+                    <!--<textarea [(ngModel)]="editCourse.description" name="description" class="form-control" cols="30" rows="5"/>-->
+                    <input [(ngModel)]="editCourse.description" name="description" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="courseImgPath" class="control-label">File:  {{editCourse.courseImgPath}}</label>
+                    <input type="file" #fileInput (ngModel)= "editCourse.courseImgPath" name="courseImgPath" class="form-control" />
+                    <!--<input type="file" name="coursePath" class="form-control" />-->
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a [routerLink]="['/courses']">Back to List</a>
+</div>
+

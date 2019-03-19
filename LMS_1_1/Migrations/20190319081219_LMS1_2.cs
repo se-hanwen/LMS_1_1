@@ -2,7 +2,7 @@
 
 namespace LMS_1_1.Migrations
 {
-    public partial class DocumentChange : Migration
+    public partial class LMS1_2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

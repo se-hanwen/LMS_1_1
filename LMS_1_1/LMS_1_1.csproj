@@ -19,6 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190314083851_DocumentChange.cs" />
+    <Compile Remove="Migrations\20190314083851_DocumentChange.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="ClientApp\assets\img\1.png" />
     <Content Include="ClientApp\assets\img\3.jpg" />
   </ItemGroup>

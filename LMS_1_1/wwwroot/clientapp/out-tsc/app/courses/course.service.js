@@ -54,6 +54,15 @@ var CourseService = /** @class */ (function () {
         })
             .pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
+    //Edit a course with a given guid.
+    CourseService.prototype.EditCourse = function (id, editCourse) {
+        //console.log("COURSE FORM EDIT COURSE" + editCourse);
+        var urlString = this.courseUrl + "/" + id;
+        return this.http.put(urlString, editCourse, {
+            headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
+            .pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
     CourseService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure
         // instead of just logging it to the console
