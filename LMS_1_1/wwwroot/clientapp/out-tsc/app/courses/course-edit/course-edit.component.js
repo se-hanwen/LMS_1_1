@@ -20,8 +20,7 @@ var CourseEditComponent = /** @class */ (function () {
     };
     CourseEditComponent.prototype.UpdateCourse = function () {
         var fileToUpload = this.fileInputVariable.nativeElement.files[0];
-        var upfile = fileToUpload.name;
-        if (upfile == null) {
+        if (fileToUpload.name == null) {
             fileToUpload.name = this.editCourse.courseImgPath;
         }
         var formData = new FormData();

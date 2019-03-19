@@ -31,8 +31,7 @@ export class CourseEditComponent implements OnInit {
 
     UpdateCourse() {
         let fileToUpload = this.fileInputVariable.nativeElement.files[0];
-        let upfile = fileToUpload.name;
-        if (upfile==null) {
+        if (fileToUpload.name==null) {
             fileToUpload.name = this.editCourse.courseImgPath;
         }
         let formData = new FormData();

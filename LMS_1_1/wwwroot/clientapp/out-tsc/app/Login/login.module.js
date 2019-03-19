@@ -10,10 +10,8 @@ import { RegisterComponent } from './Register/register.component';
 import { AddStudentToCourseComponent } from './AddStudentToCourse/add_student_to_course.component';
 import { ConfirmRegistedUserComponent } from './ConfirmRegistedUser/confirm-registed-user.component';
 import { ManageusersComponent } from './ManageUsers/manageusers.component';
-import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { EdituserComponent } from './EditUser/edituser.component';
 import { DeleteuserComponent } from './DeleteUser/deleteuser.component';
-import { ConfirmComponent } from './Confirm/confirm.component';
 var LoginModule = /** @class */ (function () {
     function LoginModule() {
     }
@@ -27,8 +25,7 @@ var LoginModule = /** @class */ (function () {
                 LoginComponent,
                 ManageusersComponent,
                 EdituserComponent,
-                DeleteuserComponent,
-                ConfirmComponent
+                DeleteuserComponent
             ],
             imports: [
                 CommonModule,
@@ -51,22 +48,7 @@ var LoginModule = /** @class */ (function () {
                         path: 'Account/ManageUsers',
                         canActivate: [IsTeacherGuard],
                         component: ManageusersComponent
-                    },
-                    {
-                        path: 'Account/Confirm',
-                        canActivate: [IsAuthenticatedGuard],
-                        component: ConfirmComponent
-                    },
-                    {
-                        path: 'Account/Delete/:id',
-                        canActivate: [IsTeacherGuard],
-                        component: DeleteuserComponent
-                    },
-                    {
-                        path: 'Account/Edit/:id',
-                        canActivate: [IsTeacherGuard],
-                        component: EdituserComponent
-                    },
+                    }
                 ])
             ],
             exports: [LoginpartialComponent,
