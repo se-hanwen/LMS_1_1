@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS_1_1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190314083851_DocumentChange")]
-    partial class DocumentChange
+    [Migration("20190319081219_LMS1_2")]
+    partial class LMS1_2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -407,7 +407,7 @@ namespace LMS_1_1.Migrations
                         .HasForeignKey("DocumentTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("LMS_1_1.Models.LMSActivity", "Activity")
+                    b.HasOne("LMS_1_1.Models.LMSActivity", "LMSActivity")
                         .WithMany("Documents")
                         .HasForeignKey("LMSActivityId");
 

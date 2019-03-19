@@ -22,14 +22,15 @@ var CourseDeleteComponent = /** @class */ (function () {
             _this.cd.markForCheck();
         }, function (error) { _this.errorMsg = error; });
     };
-    //ConfirmedDelete() {
-    //    this.CourseService.DeleteCourse(this.course.id)
-    //    .pipe(takeUntil(this.unsubscribe))
-    //    .subscribe( c => {
-    //        this.cd.markForCheck();
-    //        this.router.navigate(['/courses']);
-    //    });
-    //}
+    CourseDeleteComponent.prototype.ConfirmedDelete = function () {
+        var _this = this;
+        this.CourseService.DeleteCourse(this.course.id)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (c) {
+            _this.cd.markForCheck();
+            _this.router.navigate(['/courses']);
+        });
+    };
     CourseDeleteComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
         this.unsubscribe.complete();

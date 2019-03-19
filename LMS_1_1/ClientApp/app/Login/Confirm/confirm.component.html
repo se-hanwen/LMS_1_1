@@ -3,8 +3,8 @@
   <div *ngIf="message">{{message}}</div>
 
       
-  <a [routerLink]="'['+goonurl.join(',')+']''" class="btn btn-default" >{{goonmess}}</a>
-  <a [routerLink]="'['+gobackurl.join(',')+']''"  class="btn btn-default" >Go back</a>
+  <a [routerLink]="[goonurl.join(',')]" class="btn btn-default" >{{goonmess}}</a>
+  <a [routerLink]="[gobackurl.join(',')]"  class="btn btn-default" >Go back</a>
 
   </div>
 

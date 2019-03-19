@@ -13,6 +13,7 @@ import { ManageusersComponent } from './ManageUsers/manageusers.component';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { EdituserComponent } from './EditUser/edituser.component';
 import { DeleteuserComponent } from './DeleteUser/deleteuser.component';
+import { ConfirmComponent } from './Confirm/confirm.component';
 var LoginModule = /** @class */ (function () {
     function LoginModule() {
     }
@@ -26,7 +27,8 @@ var LoginModule = /** @class */ (function () {
                 LoginComponent,
                 ManageusersComponent,
                 EdituserComponent,
-                DeleteuserComponent
+                DeleteuserComponent,
+                ConfirmComponent
             ],
             imports: [
                 CommonModule,
@@ -53,7 +55,7 @@ var LoginModule = /** @class */ (function () {
                     {
                         path: 'Account/Confirm',
                         canActivate: [IsAuthenticatedGuard],
-                        component: ConfirmRegistedUserComponent
+                        component: ConfirmComponent
                     },
                     {
                         path: 'Account/Delete/:id',

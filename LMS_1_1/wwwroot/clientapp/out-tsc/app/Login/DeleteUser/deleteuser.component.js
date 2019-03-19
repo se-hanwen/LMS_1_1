@@ -20,7 +20,7 @@ var DeleteuserComponent = /** @class */ (function () {
     DeleteuserComponent.prototype.ngOnInit = function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
-        this.PartipantService.GetUsers(id)
+        this.PartipantService.GetUser(id)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (u) {
             _this.user = u[0];
@@ -36,9 +36,10 @@ var DeleteuserComponent = /** @class */ (function () {
                 _this.errtext = "User Deleted";
             _this.cd.markForCheck();
             _this.messagehandler.SendConfirm("User " + _this.user.firstName + ' ' + _this.user.lastName + " Deleted");
-            _this.messagehandler.SendConfirmGoOnUrl(["Account/Delete"]);
+            _this.messagehandler.SendConfirmGoOnUrl(["/Account/Delete"]);
             _this.messagehandler.SendConfirmGoOnMessage("Delete another user?");
-            _this.messagehandler.SendConfirmGoBackUrl(["Account/ManageUsers"]);
+            _this.messagehandler.SendConfirmGoBackUrl(["/Account/ManageUsers"]);
+            _this.router.navigate(['Account/Confirm']);
         });
     };
     DeleteuserComponent.prototype.ngOnDestroy = function () {

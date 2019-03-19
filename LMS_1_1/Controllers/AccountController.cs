@@ -141,8 +141,10 @@ namespace LMS_1_1.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<Boolean>> DeleteUser(string userid)
+        public async Task<ActionResult<Boolean>> DeleteUser([FromBody] CourseIdViewModel id)
         {
+
+            var userid = id.CourseId;
             var user = await _userManager.FindByIdAsync(userid);
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);

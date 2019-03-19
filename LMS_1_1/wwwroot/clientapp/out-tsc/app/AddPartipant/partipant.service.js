@@ -54,9 +54,16 @@ var PartipantService = /** @class */ (function () {
      ),*/
         tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };
-    PartipantService.prototype.GetUsers = function (id) {
+    PartipantService.prototype.GetUsers = function () {
         var url = "https://localhost:44396/CourseUsers/GetUsers";
-        return this.http.get(url + "/" + id, { headers: this.getAuthHeader()
+        return this.http.get(url, { headers: this.getAuthHeader()
+        })
+            .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
+    PartipantService.prototype.GetUser = function (id) {
+        var url = "https://localhost:44396/CourseUsers/GetUser";
+        var parmas = { "CourseId": id };
+        return this.http.post(url, parmas, { headers: this.getAuthHeader()
         })
             .pipe(tap(function (data) { return console.log('All: ' + JSON.stringify(data)); }), catchError(this.handleError));
     };

@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-//import { JwtHelperService } from '@auth0/angular-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { map, takeUntil, catchError } from 'rxjs/operators';
 import { User } from '../Login/login';
@@ -41,6 +41,39 @@ userid = this.useridSource.asObservable();
 private _isAuthenticated = this.isAuthenticatedSource.asObservable();*/
 get isAuthenticated(): boolean
 {
+  if  (this.tokenData == null ||this.tokenData.token==null ||this.tokenData.token.length==0 )
+  {
+  
+    this.tokenData.token=localStorage.getItem('id_token');
+    if  (this.tokenData.token != null)
+    {
+        const Data=this.jwtHelper.decodeToken(this.tokenData.token);
+        this.tokenData.tokenExpiration = new Date(localStorage.getItem("expires_at"))
+        this.tokenData.isTeacher=Data.isTeacher;
+        this.tokenData.firstName=Data.given_name;
+        this.tokenData.lastName=Data.family_name;
+        this.tokenData.userid=Data.userid;
+        this.tokenSource.next(this.tokenData.token==null?'':this.tokenData.token);
+        this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
+        this.firstNameSource.next(this.tokenData.firstName);
+        this.lastNameSource.next(this.tokenData.lastName);
+    }
+  }
+/*	 
+ AspNet.Identity.SecurityStamp: "Q5IWQMMVDLDJLI3VRCHWFOFLC2NKVVSC"
+aud: "users"
+exp: 1553012705
+family_name: "Norberg"
+given_name: "Penny"
+http://schemas.microsoft.com/ws/2008/06/identity/claims/role: "Teacher"
+http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: "Penny@lysator.liu.se"
+http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: "e6e7ef33-179a-4fd0-90ec-f63bc9168482"
+iss: "https://localhost:44396"
+jti: "4d02d28c-57d5-4464-b8e5-9eb2875471f7"
+sub: "Penny@lysator.liu.se"
+unique_name: "Penny@lysator.liu.se"
+*/
+
   return this.checkisAuthenticated(this.tokenData.token,this.tokenData.tokenExpiration);
 }
 
@@ -56,7 +89,7 @@ get isTeacher()
 RealisAuthenticated : boolean = false;
 RealisTeacher : boolean = false;
 
-constructor(private http: HttpClient,
+constructor(private http: HttpClient,public jwtHelper: JwtHelperService
 ) {
   /*this.isAuthenticated
   .pipe(takeUntil(this.unsubscribe))
@@ -124,17 +157,20 @@ ngOnInit(): void {
       .pipe(
         map((response: any) => {
           let tokenInfo = response;
-         
+ 
           this.tokenSource.next(tokenInfo.token==null?'':tokenInfo.token);
           this.tokenExpirationSource.next(tokenInfo.tokenExpiration);
           this.firstNameSource.next(tokenInfo.firstName);
           this.lastNameSource.next(tokenInfo.lastName);
+          localStorage.setItem('id_token', tokenInfo.token);
+          localStorage.setItem("expires_at", JSON.stringify(tokenInfo.tokenExpiration) );
+
       //    this.useridSource.next(tokenInfo.userid);
          // this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
         //  this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
 
 
-          
+
 
           this.tokenData.token = tokenInfo.token;
           this.tokenData.tokenExpiration = tokenInfo.expiration;
@@ -166,6 +202,8 @@ ngOnInit(): void {
     this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
     this.firstNameSource.next('');
     this.lastNameSource.next('');
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("expires_at");
   //  this.isAuthenticatedSource.next(false);
   //  this.isTeacherSource.next(false)
  }
@@ -185,7 +223,8 @@ ngOnInit(): void {
 
   public DeleteUser(id: string) {
     let url:string="https://localhost:44396/account/DeleteUser";  
-    return this.http.post(url,{"UserId":id},
+    let parmas={"CourseId":id};
+    return this.http.post(url,parmas,
     {headers: this.getAuthHeader() 
 })
 .pipe(catchError(this.handleError));
@@ -194,7 +233,7 @@ ngOnInit(): void {
 
   UpdateUser(user: RegisterUser) {
     let url:string="https://localhost:44396/account/UpdateUser";  
-    return this.http.post(url,{"user":user},
+    return this.http.post(url,user,
     {headers: this.getAuthHeader() 
 })
 .pipe(catchError(this.handleError));
@@ -202,7 +241,7 @@ ngOnInit(): void {
   }
   UpdateUserAdmin(user: RegisterUser) {
     let url:string="https://localhost:44396/account/UpdateUserAdmin";  
-    return this.http.post(url,{"user":user},
+    return this.http.post(url,user,
     {headers: this.getAuthHeader() 
 })
 .pipe(catchError(this.handleError));
@@ -211,7 +250,10 @@ ngOnInit(): void {
 
 
   private checkisAuthenticated(token : string, tokenExpiration : Date ) :boolean {
-    return !(token.length == 0 || tokenExpiration < new Date());
+    let res=!(token.length == 0 || tokenExpiration < new Date());
+    if (!res && token.length>0)
+        this.logout();
+    return res;
   }
 
   

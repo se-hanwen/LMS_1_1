@@ -16,7 +16,6 @@ export class EdituserComponent implements OnInit, OnDestroy {
   private unsubscribe : Subject<void> = new Subject();
 
   private user:RegisterUser;
-  private oldpassword:string;
   errorMessage: string;
  isTeacher:boolean=false;
   constructor(private db: AuthService
@@ -27,7 +26,7 @@ export class EdituserComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isTeacher=this.db.isTeacher;
     let id = this.route.snapshot.paramMap.get("id"); // null if no hit?
-    this.PartipantService.GetUsers(id)
+    this.PartipantService.GetUser(id)
     .pipe(takeUntil(this.unsubscribe))
     .subscribe( (u:RegisterUser[]) => 
       {
@@ -38,6 +37,8 @@ export class EdituserComponent implements OnInit, OnDestroy {
   public onRegister(theForm)
   {
     this.errorMessage = "";
+    if(this.user.oldpassword==null)
+      this.user.oldpassword="";
     if(this.isTeacher)
     {
         this.db.UpdateUserAdmin(this.user)

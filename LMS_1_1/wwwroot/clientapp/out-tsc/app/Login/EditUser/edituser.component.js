@@ -21,7 +21,7 @@ var EdituserComponent = /** @class */ (function () {
         var _this = this;
         this.isTeacher = this.db.isTeacher;
         var id = this.route.snapshot.paramMap.get("id"); // null if no hit?
-        this.PartipantService.GetUsers(id)
+        this.PartipantService.GetUser(id)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (u) {
             _this.user = u[0];
@@ -31,6 +31,8 @@ var EdituserComponent = /** @class */ (function () {
     EdituserComponent.prototype.onRegister = function (theForm) {
         var _this = this;
         this.errorMessage = "";
+        if (this.user.oldpassword == null)
+            this.user.oldpassword = "";
         if (this.isTeacher) {
             this.db.UpdateUserAdmin(this.user)
                 .pipe(takeUntil(this.unsubscribe))
