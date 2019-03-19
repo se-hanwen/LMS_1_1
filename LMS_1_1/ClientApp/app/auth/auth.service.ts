@@ -49,10 +49,10 @@ get isAuthenticated(): boolean
     {
         const Data=this.jwtHelper.decodeToken(this.tokenData.token);
         this.tokenData.tokenExpiration = new Date(localStorage.getItem("expires_at"))
-        this.tokenData.isTeacher=Data.isTeacher;
+        this.tokenData.isTeacher=Data["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
         this.tokenData.firstName=Data.given_name;
         this.tokenData.lastName=Data.family_name;
-        this.tokenData.userid=Data.userid;
+       
         this.tokenSource.next(this.tokenData.token==null?'':this.tokenData.token);
         this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
         this.firstNameSource.next(this.tokenData.firstName);
@@ -253,6 +253,7 @@ ngOnInit(): void {
     let res=!(token.length == 0 || tokenExpiration < new Date());
     if (!res && token.length>0)
         this.logout();
+    // Add time to expiration
     return res;
   }
 
