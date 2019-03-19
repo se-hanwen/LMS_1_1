@@ -48,7 +48,7 @@
 
             <div *ngIf="isSubmitted && formControls.fileData.errors" class="alert alert-warning">
                 <div *ngIf="formControls.fileData.errors.required">Image to be upload is required</div>
-                <div *ngIf="formControls.fileData.errors.mimeTypeValidator">Image to be upload shoulde be image type</div>
+                <div *ngIf="formControls.fileData.errors.mimeType">Image to be upload shoulde be image type</div>
 
             </div>
             <div class="form-group"[ngClass]="{ 'has-error': isSubmitted && formControls.fileData.errors }">

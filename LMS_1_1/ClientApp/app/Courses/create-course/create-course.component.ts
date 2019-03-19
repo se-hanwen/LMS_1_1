@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/fo
 import { ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { mimeTypeValidator } from '../mimeType.validator';
 
 @Component({
   selector: 'app-create-course',
@@ -29,28 +30,14 @@ export class CreateCourseComponent implements OnInit, OnDestroy  {
             name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
             startDate: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
             description: new FormControl('', [Validators.required]),
-            fileData: new FormControl('', [Validators.required, this.mimeTypeValidator])
+            fileData: new FormControl('', [Validators.required, mimeTypeValidator(this.fileInputVariable.nativeElement.files[0].type)])
 
         });
     }
     
     get formControls() { return this.courseForm.controls; }
 
-     mimeTypeValidator(control: AbstractControl) {
-
-        if (control && (control.value !== null || control.value !== undefined)) {
-            let fileToUpload = this.fileInputVariable.nativeElement.files[0];
-            let MIMEtype = fileToUpload.type.split("/")[0];
-            
-            if (MIMEtype !== "Image") {
-                return {
-                    isError: true
-                }
-            }
-        }
-        return null;
-    }
-
+    
     register() {
 
         this.isSubmitted = true;
