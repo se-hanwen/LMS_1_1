@@ -39,6 +39,7 @@ var DeleteuserComponent = /** @class */ (function () {
             _this.messagehandler.SendConfirmGoOnUrl(["Account/Delete"]);
             _this.messagehandler.SendConfirmGoOnMessage("Delete another user?");
             _this.messagehandler.SendConfirmGoBackUrl(["Account/ManageUsers"]);
+            _this.router.navigate(['Account/Confirm']);
         });
     };
     DeleteuserComponent.prototype.ngOnDestroy = function () {

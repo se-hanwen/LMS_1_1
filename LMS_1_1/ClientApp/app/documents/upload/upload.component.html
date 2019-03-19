@@ -26,8 +26,8 @@
 
                             <div *ngIf="isSubmitted && formControls.name.errors" class="alert alert-warning">
                                 <div *ngIf="formControls.name.errors.required">File name is required</div>
-                                <div *ngIf="formControls.name.errors.minlength">File name must be more than 4 characters</div>
-                                <div *ngIf="formControls.name.errors.maxlength">File name must be less than 25 characters</div>
+                                <div *ngIf="formControls.name.errors.minlength">File name must be more than {{formControls.name.errors.minlength}} characters</div>
+                                <div *ngIf="formControls.name.errors.maxlength">File name must be less than {{formControls.name.errors.maxlength}}  characters</div>
                             </div>
 
                             <p [ngClass]="{ 'has-error': isSubmitted && formControls.name.errors }">
@@ -38,8 +38,8 @@
 
                             <div *ngIf="isSubmitted && formControls.description.errors" class="alert alert-warning">
                                 <div *ngIf="formControls.description.errors.required">Description is required</div>
-                                <div *ngIf="formControls.description.errors.minlength">Description must be more than 4 characters</div>
-                                <div *ngIf="formControls.description.errors.maxlength">Description must be less than 200 characters</div>
+                                <div *ngIf="formControls.description.errors.minlength">Description must be more than {{formControls.description.errors.minlength}} characters</div>
+                                <div *ngIf="formControls.description.errors.maxlength">Description must be less than {{formControls.description.errors.maxlength}} characters</div>
                             </div>
                             <p [ngClass]="{ 'has-error': isSubmitted && formControls.description.errors }">
 
