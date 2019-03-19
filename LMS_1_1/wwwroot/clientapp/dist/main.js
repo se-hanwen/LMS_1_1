@@ -434,9 +434,9 @@ var PartipantService = /** @class */ (function () {
      ),*/
         Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All: ' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
     };
-    PartipantService.prototype.GetUsers = function (id) {
+    PartipantService.prototype.GetUsers = function () {
         var url = "https://localhost:44396/CourseUsers/GetUsers";
-        return this.http.get(url + "/" + id, { headers: this.getAuthHeader()
+        return this.http.get(url, { headers: this.getAuthHeader()
         })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All: ' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
     };
@@ -452,17 +452,6 @@ var PartipantService = /** @class */ (function () {
         })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (data) { return console.log('All: ' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
     };
-    /*
-        public DeleteUser(id: string) {
-            let url:string="https://localhost:44396/CourseUsers/DeleteUser";
-            return this.http.post(url,{"UserId":id,},
-            {headers: this.getAuthHeader()
-        })
-            .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
-            catchError(this.handleError));
-    
-          }
-        */
     PartipantService.prototype.AddStudent = function (user) {
         var item = this.Choosed.find(function (i) { return i.userid == user.userid; });
         if (!item) {
@@ -610,14 +599,15 @@ var CourseDeleteComponent = /** @class */ (function () {
             _this.cd.markForCheck();
         }, function (error) { _this.errorMsg = error; });
     };
-    //ConfirmedDelete() {
-    //    this.CourseService.DeleteCourse(this.course.id)
-    //    .pipe(takeUntil(this.unsubscribe))
-    //    .subscribe( c => {
-    //        this.cd.markForCheck();
-    //        this.router.navigate(['/courses']);
-    //    });
-    //}
+    CourseDeleteComponent.prototype.ConfirmedDelete = function () {
+        var _this = this;
+        this.CourseService.DeleteCourse(this.course.id)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (c) {
+            _this.cd.markForCheck();
+            _this.router.navigate(['/courses']);
+        });
+    };
     CourseDeleteComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
         this.unsubscribe.complete();
@@ -765,7 +755,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Edit</h1>\r\n\r\n<h4>Course</h4>\r\n<hr />\r\n<div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n        <form #mycourse=\"ngForm\" (ngSubmit)=\"UpdateCourse()\">\r\n                <div class=\"form-group\">\r\n                    <label for=\"cname\" class=\"control-label\">Course Name</label>\r\n                    <input type=\"text\" required [(ngModel)]=\"editCourse.name\" name=\"cname\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"startDate\" class=\"control-label\">Start Date</label>\r\n                    <input required type=\"datetime-local\" [(ngModel)]=\"editCourse.startDate\" name=\"startDate\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"Description\" class=\"control-label\">Description</label>\r\n                    <!--<textarea [(ngModel)]=\"editCourse.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\"/>-->\r\n                    <input [(ngModel)]=\"editCourse.description\" name=\"description\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"courseImgPath\" class=\"control-label\">File:  {{editCourse.courseImgPath}}</label>\r\n                    <input type=\"file\" #fileInput (ngModel)= \"editCourse.courseImgPath\" name=\"courseImgPath\" class=\"form-control\" />\r\n                    <!--<input type=\"file\" name=\"coursePath\" class=\"form-control\" />-->\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"submit\" value=\"Save\" class=\"btn btn-primary\" />\r\n                </div>\r\n        </form>\r\n    </div>\r\n</div>\r\n\r\n<div>\r\n    <a [routerLink]=\"['/courses']\">Back to List</a>\r\n</div>\r\n\r\n"
+module.exports = "<h1>Edit</h1>\r\n\r\n<h4>Course</h4>\r\n<hr />\r\n<div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n        <form #mycourse=\"ngForm\" (ngSubmit)=\"UpdateCourse()\">\r\n                <div class=\"form-group\">\r\n                    <label for=\"cname\" class=\"control-label\">Course Name</label>\r\n                    <input type=\"text\" required [(ngModel)]=\"editCourse.name\" name=\"cname\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"startDate\" class=\"control-label\">Start Date</label>\r\n                    <input required type=\"datetime-local\" [(ngModel)]=\"editCourse.startDate\" name=\"startDate\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"Description\" class=\"control-label\">Description</label>\r\n                    <!--<textarea [(ngModel)]=\"editCourse.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\"/>-->\r\n                    <input [(ngModel)]=\"editCourse.description\" name=\"description\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <b>File:  </b>\r\n                    <label for=\"courseImgPath\" class=\"control-label\" >{{editCourse.courseImgPath}}</label>\r\n                    <input type=\"file\" #fileInput [(ngModel)]=\"editCourse.courseImgPath\" name=\"courseImgPath\" class=\"form-control\" id=\"selectedFile\" style=\"display: none;\" />\r\n                    <div style=\"padding-left:20px\"></div>\r\n                    <input type=\"button\" value=\" Select a file \" onclick=\"document.getElementById('selectedFile').click();\" class=\"btn-secondary\" />\r\n                    <!--<input type=\"file\" name=\"coursePath\" class=\"form-control\" />-->\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"submit\" value=\"Save\" class=\"btn btn-primary\" />\r\n                </div>\r\n        </form>\r\n    </div>\r\n</div>\r\n\r\n<div>\r\n    <a [routerLink]=\"['/courses']\">Back to List</a>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -802,14 +792,11 @@ var CourseEditComponent = /** @class */ (function () {
         this.CourseService.getCourseById(id).subscribe(function (tcourse) {
             _this.editCourse = tcourse;
         }, function (error) { _this.errorMsg = error; });
-        this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
+        //this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
     };
     CourseEditComponent.prototype.UpdateCourse = function () {
-        var fileToUpload = this.fileInputVariable.nativeElement.files[0];
-        var upfile = fileToUpload.name;
-        if (upfile == null) {
-            fileToUpload.name = this.editCourse.courseImgPath;
-        }
+        var fileToUpload = (this.fileInputVariable.nativeElement.files.length == 0) ?
+            (new File([new Blob()], this.editCourse.courseImgPath)) : this.fileInputVariable.nativeElement.files[0];
         var formData = new FormData();
         formData.append('criD', this.editCourse.id.toString());
         formData.append('Name', this.editCourse.name);
@@ -1685,7 +1672,7 @@ var ConfirmRegistedUserComponent = /** @class */ (function () {
     }
     ConfirmRegistedUserComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.messhandler.ConfirmMessage
+        this.messhandler.Confirm
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
             .subscribe(function (status) {
             _this.message = status;
@@ -1740,7 +1727,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Delete</h1>\r\n\r\n<h3>Are you sure you want to delete this user?</h3>\r\n\r\n    <dl class=\"row\">\r\n        <dt class=\"col-sm-2\">\r\n            Email\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{user.email}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            First name\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{user.firstName}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            Last name\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{user.lastName}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            Role\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{user.role}}\r\n        </dd>\r\n    </dl>\r\n<div col-sm-6>\r\n  <button class=\"btn btn-danger\" (click)=\"ConfirmedDelete()\">Confirm delete</button>\r\n</div>\r\n<div col-sm-6>\r\n    <a [routerLink]=\"['Account/ManageUsers']\" >Back to List</a>\r\n</div>\r\n"
+module.exports = "<p>\r\n  deleteuser works!\r\n</p>\r\n"
 
 /***/ }),
 
@@ -1756,58 +1743,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DeleteuserComponent", function() { return DeleteuserComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var ClientApp_app_AddPartipant_partipant_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ClientApp/app/AddPartipant/partipant.service */ "./app/AddPartipant/partipant.service.ts");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _login_message_handler_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
-/* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
-
-
-
-
-
-
 
 
 var DeleteuserComponent = /** @class */ (function () {
-    function DeleteuserComponent(route, router, db, PartipantService, cd, messagehandler) {
-        this.route = route;
-        this.router = router;
-        this.db = db;
-        this.PartipantService = PartipantService;
-        this.cd = cd;
-        this.messagehandler = messagehandler;
-        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
-        this.errtext = "";
+    function DeleteuserComponent() {
     }
     DeleteuserComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        var id = this.route.snapshot.paramMap.get("id");
-        this.PartipantService.GetUsers(id)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
-            .subscribe(function (u) {
-            _this.user = u[0];
-            _this.cd.markForCheck();
-        });
-    };
-    DeleteuserComponent.prototype.ConfirmedDelete = function () {
-        var _this = this;
-        this.db.DeleteUser(this.user.id)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
-            .subscribe(function (status) {
-            if (status)
-                _this.errtext = "User Deleted";
-            _this.cd.markForCheck();
-            _this.messagehandler.SendConfirm("User " + _this.user.firstName + ' ' + _this.user.lastName + " Deleted");
-            _this.messagehandler.SendConfirmGoOnUrl(["Account/Delete"]);
-            _this.messagehandler.SendConfirmGoOnMessage("Delete another user?");
-            _this.messagehandler.SendConfirmGoBackUrl(["Account/ManageUsers"]);
-        });
-    };
-    DeleteuserComponent.prototype.ngOnDestroy = function () {
-        this.unsubscribe.next();
-        this.unsubscribe.complete();
     };
     DeleteuserComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1815,8 +1756,7 @@ var DeleteuserComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./deleteuser.component.html */ "./app/Login/DeleteUser/deleteuser.component.html"),
             styles: [__webpack_require__(/*! ./deleteuser.component.css */ "./app/Login/DeleteUser/deleteuser.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_7__["AuthService"], ClientApp_app_AddPartipant_partipant_service__WEBPACK_IMPORTED_MODULE_3__["PartipantService"],
-            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"], _login_message_handler_service__WEBPACK_IMPORTED_MODULE_6__["LoginMessageHandlerService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
     ], DeleteuserComponent);
     return DeleteuserComponent;
 }());
@@ -1843,7 +1783,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-4 offset-md-2\">\r\n        <h4>Edit a account.</h4>\r\n      <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n      <form (submit)=\"onRegister(theForm)\" #theForm=\"ngForm\" novalidate>\r\n        <input type=\"hidden\" name=\"id\"  [(ngModel)]=\"user.id\">\r\n          <div class=\"form-group\">\r\n              <label for=\"user.email\">Email</label>\r\n              <input type=\"text\" class=\"form-control\" name=\"email\" [(ngModel)]=\"user.email\" #email=\"ngModel\" required readonly />\r\n              <div class=\"text-danger\" *ngIf=\"user.email.touched && user.email.invalid && user.email.errors.required\" >Email is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n                <label for=\"user.firstName\">First Name</label>\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" [(ngModel)]=\"user.firstName\" #firstName=\"ngModel\" required />\r\n                <div class=\"text-danger\" *ngIf=\"user.firstName.touched && user.firstName.invalid && user.firstName.errors.required\" >First Name is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n                  <label for=\"user.lastName\">Last Name</label>\r\n                  <input type=\"text\" class=\"form-control\" name=\"lastName\" [(ngModel)]=\"user.lastName\" #lastName=\"ngModel\" required />\r\n                  <div class=\"text-danger\" *ngIf=\"user.lastName.touched && user.lastName.invalid && user.lastName.errors.required\" >Last Name is required!</div>\r\n          </div>\r\n\r\n          <div class=\"form-group\" *ngIf=\"isTeacher\">  \r\n              <label for=\"user.role\">Role</label>\r\n              <select class=\"form-control\" id=\"role\" [(ngModel)]=\"user.role\" name=\"role\" required #role=\"ngModel\">\r\n                  <option value=\"Student\">Student</option>\r\n                  <option value=\"Teacher\">Teacher</option>\r\n              </select>\r\n          </div>\r\n          <div class=\"form-group\">\r\n              <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid || saveduser\" />\r\n              <a [routerLink]=\"['/courses']\" class=\"btn btn-default\" *ngIf=\"!saveduser\">Cancel</a>\r\n          </div>    \r\n        </form>\r\n         <div *ngIf=\"returnmessage\">{{returnmessage}}</div>\r\n  </div>\r\n</div>"
+module.exports = "<p>\r\n  edituser works!\r\n</p>\r\n"
 
 /***/ }),
 
@@ -1859,75 +1799,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EdituserComponent", function() { return EdituserComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
-/* harmony import */ var _login_message_handler_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var ClientApp_app_AddPartipant_partipant_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ClientApp/app/AddPartipant/partipant.service */ "./app/AddPartipant/partipant.service.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
-
-
-
-
-
-
 
 
 var EdituserComponent = /** @class */ (function () {
-    function EdituserComponent(db, cd, route, messhandler, router, PartipantService) {
-        this.db = db;
-        this.cd = cd;
-        this.route = route;
-        this.messhandler = messhandler;
-        this.router = router;
-        this.PartipantService = PartipantService;
-        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
-        this.isTeacher = false;
+    function EdituserComponent() {
     }
     EdituserComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.isTeacher = this.db.isTeacher;
-        var id = this.route.snapshot.paramMap.get("id"); // null if no hit?
-        this.PartipantService.GetUsers(id)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
-            .subscribe(function (u) {
-            _this.user = u[0];
-            _this.cd.markForCheck();
-        });
-    };
-    EdituserComponent.prototype.onRegister = function (theForm) {
-        var _this = this;
-        this.errorMessage = "";
-        if (this.isTeacher) {
-            this.db.UpdateUserAdmin(this.user)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
-                .subscribe(function (status) {
-                if (status) {
-                    _this.errorMessage = "Update succeded";
-                }
-                else {
-                    _this.errorMessage = "Update failed";
-                }
-                _this.cd.markForCheck();
-            });
-        }
-        else {
-            this.db.UpdateUser(this.user)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
-                .subscribe(function (status) {
-                if (status) {
-                    _this.errorMessage = "Update succeded";
-                }
-                else {
-                    _this.errorMessage = "Update failed";
-                }
-                _this.cd.markForCheck();
-            });
-        }
-    };
-    EdituserComponent.prototype.ngOnDestroy = function () {
-        this.unsubscribe.next();
-        this.unsubscribe.complete();
     };
     EdituserComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1935,10 +1812,7 @@ var EdituserComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./edituser.component.html */ "./app/Login/EditUser/edituser.component.html"),
             styles: [__webpack_require__(/*! ./edituser.component.css */ "./app/Login/EditUser/edituser.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"],
-            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"],
-            _login_message_handler_service__WEBPACK_IMPORTED_MODULE_4__["LoginMessageHandlerService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"], ClientApp_app_AddPartipant_partipant_service__WEBPACK_IMPORTED_MODULE_6__["PartipantService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
     ], EdituserComponent);
     return EdituserComponent;
 }());
@@ -2175,7 +2049,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-4 offset-md-2\">\r\n        <div class=\"table-responsive tableContainer\">\r\n            <label>Manage users</label>\r\n            <table class=\"table  table-hover w-auto\"  cellpadding=\"0\" cellspacing=\"0\"   >\r\n\r\n                <thead >\r\n                  <tr>\r\n                    <th>First Name</th>\r\n                    <th>Last Name</th>\r\n                    <th style=\"min-width: 5em\">Role</th>\r\n                    <th style=\"min-width: 30em\">Edit | Delete  | Choose</th>\r\n                  </tr>\r\n                </thead>\r\n                <tbody  >\r\n                      <tr *ngFor='let user of users'>\r\n                          <td>{{user.firstName}}</td>\r\n                          <td>{{user.lastName}}</td>\r\n                          <td style=\"min-width: 5em\" >{{user.role}}</td>\r\n                          <td style=\"min-width: 30em\"  >\r\n                              <a [routerLink]=\"['/Account/Edit', user.id]\">edit</a>|\r\n                              <a [routerLink]=\"['/Account/Delete', user.id]\">delete</a>|\r\n                              <a href=\"javascript:void(0);\" (click)=\"ChooseUser(user.id)\">choose</a>\r\n                          </td>\r\n                      </tr>\r\n  \r\n                  </tbody>\r\n  \r\n            </table>\r\n        </div>\r\n    </div>\r\n    <div class=\"offset-md-1 col-md-4\">\r\n        <add_student_to_course></add_student_to_course>\r\n    </div>\r\n</div> \r\n\r\n"
+module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-4 offset-md-2\">\r\n        <div class=\"table-responsive tableContainer\">\r\n            <label>Manage users</label>\r\n            <table class=\"table  table-hover w-auto\"  cellpadding=\"0\" cellspacing=\"0\"   >\r\n\r\n                <thead >\r\n                  <tr>\r\n                    <th>First Name</th>\r\n                    <th>Last Name</th>\r\n                    <th style=\"min-width: 5em\">Role</th>\r\n                    <th style=\"min-width: 30em\">Edit | Delete  | Choose</th>\r\n                  </tr>\r\n                </thead>\r\n                <tbody  >\r\n                      <tr *ngFor='let user of users'>\r\n                          <td>{{user.firstName}}</td>\r\n                          <td>{{user.lastName}}</td>\r\n                          <td style=\"min-width: 5em\" >{{user.role}}</td>\r\n                          <td style=\"min-width: 30em\"  >\r\n                              <a [routerLink]=\"['/Edit', user.id]\">edit</a>|\r\n                              <a [routerLink]=\"['/Delete', user.id]\">delete</a>|\r\n                              <a href=\"javascript:void(0);\" (click)=\"ChooseUser(user.id)\">choose</a>\r\n                          </td>\r\n                      </tr>\r\n  \r\n                  </tbody>\r\n  \r\n            </table>\r\n        </div>\r\n    </div>\r\n    <div class=\"offset-md-1 col-md-4\">\r\n        <add_student_to_course></add_student_to_course>\r\n    </div>\r\n</div> "
 
 /***/ }),
 
@@ -2444,17 +2318,11 @@ var LoginMessageHandlerService = /** @class */ (function () {
         this.CourseSavedSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](this.startstring);
         this.CourseSaved = this.CourseSavedSource.asObservable();
         this.ConfirmSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](this.startstring);
-        this.ConfirmMessage = this.ConfirmSource.asObservable();
+        this.Confirm = this.ConfirmSource.asObservable();
         this.CurrUserAuthSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](false);
         this.CurrUserAuth = this.CurrUserAuthSource.asObservable();
         this.CurrUserTeacherSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](false);
         this.CurrUserTeacher = this.CurrUserTeacherSource.asObservable();
-        this.ConfirmGoOnUrlSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
-        this.ConfirmGoOnUrl = this.ConfirmGoOnUrlSource.asObservable();
-        this.ConfirmGoOnMessageSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](this.startstring);
-        this.ConfirmGoOnMessage = this.ConfirmGoOnMessageSource.asObservable();
-        this.ConfirmGoBackUrlSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
-        this.ConfirmGoBackUrl = this.ConfirmGoBackUrlSource.asObservable();
     }
     LoginMessageHandlerService.prototype.SendUserId = function (userid) {
         this.useridSource.next(userid == null ? '' : userid);
@@ -2486,18 +2354,6 @@ var LoginMessageHandlerService = /** @class */ (function () {
     };
     LoginMessageHandlerService.prototype.SendCurrUserTeacher = function (status) {
         this.CurrUserTeacherSource.next(status == null ? false : status);
-        return true;
-    };
-    LoginMessageHandlerService.prototype.SendConfirmGoOnUrl = function (arg) {
-        this.ConfirmGoOnUrlSource.next(arg);
-        return true;
-    };
-    LoginMessageHandlerService.prototype.SendConfirmGoOnMessage = function (arg) {
-        this.ConfirmGoOnMessageSource.next(arg);
-        return true;
-    };
-    LoginMessageHandlerService.prototype.SendConfirmGoBackUrl = function (arg) {
-        this.ConfirmGoBackUrlSource.next(arg);
         return true;
     };
     LoginMessageHandlerService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -2535,10 +2391,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AddStudentToCourse_add_student_to_course_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AddStudentToCourse/add_student_to_course.component */ "./app/Login/AddStudentToCourse/add_student_to_course.component.ts");
 /* harmony import */ var _ConfirmRegistedUser_confirm_registed_user_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ConfirmRegistedUser/confirm-registed-user.component */ "./app/Login/ConfirmRegistedUser/confirm-registed-user.component.ts");
 /* harmony import */ var _ManageUsers_manageusers_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ManageUsers/manageusers.component */ "./app/Login/ManageUsers/manageusers.component.ts");
-/* harmony import */ var _Shared_is_authenticated_guard__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../Shared/is-authenticated.guard */ "./app/Shared/is-authenticated.guard.ts");
-/* harmony import */ var _EditUser_edituser_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./EditUser/edituser.component */ "./app/Login/EditUser/edituser.component.ts");
-/* harmony import */ var _DeleteUser_deleteuser_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./DeleteUser/deleteuser.component */ "./app/Login/DeleteUser/deleteuser.component.ts");
-
+/* harmony import */ var _EditUser_edituser_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./EditUser/edituser.component */ "./app/Login/EditUser/edituser.component.ts");
+/* harmony import */ var _DeleteUser_deleteuser_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./DeleteUser/deleteuser.component */ "./app/Login/DeleteUser/deleteuser.component.ts");
 
 
 
@@ -2565,8 +2419,8 @@ var LoginModule = /** @class */ (function () {
                 _ConfirmRegistedUser_confirm_registed_user_component__WEBPACK_IMPORTED_MODULE_10__["ConfirmRegistedUserComponent"],
                 _Login_login_component__WEBPACK_IMPORTED_MODULE_4__["LoginComponent"],
                 _ManageUsers_manageusers_component__WEBPACK_IMPORTED_MODULE_11__["ManageusersComponent"],
-                _EditUser_edituser_component__WEBPACK_IMPORTED_MODULE_13__["EdituserComponent"],
-                _DeleteUser_deleteuser_component__WEBPACK_IMPORTED_MODULE_14__["DeleteuserComponent"]
+                _EditUser_edituser_component__WEBPACK_IMPORTED_MODULE_12__["EdituserComponent"],
+                _DeleteUser_deleteuser_component__WEBPACK_IMPORTED_MODULE_13__["DeleteuserComponent"]
             ],
             imports: [
                 _angular_common__WEBPACK_IMPORTED_MODULE_3__["CommonModule"],
@@ -2589,22 +2443,7 @@ var LoginModule = /** @class */ (function () {
                         path: 'Account/ManageUsers',
                         canActivate: [_Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_7__["IsTeacherGuard"]],
                         component: _ManageUsers_manageusers_component__WEBPACK_IMPORTED_MODULE_11__["ManageusersComponent"]
-                    },
-                    {
-                        path: 'Account/Confirm',
-                        canActivate: [_Shared_is_authenticated_guard__WEBPACK_IMPORTED_MODULE_12__["IsAuthenticatedGuard"]],
-                        component: _ConfirmRegistedUser_confirm_registed_user_component__WEBPACK_IMPORTED_MODULE_10__["ConfirmRegistedUserComponent"]
-                    },
-                    {
-                        path: 'Account/Delete/:id',
-                        canActivate: [_Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_7__["IsTeacherGuard"]],
-                        component: _DeleteUser_deleteuser_component__WEBPACK_IMPORTED_MODULE_14__["DeleteuserComponent"]
-                    },
-                    {
-                        path: 'Account/Edit/:id',
-                        canActivate: [_Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_7__["IsTeacherGuard"]],
-                        component: _EditUser_edituser_component__WEBPACK_IMPORTED_MODULE_13__["EdituserComponent"]
-                    },
+                    }
                 ])
             ],
             exports: [_LoginPartial_loginpartial_component__WEBPACK_IMPORTED_MODULE_6__["LoginpartialComponent"],
@@ -2981,7 +2820,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<header>\r\n  <nav class=\"navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3\">\r\n      <div class=\"container\">\r\n          <a class=\"navbar-brand\">LMS(Learning Management System)</a>\r\n          <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\".navbar-collapse\" aria-controls=\"navbarSupportedContent\"\r\n                  aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n              <span class=\"navbar-toggler-icon\"></span>\r\n          </button>\r\n          <div class=\"navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse\">\r\n            <loginpartial></loginpartial>\r\n              <ul class=\"navbar-nav flex-grow-1\">\r\n                  <li class=\"nav-item\">\r\n                      <a href=\"/courses\" class=\"nav-link text-dark\" >Courses</a>\r\n                  </li>\r\n                  <li class=\"nav-item\">\r\n                      <a class=\"nav-link text-dark\">Privacy</a>\r\n                  </li>\r\n                  \r\n              </ul>\r\n          </div>\r\n      </div>\r\n  </nav>\r\n</header>"
+module.exports = "<header>\r\n  <nav class=\"navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3\">\r\n      <div class=\"container\">\r\n          <a class=\"navbar-brand\">LMS(Learning Management System)</a>\r\n          <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\".navbar-collapse\" aria-controls=\"navbarSupportedContent\"\r\n                  aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n              <span class=\"navbar-toggler-icon\"></span>\r\n          </button>\r\n          <div class=\"navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse\">\r\n            <loginpartial></loginpartial>\r\n              <ul class=\"navbar-nav flex-grow-1\">\r\n                  <li class=\"nav-item\">\r\n                      <a class=\"nav-link text-dark\" >Home</a>\r\n                  </li>\r\n                  <li class=\"nav-item\">\r\n                      <a class=\"nav-link text-dark\">Privacy</a>\r\n                  </li>\r\n                  \r\n              </ul>\r\n          </div>\r\n      </div>\r\n  </nav>\r\n</header>"
 
 /***/ }),
 
@@ -3473,13 +3312,13 @@ var AuthService = /** @class */ (function () {
         this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
         // ...public jwtHelper: JwtHelperService,
         this.tokenData = new _tokenData__WEBPACK_IMPORTED_MODULE_4__["tokenData"]();
-        this.tokenSource = new rxjs__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"]('');
+        this.tokenSource = new rxjs__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"](' ');
         this.token = this.tokenSource.asObservable();
         this.tokenExpirationSource = new rxjs__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"](new Date());
         this.tokenExpiration = this.tokenExpirationSource.asObservable();
-        this.firstNameSource = new rxjs__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"]('');
+        this.firstNameSource = new rxjs__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"](' ');
         this.firstName = this.firstNameSource.asObservable();
-        this.lastNameSource = new rxjs__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"]('');
+        this.lastNameSource = new rxjs__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"](' ');
         this.lastName = this.lastNameSource.asObservable();
         this.RealisAuthenticated = false;
         this.RealisTeacher = false;
@@ -3608,47 +3447,13 @@ var AuthService = /** @class */ (function () {
             return response;
         }));
     };
-    AuthService.prototype.DeleteUser = function (id) {
-        var url = "https://localhost:44396/account/DeleteUser";
-        return this.http.post(url, { "UserId": id }, { headers: this.getAuthHeader()
-        })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError));
-    };
-    AuthService.prototype.UpdateUser = function (user) {
-        var url = "https://localhost:44396/account/UpdateUser";
-        return this.http.post(url, { "user": user }, { headers: this.getAuthHeader()
-        })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError));
-    };
-    AuthService.prototype.UpdateUserAdmin = function (user) {
-        var url = "https://localhost:44396/account/UpdateUserAdmin";
-        return this.http.post(url, { "user": user }, { headers: this.getAuthHeader()
-        })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError));
-    };
     AuthService.prototype.checkisAuthenticated = function (token, tokenExpiration) {
-        return !(token.length == 0 || tokenExpiration < new Date());
+        return !(token.length == 0 && tokenExpiration > new Date());
     };
     AuthService.prototype.checkIsTeacher = function (isTeacher) {
         if (isTeacher == "Teacher")
             return true;
         return false;
-    };
-    AuthService.prototype.handleError = function (err) {
-        // in a real world app, we may send the server to some remote logging infrastructure
-        // instead of just logging it to the console
-        var errorMessage = '';
-        if (err.error instanceof ErrorEvent) {
-            // A client-side or network error occurred. Handle it accordingly.
-            errorMessage = "An error occurred: " + err.error.message;
-        }
-        else {
-            // The backend returned an unsuccessful response code.
-            // The response body may contain clues as to what went wrong,
-            errorMessage = "Server returned code: " + err.status + ", error message is: " + err.message;
-        }
-        console.error(errorMessage);
-        return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["throwError"])(errorMessage);
     };
     AuthService.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
@@ -4063,7 +3868,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\Penny\source\repos\LMS_1_1\LMS_1_1\ClientApp\main.ts */"./main.ts");
+module.exports = __webpack_require__(/*! C:\Users\hanwen\source\repos\LMS_1_1\LMS_1_1\ClientApp\main.ts */"./main.ts");
 
 
 /***/ })
