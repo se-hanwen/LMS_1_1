@@ -26,7 +26,7 @@ export class CourseEditComponent implements OnInit {
                 this.editCourse = tcourse;
             },
             error => { this.errorMsg = <any>error; });
-        this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
+        this.editCourse.courseImgPath = this.editCourse.courseImgPath;
     } 
 
     UpdateCourse() {
@@ -35,7 +35,7 @@ export class CourseEditComponent implements OnInit {
             fileToUpload.name = this.editCourse.courseImgPath;
         }
         let formData = new FormData();
-
+        console.log(this.editCourse.name);
         formData.append('criD', this.editCourse.id.toString());
         formData.append('Name', this.editCourse.name);
         formData.append('StartDate', this.editCourse.startDate.toString());

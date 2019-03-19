@@ -22,7 +22,7 @@ var CreateCourseComponent = /** @class */ (function () {
             name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
             startDate: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
             description: new FormControl('', [Validators.required]),
-            fileData: new FormControl('', [Validators.required, mimeTypeValidator(this.fileInputVariable.nativeElement.files[0].type)])
+            fileData: new FormControl('', [Validators.required, mimeTypeValidator()])
         });
     };
     Object.defineProperty(CreateCourseComponent.prototype, "formControls", {
@@ -38,8 +38,8 @@ var CreateCourseComponent = /** @class */ (function () {
         }
         var fileToUpload = this.fileInputVariable.nativeElement.files[0];
         var formData = new FormData();
-        var MIMEtype = fileToUpload.type.split("/")[0];
-        console.log(MIMEtype);
+        /* let MIMEtype = fileToUpload.type.split("/")[0];
+         console.log(MIMEtype);*/
         formData.append('Name', this.courseForm.value.name);
         formData.append('StartDate', this.courseForm.value.startDate);
         formData.append('Description', this.courseForm.value.description);
@@ -49,7 +49,6 @@ var CreateCourseComponent = /** @class */ (function () {
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (result) {
             _this.isSubmitted = false;
-            _this.courseForm.reset();
             _this.router.navigate(['/courses']);
             _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });

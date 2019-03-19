@@ -1,8 +1,9 @@
-export function mimeTypeValidator(mimeType) {
+export function mimeTypeValidator() {
     return function (control) {
         if (control && (control.value !== null || control.value !== undefined)) {
-            var MIMEtype = mimeType.split("/")[0];
-            if (MIMEtype !== "Image") {
+            var mimeType = control.value;
+            console.log(mimeType.endsWith('jpg'));
+            if (!mimeType.endsWith('jpg')) {
                 return {
                     isError: true
                 };

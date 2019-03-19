@@ -21,11 +21,6 @@ var DocumentService = /** @class */ (function () {
             }),
             responseType: 'blob'
         };
-        this.httpOptions2 = {
-            headers: new HttpHeaders({
-                "Authorization": "Bearer " + this.token
-            })
-        };
         this.AuthService.token
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (i) { return _this.token = i; });
@@ -36,12 +31,15 @@ var DocumentService = /** @class */ (function () {
     DocumentService.prototype.getUplaodtStatus = function () {
         return this.subject.asObservable();
     };
+    DocumentService.prototype.getAuthHeader = function () {
+        return new HttpHeaders({ "Authorization": "Bearer " + this.token });
+    };
     DocumentService.prototype.getDocumentsByOwnerId = function (id) {
         console.log(this.documentUrl);
-        return this.http.get(this.documentUrl + "ByOwner?id=" + id, this.httpOptions2).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+        return this.http.get(this.documentUrl + "ByOwner?id=" + id, { headers: this.getAuthHeader() }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     DocumentService.prototype.uploadDocument = function (document) {
-        return this.http.post(this.documentUrl, document, this.httpOptions2).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+        return this.http.post(this.documentUrl, document, { headers: this.getAuthHeader() }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     DocumentService.prototype.downloadFile = function (filePath) {
         var input = filePath;
@@ -50,7 +48,7 @@ var DocumentService = /** @class */ (function () {
         }), catchError(this.handleError));
     };
     DocumentService.prototype.deleteFileById = function (id) {
-        return this.http.delete(this.documentUrl + id, this.httpOptions2).pipe(tap(function (data) { return console.log(data); }), catchError(this.handleError));
+        return this.http.delete(this.documentUrl + id, { headers: this.getAuthHeader() }).pipe(tap(function (data) { return console.log(data); }), catchError(this.handleError));
     };
     DocumentService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure

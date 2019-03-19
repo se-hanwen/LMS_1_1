@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS_1_1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190313112500_addingTimeStampInDocument")]
-    partial class addingTimeStampInDocument
+    [Migration("20190319102602_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -99,13 +99,13 @@ namespace LMS_1_1.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("ActivityId");
-
                     b.Property<Guid?>("CourseId");
 
                     b.Property<string>("Description");
 
                     b.Property<int>("DocumentTypeId");
+
+                    b.Property<Guid?>("LMSActivityId");
 
                     b.Property<string>("LMSUserId");
 
@@ -119,11 +119,11 @@ namespace LMS_1_1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActivityId");
-
                     b.HasIndex("CourseId");
 
                     b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("LMSActivityId");
 
                     b.HasIndex("LMSUserId");
 
@@ -398,12 +398,8 @@ namespace LMS_1_1.Migrations
 
             modelBuilder.Entity("LMS_1_1.Models.Document", b =>
                 {
-                    b.HasOne("LMS_1_1.Models.LMSActivity", "Activity")
-                        .WithMany()
-                        .HasForeignKey("ActivityId");
-
                     b.HasOne("LMS_1_1.Models.Course", "Courses")
-                        .WithMany()
+                        .WithMany("Documents")
                         .HasForeignKey("CourseId");
 
                     b.HasOne("LMS_1_1.Models.DocumentType", "DocumentType")
@@ -411,12 +407,16 @@ namespace LMS_1_1.Migrations
                         .HasForeignKey("DocumentTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("LMS_1_1.Models.LMSActivity", "LMSActivity")
+                        .WithMany("Documents")
+                        .HasForeignKey("LMSActivityId");
+
                     b.HasOne("LMS_1_1.Models.LMSUser", "LMSUser")
                         .WithMany()
                         .HasForeignKey("LMSUserId");
 
                     b.HasOne("LMS_1_1.Models.Module", "Module")
-                        .WithMany()
+                        .WithMany("Documents")
                         .HasForeignKey("ModuleId");
                 });
 

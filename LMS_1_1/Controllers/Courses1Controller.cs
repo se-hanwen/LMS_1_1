@@ -315,7 +315,7 @@ namespace LMS_1_1.Controllers
                 Name = editModel.Name,
                 StartDate = editModel.StartDate,
                 Description = editModel.Description,
-                CourseImgPath = editModel.FileData.FileName
+                CourseImgPath = @"..\assets\img\" + editModel.FileData.FileName
             };
 
             _context.Entry(edCourse).State = EntityState.Modified;

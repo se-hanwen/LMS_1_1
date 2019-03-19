@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LMS_1_1.Migrations
 {
-    public partial class addDocumentModle : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -297,23 +297,18 @@ namespace LMS_1_1.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
+                    UploadDate = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     Path = table.Column<string>(nullable: true),
                     LMSUserId = table.Column<string>(nullable: true),
                     CourseId = table.Column<Guid>(nullable: true),
                     ModuleId = table.Column<Guid>(nullable: true),
-                    ActivityId = table.Column<Guid>(nullable: true),
+                    LMSActivityId = table.Column<Guid>(nullable: true),
                     DocumentTypeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Documents", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Documents_LMSActivity_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "LMSActivity",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Documents_Courses_CourseId",
                         column: x => x.CourseId,
@@ -326,6 +321,12 @@ namespace LMS_1_1.Migrations
                         principalTable: "DocumentTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Documents_LMSActivity_LMSActivityId",
+                        column: x => x.LMSActivityId,
+                        principalTable: "LMSActivity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Documents_AspNetUsers_LMSUserId",
                         column: x => x.LMSUserId,
@@ -397,11 +398,6 @@ namespace LMS_1_1.Migrations
                 column: "LMSUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_ActivityId",
-                table: "Documents",
-                column: "ActivityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Documents_CourseId",
                 table: "Documents",
                 column: "CourseId");
@@ -410,6 +406,11 @@ namespace LMS_1_1.Migrations
                 name: "IX_Documents_DocumentTypeId",
                 table: "Documents",
                 column: "DocumentTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Documents_LMSActivityId",
+                table: "Documents",
+                column: "LMSActivityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_LMSUserId",
@@ -472,10 +473,10 @@ namespace LMS_1_1.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "LMSActivity");
+                name: "DocumentTypes");
 
             migrationBuilder.DropTable(
-                name: "DocumentTypes");
+                name: "LMSActivity");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
