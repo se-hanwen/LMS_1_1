@@ -7,6 +7,7 @@ import { tokenData } from './tokenData';
 import { Observable, BehaviorSubject, Subject, throwError } from 'rxjs';
 import { RegisterUser } from '../Login/Register/registeruser';
 import { ICourseNameData } from '../AddPartipant/partipant';
+import { LoginMessageHandlerService } from '../Login/login-message-handler.service';
 
 @Injectable(
   {
@@ -57,6 +58,8 @@ get isAuthenticated(): boolean
         this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
         this.firstNameSource.next(this.tokenData.firstName);
         this.lastNameSource.next(this.tokenData.lastName);
+        this.MessageHandler.SendCurrUserAuth(this.checkisAuthenticated(this.tokenData.token,this.tokenData.tokenExpiration));
+        this.MessageHandler.SendCurrUserTeacher(this.checkisAuthenticated(this.tokenData.token,this.tokenData.tokenExpiration)?this.checkIsTeacher(this.tokenData.isTeacher):false);
     }
   }
 /*	 
@@ -89,7 +92,7 @@ get isTeacher()
 RealisAuthenticated : boolean = false;
 RealisTeacher : boolean = false;
 
-constructor(private http: HttpClient,public jwtHelper: JwtHelperService
+constructor(private http: HttpClient,private jwtHelper: JwtHelperService, private MessageHandler : LoginMessageHandlerService
 ) {
   /*this.isAuthenticated
   .pipe(takeUntil(this.unsubscribe))
@@ -159,11 +162,11 @@ ngOnInit(): void {
           let tokenInfo = response;
  
           this.tokenSource.next(tokenInfo.token==null?'':tokenInfo.token);
-          this.tokenExpirationSource.next(tokenInfo.tokenExpiration);
+          this.tokenExpirationSource.next(tokenInfo.expiration);
           this.firstNameSource.next(tokenInfo.firstName);
           this.lastNameSource.next(tokenInfo.lastName);
           localStorage.setItem('id_token', tokenInfo.token);
-          localStorage.setItem("expires_at", JSON.stringify(tokenInfo.tokenExpiration) );
+          localStorage.setItem("expires_at", tokenInfo.expiration );
 
       //    this.useridSource.next(tokenInfo.userid);
          // this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
@@ -254,6 +257,9 @@ ngOnInit(): void {
     if (!res && token.length>0)
         this.logout();
     // Add time to expiration
+   // this.tokenData.tokenExpiration= new Date(Date.now().valueOf()+30*60*1000);
+    //localStorage.setItem("expires_at",this.tokenData.tokenExpiration.toISOString());
+    // need also change in backend/ token somehow..
     return res;
   }
 

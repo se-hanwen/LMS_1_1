@@ -1,6 +1,6 @@
-<ul class="navbar-nav">
- <div *ngIf="isAuthenticated; else LoggedOut">
-      <li class="nav-item" >
+
+
+      <li class="nav-item" *ngIf="isAuthenticated"  >
           <a [routerLink]="['/Account/Manage']">
               Hello
               
@@ -15,18 +15,13 @@
               <a [routerLink]="['/Account/ManageUsers']">Manage Users</a>
           </li>
       
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="isAuthenticated">
         <a href="/#" (click)="logout()">Logout</a>
 
       </li>
-    </div>
-
-<ng-template #LoggedOut>
 
 
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!isAuthenticated" >
         <a [routerLink]="['/Account/Login']">Login</a>
       </li>
 
-</ng-template>
-</ul>

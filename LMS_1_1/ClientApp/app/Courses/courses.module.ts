@@ -17,6 +17,8 @@ import { CourseEditComponent } from './course-edit/course-edit.component';
 import { SharedModule } from '../Shared/shared.module';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
 
 @NgModule({
     declarations: [
@@ -35,7 +37,7 @@ import { IsTeacherGuard } from '../Shared/is-teacher.guard';
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
-    
+      AngularFontAwesomeModule,
       SharedModule,
       RouterModule.forChild(
           [{
