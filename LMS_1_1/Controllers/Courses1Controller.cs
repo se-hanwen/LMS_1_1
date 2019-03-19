@@ -335,6 +335,8 @@ namespace LMS_1_1.Controllers
                     throw;
                 }
             }
+            //Upload...
+            await _documentrepository.UploadFile(editModel.FileData);
 
             return NoContent();
         }
