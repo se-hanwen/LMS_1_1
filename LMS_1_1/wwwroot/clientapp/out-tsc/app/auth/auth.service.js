@@ -149,19 +149,20 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.DeleteUser = function (id) {
         var url = "https://localhost:44396/account/DeleteUser";
-        return this.http.post(url, { "UserId": id }, { headers: this.getAuthHeader()
+        var parmas = { "CourseId": id };
+        return this.http.post(url, parmas, { headers: this.getAuthHeader()
         })
             .pipe(catchError(this.handleError));
     };
     AuthService.prototype.UpdateUser = function (user) {
         var url = "https://localhost:44396/account/UpdateUser";
-        return this.http.post(url, { "user": user }, { headers: this.getAuthHeader()
+        return this.http.post(url, user, { headers: this.getAuthHeader()
         })
             .pipe(catchError(this.handleError));
     };
     AuthService.prototype.UpdateUserAdmin = function (user) {
         var url = "https://localhost:44396/account/UpdateUserAdmin";
-        return this.http.post(url, { "user": user }, { headers: this.getAuthHeader()
+        return this.http.post(url, user, { headers: this.getAuthHeader()
         })
             .pipe(catchError(this.handleError));
     };

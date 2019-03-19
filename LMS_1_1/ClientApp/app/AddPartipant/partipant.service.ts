@@ -92,11 +92,11 @@ public SendPartipantList(arg:boolean)
         );  
     }
 
-    public GetUsers(id?:string)
+    public GetUsers()
     {
         let url:string="https://localhost:44396/CourseUsers/GetUsers";  
  
-        return this.http.get<RegisterUser[]>(url+"/"+id,
+        return this.http.get<RegisterUser[]>(url,
         {headers: this.getAuthHeader() 
     })
         .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
@@ -104,6 +104,17 @@ public SendPartipantList(arg:boolean)
 
     } 
 
+    public GetUser(id:string)
+    {
+        let url:string="https://localhost:44396/CourseUsers/GetUser";  
+        let parmas={"CourseId":id}; 
+        return this.http.post<RegisterUser[]>(url,parmas,
+        {headers: this.getAuthHeader() 
+    })
+        .pipe(tap(data => console.log('All: ' + JSON.stringify(data))),
+        catchError(this.handleError));
+
+    } 
 
     public SaveStudents()
     {

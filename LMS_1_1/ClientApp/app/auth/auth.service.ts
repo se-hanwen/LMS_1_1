@@ -134,7 +134,7 @@ ngOnInit(): void {
         //  this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
 
 
-          
+
 
           this.tokenData.token = tokenInfo.token;
           this.tokenData.tokenExpiration = tokenInfo.expiration;
@@ -185,7 +185,8 @@ ngOnInit(): void {
 
   public DeleteUser(id: string) {
     let url:string="https://localhost:44396/account/DeleteUser";  
-    return this.http.post(url,{"UserId":id},
+    let parmas={"CourseId":id};
+    return this.http.post(url,parmas,
     {headers: this.getAuthHeader() 
 })
 .pipe(catchError(this.handleError));
@@ -194,7 +195,7 @@ ngOnInit(): void {
 
   UpdateUser(user: RegisterUser) {
     let url:string="https://localhost:44396/account/UpdateUser";  
-    return this.http.post(url,{"user":user},
+    return this.http.post(url,user,
     {headers: this.getAuthHeader() 
 })
 .pipe(catchError(this.handleError));
@@ -202,7 +203,7 @@ ngOnInit(): void {
   }
   UpdateUserAdmin(user: RegisterUser) {
     let url:string="https://localhost:44396/account/UpdateUserAdmin";  
-    return this.http.post(url,{"user":user},
+    return this.http.post(url,user,
     {headers: this.getAuthHeader() 
 })
 .pipe(catchError(this.handleError));

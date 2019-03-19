@@ -115,9 +115,10 @@ namespace LMS_1_1.Controllers
                  .Select(cu => new CourseUserViewModel { Userid = cu.Id, FirstName = cu.FirstName, LastName = cu.LastName }).ToList();*/
             return Ok(res);
         }
-        [HttpGet("{Id}")]
-        public async Task<ActionResult<string>> GetUsers(string id)
+        [HttpPost]
+        public async Task<ActionResult<string>> GetUser([FromBody] CourseIdViewModel userid)
         {
+            var id = userid.CourseId;
             if (!User.IsInRole("Teacher"))
             {
                  if(id == null)

@@ -20,7 +20,7 @@ var DeleteuserComponent = /** @class */ (function () {
     DeleteuserComponent.prototype.ngOnInit = function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
-        this.PartipantService.GetUsers(id)
+        this.PartipantService.GetUser(id)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (u) {
             _this.user = u[0];
