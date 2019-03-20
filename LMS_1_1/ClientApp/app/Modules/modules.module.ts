@@ -10,6 +10,7 @@ import { DocumentsModule } from '../documents/documents.module';
 import { ModuleDeleteComponent } from './module-delete/module-delete.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
+import { ActivityDeleteComponent } from './activity-delete/activity-delete.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
     ActitityListComponent,
       ModulDetailsComponent,
       ModuleDeleteComponent,
-      CheckIfDubbsComponent
+      CheckIfDubbsComponent,
+      ActivityDeleteComponent
      
   ],
   imports: [

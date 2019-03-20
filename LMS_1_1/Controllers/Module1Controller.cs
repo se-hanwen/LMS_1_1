@@ -85,13 +85,13 @@ namespace LMS_1_1.Controllers
         [HttpDelete("{id}")]
         public async void Delete(Guid iD)
         {
-            var module = _context.Modules.FindAsync(iD);
+            var module = _context.Modules.Find(iD);
             if (module == null)
             {
                 return;
             }
 
-            _context.Remove(module);
+            _context.Modules.Remove(module);
             await _context.SaveChangesAsync();
         }
     }
