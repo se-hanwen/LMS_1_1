@@ -17,7 +17,7 @@
              <div class="form-group">	
                 <label for="startDate" class="control-label">Start Date</label>	
                 <input  type ="datetime-local" [(ngModel)]="Module.startDate" name="startDate"  [min]="coursestartdate"	
-                   id="startDate" class="form-control"   required #startdate="ngModel"/>	
+                   id="startDate" class="form-control"   required #startdate="ngModel" (change)="gotDate()"/>	
                 <div class="text-danger" *ngIf="startDate && startDate.touched && startDate.invalid && startDate.errors.require">Formaterror on startdate  </div>
                 <div class="text-danger" *ngIf="startDate && startDate.touched && startDate < coursestartdate">May not start before the course</div>
                 <div class="text-danger" *ngIf="startDate && startDate.touched && endDate && endDate.touched && startdate>endDate">May not start before the end</div>
@@ -25,7 +25,7 @@
             <div class="form-group">	
                 <label for="endDate" class="control-label">End Date</label>	
                 <input  type ="datetime-local"  [(ngModel)]="Module.endDate" name="endDate"  [min]="coursestartdate"	
-                  id="endDate" class="form-control"  required #enddate="ngModel"/>	
+                  id="endDate" class="form-control"  required #enddate="ngModel" (change)="gotDate()"/>	
                   <div class="text-danger" *ngIf="endDate && endDate.touched && endDate.invalid">Formaterror on startdate  </div>
                   <div class="text-danger" *ngIf="endDate && endDate.touched && endDate < coursestartdate">May not start before the course</div>
                   <div class="text-danger" *ngIf="endDate && endDate.touched && startDate && startDate.touched && startdate>endDate">May not start before the end</div>
@@ -44,4 +44,8 @@
 
 
      </div>	
+
+     <div class="col-md-4">	
+            <check-if-dubbs></check-if-dubbs>
+        </div> 
 </div> 
