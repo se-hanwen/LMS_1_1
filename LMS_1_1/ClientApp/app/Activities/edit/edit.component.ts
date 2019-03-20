@@ -95,10 +95,28 @@ export class EditComponent implements OnInit, OnDestroy {
   {
      if(this.Activity.startDate != null && this.Activity.endDate != null)
      {
+        let startdatework:Date
+        if((this.Activity.startDate.toLocaleString().length==16))
+        {
+          startdatework=new Date(this.Activity.startDate+":00.000Z")
+        }
+        else
+        {
+          startdatework=this.Activity.startDate;
+        }
+        let enddatework:Date
+        if((this.Activity.endDate.toLocaleString().length==16))
+        {
+          enddatework=new Date(this.Activity.endDate+":59.000Z")
+        }
+        else
+        {
+          enddatework=this.Activity.endDate;
+        }
         this.messhandler.SendDubbId(this.Activity.moduleid);
         this.messhandler.SendDubbType("Activity");
-        this.messhandler.SendDubbStart(new Date(this.Activity.startDate+":00.000Z"));
-        this.messhandler.SendDubbEnd(new Date(this.Activity.endDate+":00.000Z"));
+        this.messhandler.SendDubbStart(startdatework);
+        this.messhandler.SendDubbEnd(enddatework);
      }
   
     // post data

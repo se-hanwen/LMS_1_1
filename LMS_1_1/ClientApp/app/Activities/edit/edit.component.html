@@ -17,7 +17,7 @@
              <div class="form-group">	
                 <label for="startDate" class="control-label">Start Date</label>	
                 <input  type ="datetime-local" [(ngModel)]="Activity.startDate" name="startDate"  [min]="Modulestartdate"	[max]="Moduleenddate"
-                   id="startDate" class="form-control"   required #startdate="ngModel" (change)="gotDate()"/>	
+                   id="startDate" class="form-control"   required #startdate="ngModel" (blur)="gotDate()"/>	
                 <div class="text-danger" *ngIf="startDate && startDate.touched && startDate.invalid && startDate.errors.require">Formaterror on startdate  </div>
                 <div class="text-danger" *ngIf="startDate && startDate.touched && startDate < Modulestartdate">May not start before the course</div>
                 <div class="text-danger" *ngIf="startDate && startDate.touched && endDate && endDate.touched && startdate>endDate">May not start before the end</div>
@@ -25,7 +25,7 @@
             <div class="form-group">	
                 <label for="endDate" class="control-label">End Date</label>	
                 <input  type ="datetime-local"  [(ngModel)]="Activity.endDate" name="endDate"  [min]="Modulestartdate"	[max]="Moduleenddate"
-                  id="endDate" class="form-control"  required #enddate="ngModel" (change)="gotDate()"/>	
+                  id="endDate" class="form-control"  required #enddate="ngModel" (blur)="gotDate()"/>	
                   <div class="text-danger" *ngIf="endDate && endDate.touched && endDate.invalid">Formaterror on startdate  </div>
                   <div class="text-danger" *ngIf="endDate && endDate.touched && endDate < Modulestartdate">May not start before the course</div>
                   <div class="text-danger" *ngIf="endDate && endDate.touched && startDate && startDate.touched && startdate>endDate">May not start before the end</div>
