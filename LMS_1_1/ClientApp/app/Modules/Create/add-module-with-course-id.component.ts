@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { IModule } from '../../courses/course';
+import { IModule,Module } from '../../courses/course';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
@@ -7,7 +7,7 @@ import { LoginMessageHandlerService } from 'ClientApp/app/Login/login-message-ha
 import { CourseService } from 'ClientApp/app/Courses/course.service';
 import { takeUntil } from 'rxjs/operators';
 import { ModuleService } from '../module.service';
-
+import { Guid } from 'guid-typescript';
 
  @Component({	
   selector: 'app-add-module-with-course-id',	
@@ -17,7 +17,7 @@ import { ModuleService } from '../module.service';
 export class AddModuleWithCourseIdComponent implements OnInit, OnDestroy  {	
   private unsubscribe : Subject<void> = new Subject();
 // get course set up coursestatdate
-   Module: IModule;	
+   Module: IModule = new Module();	
    coursestartdate: Date;
   CourseId: string ="";	
   errorMessage="";
@@ -31,7 +31,16 @@ export class AddModuleWithCourseIdComponent implements OnInit, OnDestroy  {
     ) { }	
 
    ngOnInit() {	
-    this.CourseId = this.route.snapshot.paramMap.get('id');	
+    this.messhandler.Courseid
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(
+      status => {
+       // let tmpguid= Guid.parse(status); 
+        this.Module.courseid=status;
+        this.cd.markForCheck();
+      }
+    )
+
     this.messhandler.CourseStartDate
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(
@@ -45,20 +54,35 @@ export class AddModuleWithCourseIdComponent implements OnInit, OnDestroy  {
 public Create(theForm):void
 {
   this.errorMessage = "";
-  this.ModuleService.CreateModule(this.Module)
-  .pipe(takeUntil(this.unsubscribe))
-  .subscribe( status =>
-    {
-      if(status)
+  if(this.Module.startDate.valueOf()<this.coursestartdate.valueOf())
+  {
+      this.errorMessage= this.errorMessage + "Start date on module may not be before course start date ("+this.coursestartdate+")";
+  }
+  if(this.Module.endDate.valueOf()<this.coursestartdate.valueOf())
+  {
+      this.errorMessage= this.errorMessage + "End date on module may not be before course start date ("+this.coursestartdate+")";
+  } 
+  if(this.Module.endDate.valueOf()<this.Module.startDate.valueOf())
+  {
+    this.errorMessage= this.errorMessage +" A module must end after it's start";
+  } 
+  if(this.errorMessage=="")
+  {
+    this.ModuleService.CreateModule(this.Module)
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe( status =>
       {
-        this.errorMessage="Module "+this.Module.name+" saved"
+        if(status)
+        {
+          this.errorMessage="Module "+this.Module.name+" saved"
 
+        }
+        this.cd.markForCheck();
       }
-      this.cd.markForCheck();
-    }
-    ,err =>  this.errorMessage = <any>err
-    
-    )
+      ,err =>  this.errorMessage = <any>err
+      
+      )
+  }
 }
   ngOnDestroy(): void {
     this.unsubscribe.next();

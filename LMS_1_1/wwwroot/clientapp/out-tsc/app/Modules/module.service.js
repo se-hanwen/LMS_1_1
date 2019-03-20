@@ -9,7 +9,7 @@ var ModuleService = /** @class */ (function () {
         var _this = this;
         this.http = http;
         this.AuthService = AuthService;
-        this.moduleUrl = "https://localhost:44396/api/courses1";
+        this.moduleUrl = "https://localhost:44396/api/module1";
         this.token = "";
         this.unsubscribe = new Subject();
         this.AuthService.token
@@ -20,7 +20,8 @@ var ModuleService = /** @class */ (function () {
         return new HttpHeaders({ "Authorization": "Bearer " + this.token });
     };
     ModuleService.prototype.CreateModule = function (Module) {
-        return this.http.post(this.moduleUrl, Module, { headers: this.getAuthHeader()
+        return this.http.post(this.moduleUrl, Module, {
+            headers: this.getAuthHeader()
         }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     ModuleService.prototype.handleError = function (err) {
@@ -42,6 +43,14 @@ var ModuleService = /** @class */ (function () {
     ModuleService.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
         this.unsubscribe.complete();
+    };
+    //Delete a module by a given guid.
+    ModuleService.prototype.DeleteModule = function (id) {
+        var urlString = this.moduleUrl + "/" + id;
+        return this.http.delete(urlString, {
+            headers: this.getAuthHeader()
+        })
+            .pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     ModuleService = tslib_1.__decorate([
         Injectable({

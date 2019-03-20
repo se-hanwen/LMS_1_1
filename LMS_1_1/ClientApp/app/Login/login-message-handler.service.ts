@@ -48,7 +48,8 @@ export class LoginMessageHandlerService {
  private CourseStartDateSource = new BehaviorSubject<Date>(null);
  CourseStartDate = this.CourseStartDateSource.asObservable();
 
-
+ private CourseidSource = new BehaviorSubject<string>(null);
+ Courseid = this.CourseidSource.asObservable();
 
   constructor() { }
 
@@ -92,6 +93,10 @@ export class LoginMessageHandlerService {
     return true;
   }
 
+  public SendCourseid(arg: string): boolean {
+    this.CourseidSource.next(arg);
+    return true;
+  }
 
 
   public SendCurrUserAuth(status:boolean) : boolean 

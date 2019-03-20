@@ -1,5 +1,6 @@
 import * as tslib_1 from "tslib";
 import { Component, ChangeDetectorRef } from '@angular/core';
+import { Module } from '../../courses/course';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
@@ -17,12 +18,20 @@ var AddModuleWithCourseIdComponent = /** @class */ (function () {
         this.ModuleService = ModuleService;
         this.router = router;
         this.unsubscribe = new Subject();
+        // get course set up coursestatdate
+        this.Module = new Module();
         this.CourseId = "";
         this.errorMessage = "";
     }
     AddModuleWithCourseIdComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.CourseId = this.route.snapshot.paramMap.get('id');
+        this.messhandler.Courseid
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (status) {
+            // let tmpguid= Guid.parse(status); 
+            _this.Module.courseid = status;
+            _this.cd.markForCheck();
+        });
         this.messhandler.CourseStartDate
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (status) {
@@ -33,14 +42,25 @@ var AddModuleWithCourseIdComponent = /** @class */ (function () {
     AddModuleWithCourseIdComponent.prototype.Create = function (theForm) {
         var _this = this;
         this.errorMessage = "";
-        this.ModuleService.CreateModule(this.Module)
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (status) {
-            if (status) {
-                _this.errorMessage = "Module " + _this.Module.name + " saved";
-            }
-            _this.cd.markForCheck();
-        }, function (err) { return _this.errorMessage = err; });
+        if (this.Module.startDate.valueOf() < this.coursestartdate.valueOf()) {
+            this.errorMessage = this.errorMessage + "Start date on module may not be before course start date (" + this.coursestartdate + ")";
+        }
+        if (this.Module.endDate.valueOf() < this.coursestartdate.valueOf()) {
+            this.errorMessage = this.errorMessage + "End date on module may not be before course start date (" + this.coursestartdate + ")";
+        }
+        if (this.Module.endDate.valueOf() < this.Module.startDate.valueOf()) {
+            this.errorMessage = this.errorMessage + " A module must end after it's start";
+        }
+        if (this.errorMessage == "") {
+            this.ModuleService.CreateModule(this.Module)
+                .pipe(takeUntil(this.unsubscribe))
+                .subscribe(function (status) {
+                if (status) {
+                    _this.errorMessage = "Module " + _this.Module.name + " saved";
+                }
+                _this.cd.markForCheck();
+            }, function (err) { return _this.errorMessage = err; });
+        }
     };
     AddModuleWithCourseIdComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();

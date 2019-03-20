@@ -30,8 +30,22 @@ export interface IModule {
     name2?:string;
     isExpanded?:string;
     activities?:IActivity2[];
-    courseid?: Guid;
+    courseid?: string;
 }
+
+ export class Module implements IModule
+ {
+    id?: Guid;
+    name: string="";
+    startDate: Date;
+    endDate: Date;
+    description: string="";
+    name2?:string;
+    isExpanded?:string;
+    activities?:IActivity2[];
+    courseid?: string;
+}
+
 
 export interface IActivity {
     id?: Guid;

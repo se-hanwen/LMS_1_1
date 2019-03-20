@@ -31,19 +31,24 @@ var ManageComponent = /** @class */ (function () {
     ManageComponent.prototype.onRegister = function (theForm) {
         var _this = this;
         this.errorMessage = "";
-        if (this.user.oldpassword == null)
-            this.user.oldpassword = "";
-        this.db.UpdateUser(this.user)
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (status) {
-            if (status) {
-                _this.errorMessage = "Update succeded";
-            }
-            else {
-                _this.errorMessage = "Update failed";
-            }
-            _this.cd.markForCheck();
-        });
+        if (this.user.password != this.user.confirmpassword) {
+            this.errorMessage = "Passwords doesn't match";
+        }
+        else {
+            if (this.user.oldpassword == null)
+                this.user.oldpassword = "";
+            this.db.UpdateUser(this.user)
+                .pipe(takeUntil(this.unsubscribe))
+                .subscribe(function (status) {
+                if (status) {
+                    _this.errorMessage = "Update succeded";
+                }
+                else {
+                    _this.errorMessage = "Update failed";
+                }
+                _this.cd.markForCheck();
+            });
+        }
     };
     ManageComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();

@@ -14,14 +14,16 @@ var CourseEditComponent = /** @class */ (function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
         this.CourseService.getCourseById(id).subscribe(function (tcourse) {
-            tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[2];
+            tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
             _this.editCourse = tcourse;
         }, function (error) { _this.errorMsg = error; });
-        //this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
     };
     CourseEditComponent.prototype.UpdateCourse = function () {
         var fileToUpload = (this.fileInputVariable.nativeElement.files.length == 0) ?
             (new File([new Blob()], this.editCourse.courseImgPath)) : this.fileInputVariable.nativeElement.files[0];
+        this.selectFilename = this.editCourse.courseImgPath.substr(this.editCourse.courseImgPath.lastIndexOf("\\") + 1);
+        console.log("XXXXXXXXXXXXX====>" + this.editCourse.courseImgPath);
+        console.log("XXXXXXXXXXXXX====>" + this.selectFilename);
         var formData = new FormData();
         formData.append('criD', this.editCourse.id.toString());
         formData.append('Name', this.editCourse.name);

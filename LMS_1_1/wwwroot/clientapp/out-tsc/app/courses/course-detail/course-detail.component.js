@@ -31,6 +31,7 @@ var CourseDetailComponent = /** @class */ (function () {
             this.cd.markForCheck();
           });*/
         var id = this.route.snapshot.paramMap.get('id');
+        this.messhandler.SendCourseid(id);
         this.CourseService.getCourseAndModulebyId(id)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (course) {

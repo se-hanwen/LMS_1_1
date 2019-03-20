@@ -30,6 +30,8 @@ var LoginMessageHandlerService = /** @class */ (function () {
         this.ConfirmGoBackUrl = this.ConfirmGoBackUrlSource.asObservable();
         this.CourseStartDateSource = new BehaviorSubject(null);
         this.CourseStartDate = this.CourseStartDateSource.asObservable();
+        this.CourseidSource = new BehaviorSubject(null);
+        this.Courseid = this.CourseidSource.asObservable();
     }
     LoginMessageHandlerService.prototype.SendUserId = function (userid) {
         this.useridSource.next(userid == null ? '' : userid);
@@ -57,6 +59,10 @@ var LoginMessageHandlerService = /** @class */ (function () {
     };
     LoginMessageHandlerService.prototype.SendCourseStartDate = function (arg) {
         this.CourseStartDateSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendCourseid = function (arg) {
+        this.CourseidSource.next(arg);
         return true;
     };
     LoginMessageHandlerService.prototype.SendCurrUserAuth = function (status) {

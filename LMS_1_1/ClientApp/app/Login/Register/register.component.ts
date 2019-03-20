@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoginMessageHandlerService } from '../login-message-handler.service';
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -73,6 +74,12 @@ export class RegisterComponent implements OnInit, OnDestroy  {
   public onRegister(TheForm)
   {
     this.errorMessage = "";
+    if(this.user.password!=this.user.confirmpassword)
+    {
+      this.errorMessage="Passwords doesn't match";
+    }
+    else
+   {
     this.db.register(this.user)
     .pipe(takeUntil(this.unsubscribe))
       .subscribe(success => { 
@@ -95,6 +102,7 @@ export class RegisterComponent implements OnInit, OnDestroy  {
         return  true; 
       },
          err =>  this.errorMessage = <any>err);
+    }
   }
 
   ngOnDestroy(): void {

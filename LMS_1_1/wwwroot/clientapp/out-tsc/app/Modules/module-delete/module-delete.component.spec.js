@@ -1,16 +1,16 @@
 import { async, TestBed } from '@angular/core/testing';
-import { UploadComponent } from './upload.component';
-describe('UploadComponent', function () {
+import { ModuleDeleteComponent } from './module-delete.component';
+describe('ModuleDeleteComponent', function () {
     var component;
     var fixture;
     beforeEach(async(function () {
         TestBed.configureTestingModule({
-            declarations: [UploadComponent]
+            declarations: [ModuleDeleteComponent]
         })
             .compileComponents();
     }));
     beforeEach(function () {
-        fixture = TestBed.createComponent(UploadComponent);
+        fixture = TestBed.createComponent(ModuleDeleteComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
@@ -18,4 +18,4 @@ describe('UploadComponent', function () {
         expect(component).toBeTruthy();
     });
 });
-//# sourceMappingURL=upload.component.spec.js.map
+//# sourceMappingURL=module-delete.component.spec.js.map
