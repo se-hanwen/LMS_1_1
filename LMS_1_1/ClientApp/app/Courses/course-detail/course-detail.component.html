@@ -17,8 +17,12 @@
                         <div class="row">
                             <div class="col-6">
                                 <!-- <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a> -->
-                                <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Module</a>
-                            </div>
+                                <p>
+                                    <a class="btn btn-info" asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id">
+                                        <i class="fa fa-1x fa-plus-square"></i>
+                                    </a>
+                                </p>
+</div>
                             <div class="col-6">
                                 <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
                             </div>

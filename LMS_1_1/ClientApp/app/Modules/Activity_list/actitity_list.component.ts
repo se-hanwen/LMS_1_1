@@ -5,6 +5,7 @@ import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subscription, Subject } from 'rxjs';
 import { OnInit, Component, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { DataService } from 'ClientApp/app/data.service';
 
 @Component({
     selector: "activity_list",
@@ -15,15 +16,16 @@ import { takeUntil } from 'rxjs/operators';
 export class ActitityListComponent implements OnInit, OnDestroy  {
   module: IModule;
   errorMessage: string;
-  @Input()   moduleid: string;
-
+    @Input() moduleid: string;
+  
   private unsubscribe : Subject<void> = new Subject();
 
   isTeacher: boolean=false;
  constructor(private route: ActivatedRoute,
      private CourseService: CourseService
      , private AuthService : AuthService
-     ,private cd: ChangeDetectorRef
+     , private cd: ChangeDetectorRef
+     , private data: DataService
      ) 
      { }
  
@@ -46,37 +48,15 @@ export class ActitityListComponent implements OnInit, OnDestroy  {
 
  public TogggelCollapse(aid: string): void
  {
-      if(this.module.activities.find(m => m.id.toString()==aid).isExpanded ==" show")
+      if(this.module.activities.find(a => a.id.toString()==aid).isExpanded ==" show")
      {
-           this.module.activities.find(m => m.id.toString()==aid).isExpanded="";
-           // add here for filelist for activity
-         /*  if (this.savesubs.find( t => t[0]==mid))
-           {
-
-               this.savesubs.find( t => t[0]==mid)[1].unsubscribe();
-               this.savesubs.splice(this.savesubs.indexOf(this.savesubs.find( t => t[0]==mid)),1);
-           }
-*/
+          this.module.activities.find(a => a.id.toString() == aid).isExpanded = "";
+          this.data.getData(aid);
      }
       else
      {
-        this.module.activities.find(m => m.id.toString()==aid).isExpanded=" show";
-       /* let temp=this.CourseService.getActivitybymodulId(mid).subscribe(
-                 activities=>
-                 {
-                     this.course.modules.find(m => m.id.toString()==mid).activities=activities;
-                 },
-                 error => this.errorMessage = <any>error
-             );
-         if (this.savesubs.find( t => t[0]==mid))
-         {
-             this.savesubs.find( t => t[0]==mid)[1]=temp;
-         }
-         else
-         {
-             this.savesubs.push([mid,temp])  ;
-         }
-         */
+        this.module.activities.find(a => a.id.toString()==aid).isExpanded=" show";
+     
      }
  }
  ngOnDestroy(): void {

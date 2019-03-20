@@ -4,38 +4,43 @@
       <!--string name = Regex.Replace(@module.Name, @"[\W_]+", string.Empty);-->
       <div class="card" *ngFor="let activity of module.activities">
           <div class="card-header" [id]="module.id">
-              
-                  <div class="btn btn-link collapsed"
-                      [attr.data-target]="'#'+ activity.name2"
-                      [attr.aria-controls]="activity.name2"
-                      data-toggle="collapse"
-                      [attr.aria-expanded]="false"
-                      (click)="TogggelCollapse(activity.id)"
-                      >
-                      <h5 class="mb-0"> 
-                          {{ activity.name }}
-                        </h5>
-                  </div>
-              
+
+              <div class="btn btn-link collapsed"
+                   [attr.data-target]="'#'+ activity.name2"
+                   [attr.aria-controls]="activity.name2"
+                   data-toggle="collapse"
+                   [attr.aria-expanded]="false"
+                   (click)="TogggelCollapse(activity.id)">
+                  <h5 class="mb-0">
+                      {{ activity.name }}
+                  </h5>
+              </div>
+
           </div>
+          <div class="row">
 
-          <div [id]="activity.name2" [class]="'collapse'+ activity.isExpanded" [attr.aria-labelledby]="activity.id" data-parent="#accordion">
-              <div class="card-body" *ngIf="module.activities && module.activities.length >0">
+              <div class="col-md-12">
+
+             
+              <div [id]="activity.name2" [class]="'collapse'+ activity.isExpanded" [attr.aria-labelledby]="activity.id" data-parent="#accordion">
+                  <div  *ngIf="module.activities && module.activities.length >0" >
+
                   <!--<span class="float-right"> {{activity.startDate |date: 'yyyy-MM-dd HH:mm'}} -{{activity.endDate |date: 'yyyy-MM-dd HH:mm'}}</span>
-    <p>{{activity.description}}
-    <br>{{activity.activityType}}</p>-->
+            <p>{{activity.description}}
+            <br>{{activity.activityType}}</p>-->
+                      <div>
+                          <upload-detail [DocOwnerId]="activity.id"></upload-detail>
+                      </div>
+                      <div *ngIf="isTeacher">
+                          <doc-upload [DocOwnerId]="activity.id" [DocOwnerTypeId]="3" [DocumentTypeId]="2"></doc-upload>
+                      </div>
 
-                  <div>
-                      <upload-detail [DocOwnerId]="activity.id"></upload-detail>
-                  </div>
-                  <div *ngIf="isTeacher">
-                      <doc-upload [DocOwnerId]="activity.id" [DocOwnerTypeId]="3" [DocumentTypeId]="2"></doc-upload>
                   </div>
 
               </div>
-
+               </div>
+          </div>
       </div>
 
-   </div>
-
+</div>
 </div>
