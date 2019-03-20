@@ -3,7 +3,7 @@ import { Guid } from "guid-typescript";
 export interface ICourse {
     id?: Guid;
     name: string;
-    startDate: Data;
+    startDate: Date;
     description: string;
     courseImgPath?: string;
    modules?:IModule[];
@@ -13,7 +13,7 @@ export class course implements ICourse
 {
     id?: Guid;   
     name: string;
-    startDate: Data;
+    startDate: Date;
     description: string;
     courseImgPath?: string;
     modules?: IModule[];
@@ -24,8 +24,8 @@ export class course implements ICourse
 export interface IModule {
     id?: Guid;
     name: string;
-    startDate: Data;
-    endDate: Data;
+    startDate: Date;
+    endDate: Date;
     description: string;
     name2?:string;
     isExpanded?:string;
@@ -36,8 +36,8 @@ export interface IModule {
 export interface IActivity {
     id?: Guid;
     name: string;
-    startDate: Data;
-    endDate: Data;
+    startDate: Date;
+    endDate: Date;
     description: string;
 
 
@@ -48,8 +48,8 @@ export interface IActivity {
 export interface IActivity2 {
     id?: Guid;
     name: string;
-    startDate: Data;
-    endDate: Data;
+    startDate: Date;
+    endDate: Date;
     description: string;
     name2?:string;
     isExpanded?:string;

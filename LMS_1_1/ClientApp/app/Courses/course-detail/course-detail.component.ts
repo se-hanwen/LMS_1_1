@@ -7,6 +7,7 @@ import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PartipantService } from 'ClientApp/app/AddPartipant/partipant.service';
+import { LoginMessageHandlerService } from 'ClientApp/app/Login/login-message-handler.service';
 
 @Component({
  
@@ -25,6 +26,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy  {
     constructor(private route: ActivatedRoute, private CourseService: CourseService, private AuthService : AuthService
       ,private cd: ChangeDetectorRef
       ,private partipantservice:PartipantService
+      ,private messhandler: LoginMessageHandlerService
       ) { }
 
     ngOnInit(): void {
@@ -40,8 +42,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy  {
         this.CourseService.getCourseAndModulebyId(id)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe(
-                course => {
+                (course : ICourse) => {
                     this.course = course;
+                    this.messhandler.SendCourseStartDate(course.startDate);
                     this.cd.markForCheck();
                 },
                 error => this.errorMessage = <any>error

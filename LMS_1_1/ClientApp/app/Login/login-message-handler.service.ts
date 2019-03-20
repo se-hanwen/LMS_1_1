@@ -45,6 +45,11 @@ export class LoginMessageHandlerService {
  private ConfirmGoBackUrlSource = new BehaviorSubject<string[]>([]);
  ConfirmGoBackUrl = this.ConfirmGoBackUrlSource.asObservable();
 
+ private CourseStartDateSource = new BehaviorSubject<Date>(null);
+ CourseStartDate = this.CourseStartDateSource.asObservable();
+
+
+
   constructor() { }
 
   public SendUserId(userid:string) : boolean 
@@ -81,6 +86,11 @@ export class LoginMessageHandlerService {
     return true;
   }
 
+
+  public SendCourseStartDate(arg: Date): boolean {
+    this.CourseStartDateSource.next(arg);
+    return true;
+  }
 
 
 

@@ -4,36 +4,43 @@
 <hr />	
 <div class="row">	
     <div class="col-md-4">	
+            <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
+         <form #theForm="ngForm"  (ngSubmit)="Create(theForm)"  novalidate>	
 
-         <form #createModule="ngForm"  (ngSubmit)="Create(createModule.value)">	
-
-             <input type="hidden" (ngModel)="CourseId" name="CourseId" />	
+             <input type="hidden" [(ngModel)]="Module.CourseId" name="CourseId" />	
 
              <div class="form-group">	
                 <label for="name" class="control-label">Name</label>	
-                <input (ngModel)="Module.name" name="name" id="name" class="form-control" />	
-
+                <input  [(ngModel)]="Module.name" name="name" id="name" class="form-control"   required #name="ngModel"/>
              </div>	
 
              <div class="form-group">	
                 <label for="startDate" class="control-label">StartDate</label>	
-                <input  type ="date" (ngModel)="Module.startDate" name="startDate"  value="2018-07-22"	
-                  min="2018-01-01" max="2018-12-31" id="startDate" class="form-control" />	
-
+                <input  type ="date" [(ngModel)]="Module.startDate" name="startDate"  [min]="coursestartdate"	
+                   id="startDate" class="form-control"   required #startdate="ngModel"/>	
+                <div class="text-danger" *ngIf="startDate && startDate.touched && startDate.invalid">Formaterror on startdate  </div>
+                <div class="text-danger" *ngIf="startDate && startDate.touched && startDate < coursestartdate">May not start before the course</div>
+                <div class="text-danger" *ngIf="startDate && startDate.touched && endDate && endDate.touched && startdate>endDate">May not start before the end</div>
              </div>	
+             <input type="password" class="form-control" name="confirmpassword" [(ngModel)]="user.confirmpassword" required #confirmpassword="ngModel" />
+             <div class="text-danger" *ngIf="user.confirmpassword.touched && user.confirmpassword.invalid && user.confirmpassword.errors.required">Confirm Password is required!</div>
+
             <div class="form-group">	
                 <label for="endDate" class="control-label">StartDate</label>	
-                <input  type ="date" (ngModel)="Module.endDate" name="endDate"  value="2018-07-22"	
-                  min="2018-01-01" max="2018-12-31" id="endDate" class="form-control" />	
-
+                <input  type ="date"  [(ngModel)]="Module.endDate" name="endDate"  [min]="coursestartdate"	
+                  id="endDate" class="form-control"  required #enddate="ngModel"/>	
+                  <div class="text-danger" *ngIf="endDate && endDate.touched && endDate.invalid">Formaterror on startdate  </div>
+                  <div class="text-danger" *ngIf="endDate && endDate.touched && endDate < coursestartdate">May not start before the course</div>
+                  <div class="text-danger" *ngIf="endDate && endDate.touched && startDate && startDate.touched && startdate>endDate">May not start before the end</div>
              </div>	
             <div class="form-group">	
                 <label for="description" class="control-label">Description</label>	
-                <input (ngModel)="Module.description" name="description" id="description" class="form-control" />	
+                <input  [(ngModel)]="Module.description" name="description" id="description" class="form-control"   required #description="ngModel"/>	
 
              </div>	
             <div class="form-group">	
-                <input type="submit" value="Create" class="btn btn-primary" />	
+                    <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
+                    <a [routerLink]="['/courses', Module.CourseId]" class="btn btn-default" >Go back</a>
             </div>	
         </form>	
 
