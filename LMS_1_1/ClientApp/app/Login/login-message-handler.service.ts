@@ -154,5 +154,14 @@ export class LoginMessageHandlerService {
       return true;
   }
 
-
+  public SendDubbStart(arg:Date): boolean
+  {
+      this.DubbStartSource.next(arg);
+      return true;
+  }
+  public SendDubbEnd(arg:Date): boolean
+  {
+      this.DubbEndSource.next(arg);
+      return true;
+  }
 }

@@ -47,7 +47,7 @@ namespace LMS_1_1.Controllers
 
         // GET: api/Module1/5
         [HttpGet("{id}", Name = "GetModule")]
-        public string Getmodule(int id)
+        public string GetModuleById(int id)
         {
             return "value";
         }
@@ -80,10 +80,18 @@ namespace LMS_1_1.Controllers
         {
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/module1/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Delete(Guid iD)
         {
+            var module = _context.Modules.FindAsync(iD);
+            if (module == null)
+            {
+                return;
+            }
+
+            _context.Remove(module);
+            await _context.SaveChangesAsync();
         }
 
 

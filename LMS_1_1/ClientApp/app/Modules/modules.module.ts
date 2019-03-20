@@ -7,6 +7,7 @@ import { ActitityListComponent } from './Activity_list/actitity_list.component';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { ModulDetailsComponent } from './Details/details.component';
 import { DocumentsModule } from '../documents/documents.module';
+import { ModuleDeleteComponent } from './module-delete/module-delete.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
 
@@ -15,8 +16,10 @@ import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
   declarations: [
     AddModuleWithCourseIdComponent,
     ActitityListComponent,
-    ModulDetailsComponent,
-    CheckIfDubbsComponent
+      ModulDetailsComponent,
+      ModuleDeleteComponent,
+      CheckIfDubbsComponent
+     
   ],
   imports: [
     CommonModule,
@@ -34,7 +37,12 @@ import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
               path: 'Modules/:id'
               ,canActivate: [IsAuthenticatedGuard]
               ,component: ModulDetailsComponent
-          }
+            },
+            {
+                path: 'Modules/delete/:id'
+                , canActivate: [IsTeacherGuard]
+                , component: ModuleDeleteComponent
+            }
         ]
     )
   ]

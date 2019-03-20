@@ -21,8 +21,8 @@ namespace LMS_1_1.Controllers
 
 
         // GET: api/Activity1/5
-        [HttpGet("{id}", Name = "GetAction")]
-        public string Get(int id)
+        [HttpGet("{id}", Name = "GetAct")]
+        public string GetActivityById(int id)
         {
             return "value";
         }
