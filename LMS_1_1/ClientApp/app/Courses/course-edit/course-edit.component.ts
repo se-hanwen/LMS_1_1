@@ -16,6 +16,7 @@ export class CourseEditComponent implements OnInit {
     errorMsg: string;
     @ViewChild("fileInput") fileInputVariable: any;
     isTeacher: boolean;
+    selectFilename: string;
 
     constructor(private route: ActivatedRoute, private router: Router, private CourseService: CourseService, private AuthService: AuthService) { }
 
@@ -26,12 +27,15 @@ export class CourseEditComponent implements OnInit {
                 this.editCourse = tcourse;
             },
             error => { this.errorMsg = <any>error; });
-        //this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
     } 
 
     UpdateCourse() {
         let fileToUpload = (this.fileInputVariable.nativeElement.files.length == 0) ?
             (new File([new Blob()], this.editCourse.courseImgPath)) : this.fileInputVariable.nativeElement.files[0];
+
+        this.selectFilename = this.editCourse.courseImgPath.substr(this.editCourse.courseImgPath.lastIndexOf("\\") + 1);
+        console.log("XXXXXXXXXXXXX====>" + this.editCourse.courseImgPath);
+        console.log("XXXXXXXXXXXXX====>" + this.selectFilename);
 
         let formData = new FormData();
         formData.append('criD', this.editCourse.id.toString());
