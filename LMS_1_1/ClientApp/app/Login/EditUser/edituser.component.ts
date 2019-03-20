@@ -55,7 +55,7 @@ export class EdituserComponent implements OnInit, OnDestroy {
               }
               this.cd.markForCheck();
           }
-          
+          ,err =>  this.errorMessage = <any>err
           );
     }
 

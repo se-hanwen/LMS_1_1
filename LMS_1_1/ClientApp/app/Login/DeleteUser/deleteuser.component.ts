@@ -38,14 +38,18 @@ export class DeleteuserComponent implements OnInit, OnDestroy  {
     .subscribe( status =>
       {
         if(status)
+        {
           this.errtext="User Deleted"
-          this.cd.markForCheck();
+          
           this.messagehandler.SendConfirm("User "+this.user.firstName+' '+this.user.lastName+" Deleted")
           this.messagehandler.SendConfirmGoOnUrl(["/Account/Delete"]);
           this.messagehandler.SendConfirmGoOnMessage("Delete another user?");
           this.messagehandler.SendConfirmGoBackUrl(["/Account/ManageUsers"]);
           this.router.navigate(['Account/Confirm']);
+        }
+        this.cd.markForCheck();
       }
+      ,err =>  this.errtext = <any>err
       
       )
    }
