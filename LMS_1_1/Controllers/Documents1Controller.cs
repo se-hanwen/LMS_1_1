@@ -115,7 +115,8 @@ namespace LMS_1_1.Controllers
             {
                 return BadRequest(ModelState);
             }
-           string fileName= await _repository.UploadFile(documentVm.FileData);
+            string path = _repository.GetDocumentUploadPath();
+           string fileName= await _repository.UploadFile(documentVm.FileData,path);
             if(fileName!=null)
                 {
                 Document document = new Document

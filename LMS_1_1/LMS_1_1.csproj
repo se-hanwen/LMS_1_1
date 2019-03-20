@@ -23,11 +23,6 @@
     <Compile Remove="Migrations\20190314083851_DocumentChange.Designer.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="ClientApp\assets\img\1.png" />
-    <Content Include="ClientApp\assets\img\3.jpg" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Cors" Version="5.2.7" />
@@ -40,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Attachements\Documents\" />
+    <Folder Include="ClientApp\assets\img\" />
     <Folder Include="wwwroot\clientapp\dist\assets\img\" />
   </ItemGroup>
 

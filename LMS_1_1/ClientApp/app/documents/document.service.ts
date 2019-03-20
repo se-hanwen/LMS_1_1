@@ -13,9 +13,11 @@ export class DocumentService {
     private subject = new Subject<any>();
     private token: string = "";
     private unsubscribe: Subject<void> = new Subject();
+
     isUploaded(message: boolean) {
         this.subject.next({ message});
     }
+
     getUplaodtStatus(): Observable<any> {
         return this.subject.asObservable();
     }

@@ -323,6 +323,8 @@ namespace LMS_1_1.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                string path = _programrepository.GetCourseImageUploadPath();
+                await _documentrepository.UploadFile(editModel.FileData, path);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -357,7 +359,8 @@ namespace LMS_1_1.Controllers
          
            _context.Courses.Add(course);
             await _context.SaveChangesAsync();
-            await _documentrepository.UploadFile(courseVm.FileData);
+          string path=  _programrepository.GetCourseImageUploadPath();
+            await _documentrepository.UploadFile(courseVm.FileData, path);
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
         // DELETE: api/Courses1/5

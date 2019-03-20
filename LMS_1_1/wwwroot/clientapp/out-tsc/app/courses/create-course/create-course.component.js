@@ -29,6 +29,10 @@ var CreateCourseComponent = /** @class */ (function () {
         var _this = this;
         if (files.length === 0)
             return;
+        var mimeType = files[0].type;
+        if (mimeType.match(/image\/*/) == null) {
+            return;
+        }
         var reader = new FileReader();
         this.imagePath = files;
         reader.readAsDataURL(files[0]);

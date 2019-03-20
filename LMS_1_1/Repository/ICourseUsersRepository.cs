@@ -15,7 +15,7 @@ namespace LMS_1_1.Repository
         Task AddCourseUser(string CouresID, string LMSUserid);
 
         Task RemoveCourseUser(Guid CouresID, string LMSUserid);
-
+       
         Task RemoveAllCourseUsersForCourse(string CouresID);
         Task RemoveAllCourseUsersForUser(string UserID);
 

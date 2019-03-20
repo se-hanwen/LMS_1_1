@@ -1,3 +1,0 @@
- <app-partipant-list [courseid]='course.id'></app-partipant-list>
-<a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a>
-                    <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>
