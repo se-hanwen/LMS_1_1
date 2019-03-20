@@ -36,7 +36,7 @@ namespace LMS_1_1.Controllers
 
         // POST: api/Module1
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<Module>> PostModulee([FromForm] CourseViewModel courseVm)
         {
         }
 
