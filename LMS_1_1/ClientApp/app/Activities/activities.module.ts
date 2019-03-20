@@ -27,13 +27,13 @@ imports: [
               path: 'Activity/create'
               ,canActivate: [IsTeacherGuard]
               , component: AddActivitiesWithModulIdComponent
-          }  ,
-       /* ,{
-            path: 'Modules/:id'
-            ,canActivate: [IsAuthenticatedGuard]
-            ,component: ModulDetailsComponent
-          },
-          {
+          }  
+       ,{
+            path: 'Activity/edit/:id'
+            ,canActivate: [IsTeacherGuard]
+            ,component: EditComponent
+          }
+         /*,  {
               path: 'Modules/delete/:id'
               , canActivate: [IsTeacherGuard]
               , component: ModuleDeleteComponent

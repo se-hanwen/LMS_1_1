@@ -46,10 +46,20 @@ namespace LMS_1_1.Controllers
         }
 
         // GET: api/Activity1/5
-        [HttpGet("{id}", Name = "GetAct")]
-        public string GetActivityById(int id)
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<LMSActivity>> GetActivityById(string id)
         {
-            return "value";
+            Guid idG = Guid.Parse(id);
+            LMSActivity Activity = await _context.LMSActivity.FindAsync(idG);
+
+
+            if (Activity == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Activity);
         }
 
         [HttpGet("ActivityTypes")]
@@ -88,8 +98,47 @@ namespace LMS_1_1.Controllers
 
         // PUT: api/Activity1/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult<LMSActivity>> Put(string id, [FromBody] ActivityFormModel activtyVm)
         {
+            //if (editModel.criD==null)
+            if (id != activtyVm.Id.ToString())
+            {
+                return BadRequest();
+            }
+
+          //  Guid Crid = new Guid(activtyVm.id);
+
+            LMSActivity Activity = new LMSActivity
+            {
+                Id = activtyVm.Id.Value,
+                Name = activtyVm.Name,
+                StartDate = activtyVm.StartDate,
+                EndDate = activtyVm.EndDate,
+                Description = activtyVm.Description,
+                ActivityTypeId= activtyVm.ActivityTypeId,
+                ModuleId=Guid.Parse(activtyVm.moduleid)
+            };
+
+            _context.Entry(Activity).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ActivityExists(activtyVm.Id.Value))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+   
+            return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
@@ -106,6 +155,11 @@ namespace LMS_1_1.Controllers
             _context.Remove(activity);
             await _context.SaveChangesAsync();
 
+        }
+
+        private bool ActivityExists(Guid id)
+        {
+            return _context.LMSActivity.Any(e => e.Id == id);
         }
     }
 }

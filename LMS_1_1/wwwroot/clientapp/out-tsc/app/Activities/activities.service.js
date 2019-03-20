@@ -28,6 +28,15 @@ var ActivitiesService = /** @class */ (function () {
         return this.http.get(this.activityUrl + "/ActivityTypes", { headers: this.getAuthHeader()
         }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
+    ActivitiesService.prototype.EditActivity = function (id, Activity) {
+        return this.http.put(this.activityUrl + "/" + id, Activity, {
+            headers: this.getAuthHeader()
+        }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
+    ActivitiesService.prototype.GetActivity = function (Activityid) {
+        return this.http.get(this.activityUrl + "/" + Activityid, { headers: this.getAuthHeader()
+        }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
     //Delete a activity by a given guid.
     ActivitiesService.prototype.DeleteActivity = function (id) {
         var urlString = this.activityUrl + "/" + id;

@@ -7,6 +7,7 @@ import { DocumentsModule } from '../documents/documents.module';
 import { RouterModule } from '@angular/router';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { ModulesModule } from 'ClientApp/app/Modules/modules.module';
+import { EditComponent } from '../Activities/edit/edit.component';
 var ActivitiesModule = /** @class */ (function () {
     function ActivitiesModule() {
     }
@@ -14,6 +15,7 @@ var ActivitiesModule = /** @class */ (function () {
         NgModule({
             declarations: [
                 AddActivitiesWithModulIdComponent,
+                EditComponent,
             ],
             imports: [
                 CommonModule,
@@ -27,6 +29,16 @@ var ActivitiesModule = /** @class */ (function () {
                         canActivate: [IsTeacherGuard],
                         component: AddActivitiesWithModulIdComponent
                     },
+                    {
+                        path: 'Activity/edit/:id',
+                        canActivate: [IsTeacherGuard],
+                        component: EditComponent
+                    }
+                    /*,  {
+                         path: 'Modules/delete/:id'
+                         , canActivate: [IsTeacherGuard]
+                         , component: ModuleDeleteComponent
+                     }*/
                 ])
             ]
         })

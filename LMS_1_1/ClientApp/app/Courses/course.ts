@@ -54,7 +54,7 @@ export interface IActivity {
     endDate: Date;
     description: string;
     moduleid?: string;
-    ActivityTypeId?:number
+    activityTypeId?:number
   //  activityType: IActivityType
 }
 
@@ -67,7 +67,7 @@ export class Activity implements IActivity
     description: string;
     moduleid?: string;
 
-    ActivityTypeId?:number 
+    activityTypeId?:number 
 }
 
 

@@ -1,25 +1,29 @@
 import * as tslib_1 from "tslib";
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { Activity } from 'ClientApp/app/Courses/course';
 import { Subject } from 'rxjs';
+import { Activity } from 'ClientApp/app/Courses/course';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { LoginMessageHandlerService } from 'ClientApp/app/Login/login-message-handler.service';
-import { takeUntil } from 'rxjs/operators';
 import { ActivitiesService } from '../activities.service';
-var AddActivitiesWithModulIdComponent = /** @class */ (function () {
-    function AddActivitiesWithModulIdComponent(db, cd, messhandler, ActivititesService) {
+import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+var EditComponent = /** @class */ (function () {
+    function EditComponent(db, cd, route, messhandler, ActivititesService) {
         this.db = db;
         this.cd = cd;
+        this.route = route;
         this.messhandler = messhandler;
         this.ActivititesService = ActivititesService;
         this.unsubscribe = new Subject();
         this.Activity = new Activity();
         this.errorMessage = "";
         this.ModuleName = "";
+        this.Activityid = "";
         this.Courseid = "";
     }
-    AddActivitiesWithModulIdComponent.prototype.ngOnInit = function () {
+    EditComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.Activityid = this.route.snapshot.paramMap.get("id"); // null if no hit?
         this.messhandler.Modulid
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (status) {
@@ -58,8 +62,14 @@ var AddActivitiesWithModulIdComponent = /** @class */ (function () {
             _this.ActivityTypes = resp;
             _this.cd.markForCheck();
         });
+        this.ActivititesService.GetActivity(this.Activityid)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (resp) {
+            _this.Activity = resp;
+            _this.cd.markForCheck();
+        });
     };
-    AddActivitiesWithModulIdComponent.prototype.gotDate = function () {
+    EditComponent.prototype.gotDate = function () {
         if (this.Activity.startDate != null && this.Activity.endDate != null) {
             this.messhandler.SendDubbId(this.Activity.moduleid);
             this.messhandler.SendDubbType("Activity");
@@ -68,7 +78,7 @@ var AddActivitiesWithModulIdComponent = /** @class */ (function () {
         }
         // post data
     };
-    AddActivitiesWithModulIdComponent.prototype.Create = function (theForm) {
+    EditComponent.prototype.Register = function (theForm) {
         var _this = this;
         this.errorMessage = "";
         if (new Date(this.Activity.startDate + ":00").valueOf() < this.Modulestartdate.valueOf() + 1) {
@@ -89,7 +99,7 @@ var AddActivitiesWithModulIdComponent = /** @class */ (function () {
             this.errorMessage = this.errorMessage + " A module must end after it's start";
         }
         if (this.errorMessage == "") {
-            this.ActivititesService.CreateActivity(this.Activity)
+            this.ActivititesService.EditActivity(this.Activity.id, this.Activity)
                 .pipe(takeUntil(this.unsubscribe))
                 .subscribe(function (status) {
                 if (status) {
@@ -99,24 +109,22 @@ var AddActivitiesWithModulIdComponent = /** @class */ (function () {
             }, function (err) { return _this.errorMessage = err; });
         }
     };
-    AddActivitiesWithModulIdComponent.prototype.ngOnDestroy = function () {
+    EditComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
         this.unsubscribe.complete();
     };
-    AddActivitiesWithModulIdComponent = tslib_1.__decorate([
+    EditComponent = tslib_1.__decorate([
         Component({
-            selector: 'app-add-activities-with-modul-id',
-            templateUrl: './add-activities-with-modul-id.component.html',
-            styleUrls: ['./add-activities-with-modul-id.component.css']
+            selector: 'app-edit',
+            templateUrl: './edit.component.html',
+            styleUrls: ['./edit.component.css']
         }),
         tslib_1.__metadata("design:paramtypes", [AuthService,
-            ChangeDetectorRef,
+            ChangeDetectorRef, ActivatedRoute,
             LoginMessageHandlerService,
             ActivitiesService])
-    ], AddActivitiesWithModulIdComponent);
-    return AddActivitiesWithModulIdComponent;
+    ], EditComponent);
+    return EditComponent;
 }());
-export { AddActivitiesWithModulIdComponent };
-//Activity.moduleid
-//ModuleName
-//# sourceMappingURL=add-activities-with-modul-id.component.js.map
+export { EditComponent };
+//# sourceMappingURL=edit.component.js.map
