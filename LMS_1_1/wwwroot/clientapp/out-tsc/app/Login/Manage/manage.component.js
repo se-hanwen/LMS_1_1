@@ -1,6 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
+import { RegisterUser } from '../Register/registeruser';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginMessageHandlerService } from '../login-message-handler.service';
@@ -15,6 +16,7 @@ var ManageComponent = /** @class */ (function () {
         this.router = router;
         this.PartipantService = PartipantService;
         this.unsubscribe = new Subject();
+        this.user = new RegisterUser();
         this.isTeacher = false;
     }
     ManageComponent.prototype.ngOnInit = function () {

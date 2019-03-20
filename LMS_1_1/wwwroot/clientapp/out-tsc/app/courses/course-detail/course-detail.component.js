@@ -6,13 +6,15 @@ import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PartipantService } from 'ClientApp/app/AddPartipant/partipant.service';
+import { LoginMessageHandlerService } from 'ClientApp/app/Login/login-message-handler.service';
 var CourseDetailComponent = /** @class */ (function () {
-    function CourseDetailComponent(route, CourseService, AuthService, cd, partipantservice) {
+    function CourseDetailComponent(route, CourseService, AuthService, cd, partipantservice, messhandler) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
         this.partipantservice = partipantservice;
+        this.messhandler = messhandler;
         this.isTeacher = false;
         this.showpartipantlist = false;
         this.showpartipantlistmsg = "Show";
@@ -33,6 +35,7 @@ var CourseDetailComponent = /** @class */ (function () {
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (course) {
             _this.course = course;
+            _this.messhandler.SendCourseStartDate(course.startDate);
             _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });
     };
@@ -58,7 +61,8 @@ var CourseDetailComponent = /** @class */ (function () {
         }),
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute, CourseService, AuthService,
             ChangeDetectorRef,
-            PartipantService])
+            PartipantService,
+            LoginMessageHandlerService])
     ], CourseDetailComponent);
     return CourseDetailComponent;
 }());

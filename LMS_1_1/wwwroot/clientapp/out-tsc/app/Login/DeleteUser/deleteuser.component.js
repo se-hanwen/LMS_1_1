@@ -32,15 +32,16 @@ var DeleteuserComponent = /** @class */ (function () {
         this.db.DeleteUser(this.user.id)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (status) {
-            if (status)
+            if (status) {
                 _this.errtext = "User Deleted";
+                _this.messagehandler.SendConfirm("User " + _this.user.firstName + ' ' + _this.user.lastName + " Deleted");
+                _this.messagehandler.SendConfirmGoOnUrl(["/Account/Delete"]);
+                _this.messagehandler.SendConfirmGoOnMessage("Delete another user?");
+                _this.messagehandler.SendConfirmGoBackUrl(["/Account/ManageUsers"]);
+                _this.router.navigate(['Account/Confirm']);
+            }
             _this.cd.markForCheck();
-            _this.messagehandler.SendConfirm("User " + _this.user.firstName + ' ' + _this.user.lastName + " Deleted");
-            _this.messagehandler.SendConfirmGoOnUrl(["/Account/Delete"]);
-            _this.messagehandler.SendConfirmGoOnMessage("Delete another user?");
-            _this.messagehandler.SendConfirmGoBackUrl(["/Account/ManageUsers"]);
-            _this.router.navigate(['Account/Confirm']);
-        });
+        }, function (err) { return _this.errtext = err; });
     };
     DeleteuserComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();

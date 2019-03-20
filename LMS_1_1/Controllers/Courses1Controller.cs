@@ -323,8 +323,7 @@ namespace LMS_1_1.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                string path = _programrepository.GetCourseImageUploadPath();
-                await _documentrepository.UploadFile(editModel.FileData, path);
+                
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -340,7 +339,8 @@ namespace LMS_1_1.Controllers
             //Upload...But skip the empty one from edit course.
             if (editModel.FileData.Length>0)
             {
-                await _documentrepository.UploadFile(editModel.FileData);
+                string path = _programrepository.GetCourseImageUploadPath();
+                await _documentrepository.UploadFile(editModel.FileData, path);
             }
 
             return NoContent();

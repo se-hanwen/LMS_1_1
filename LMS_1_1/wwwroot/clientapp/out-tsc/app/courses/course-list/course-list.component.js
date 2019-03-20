@@ -1,15 +1,17 @@
 import * as tslib_1 from "tslib";
 import { Component, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { CourseService } from '../course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 var CourseListComponent = /** @class */ (function () {
     // private userId: string;
-    function CourseListComponent(CourseService, AuthService, cd) {
+    function CourseListComponent(CourseService, AuthService, cd, router) {
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
+        this.router = router;
         this.unsubscribe = new Subject();
         this.courses = [];
         this.isTeacher = false;
@@ -17,21 +19,26 @@ var CourseListComponent = /** @class */ (function () {
     }
     CourseListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.isTeacher = this.AuthService.isTeacher;
-        /* this.AuthService.isTeacher
-         .pipe(takeUntil(this.unsubscribe))
-         .subscribe( i =>
-             {
-                 this.isTeacher=i;
-                 this.cd.markForCheck();
-             }
-         );*/
-        this.CourseService.getCourses()
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (courses) {
-            _this.courses = courses;
-            _this.cd.markForCheck();
-        }, function (error) { return _this.errorMessage = error; });
+        if (!this.AuthService.isAuthenticated) {
+            this.router.navigate(['/Account/Login']);
+        }
+        else {
+            this.isTeacher = this.AuthService.isTeacher;
+            /* this.AuthService.isTeacher
+                .pipe(takeUntil(this.unsubscribe))
+                .subscribe( i =>
+                    {
+                        this.isTeacher=i;
+                        this.cd.markForCheck();
+                    }
+                );*/
+            this.CourseService.getCourses()
+                .pipe(takeUntil(this.unsubscribe))
+                .subscribe(function (courses) {
+                _this.courses = courses;
+                _this.cd.markForCheck();
+            }, function (error) { return _this.errorMessage = error; });
+        }
     };
     CourseListComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
@@ -44,7 +51,8 @@ var CourseListComponent = /** @class */ (function () {
             styleUrls: ['./course-list.component.css']
         }),
         tslib_1.__metadata("design:paramtypes", [CourseService, AuthService,
-            ChangeDetectorRef])
+            ChangeDetectorRef,
+            Router])
     ], CourseListComponent);
     return CourseListComponent;
 }());

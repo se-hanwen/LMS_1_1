@@ -6,12 +6,14 @@ import { map, takeUntil, catchError } from 'rxjs/operators';
 import { tokenData } from './tokenData';
 import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { LoginMessageHandlerService } from '../Login/login-message-handler.service';
+import { Router } from '@angular/router';
 var AuthService = /** @class */ (function () {
-    function AuthService(http, jwtHelper, MessageHandler) {
+    function AuthService(http, jwtHelper, MessageHandler, router) {
         var _this = this;
         this.http = http;
         this.jwtHelper = jwtHelper;
         this.MessageHandler = MessageHandler;
+        this.router = router;
         this.unsubscribe = new Subject();
         // ...public jwtHelper: JwtHelperService,
         this.tokenData = new tokenData();
@@ -208,8 +210,10 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.checkisAuthenticated = function (token, tokenExpiration) {
         var res = !(token.length == 0 || tokenExpiration < new Date());
-        if (!res && token.length > 0)
+        if (!res && token.length > 0) {
             this.logout();
+            this.router.navigate(['/Account/Login']);
+        }
         // Add time to expiration
         // this.tokenData.tokenExpiration= new Date(Date.now().valueOf()+30*60*1000);
         //localStorage.setItem("expires_at",this.tokenData.tokenExpiration.toISOString());
@@ -245,7 +249,8 @@ var AuthService = /** @class */ (function () {
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient, JwtHelperService, LoginMessageHandlerService])
+        tslib_1.__metadata("design:paramtypes", [HttpClient, JwtHelperService, LoginMessageHandlerService,
+            Router])
     ], AuthService);
     return AuthService;
 }());
