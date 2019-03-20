@@ -12,23 +12,29 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using LMS_1_1.ViewModels;
 using System.IO;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS_1_1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Documents1Controller : ControllerBase
     {
         private readonly ApplicationDbContext _context;
        
         private readonly IDocumentRepository _repository;
         private readonly ILogger<Documents1Controller> _logger;
+        private readonly UserManager<LMSUser> _userManager;
 
-        public Documents1Controller(IDocumentRepository repository, ILogger<Documents1Controller> logger, ApplicationDbContext context)
+        public Documents1Controller(IDocumentRepository repository, ILogger<Documents1Controller> logger, ApplicationDbContext context, UserManager<LMSUser> userManager)
         {
             _repository = repository;
             _logger = logger;
-          
+            _userManager = userManager;
+
         }
 
         // GET: api/Documents1
@@ -101,6 +107,7 @@ namespace LMS_1_1.Controllers
         }
 
         // POST: api/Documents1
+       
         [HttpPost, DisableRequestSizeLimit]
         public async Task<ActionResult<Document>> PostDocument([FromForm] UploadDocumentInfoViewModel documentVm)
         {
@@ -108,7 +115,8 @@ namespace LMS_1_1.Controllers
             {
                 return BadRequest(ModelState);
             }
-           string fileName= await _repository.UploadFile(documentVm.FileData);
+            string path = _repository.GetDocumentUploadPath();
+           string fileName= await _repository.UploadFile(documentVm.FileData,path);
             if(fileName!=null)
                 {
                 Document document = new Document
@@ -117,7 +125,7 @@ namespace LMS_1_1.Controllers
                     Description = documentVm.Description,
                     UploadDate = DateTime.Now,
                     Path = fileName,
-                    LMSUserId = documentVm.UploaderId,
+                    LMSUserId =_userManager.GetUserId(User),
                     DocumentTypeId = documentVm.DocumentTypeId,
 
                     CourseId = documentVm.DocOwnerTypeId == (int)DocOwnerType.Course ? documentVm.DocOwnerId : null,

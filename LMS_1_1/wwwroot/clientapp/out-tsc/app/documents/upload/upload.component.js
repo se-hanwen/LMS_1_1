@@ -36,7 +36,6 @@ var UploadComponent = /** @class */ (function () {
         var formData = new FormData();
         formData.append('Name', this.uploadForm.value.name);
         formData.append('Description', this.uploadForm.value.description);
-        formData.append('UploaderId', "ce87a5b9-84d1-46c7-951d-f750e16b4eba");
         formData.append('DocumentTypeId', this.DocumentTypeId);
         formData.append('DocOwnerTypeId', this.DocOwnerTypeId);
         formData.append('DocOwnerId', this.DocOwnerId);

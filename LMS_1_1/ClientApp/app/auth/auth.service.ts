@@ -151,11 +151,19 @@ ngOnInit(): void {
 
   private _isTeacher:string="";
   private Realtoken: string="";
-   
-  private getAuthHeader() : HttpHeaders
+    private httpOptions;
+  public getAuthHeader() : HttpHeaders
   {
     return  new HttpHeaders({ "Authorization": "Bearer " + this.Realtoken });
   }
+
+
+
+    public getToken(){
+        return this.Realtoken;
+    }
+
+   
   
   public login(creds:User) : Observable<boolean> | undefined {
     return this.http.post(this.url+"/account/createtoken", creds)

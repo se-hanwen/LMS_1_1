@@ -13,7 +13,7 @@ namespace LMS_1_1.Repository
         Task<Course> GetCourseByIdAsync (Guid courseId, bool includeModule);
         Task<bool> CourseExistsAsync (Guid id);
         /* Course FindCourseById (string courseId);*/
-
+        string GetCourseImageUploadPath ();
 
         Task<IEnumerable<Module>> GetAllModulesAsync (bool includeActivities);
         Task<Module> GetModuleByIdAsync (Guid moduleId, bool includeActivity);

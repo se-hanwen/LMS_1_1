@@ -1,20 +1,21 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, takeUntil } from 'rxjs/operators';
 import { throwError, Subject } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 var DocumentService = /** @class */ (function () {
-    function DocumentService(http) {
+    function DocumentService(http, AuthService) {
+        var _this = this;
         this.http = http;
+        this.AuthService = AuthService;
         this.subject = new Subject();
+        this.token = "";
+        this.unsubscribe = new Subject();
         this.documentUrl = "https://localhost:44396/api/documents1/";
-        this.httpOptions = {
-            headers: new HttpHeaders({
-                'Accept': 'text/html, application/xhtml+xml, */*',
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }),
-            responseType: 'blob'
-        };
+        this.AuthService.token
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(function (i) { return _this.token = i; });
     }
     DocumentService.prototype.isUploaded = function (message) {
         this.subject.next({ message: message });
@@ -22,21 +23,34 @@ var DocumentService = /** @class */ (function () {
     DocumentService.prototype.getUplaodtStatus = function () {
         return this.subject.asObservable();
     };
+    DocumentService.prototype.getAuthHeader = function () {
+        return new HttpHeaders({ "Authorization": "Bearer " + this.token });
+    };
+    DocumentService.prototype.getAuthHeader2 = function () {
+        return {
+            headers: new HttpHeaders({
+                'Accept': 'text/html, application/xhtml+xml, */*',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                "Authorization": "Bearer " + this.token
+            }),
+            responseType: 'blob'
+        };
+    };
     DocumentService.prototype.getDocumentsByOwnerId = function (id) {
         console.log(this.documentUrl);
-        return this.http.get(this.documentUrl + "ByOwner?id=" + id).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+        return this.http.get(this.documentUrl + "ByOwner?id=" + id, { headers: this.getAuthHeader() }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     DocumentService.prototype.uploadDocument = function (document) {
-        return this.http.post(this.documentUrl, document).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+        return this.http.post(this.documentUrl, document, { headers: this.getAuthHeader() }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     DocumentService.prototype.downloadFile = function (filePath) {
         var input = filePath;
-        return this.http.post(this.documentUrl + "DownloadFile?fileName=" + input, {}, this.httpOptions).pipe(tap(function (data) {
+        return this.http.post(this.documentUrl + "DownloadFile?fileName=" + input, {}, this.getAuthHeader2()).pipe(tap(function (data) {
             return console.log(data);
         }), catchError(this.handleError));
     };
     DocumentService.prototype.deleteFileById = function (id) {
-        return this.http.delete(this.documentUrl + id).pipe(tap(function (data) { return console.log(data); }), catchError(this.handleError));
+        return this.http.delete(this.documentUrl + id, { headers: this.getAuthHeader() }).pipe(tap(function (data) { return console.log(data); }), catchError(this.handleError));
     };
     DocumentService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure
@@ -54,11 +68,15 @@ var DocumentService = /** @class */ (function () {
         console.error(errorMessage);
         return throwError(errorMessage);
     };
+    DocumentService.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
     DocumentService = tslib_1.__decorate([
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient])
+        tslib_1.__metadata("design:paramtypes", [HttpClient, AuthService])
     ], DocumentService);
     return DocumentService;
 }());

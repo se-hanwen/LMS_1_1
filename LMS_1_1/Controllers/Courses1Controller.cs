@@ -315,7 +315,7 @@ namespace LMS_1_1.Controllers
                 Name = editModel.Name,
                 StartDate = editModel.StartDate,
                 Description = editModel.Description,
-                CourseImgPath = editModel.FileData.FileName
+                CourseImgPath = @"..\assets\img\" + editModel.FileData.FileName
             };
 
             _context.Entry(edCourse).State = EntityState.Modified;
@@ -323,6 +323,7 @@ namespace LMS_1_1.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -338,7 +339,8 @@ namespace LMS_1_1.Controllers
             //Upload...But skip the empty one from edit course.
             if (editModel.FileData.Length>0)
             {
-                await _documentrepository.UploadFile(editModel.FileData);
+                string path = _programrepository.GetCourseImageUploadPath();
+                await _documentrepository.UploadFile(editModel.FileData, path);
             }
 
             return NoContent();
@@ -362,14 +364,10 @@ namespace LMS_1_1.Controllers
          
            _context.Courses.Add(course);
             await _context.SaveChangesAsync();
-            await _documentrepository.UploadFile(courseVm.FileData);
+          string path=  _programrepository.GetCourseImageUploadPath();
+            await _documentrepository.UploadFile(courseVm.FileData, path);
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
-
-
-        
-
-
         // DELETE: api/Courses1/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Course>> DeleteCourse(Guid iD)
@@ -379,8 +377,6 @@ namespace LMS_1_1.Controllers
             {
                 return NotFound();
             }
-
-
             //Delete course. Data related in Modules and LMSActivity also are deleted.
             _context.Courses.Remove(course);
             _context.SaveChanges();

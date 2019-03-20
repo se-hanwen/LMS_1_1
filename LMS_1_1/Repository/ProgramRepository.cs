@@ -7,6 +7,8 @@ using LMS_1_1.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace LMS_1_1.Repository
 {
@@ -16,16 +18,18 @@ namespace LMS_1_1.Repository
         private readonly ApplicationDbContext _ctx;
         private readonly ILogger<ProgramRepository> _logger;
         private readonly UserManager<LMSUser> _userManager;
+        private readonly IHostingEnvironment _environment;
         //private readonly RoleManager<LMSUser> _roleManager;
 
         public ProgramRepository (ApplicationDbContext ctx, ILogger<ProgramRepository> logger ,UserManager<LMSUser> userManager
-         //   , RoleManager<LMSUser> roleManager
+        ,IHostingEnvironment environment
             )
         {
             _ctx = ctx;
             _logger = logger;
             _userManager = userManager;
-           // _roleManager = roleManager;
+            _environment = environment;
+            // _roleManager = roleManager;
         }
         #region Commen
         public async Task AddEntityAsync (object model)
@@ -54,6 +58,14 @@ namespace LMS_1_1.Repository
         public async Task<bool> SaveAllAsync ()
         {
             return await _ctx.SaveChangesAsync() > 0;
+        }
+
+        public string GetCourseImageUploadPath ()
+        {
+            string rootPath = _environment.ContentRootPath;
+            var folderName = Path.Combine("clientApp", "assets/img");
+            var path = Path.Combine(rootPath, folderName);
+            return path;
         }
         #endregion
         #region Course
@@ -232,7 +244,9 @@ namespace LMS_1_1.Repository
 
         }
 
-        #endregion  
+      
+
+        #endregion
 
     }
 }
