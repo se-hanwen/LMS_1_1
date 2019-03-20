@@ -14,7 +14,7 @@ var CourseEditComponent = /** @class */ (function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
         this.CourseService.getCourseById(id).subscribe(function (tcourse) {
-            tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[2];
+            tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
             _this.editCourse = tcourse;
         }, function (error) { _this.errorMsg = error; });
     };
