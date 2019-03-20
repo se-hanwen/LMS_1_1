@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { IModule,Module } from '../../courses/course';
+import { IModule,Module } from '../../Courses/course';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
@@ -20,14 +20,15 @@ export class AddModuleWithCourseIdComponent implements OnInit, OnDestroy  {
    Module: IModule = new Module();	
    coursestartdate: Date;
   CourseId: string ="";	
-  errorMessage="";
+  errorMessage:string="";
+  CourseName:string =""
   constructor(private route: ActivatedRoute
     ,private db: AuthService
     , private cd: ChangeDetectorRef
     ,private messhandler: LoginMessageHandlerService
-    ,private CourseService: CourseService
+   // ,private CourseService: CourseService
     ,private ModuleService: ModuleService
-    ,  private router: Router
+  //  ,  private router: Router
     ) { }	
 
    ngOnInit() {	
@@ -49,6 +50,14 @@ export class AddModuleWithCourseIdComponent implements OnInit, OnDestroy  {
         this.cd.markForCheck();
       }
     )
+    this.messhandler.CourseName
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(
+      status => {
+        this.CourseName=status;
+        this.cd.markForCheck();
+      }
+    )
   }	
 
 public gotDate():void
@@ -56,9 +65,9 @@ public gotDate():void
    if(this.Module.startDate != null && this.Module.endDate != null)
    {
       this.messhandler.SendDubbId(this.Module.courseid);
-      this.messhandler.SendDubbType("Modules");
-      this.messhandler.SendDubbStart(this.Module.startDate);
-      this.messhandler.SendDubbEnd(this.Module.endDate);
+      this.messhandler.SendDubbType("Module");
+      this.messhandler.SendDubbStart(new Date(this.Module.startDate+":00.000Z"));
+      this.messhandler.SendDubbEnd(new Date(this.Module.endDate+":00.000Z"));
    }
 
   // post data

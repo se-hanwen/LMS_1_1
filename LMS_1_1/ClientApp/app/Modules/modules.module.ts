@@ -9,7 +9,7 @@ import { ModulDetailsComponent } from './Details/details.component';
 import { DocumentsModule } from '../documents/documents.module';
 import { ModuleDeleteComponent } from './module-delete/module-delete.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
-import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
+import { CheckIfDubbsComponent } from './Check-if-dubbs/check-if-dubbs.component';
 
 
 @NgModule({
@@ -21,6 +21,7 @@ import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
       CheckIfDubbsComponent
      
   ],
+
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -45,6 +46,10 @@ import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
             }
         ]
     )
+  ],
+  exports: [
+
+    CheckIfDubbsComponent
   ]
 })
 export class ModulesModule { }

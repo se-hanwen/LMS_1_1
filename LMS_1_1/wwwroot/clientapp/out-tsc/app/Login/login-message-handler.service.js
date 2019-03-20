@@ -40,6 +40,16 @@ var LoginMessageHandlerService = /** @class */ (function () {
         this.DubbStart = this.DubbStartSource.asObservable();
         this.DubbEndSource = new BehaviorSubject(null);
         this.DubbEnd = this.DubbEndSource.asObservable();
+        this.ModulidSource = new BehaviorSubject(null);
+        this.Modulid = this.ModulidSource.asObservable();
+        this.ModulStartDateSource = new BehaviorSubject(null);
+        this.ModulStartDate = this.ModulStartDateSource.asObservable();
+        this.ModulEndDateSource = new BehaviorSubject(null);
+        this.ModulEndDate = this.ModulEndDateSource.asObservable();
+        this.ModulNameSource = new BehaviorSubject(null);
+        this.ModulName = this.ModulNameSource.asObservable();
+        this.CourseNameSource = new BehaviorSubject(null);
+        this.CourseName = this.CourseNameSource.asObservable();
     }
     LoginMessageHandlerService.prototype.SendUserId = function (userid) {
         this.useridSource.next(userid == null ? '' : userid);
@@ -107,6 +117,26 @@ var LoginMessageHandlerService = /** @class */ (function () {
     };
     LoginMessageHandlerService.prototype.SendDubbEnd = function (arg) {
         this.DubbEndSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendModulid = function (arg) {
+        this.ModulidSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendModulStartDate = function (arg) {
+        this.ModulStartDateSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendModulEndDate = function (arg) {
+        this.ModulEndDateSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendModulName = function (arg) {
+        this.ModulNameSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendCourseName = function (arg) {
+        this.CourseNameSource.next(arg);
         return true;
     };
     LoginMessageHandlerService = tslib_1.__decorate([

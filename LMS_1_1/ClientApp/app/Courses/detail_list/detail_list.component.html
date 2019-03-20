@@ -55,10 +55,11 @@
                         </li>
 
                     </ul>
-                    <div *ngIf="isTeacher">
-                        Add Activity
-                    </div>
                 </div>
+                    <div *ngIf="isTeacher">
+                        <a [routerLink]="['/Activity/create']">Add module</a>
+                    </div>
+              
 
             </div>
 

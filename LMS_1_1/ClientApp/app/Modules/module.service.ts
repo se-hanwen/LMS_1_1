@@ -1,10 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Subject, throwError } from 'rxjs';
+import { Subject, throwError, Observable } from 'rxjs';
 import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
 import { IModule } from '../Courses/course';
 import { Guid } from 'guid-typescript';
+import { IDubbParas } from './Check-if-dubbs/DubbParas';
 
 @Injectable({
     providedIn: 'root'
@@ -24,10 +25,10 @@ export class ModuleService implements OnDestroy {
             .subscribe(i => this.token = i);
     }
 
-    CheckIfDubblett(type:string, id: string, start: Date, end: Date):any
+    CheckIfDubblett(paras :IDubbParas):Observable<boolean>
     {
-      let parmas={"type":type,"id":id,"start":start,"end":end };
-      return this.http.post(this.moduleUrl+"/TestIfInRange/",parmas
+     
+      return this.http.post<boolean>(this.moduleUrl+"/TestIfInRange",paras
       ,{
         headers: this.getAuthHeader()
     }).pipe(
@@ -39,7 +40,7 @@ export class ModuleService implements OnDestroy {
 
 
     CreateModule(Module: IModule): any {
-        return this.http.post(this.moduleUrl, Module,
+        return this.http.post(this.moduleUrl+"/PostModule", Module,
             {
                 headers: this.getAuthHeader()
             }).pipe(
@@ -65,11 +66,6 @@ export class ModuleService implements OnDestroy {
         return throwError(errorMessage);
     }
 
-    ngOnDestroy(): void {
-        this.unsubscribe.next();
-        this.unsubscribe.complete();
-    }
-
     //Delete a module by a given guid.
     DeleteModule(id: Guid) {
         let urlString = this.moduleUrl + "/" + id;
@@ -81,4 +77,11 @@ export class ModuleService implements OnDestroy {
                 tap(result => JSON.stringify(result)), catchError(this.handleError)
             );
     }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    }
+
+
 }

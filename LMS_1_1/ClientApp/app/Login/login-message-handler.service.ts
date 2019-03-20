@@ -64,6 +64,24 @@ export class LoginMessageHandlerService {
  private DubbEndSource = new BehaviorSubject<Date>(null);
  DubbEnd = this.DubbEndSource.asObservable();
 
+ private ModulidSource = new BehaviorSubject<string>(null);
+ Modulid = this.ModulidSource.asObservable();
+
+ private ModulStartDateSource = new BehaviorSubject<Date>(null);
+ ModulStartDate = this.ModulStartDateSource.asObservable();
+
+ private ModulEndDateSource = new BehaviorSubject<Date>(null);
+ ModulEndDate = this.ModulEndDateSource.asObservable();
+
+ private ModulNameSource = new BehaviorSubject<string>(null);
+ ModulName = this.ModulNameSource.asObservable();
+
+ private CourseNameSource = new BehaviorSubject<string>(null);
+ CourseName = this.CourseNameSource.asObservable();
+
+
+
+
   constructor() { }
 
   public SendUserId(userid:string) : boolean 
@@ -162,6 +180,36 @@ export class LoginMessageHandlerService {
   public SendDubbEnd(arg:Date): boolean
   {
       this.DubbEndSource.next(arg);
+      return true;
+  }
+
+  public SendModulid(arg:string): boolean
+  {
+      this.ModulidSource.next(arg);
+      return true;
+  }
+
+  public SendModulStartDate(arg:Date): boolean
+  {
+      this.ModulStartDateSource.next(arg);
+      return true;
+  }
+
+  public SendModulEndDate(arg:Date): boolean
+  {
+      this.ModulEndDateSource.next(arg);
+      return true;
+  }
+
+  public SendModulName(arg:string): boolean
+  {
+      this.ModulNameSource.next(arg);
+      return true;
+  }
+
+  public SendCourseName(arg:string): boolean
+  {
+      this.CourseNameSource.next(arg);
       return true;
   }
 }

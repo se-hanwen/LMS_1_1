@@ -41,6 +41,8 @@ namespace LMS_1_1.Controllers
             _documentrepository = documentrepository;
             _context = context;
             _environment = environment;
+       
+      
         }
 
 
@@ -53,7 +55,8 @@ namespace LMS_1_1.Controllers
         }
 
         // POST: api/Module1
-        [HttpPost]
+        [HttpPost("PostModule")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<Module>> PostModule([FromBody] ModuleViewModel modelVm)
         {
             if (!ModelState.IsValid)
@@ -82,6 +85,7 @@ namespace LMS_1_1.Controllers
 
         // DELETE: api/module1/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async void Delete(Guid iD)
         {
             var module = _context.Modules.FindAsync(iD);
@@ -95,20 +99,20 @@ namespace LMS_1_1.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("TestIfInRange")]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<bool>> TestIfInRange(string type, string id, DateTime start, DateTime end)
+        public async Task<ActionResult<bool>> TestIfInRange([FromBody] DubbParas parmas)
         {
             bool res = false;
-            if(type=="Modules")
+            if(parmas.Dubbtype == "Module")
             {
-                 res = await _programrepository.CheckIfModuleInRange(id, start, end);
+                 res = await _programrepository.CheckIfModuleInRange(parmas.Dubbid, parmas.Dubbstart, parmas.Dubbend);
 
 
             }
-            else if(type=="Activity")
+            else if(parmas.Dubbtype == "Activity")
             {
-                res = await _programrepository.CheckIfActivityInRange(id, start, end);
+                res = await _programrepository.CheckIfActivityInRange(parmas.Dubbid, parmas.Dubbstart, parmas.Dubbend);
             }
             else
             {

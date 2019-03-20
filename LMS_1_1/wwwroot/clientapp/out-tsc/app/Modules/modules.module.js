@@ -10,7 +10,7 @@ import { ModulDetailsComponent } from './Details/details.component';
 import { DocumentsModule } from '../documents/documents.module';
 import { ModuleDeleteComponent } from './module-delete/module-delete.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
-import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
+import { CheckIfDubbsComponent } from './Check-if-dubbs/check-if-dubbs.component';
 var ModulesModule = /** @class */ (function () {
     function ModulesModule() {
     }
@@ -45,6 +45,9 @@ var ModulesModule = /** @class */ (function () {
                         component: ModuleDeleteComponent
                     }
                 ])
+            ],
+            exports: [
+                CheckIfDubbsComponent
             ]
         })
     ], ModulesModule);

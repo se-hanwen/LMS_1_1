@@ -54,6 +54,8 @@ namespace LMS_1_1.ViewModels
         public string ActivityType { get; set; }
         public string Name2 { get; set; }
         public string isExpanded { get; set; }
+        public int? ActivityTypeId { get; set; }
+        public Guid? Modulid { get; set; }
 
     }
 

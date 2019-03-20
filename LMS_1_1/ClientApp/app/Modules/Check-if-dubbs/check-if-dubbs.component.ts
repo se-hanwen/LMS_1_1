@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
-import { LoginMessageHandlerService } from '../Login/login-message-handler.service';
-import { ModuleService } from './module.service';
+import { LoginMessageHandlerService } from '../../Login/login-message-handler.service';
+import { ModuleService } from '../module.service';
 import { takeUntil } from 'rxjs/operators';
+import { IDubbParas, DubbParas } from './DubbParas';
 
 @Component({
   selector: 'check-if-dubbs',
@@ -11,11 +12,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CheckIfDubbsComponent implements OnInit, OnDestroy {
   private unsubscribe : Subject<void> = new Subject();
-  dubbtype: string = "";
-  dubbid: string ="";
-  dubbstart: Date = null;
-  dubbend: Date =null;
-  Warning: string="";
+  paras :IDubbParas =new DubbParas() ;
+  Warning : string ="";
   constructor(
     private messhandler: LoginMessageHandlerService
     ,private ModuleService: ModuleService
@@ -27,7 +25,7 @@ export class CheckIfDubbsComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(
       (status: string) => {
-        this.dubbtype=status;
+        this.paras.dubbtype=status;
         this.testandrun();
         this.cd.markForCheck();
       }
@@ -36,7 +34,7 @@ export class CheckIfDubbsComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(
       (status: string) => {
-        this.dubbid=status;
+        this.paras.dubbid=status;
         this.testandrun();
         this.cd.markForCheck();
       }
@@ -45,7 +43,7 @@ export class CheckIfDubbsComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(
       (status: Date) => {
-        this. dubbstart=status;
+        this.paras.dubbstart=status;
         this.testandrun();
         this.cd.markForCheck();
       }
@@ -54,7 +52,7 @@ export class CheckIfDubbsComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(
       (status: Date) => {
-        this. dubbend=status;
+        this.paras.dubbend=status;
         this.testandrun();
         this.cd.markForCheck();
       }
@@ -63,16 +61,16 @@ export class CheckIfDubbsComponent implements OnInit, OnDestroy {
 
    private testandrun()
    {  
-      if (this.dubbtype != "" && this.dubbid != "" && this.dubbstart != null && this.dubbend != null)
+      if (this.paras.dubbtype != "" && this.paras.dubbid != "" && this.paras.dubbstart != null && this.paras.dubbend != null)
       {
-        this.ModuleService.CheckIfDubblett(this.dubbtype,this.dubbid, this.dubbstart, this.dubbend)
+        this.ModuleService.CheckIfDubblett(this.paras)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe(
            (status: boolean) =>
            {
               if (status)
               {
-                this.Warning= "There exists "+this.dubbtype+" in the selected range";
+                this.Warning= "There exists allready "+this.paras.dubbtype+" in the selected range";
               }
               else
               {

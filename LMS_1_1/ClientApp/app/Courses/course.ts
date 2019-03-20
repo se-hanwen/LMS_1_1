@@ -53,11 +53,22 @@ export interface IActivity {
     startDate: Date;
     endDate: Date;
     description: string;
-
-
-    activityType: IActivityType
+    moduleid?: string;
+    ActivityTypeId?:number
+  //  activityType: IActivityType
 }
 
+export class Activity implements IActivity
+{
+    id?: Guid;
+    name: string;
+    startDate: Date;
+    endDate: Date;
+    description: string;
+    moduleid?: string;
+
+    ActivityTypeId?:number 
+}
 
 
 export interface IActivity2 {
