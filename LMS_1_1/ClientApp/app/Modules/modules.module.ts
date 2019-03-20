@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddModuleWithCourseIdComponent } from './Create/add-module-with-course-id.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ActitityListComponent } from './Activity_list/actitity_list.component';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { ModulDetailsComponent } from './Details/details.component';
+import { DocumentsModule } from '../documents/documents.module';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
-
 
 
 @NgModule({
@@ -18,7 +18,9 @@ import { IsTeacherGuard } from '../Shared/is-teacher.guard';
   ],
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
+      FormsModule,
+      DocumentsModule,
     RouterModule.forChild(
         [
             {

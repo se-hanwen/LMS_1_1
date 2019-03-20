@@ -10,10 +10,10 @@ namespace LMS_1_1.Repository
 {
     public interface IDocumentRepository
     {
-        Task<string> UploadFile (IFormFile file);
+        Task<string> UploadFile (IFormFile file,string path);
         Task<FileStream> DownloadFile (string fileName);
         Task<bool> RemoveFile (string fileName);
-
+        string GetDocumentUploadPath ();
         Task<IEnumerable<Document>> GetAllDocumentsAsync ();
         Task<Document> GetDocumentByIdAsync (Guid documentId);
         Task<IEnumerable<Document>> GetDocumentsByIdOwnerAsync (Guid OwnerId);

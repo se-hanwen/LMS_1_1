@@ -6,7 +6,6 @@ export interface IDocument
     name: string;
     uploadDate: Data;
     description: string;
-    uploaderId: string;
     docOwnerTypeId: number;
     path: string;
 }

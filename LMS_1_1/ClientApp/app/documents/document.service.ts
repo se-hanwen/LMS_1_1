@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, takeUntil } from 'rxjs/operators';
 import { throwError, Observable, Subject } from 'rxjs';
 import { IDocument} from './document';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,36 +11,57 @@ import { IDocument} from './document';
 export class DocumentService {
 
     private subject = new Subject<any>();
+    private token: string = "";
+    private unsubscribe: Subject<void> = new Subject();
 
     isUploaded(message: boolean) {
         this.subject.next({ message});
     }
+
     getUplaodtStatus(): Observable<any> {
         return this.subject.asObservable();
     }
 
+   
+   
 
     private documentUrl = "https://localhost:44396/api/documents1/";
 
-    private httpOptions = {
-        headers: new HttpHeaders({
-            'Accept': 'text/html, application/xhtml+xml, */*',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-        responseType: 'blob' as'json'
-    };
+    private getAuthHeader(): HttpHeaders {
+        return new HttpHeaders({ "Authorization": "Bearer " + this.token });
+    }
 
-    constructor(private http: HttpClient) { }
+
+    private getAuthHeader2() {
+        return {
+            headers: new HttpHeaders({
+                'Accept': 'text/html, application/xhtml+xml, */*',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                "Authorization": "Bearer " + this.token
+            }),
+            responseType: 'blob' as 'json'
+        };
+    }
+
+
+
+    constructor(private http: HttpClient, private AuthService: AuthService) {
+        this.AuthService.token
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(i => this.token = i);
+
+
+    }
 
     getDocumentsByOwnerId(id: string): Observable<IDocument[]> {
         console.log(this.documentUrl);
-        return this.http.get<IDocument[]>(this.documentUrl + "ByOwner?id=" + id).pipe(
+        return this.http.get<IDocument[]>(this.documentUrl + "ByOwner?id=" + id, { headers: this.getAuthHeader() }).pipe(
             tap(data => console.log('All:' + JSON.stringify(data))),
             catchError(this.handleError)
         );
     }
     uploadDocument(document: any) {
-        return this.http.post(this.documentUrl, document).pipe(
+        return this.http.post(this.documentUrl, document, { headers: this.getAuthHeader() }).pipe(
             tap(result => JSON.stringify(result)),
             catchError(this.handleError)
         );
@@ -47,9 +69,8 @@ export class DocumentService {
 
     downloadFile(filePath: string): Observable<Blob> {
         let input = filePath;
-
-        return this.http.post<Blob>(this.documentUrl + "DownloadFile?fileName=" + input, {},
-            this.httpOptions).pipe
+        return this.http.post<Blob>(this.documentUrl + "DownloadFile?fileName=" + input, {}, this.getAuthHeader2()
+            ).pipe
             (
             tap(
                 data => 
@@ -59,7 +80,7 @@ export class DocumentService {
     }
 
     deleteFileById(id: string) {
-        return this.http.delete(this.documentUrl + id).pipe(
+        return this.http.delete(this.documentUrl + id, { headers: this.getAuthHeader() }).pipe(
             tap(data => console.log(data)),
             catchError(this.handleError)
         );
@@ -79,5 +100,10 @@ export class DocumentService {
         }
         console.error(errorMessage);
         return throwError(errorMessage);
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

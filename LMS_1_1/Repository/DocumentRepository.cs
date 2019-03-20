@@ -29,6 +29,7 @@ namespace LMS_1_1.Repository
         public async Task AddDocumentAsync (Document model)
         {
             await _ctx.AddAsync(model);
+
         }
 
         public async Task<IEnumerable<Document>> GetAllDocumentsAsync ()
@@ -74,14 +75,20 @@ namespace LMS_1_1.Repository
             }
         }
 
+        public string GetDocumentUploadPath()
+        {
+            string rootPath = _environment.ContentRootPath;
+            var folderName = Path.Combine("Attachements", "Documents");
+            var path = Path.Combine(rootPath, folderName);
+            return path;
+        }
 
-        public async Task<string> UploadFile (IFormFile file)
+
+        public async Task<string> UploadFile (IFormFile file,string path)
         {
             try
             {
-                string rootPath = _environment.ContentRootPath;
-                var folderName = Path.Combine("Attachements", "Documents");
-                var path = Path.Combine(rootPath, folderName);
+                
 
                 if (file.Length > 0)
                 {
