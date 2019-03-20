@@ -9,7 +9,7 @@ import { IModule } from '../Courses/course';
   providedIn: 'root'
 })
 export class ModuleService implements  OnDestroy {
-  private moduleUrl = "https://localhost:44396/api/courses1";
+  private moduleUrl = "https://localhost:44396/api/Module1";
   private token: string="";
   private unsubscribe : Subject<void> = new Subject();
 

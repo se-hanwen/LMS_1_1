@@ -52,24 +52,29 @@ var RegisterComponent = /** @class */ (function () {
     RegisterComponent.prototype.onRegister = function (TheForm) {
         var _this = this;
         this.errorMessage = "";
-        this.db.register(this.user)
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(function (success) {
-            _this.saveduser = true;
-            TheForm.form.disable();
-            _this.cd.markForCheck();
-            var msg = "Created " + _this.user.firstName + " " + _this.user.lastName + " with the role " + _this.user.role;
-            if (_this.user.role == "Student") {
-                // om student medella add
-                _this.messhandler.SendUserId(success.value.name);
-                _this.returnmessage = msg;
-            }
-            else {
-                _this.messhandler.SendConfirm(msg);
-                _this.router.navigate(['/Account/ConfirmRegistedUser']);
-            }
-            return true;
-        }, function (err) { return _this.errorMessage = err; });
+        if (this.user.password != this.user.confirmpassword) {
+            this.errorMessage = "Passwords doesn't match";
+        }
+        else {
+            this.db.register(this.user)
+                .pipe(takeUntil(this.unsubscribe))
+                .subscribe(function (success) {
+                _this.saveduser = true;
+                TheForm.form.disable();
+                _this.cd.markForCheck();
+                var msg = "Created " + _this.user.firstName + " " + _this.user.lastName + " with the role " + _this.user.role;
+                if (_this.user.role == "Student") {
+                    // om student medella add
+                    _this.messhandler.SendUserId(success.value.name);
+                    _this.returnmessage = msg;
+                }
+                else {
+                    _this.messhandler.SendConfirm(msg);
+                    _this.router.navigate(['/Account/ConfirmRegistedUser']);
+                }
+                return true;
+            }, function (err) { return _this.errorMessage = err; });
+        }
     };
     RegisterComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();

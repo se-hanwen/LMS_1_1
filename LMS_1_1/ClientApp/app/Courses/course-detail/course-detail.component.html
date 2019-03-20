@@ -16,8 +16,7 @@
                     <div class="card-body" *ngIf="isTeacher">
                         <div class="row">
                             <div class="col-6">
-                                <!-- <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a> -->
-                                <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Add Module</a>
+                                <a [routerLink]="['/Modules/create']">Add Module</a>
                             </div>
                             <div class="col-6">
                                 <a [routerLink]="['/AddPartipant', course.id]">Add Participant</a>

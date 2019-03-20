@@ -38,8 +38,14 @@ export class ManageComponent  implements OnInit, OnDestroy{
   public onRegister(theForm)
   {
     this.errorMessage = "";
-    if(this.user.oldpassword==null)
-      this.user.oldpassword="";
+    if(this.user.password!=this.user.confirmpassword)
+    {
+      this.errorMessage="Passwords doesn't match";
+    }
+    else
+    {
+      if(this.user.oldpassword==null)
+        this.user.oldpassword="";
 
     
       this.db.UpdateUser(this.user)
@@ -58,7 +64,7 @@ export class ManageComponent  implements OnInit, OnDestroy{
         }
         
         );
-    
+      }
   }
 
   ngOnDestroy(): void {

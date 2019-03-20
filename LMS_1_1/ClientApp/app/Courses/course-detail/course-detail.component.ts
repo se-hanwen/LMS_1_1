@@ -39,6 +39,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy  {
             this.cd.markForCheck(); 
           });*/
         let id: string = this.route.snapshot.paramMap.get('id');
+        this.messhandler.SendCourseid(id);
         this.CourseService.getCourseAndModulebyId(id)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe(

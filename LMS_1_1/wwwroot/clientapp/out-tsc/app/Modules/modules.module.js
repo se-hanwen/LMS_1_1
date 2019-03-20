@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { ActitityListComponent } from './Activity_list/actitity_list.component';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { ModulDetailsComponent } from './Details/details.component';
+import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 var ModulesModule = /** @class */ (function () {
     function ModulesModule() {
     }
@@ -22,7 +23,9 @@ var ModulesModule = /** @class */ (function () {
                 FormsModule,
                 RouterModule.forChild([
                     {
-                        path: 'Modules/create', component: AddModuleWithCourseIdComponent
+                        path: 'Modules/create',
+                        canActivate: [IsTeacherGuard],
+                        component: AddModuleWithCourseIdComponent
                     },
                     {
                         path: 'Modules/:id',

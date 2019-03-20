@@ -7,7 +7,7 @@
             <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
          <form #theForm="ngForm"  (ngSubmit)="Create(theForm)"  novalidate>	
 
-             <input type="hidden" [(ngModel)]="Module.CourseId" name="CourseId" />	
+             <input type="hidden" [(ngModel)]="Module.courseid" name="CourseId" />	
 
              <div class="form-group">	
                 <label for="name" class="control-label">Name</label>	
@@ -15,19 +15,16 @@
              </div>	
 
              <div class="form-group">	
-                <label for="startDate" class="control-label">StartDate</label>	
-                <input  type ="date" [(ngModel)]="Module.startDate" name="startDate"  [min]="coursestartdate"	
+                <label for="startDate" class="control-label">Start Date</label>	
+                <input  type ="datetime-local" [(ngModel)]="Module.startDate" name="startDate"  [min]="coursestartdate"	
                    id="startDate" class="form-control"   required #startdate="ngModel"/>	
-                <div class="text-danger" *ngIf="startDate && startDate.touched && startDate.invalid">Formaterror on startdate  </div>
+                <div class="text-danger" *ngIf="startDate && startDate.touched && startDate.invalid && startDate.errors.require">Formaterror on startdate  </div>
                 <div class="text-danger" *ngIf="startDate && startDate.touched && startDate < coursestartdate">May not start before the course</div>
                 <div class="text-danger" *ngIf="startDate && startDate.touched && endDate && endDate.touched && startdate>endDate">May not start before the end</div>
              </div>	
-             <input type="password" class="form-control" name="confirmpassword" [(ngModel)]="user.confirmpassword" required #confirmpassword="ngModel" />
-             <div class="text-danger" *ngIf="user.confirmpassword.touched && user.confirmpassword.invalid && user.confirmpassword.errors.required">Confirm Password is required!</div>
-
             <div class="form-group">	
-                <label for="endDate" class="control-label">StartDate</label>	
-                <input  type ="date"  [(ngModel)]="Module.endDate" name="endDate"  [min]="coursestartdate"	
+                <label for="endDate" class="control-label">End Date</label>	
+                <input  type ="datetime-local"  [(ngModel)]="Module.endDate" name="endDate"  [min]="coursestartdate"	
                   id="endDate" class="form-control"  required #enddate="ngModel"/>	
                   <div class="text-danger" *ngIf="endDate && endDate.touched && endDate.invalid">Formaterror on startdate  </div>
                   <div class="text-danger" *ngIf="endDate && endDate.touched && endDate < coursestartdate">May not start before the course</div>
@@ -35,7 +32,8 @@
              </div>	
             <div class="form-group">	
                 <label for="description" class="control-label">Description</label>	
-                <input  [(ngModel)]="Module.description" name="description" id="description" class="form-control"   required #description="ngModel"/>	
+                <textarea [(ngModel)]="Module.description" name="description" class="form-control" cols="30" rows="5" required></textarea>
+            
 
              </div>	
             <div class="form-group">	

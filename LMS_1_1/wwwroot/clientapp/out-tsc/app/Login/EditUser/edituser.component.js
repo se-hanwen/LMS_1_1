@@ -44,7 +44,7 @@ var EdituserComponent = /** @class */ (function () {
                     _this.errorMessage = "Update failed";
                 }
                 _this.cd.markForCheck();
-            });
+            }, function (err) { return _this.errorMessage = err; });
         }
     };
     EdituserComponent.prototype.ngOnDestroy = function () {

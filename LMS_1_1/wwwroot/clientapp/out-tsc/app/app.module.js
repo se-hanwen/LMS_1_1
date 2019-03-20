@@ -13,8 +13,8 @@ import { CoursesModule } from './Courses/courses.module';
 import { NavbarModule } from './Navbar/navbar.module';
 import { LoginModule } from './Login/login.module';
 import { ModulesModule } from './Modules/modules.module';
-import { LoginComponent } from './Login/Login/login.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { CourseListComponent } from './Courses/course-list/course-list.component';
 //import { LoginpartialComponent } from './Login/LoginPartial/loginpartial.component';
 export function tokenGetter() {
     return localStorage.getItem('id_token');
@@ -35,10 +35,10 @@ var AppModule = /** @class */ (function () {
                 JwtModule,
                 RouterModule.forRoot([
                     {
-                        path: '', component: LoginComponent
+                        path: '', component: CourseListComponent
                     },
                     {
-                        path: '**', component: LoginComponent
+                        path: '**', component: CourseListComponent
                     }
                 ], {
                     enableTracing: false // for debug
