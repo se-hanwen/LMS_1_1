@@ -20,9 +20,9 @@ export class AddActivitiesWithModulIdComponent implements OnInit, OnDestroy {
   Moduleenddate: Date;
   errorMessage: string="";
   ModuleName: string="";
-  coursestartdate: string;
+ 
   ActivityTypes:IActivityType[];
-
+  Courseid: string ="";
   constructor(private db: AuthService
     , private cd: ChangeDetectorRef
     ,private messhandler: LoginMessageHandlerService
@@ -35,6 +35,15 @@ export class AddActivitiesWithModulIdComponent implements OnInit, OnDestroy {
       status => {
        // let tmpguid= Guid.parse(status); 
         this.Activity.moduleid=status;
+        this.cd.markForCheck();
+      }
+    )
+    this.messhandler.Courseid
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(
+      status => {
+       // let tmpguid= Guid.parse(status); 
+        this.Courseid=status;
         this.cd.markForCheck();
       }
     )
