@@ -38,9 +38,6 @@ export class CreateCourseComponent implements OnInit, OnDestroy  {
         });
     }
 
-    
-  
-
     preview(files) {
         if (files.length === 0)
             return;
@@ -55,7 +52,6 @@ export class CreateCourseComponent implements OnInit, OnDestroy  {
             this.imgURL = reader.result;
         }
     }
-
 
     get formControls() { return this.courseForm.controls; }
 

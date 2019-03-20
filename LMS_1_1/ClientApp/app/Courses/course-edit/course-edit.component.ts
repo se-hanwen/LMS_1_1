@@ -22,12 +22,16 @@ export class CourseEditComponent implements OnInit {
     ngOnInit() {
         let id = this.route.snapshot.paramMap.get("id");
         this.CourseService.getCourseById(id).subscribe(
-            tcourse => { 
+            tcourse => {
+                tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
                 this.editCourse = tcourse;
             },
             error => { this.errorMsg = <any>error; });
         //this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
     } 
+
+
+  
 
     UpdateCourse() {
         let fileToUpload = (this.fileInputVariable.nativeElement.files.length == 0) ?

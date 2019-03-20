@@ -54,12 +54,19 @@
             <div class="form-group" [ngClass]="{ 'has-error': isSubmitted && formControls.fileData.errors }">
                 <label for="fileData" class="control-label">File</label>
                 <input type="file" #fileInput formControlName="fileData" accept='image/*' (change)="preview(fileInput.files)" name="fileData" class="form-control" />
-                <img [src]="imgURL" height="200" *ngIf="imgURL">
+              
+               
 
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+    </div>
+    <div class="col-md-4">
+        <div>
+            <img [src]="imgURL" height="200" *ngIf="imgURL">
+        </div>
+
     </div>
 </div>
