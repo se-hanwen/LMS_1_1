@@ -40,6 +40,12 @@ var AddModuleWithCourseIdComponent = /** @class */ (function () {
         });
     };
     AddModuleWithCourseIdComponent.prototype.gotDate = function () {
+        if (this.Module.startDate != null && this.Module.endDate != null) {
+            this.messhandler.SendDubbId(this.Module.courseid);
+            this.messhandler.SendDubbType("Modules");
+            this.messhandler.SendDubbStart(this.Module.startDate);
+            this.messhandler.SendDubbEnd(this.Module.endDate);
+        }
         // post data
     };
     AddModuleWithCourseIdComponent.prototype.Create = function (theForm) {

@@ -24,11 +24,19 @@ export class ModuleService implements OnDestroy {
             .subscribe(i => this.token = i);
     }
 
-    CheckIfDubblett(type:string, id: string, start: Date, end: Date): boolean
+    CheckIfDubblett(type:string, id: string, start: Date, end: Date):any
     {
-        
+      let parmas={"type":type,"id":id,"start":start,"end":end };
+      return this.http.post(this.moduleUrl+"/TestIfInRange/",parmas
+      ,{
+        headers: this.getAuthHeader()
+    }).pipe(
+      tap(result => JSON.stringify(result)),
+      catchError(this.handleError)
+  );
 
     }
+
 
     CreateModule(Module: IModule): any {
         return this.http.post(this.moduleUrl, Module,

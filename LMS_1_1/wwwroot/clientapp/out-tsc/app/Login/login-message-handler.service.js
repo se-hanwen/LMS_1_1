@@ -101,6 +101,14 @@ var LoginMessageHandlerService = /** @class */ (function () {
         this.DubbIdSource.next(arg);
         return true;
     };
+    LoginMessageHandlerService.prototype.SendDubbStart = function (arg) {
+        this.DubbStartSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendDubbEnd = function (arg) {
+        this.DubbEndSource.next(arg);
+        return true;
+    };
     LoginMessageHandlerService = tslib_1.__decorate([
         Injectable({
             providedIn: 'root'

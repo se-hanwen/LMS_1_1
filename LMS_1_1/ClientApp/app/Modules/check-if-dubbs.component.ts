@@ -15,6 +15,7 @@ export class CheckIfDubbsComponent implements OnInit, OnDestroy {
   dubbid: string ="";
   dubbstart: Date = null;
   dubbend: Date =null;
+  Warning: string="";
   constructor(
     private messhandler: LoginMessageHandlerService
     ,private ModuleService: ModuleService
@@ -64,8 +65,22 @@ export class CheckIfDubbsComponent implements OnInit, OnDestroy {
    {  
       if (this.dubbtype != "" && this.dubbid != "" && this.dubbstart != null && this.dubbend != null)
       {
-        this.ModuleService.
-
+        this.ModuleService.CheckIfDubblett(this.dubbtype,this.dubbid, this.dubbstart, this.dubbend)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(
+           (status: boolean) =>
+           {
+              if (status)
+              {
+                this.Warning= "There exists "+this.dubbtype+" in the selected range";
+              }
+              else
+              {
+                this.Warning="";
+              }
+              this.cd.markForCheck();
+           }
+        );
       }
 
    }

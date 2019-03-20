@@ -19,6 +19,12 @@ var ModuleService = /** @class */ (function () {
     ModuleService.prototype.getAuthHeader = function () {
         return new HttpHeaders({ "Authorization": "Bearer " + this.token });
     };
+    ModuleService.prototype.CheckIfDubblett = function (type, id, start, end) {
+        var parmas = { "type": type, "id": id, "start": start, "end": end };
+        return this.http.post(this.moduleUrl + "/TestIfInRange", parmas, {
+            headers: this.getAuthHeader()
+        }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
     ModuleService.prototype.CreateModule = function (Module) {
         return this.http.post(this.moduleUrl, Module, {
             headers: this.getAuthHeader()
