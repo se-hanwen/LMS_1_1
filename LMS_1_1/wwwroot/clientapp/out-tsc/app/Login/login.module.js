@@ -14,6 +14,7 @@ import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { EdituserComponent } from './EditUser/edituser.component';
 import { DeleteuserComponent } from './DeleteUser/deleteuser.component';
 import { ConfirmComponent } from './Confirm/confirm.component';
+import { ManageComponent } from './Manage/manage.component';
 var LoginModule = /** @class */ (function () {
     function LoginModule() {
     }
@@ -28,7 +29,8 @@ var LoginModule = /** @class */ (function () {
                 ManageusersComponent,
                 EdituserComponent,
                 DeleteuserComponent,
-                ConfirmComponent
+                ConfirmComponent,
+                ManageComponent
             ],
             imports: [
                 CommonModule,
@@ -67,6 +69,11 @@ var LoginModule = /** @class */ (function () {
                         canActivate: [IsTeacherGuard],
                         component: EdituserComponent
                     },
+                    {
+                        path: 'Account/Manage',
+                        canActivate: [IsAuthenticatedGuard],
+                        component: ManageComponent
+                    }
                 ])
             ],
             exports: [LoginpartialComponent,

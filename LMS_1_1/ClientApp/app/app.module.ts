@@ -14,6 +14,7 @@ import { LoginModule } from './Login/login.module';
 import { ModulesModule } from './Modules/modules.module';
 import {  LoginComponent} from './Login/Login/login.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { CourseListComponent } from './Courses/course-list/course-list.component';
 //import { LoginpartialComponent } from './Login/LoginPartial/loginpartial.component';
 
 
@@ -34,10 +35,10 @@ export function tokenGetter() {
     JwtModule,
     RouterModule.forRoot([
       {
-        path: '', component: LoginComponent
+        path: '', component: CourseListComponent
     } ,  
         {
-            path: '**', component: LoginComponent
+            path: '**', component: CourseListComponent
         }
       
     ], {

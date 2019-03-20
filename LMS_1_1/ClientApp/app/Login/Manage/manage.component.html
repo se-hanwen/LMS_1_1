@@ -22,7 +22,7 @@
           <div class="form-group">
             <label for="user.oldpassword">Old Password</label>
             <input type="password" class="form-control" name="oldpassword" [(ngModel)]="user.oldpassword" required #password="ngModel" />
-            <div class="text-danger" *ngIf="user.oldpassword.touched && user.oldpassword.invalid && user.oldpassword.errors.required">Old password is required!</div>
+            <div class="text-danger" *ngIf="user.oldpassword && user.oldpassword.touched && user.oldpassword.invalid && user.oldpassword.errors.required">Old password is required!</div>
         </div>
         <div class="form-group">
           <label for="user.password">Password</label>
@@ -43,10 +43,11 @@
             </select>
         </div>
         <div class="form-group">
-            <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid || saveduser" />
-            <a [routerLink]="['/courses']" ></a>
+            <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
+            <a [routerLink]="['/courses']" class="btn btn-default" >Go back</a>
         </div>    
       </form>
        <div *ngIf="returnmessage">{{returnmessage}}</div>
 </div>
 </div>
+

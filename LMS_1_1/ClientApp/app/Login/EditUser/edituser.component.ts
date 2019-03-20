@@ -58,25 +58,7 @@ export class EdituserComponent implements OnInit, OnDestroy {
           
           );
     }
-    else
-    {
-      this.db.UpdateUser(this.user)
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe( status =>
-        {
-            if(status)
-            {
-                this.errorMessage="Update succeded";
-            }
-            else
-            {
-              this.errorMessage="Update failed";
-            }
-            this.cd.markForCheck();
-        }
-        
-        );
-    }
+
   }
 
   ngOnDestroy(): void {

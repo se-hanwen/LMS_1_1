@@ -1,7 +1,7 @@
-
-
+<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+<ul class="navbar-nav flex-grow-1">
       <li class="nav-item" *ngIf="isAuthenticated"  >
-          <a [routerLink]="['/Account/Manage']">
+          <a [routerLink]="['/Account/Manage']" class="nav-link text-dark">
               Hello
               
                   <span>{{firstName}} {{lastName}}</span>
@@ -9,19 +9,21 @@
           </a>
       </li>
           <li class="nav-item" *ngIf="isTeacher">
-              <a [routerLink]="['/Account/Register']">Register</a>
+              <a [routerLink]="['/Account/Register']" class="nav-link text-dark">Register</a>
             </li>
               <li class="nav-item" *ngIf="isTeacher">  
-              <a [routerLink]="['/Account/ManageUsers']">Manage Users</a>
+              <a [routerLink]="['/Account/ManageUsers']" class="nav-link text-dark">Manage Users</a>
           </li>
       
       <li class="nav-item" *ngIf="isAuthenticated">
-        <a href="/#" (click)="logout()">Logout</a>
+        <a href="/#" class="nav-link text-dark" (click)="logout()">Logout</a>
 
       </li>
 
 
       <li class="nav-item" *ngIf="!isAuthenticated" >
-        <a [routerLink]="['/Account/Login']">Login</a>
+        <a [routerLink]="['/Account/Login']" class="nav-link text-dark">Login</a>
       </li>
 
+    </ul>
+  </div>

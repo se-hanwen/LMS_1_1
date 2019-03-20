@@ -29,7 +29,7 @@
           </div>
           <div class="form-group">
               <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid || saveduser" />
-              <a [routerLink]="['/Account/ManageUsers']" >Back to List</a>
+              <a [routerLink]="['/Account/ManageUsers']" class="btn btn-default" >Back to List</a>
           </div>    
         </form>
          <div *ngIf="returnmessage">{{returnmessage}}</div>

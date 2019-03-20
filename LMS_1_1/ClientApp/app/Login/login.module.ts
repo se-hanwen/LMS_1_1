@@ -13,6 +13,7 @@ import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { EdituserComponent } from './EditUser/edituser.component';
 import { DeleteuserComponent } from './DeleteUser/deleteuser.component';
 import { ConfirmComponent } from './Confirm/confirm.component';
+import { ManageComponent } from './Manage/manage.component';
 
 @NgModule({
   declarations: [LoginComponent
@@ -25,6 +26,7 @@ import { ConfirmComponent } from './Confirm/confirm.component';
   ,EdituserComponent
   ,DeleteuserComponent 
   ,ConfirmComponent
+  ,ManageComponent
 ],
   imports: [
     CommonModule,
@@ -64,6 +66,11 @@ import { ConfirmComponent } from './Confirm/confirm.component';
         ,canActivate: [IsTeacherGuard] 
        , component: EdituserComponent
       },
+      {
+        path: 'Account/Manage'
+        ,canActivate: [IsAuthenticatedGuard]  
+       , component: ManageComponent
+      }
       ]
   )
   ],

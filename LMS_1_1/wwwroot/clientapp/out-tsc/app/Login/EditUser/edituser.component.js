@@ -46,19 +46,6 @@ var EdituserComponent = /** @class */ (function () {
                 _this.cd.markForCheck();
             });
         }
-        else {
-            this.db.UpdateUser(this.user)
-                .pipe(takeUntil(this.unsubscribe))
-                .subscribe(function (status) {
-                if (status) {
-                    _this.errorMessage = "Update succeded";
-                }
-                else {
-                    _this.errorMessage = "Update failed";
-                }
-                _this.cd.markForCheck();
-            });
-        }
     };
     EdituserComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();

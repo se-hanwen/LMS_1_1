@@ -309,7 +309,9 @@ namespace LMS_1_1.Controllers
             {
                 var user2 = await _userManager.FindByNameAsync(User.Identity.Name);
                 var user = new LMSUser { UserName = registerUser.Email, Email = registerUser.Email, FirstName = registerUser.FirstName, LastName = registerUser.LastName };
-                var Role = registerUser.Role;
+                // var Role = registerUser.Role;
+                user2.FirstName = registerUser.FirstName;
+                user2.LastName = registerUser.LastName;
                 if (User.Identity.Name != registerUser.Email)
                 {
                     throw new AccessViolationException("User tryed to update other user");
@@ -317,7 +319,7 @@ namespace LMS_1_1.Controllers
                 if (registerUser.Password != "")
                 {// then try to update password
 
-                    var changePasswordResult = await _userManager.ChangePasswordAsync(user, registerUser.Oldpassword, registerUser.Password);
+                    var changePasswordResult = await _userManager.ChangePasswordAsync(user2, registerUser.Oldpassword, registerUser.Password);
                     if (!changePasswordResult.Succeeded)
                     {
                         _logger.LogInformation("Failed to update Password by user");
@@ -331,15 +333,15 @@ namespace LMS_1_1.Controllers
                         _logger.LogInformation("Password updated by user");
                     }
                 }
-                var result = await _userManager.UpdateAsync(user);
+                var result = await _userManager.UpdateAsync(user2);
                 if (result.Succeeded)
                 {
 
                     _logger.LogInformation("User updated by user");
 
-                    var roles = await _userManager.GetRolesAsync(user2);
+                   // var roles = await _userManager.GetRolesAsync(user2);
 
-                    if (!roles.Contains(Role))
+                    /*if (!roles.Contains(Role))
                     {
                         _logger.LogInformation("User role updated by user");
                         var ok2 = await _userManager.RemoveFromRoleAsync(user2, roles[0]);
@@ -352,7 +354,7 @@ namespace LMS_1_1.Controllers
                         {
                             ModelState.AddModelError(string.Empty, string.Join("\n", ok.Errors));
                         }
-                    }
+                    }*/
                 }
                 foreach (var error in result.Errors)
                 {

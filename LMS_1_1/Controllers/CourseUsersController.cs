@@ -121,12 +121,16 @@ namespace LMS_1_1.Controllers
             var id = userid.CourseId;
             if (!User.IsInRole("Teacher"))
             {
-                 if(id == null)
+                 if(id != null)
                     throw new AccessViolationException("A student may just access him/her-self");
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                if (user.Id != id)
-                    throw new AccessViolationException("A student may just access him/her-self");
+               
             }
+            var usertmp = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (id == null)
+            {
+                id = usertmp.Id;
+            }
+
             List<LMSUser> workonuser = await _userManager.Users.Where(u => id==null || u.Id==id)
                 
                 .ToListAsync();
