@@ -7,6 +7,8 @@ import { ActitityListComponent } from './Activity_list/actitity_list.component';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { ModulDetailsComponent } from './Details/details.component';
 import { DocumentsModule } from '../documents/documents.module';
+import { ModuleDeleteComponent } from './module-delete/module-delete.component';
+import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 
 
 @NgModule({
@@ -14,6 +16,7 @@ import { DocumentsModule } from '../documents/documents.module';
     AddModuleWithCourseIdComponent,
     ActitityListComponent,
       ModulDetailsComponent,
+      ModuleDeleteComponent,
       
      
   ],
@@ -31,7 +34,12 @@ import { DocumentsModule } from '../documents/documents.module';
               path: 'Modules/:id'
               ,canActivate: [IsAuthenticatedGuard]
               ,component: ModulDetailsComponent
-          }
+            },
+            {
+                path: 'Modules/delete/:id'
+                , canActivate: [IsTeacherGuard]
+                , component: ModuleDeleteComponent
+            }
         ]
     )
   ]

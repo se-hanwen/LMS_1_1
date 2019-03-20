@@ -8,6 +8,8 @@ import { ActitityListComponent } from './Activity_list/actitity_list.component';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { ModulDetailsComponent } from './Details/details.component';
 import { DocumentsModule } from '../documents/documents.module';
+import { ModuleDeleteComponent } from './module-delete/module-delete.component';
+import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 var ModulesModule = /** @class */ (function () {
     function ModulesModule() {
     }
@@ -17,6 +19,7 @@ var ModulesModule = /** @class */ (function () {
                 AddModuleWithCourseIdComponent,
                 ActitityListComponent,
                 ModulDetailsComponent,
+                ModuleDeleteComponent,
             ],
             imports: [
                 CommonModule,
@@ -31,6 +34,11 @@ var ModulesModule = /** @class */ (function () {
                         path: 'Modules/:id',
                         canActivate: [IsAuthenticatedGuard],
                         component: ModulDetailsComponent
+                    },
+                    {
+                        path: 'Modules/delete/:id',
+                        canActivate: [IsTeacherGuard],
+                        component: ModuleDeleteComponent
                     }
                 ])
             ]
