@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AddPartipantModule } from './AddPartipant/add-partipant.module';
+import { JwtModule } from '@auth0/angular-jwt';
 //import { NoRouteModule } from './NoRoute/no-route.module';
 //import { NoRouteComponent } from './NoRoute/no-route.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,6 +16,9 @@ import { ModulesModule } from './Modules/modules.module';
 import { LoginComponent } from './Login/Login/login.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 //import { LoginpartialComponent } from './Login/LoginPartial/loginpartial.component';
+export function tokenGetter() {
+    return localStorage.getItem('id_token');
+}
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -28,6 +32,7 @@ var AppModule = /** @class */ (function () {
                 BrowserModule,
                 AddPartipantModule,
                 CoursesModule,
+                JwtModule,
                 RouterModule.forRoot([
                     {
                         path: '', component: LoginComponent
@@ -40,6 +45,13 @@ var AppModule = /** @class */ (function () {
                 }),
                 // NoRouteModule,
                 HttpClientModule,
+                JwtModule.forRoot({
+                    config: {
+                        tokenGetter: tokenGetter,
+                        whitelistedDomains: ['localhost'],
+                        blacklistedRoutes: []
+                    }
+                }),
                 NavbarModule,
                 LoginModule,
                 ModulesModule,

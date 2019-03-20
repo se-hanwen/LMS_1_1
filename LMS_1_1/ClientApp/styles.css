@@ -23,7 +23,7 @@
 	border-left: none;
   }
 
-.scrollTable th, td {
+.scrollTable th, .scrollTable td {
 	width: 50%; /* to enable "word-break: break-all" */
 	padding: 5px;
 	word-break: break-all; /* 4. */
@@ -40,6 +40,10 @@ tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
 .fixedHeader {
 	display: table; /* to take the same width as tr */
 	width: calc(100% - 17px); /* - 17px because of the scrollbar width */
+}
+
+.myTbBox {      
+  white-space: nowrap;
 }
 
 .scrollTable
