@@ -32,6 +32,14 @@ var LoginMessageHandlerService = /** @class */ (function () {
         this.CourseStartDate = this.CourseStartDateSource.asObservable();
         this.CourseidSource = new BehaviorSubject(null);
         this.Courseid = this.CourseidSource.asObservable();
+        this.DubbTypeSource = new BehaviorSubject(null);
+        this.DubbType = this.DubbTypeSource.asObservable();
+        this.DubbIdSource = new BehaviorSubject(null);
+        this.DubbId = this.DubbIdSource.asObservable();
+        this.DubbStartSource = new BehaviorSubject(null);
+        this.DubbStart = this.DubbStartSource.asObservable();
+        this.DubbEndSource = new BehaviorSubject(null);
+        this.DubbEnd = this.DubbEndSource.asObservable();
     }
     LoginMessageHandlerService.prototype.SendUserId = function (userid) {
         this.useridSource.next(userid == null ? '' : userid);
@@ -83,6 +91,14 @@ var LoginMessageHandlerService = /** @class */ (function () {
     };
     LoginMessageHandlerService.prototype.SendConfirmGoBackUrl = function (arg) {
         this.ConfirmGoBackUrlSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendDubbType = function (arg) {
+        this.DubbTypeSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendDubbId = function (arg) {
+        this.DubbIdSource.next(arg);
         return true;
     };
     LoginMessageHandlerService = tslib_1.__decorate([

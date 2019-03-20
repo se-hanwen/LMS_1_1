@@ -9,6 +9,7 @@ import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { ModulDetailsComponent } from './Details/details.component';
 import { DocumentsModule } from '../documents/documents.module';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
+import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
 var ModulesModule = /** @class */ (function () {
     function ModulesModule() {
     }
@@ -17,7 +18,8 @@ var ModulesModule = /** @class */ (function () {
             declarations: [
                 AddModuleWithCourseIdComponent,
                 ActitityListComponent,
-                ModulDetailsComponent
+                ModulDetailsComponent,
+                CheckIfDubbsComponent
             ],
             imports: [
                 CommonModule,

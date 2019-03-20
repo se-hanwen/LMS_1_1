@@ -39,6 +39,9 @@ var AddModuleWithCourseIdComponent = /** @class */ (function () {
             _this.cd.markForCheck();
         });
     };
+    AddModuleWithCourseIdComponent.prototype.gotDate = function () {
+        // post data
+    };
     AddModuleWithCourseIdComponent.prototype.Create = function (theForm) {
         var _this = this;
         this.errorMessage = "";

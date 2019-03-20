@@ -51,6 +51,11 @@ export class AddModuleWithCourseIdComponent implements OnInit, OnDestroy  {
     )
   }	
 
+public gotDate():void
+{
+  // post data
+}
+
 public Create(theForm):void
 {
   this.errorMessage = "";

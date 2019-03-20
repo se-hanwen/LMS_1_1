@@ -51,6 +51,19 @@ export class LoginMessageHandlerService {
  private CourseidSource = new BehaviorSubject<string>(null);
  Courseid = this.CourseidSource.asObservable();
 
+
+ private DubbTypeSource = new BehaviorSubject<string>(null);
+ DubbType = this.DubbTypeSource.asObservable();
+
+ private DubbIdSource = new BehaviorSubject<string>(null);
+ DubbId = this.DubbIdSource.asObservable();
+
+ private DubbStartSource = new BehaviorSubject<Date>(null);
+ DubbStart = this.DubbStartSource.asObservable();
+
+ private DubbEndSource = new BehaviorSubject<Date>(null);
+ DubbEnd = this.DubbEndSource.asObservable();
+
   constructor() { }
 
   public SendUserId(userid:string) : boolean 
@@ -128,4 +141,18 @@ export class LoginMessageHandlerService {
     this.ConfirmGoBackUrlSource.next(arg);
     return true;
   }
+
+  public SendDubbType(arg:string): boolean
+  {
+      this.DubbTypeSource.next(arg);
+      return true;
+  }
+
+  public SendDubbId(arg:string): boolean
+  {
+      this.DubbIdSource.next(arg);
+      return true;
+  }
+
+
 }

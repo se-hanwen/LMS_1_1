@@ -19,15 +19,9 @@ namespace LMS_1_1.Controllers
             _userManager = userManager;
         }
 
-        // GET: api/Activity1
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
         // GET: api/Activity1/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetAction")]
         public string Get(int id)
         {
             return "value";
