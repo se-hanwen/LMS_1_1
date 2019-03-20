@@ -14,7 +14,7 @@ var ConfirmRegistedUserComponent = /** @class */ (function () {
     }
     ConfirmRegistedUserComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.messhandler.Confirm
+        this.messhandler.ConfirmMessage
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (status) {
             _this.message = status;

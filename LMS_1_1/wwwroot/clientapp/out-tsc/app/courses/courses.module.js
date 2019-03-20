@@ -13,6 +13,7 @@ import { CourseEditComponent } from './course-edit/course-edit.component';
 import { SharedModule } from '../Shared/shared.module';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { DocumentsModule } from '../documents/documents.module';
 var CoursesModule = /** @class */ (function () {
     function CoursesModule() {
@@ -32,6 +33,7 @@ var CoursesModule = /** @class */ (function () {
                 CommonModule,
                 FormsModule,
                 ReactiveFormsModule,
+                AngularFontAwesomeModule,
                 DocumentsModule,
                 SharedModule,
                 RouterModule.forChild([{

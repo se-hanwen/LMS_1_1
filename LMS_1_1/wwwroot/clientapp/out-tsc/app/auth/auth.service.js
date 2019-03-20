@@ -1,24 +1,27 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
-//import { JwtHelperService } from '@auth0/angular-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, catchError } from 'rxjs/operators';
 import { tokenData } from './tokenData';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
+import { LoginMessageHandlerService } from '../Login/login-message-handler.service';
 var AuthService = /** @class */ (function () {
-    function AuthService(http) {
+    function AuthService(http, jwtHelper, MessageHandler) {
         var _this = this;
         this.http = http;
+        this.jwtHelper = jwtHelper;
+        this.MessageHandler = MessageHandler;
         this.unsubscribe = new Subject();
         // ...public jwtHelper: JwtHelperService,
         this.tokenData = new tokenData();
-        this.tokenSource = new BehaviorSubject(' ');
+        this.tokenSource = new BehaviorSubject('');
         this.token = this.tokenSource.asObservable();
         this.tokenExpirationSource = new BehaviorSubject(new Date());
         this.tokenExpiration = this.tokenExpirationSource.asObservable();
-        this.firstNameSource = new BehaviorSubject(' ');
+        this.firstNameSource = new BehaviorSubject('');
         this.firstName = this.firstNameSource.asObservable();
-        this.lastNameSource = new BehaviorSubject(' ');
+        this.lastNameSource = new BehaviorSubject('');
         this.lastName = this.lastNameSource.asObservable();
         this.RealisAuthenticated = false;
         this.RealisTeacher = false;
@@ -83,6 +86,36 @@ var AuthService = /** @class */ (function () {
         /*private isAuthenticatedSource = new BehaviorSubject<boolean>(false);
         private _isAuthenticated = this.isAuthenticatedSource.asObservable();*/
         get: function () {
+            if (this.tokenData == null || this.tokenData.token == null || this.tokenData.token.length == 0) {
+                this.tokenData.token = localStorage.getItem('id_token');
+                if (this.tokenData.token != null) {
+                    var Data = this.jwtHelper.decodeToken(this.tokenData.token);
+                    this.tokenData.tokenExpiration = new Date(localStorage.getItem("expires_at"));
+                    this.tokenData.isTeacher = Data["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+                    this.tokenData.firstName = Data.given_name;
+                    this.tokenData.lastName = Data.family_name;
+                    this.tokenSource.next(this.tokenData.token == null ? '' : this.tokenData.token);
+                    this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
+                    this.firstNameSource.next(this.tokenData.firstName);
+                    this.lastNameSource.next(this.tokenData.lastName);
+                    this.MessageHandler.SendCurrUserAuth(this.checkisAuthenticated(this.tokenData.token, this.tokenData.tokenExpiration));
+                    this.MessageHandler.SendCurrUserTeacher(this.checkisAuthenticated(this.tokenData.token, this.tokenData.tokenExpiration) ? this.checkIsTeacher(this.tokenData.isTeacher) : false);
+                }
+            }
+            /*
+             AspNet.Identity.SecurityStamp: "Q5IWQMMVDLDJLI3VRCHWFOFLC2NKVVSC"
+            aud: "users"
+            exp: 1553012705
+            family_name: "Norberg"
+            given_name: "Penny"
+            http://schemas.microsoft.com/ws/2008/06/identity/claims/role: "Teacher"
+            http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: "Penny@lysator.liu.se"
+            http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: "e6e7ef33-179a-4fd0-90ec-f63bc9168482"
+            iss: "https://localhost:44396"
+            jti: "4d02d28c-57d5-4464-b8e5-9eb2875471f7"
+            sub: "Penny@lysator.liu.se"
+            unique_name: "Penny@lysator.liu.se"
+            */
             return this.checkisAuthenticated(this.tokenData.token, this.tokenData.tokenExpiration);
         },
         enumerable: true,
@@ -109,9 +142,11 @@ var AuthService = /** @class */ (function () {
             .pipe(map(function (response) {
             var tokenInfo = response;
             _this.tokenSource.next(tokenInfo.token == null ? '' : tokenInfo.token);
-            _this.tokenExpirationSource.next(tokenInfo.tokenExpiration);
+            _this.tokenExpirationSource.next(tokenInfo.expiration);
             _this.firstNameSource.next(tokenInfo.firstName);
             _this.lastNameSource.next(tokenInfo.lastName);
+            localStorage.setItem('id_token', tokenInfo.token);
+            localStorage.setItem("expires_at", tokenInfo.expiration);
             //    this.useridSource.next(tokenInfo.userid);
             // this.isAuthenticatedSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration));
             //  this.isTeacherSource.next(this.checkisAuthenticated(tokenInfo.token,tokenInfo.tokenExpiration)?this.checkIsTeacher(tokenInfo.isTeacher):false)
@@ -141,6 +176,8 @@ var AuthService = /** @class */ (function () {
         this.tokenExpirationSource.next(this.tokenData.tokenExpiration);
         this.firstNameSource.next('');
         this.lastNameSource.next('');
+        localStorage.removeItem("id_token");
+        localStorage.removeItem("expires_at");
         //  this.isAuthenticatedSource.next(false);
         //  this.isTeacherSource.next(false)
     };
@@ -150,13 +187,55 @@ var AuthService = /** @class */ (function () {
             return response;
         }));
     };
+    AuthService.prototype.DeleteUser = function (id) {
+        var url = "https://localhost:44396/account/DeleteUser";
+        var parmas = { "CourseId": id };
+        return this.http.post(url, parmas, { headers: this.getAuthHeader()
+        })
+            .pipe(catchError(this.handleError));
+    };
+    AuthService.prototype.UpdateUser = function (user) {
+        var url = "https://localhost:44396/account/UpdateUser";
+        return this.http.post(url, user, { headers: this.getAuthHeader()
+        })
+            .pipe(catchError(this.handleError));
+    };
+    AuthService.prototype.UpdateUserAdmin = function (user) {
+        var url = "https://localhost:44396/account/UpdateUserAdmin";
+        return this.http.post(url, user, { headers: this.getAuthHeader()
+        })
+            .pipe(catchError(this.handleError));
+    };
     AuthService.prototype.checkisAuthenticated = function (token, tokenExpiration) {
-        return !(token.length == 0 && tokenExpiration > new Date());
+        var res = !(token.length == 0 || tokenExpiration < new Date());
+        if (!res && token.length > 0)
+            this.logout();
+        // Add time to expiration
+        // this.tokenData.tokenExpiration= new Date(Date.now().valueOf()+30*60*1000);
+        //localStorage.setItem("expires_at",this.tokenData.tokenExpiration.toISOString());
+        // need also change in backend/ token somehow..
+        return res;
     };
     AuthService.prototype.checkIsTeacher = function (isTeacher) {
         if (isTeacher == "Teacher")
             return true;
         return false;
+    };
+    AuthService.prototype.handleError = function (err) {
+        // in a real world app, we may send the server to some remote logging infrastructure
+        // instead of just logging it to the console
+        var errorMessage = '';
+        if (err.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            errorMessage = "An error occurred: " + err.error.message;
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            errorMessage = "Server returned code: " + err.status + ", error message is: " + err.message;
+        }
+        console.error(errorMessage);
+        return throwError(errorMessage);
     };
     AuthService.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
@@ -166,7 +245,7 @@ var AuthService = /** @class */ (function () {
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient])
+        tslib_1.__metadata("design:paramtypes", [HttpClient, JwtHelperService, LoginMessageHandlerService])
     ], AuthService);
     return AuthService;
 }());

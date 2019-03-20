@@ -15,8 +15,10 @@ import { CourseEditComponent } from './course-edit/course-edit.component';
 import { SharedModule } from '../Shared/shared.module';
 import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UploadComponent } from '../documents/upload/upload.component';
 import { DocumentsModule } from '../documents/documents.module';
+
 
 @NgModule({
     declarations: [
@@ -34,6 +36,7 @@ import { DocumentsModule } from '../documents/documents.module';
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
+      AngularFontAwesomeModule,
       DocumentsModule,
       SharedModule,
       RouterModule.forChild(

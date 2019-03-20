@@ -24,7 +24,8 @@
             ],
             "styles": [
              
-              "ClientApp/styles.css"
+              "ClientApp/styles.css",
+              "../LMS_1_1/node_modules/font-awesome/css/font-awesome.css"
 
             ],
             "scripts": [],
@@ -83,6 +84,7 @@
             "karmaConfig": "ClientApp/karma.conf.js",
             "styles": [
               "ClientApp/styles.css"
+              ,"../LMS_1_1/node_modules/font-awesome/css/font-awesome.css"
 
             ],
             "scripts": [

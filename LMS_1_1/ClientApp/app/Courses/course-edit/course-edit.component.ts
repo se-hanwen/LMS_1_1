@@ -26,16 +26,14 @@ export class CourseEditComponent implements OnInit {
                 this.editCourse = tcourse;
             },
             error => { this.errorMsg = <any>error; });
-        this.editCourse.courseImgPath = this.editCourse.courseImgPath;
+        //this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
     } 
 
     UpdateCourse() {
-        let fileToUpload = this.fileInputVariable.nativeElement.files[0];
-        if (fileToUpload.name==null) {
-            fileToUpload.name = this.editCourse.courseImgPath;
-        }
+        let fileToUpload = (this.fileInputVariable.nativeElement.files.length == 0) ?
+            (new File([new Blob()], this.editCourse.courseImgPath)) : this.fileInputVariable.nativeElement.files[0];
+
         let formData = new FormData();
-        console.log(this.editCourse.name);
         formData.append('criD', this.editCourse.id.toString());
         formData.append('Name', this.editCourse.name);
         formData.append('StartDate', this.editCourse.startDate.toString());

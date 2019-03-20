@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-md-4 offset-md-2">
-        <div class="table-responsive tableContainer">
+    <div class="col-md-6 offset-md-1">
+        <div class="tableContainer">
             <label>Manage users</label>
             <table class="table  table-hover w-auto"  cellpadding="0" cellspacing="0"   >
 
@@ -9,27 +9,31 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th style="min-width: 5em">Role</th>
-                    <th style="min-width: 30em">Edit | Delete  | Choose</th>
+                    <th style="min-width: 7em"></th>
                   </tr>
                 </thead>
                 <tbody  >
                       <tr *ngFor='let user of users'>
-                          <td>{{user.firstName}}</td>
-                          <td>{{user.lastName}}</td>
+                          <td class="myTbBox">{{user.firstName}}</td>
+                          <td class="myTbBox">{{user.lastName}}</td>
                           <td style="min-width: 5em" >{{user.role}}</td>
-                          <td style="min-width: 30em"  >
-                              <a [routerLink]="['/Edit', user.id]">edit</a>|
-                              <a [routerLink]="['/Delete', user.id]">delete</a>|
-                              <a href="javascript:void(0);" (click)="ChooseUser(user.id)">choose</a>
+                          <td style="min-width: 7em" class="myTbBox"  >
+                              <a [routerLink]="['/Account/Edit', user.id]"> <i title="Edit" class="fa fa-2x fa-edit"></i></a>&nbsp;  
+                              <a [routerLink]="['/Account/Delete', user.id]"><i title="Delete" class="fa fa-2x fa-trash"></i></a>&nbsp; 
+                              <a href="javascript:void(0);" (click)="ChooseUser(user.id)"><i title="Choose" class="fa fa-2x fa-check"></i></a>
                           </td>
                       </tr>
-  
-                  </tbody>
-  
+                  </tbody>  
             </table>
         </div>
     </div>
     <div class="offset-md-1 col-md-4">
         <add_student_to_course></add_student_to_course>
     </div>
+
 </div> 
+<div class="row">
+    
+    <a [routerLink]="['/courses']" class="btn btn-default" *ngIf="!saveduser">Cancel</a>
+
+</div>

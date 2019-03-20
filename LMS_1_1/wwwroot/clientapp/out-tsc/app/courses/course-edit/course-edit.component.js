@@ -16,15 +16,12 @@ var CourseEditComponent = /** @class */ (function () {
         this.CourseService.getCourseById(id).subscribe(function (tcourse) {
             _this.editCourse = tcourse;
         }, function (error) { _this.errorMsg = error; });
-        this.editCourse.courseImgPath = this.editCourse.courseImgPath;
+        //this.editCourse.courseImgPath = "..\\assets\\img\\" + this.editCourse.courseImgPath;
     };
     CourseEditComponent.prototype.UpdateCourse = function () {
-        var fileToUpload = this.fileInputVariable.nativeElement.files[0];
-        if (fileToUpload.name == null) {
-            fileToUpload.name = this.editCourse.courseImgPath;
-        }
+        var fileToUpload = (this.fileInputVariable.nativeElement.files.length == 0) ?
+            (new File([new Blob()], this.editCourse.courseImgPath)) : this.fileInputVariable.nativeElement.files[0];
         var formData = new FormData();
-        console.log(this.editCourse.name);
         formData.append('criD', this.editCourse.id.toString());
         formData.append('Name', this.editCourse.name);
         formData.append('StartDate', this.editCourse.startDate.toString());

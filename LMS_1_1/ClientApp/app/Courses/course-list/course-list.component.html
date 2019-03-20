@@ -4,6 +4,9 @@
         <a class="btn btn-outline-primary" [routerLink]="['/courses/create']" *ngIf="isTeacher"> Create Course</a>
     </div>
 </div>
+
+
+
     <div class="row" *ngIf='courses && courses.length'>
 
         <div class="col-md-4" *ngFor='let course of courses'>
@@ -28,5 +31,5 @@
             </div>
 
         </div>
-
+    
     </div>

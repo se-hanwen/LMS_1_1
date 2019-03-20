@@ -28,13 +28,22 @@ export class LoginMessageHandlerService {
 
 
   private ConfirmSource = new BehaviorSubject<string>(this.startstring);
-  Confirm = this.ConfirmSource.asObservable();
+  ConfirmMessage = this.ConfirmSource.asObservable();
 
  private CurrUserAuthSource = new BehaviorSubject<boolean>(false);
  CurrUserAuth = this.CurrUserAuthSource.asObservable();
 
  private CurrUserTeacherSource = new BehaviorSubject<boolean>(false);
  CurrUserTeacher = this.CurrUserTeacherSource.asObservable();
+
+ private ConfirmGoOnUrlSource = new BehaviorSubject<string[]>([]);
+ ConfirmGoOnUrl = this.ConfirmGoOnUrlSource.asObservable();
+
+ private ConfirmGoOnMessageSource = new BehaviorSubject<string>(this.startstring);
+ ConfirmGoOnMessage = this.ConfirmGoOnMessageSource.asObservable();
+
+ private ConfirmGoBackUrlSource = new BehaviorSubject<string[]>([]);
+ ConfirmGoBackUrl = this.ConfirmGoBackUrlSource.asObservable();
 
   constructor() { }
 
@@ -72,6 +81,9 @@ export class LoginMessageHandlerService {
     return true;
   }
 
+
+
+
   public SendCurrUserAuth(status:boolean) : boolean 
   {      
     this.CurrUserAuthSource.next( status==null?false: status);
@@ -81,6 +93,24 @@ export class LoginMessageHandlerService {
   public SendCurrUserTeacher(status:boolean) : boolean 
   {      
     this.CurrUserTeacherSource.next( status==null?false: status);
+    return true;
+  }
+
+  public SendConfirmGoOnUrl(arg:string[]): boolean 
+  {
+    this.ConfirmGoOnUrlSource.next(arg);
+    return true;
+  }
+
+  public SendConfirmGoOnMessage(arg:string): boolean 
+  {
+    this.ConfirmGoOnMessageSource.next(arg);
+    return true;
+  }
+
+  public SendConfirmGoBackUrl(arg:string[]): boolean 
+  {
+    this.ConfirmGoBackUrlSource.next(arg);
     return true;
   }
 }

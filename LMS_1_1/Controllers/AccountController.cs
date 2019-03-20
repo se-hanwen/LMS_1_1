@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using LMS_1_1.Data;
 using LMS_1_1.Models;
 using LMS_1_1.Repository;
 using LMS_1_1.ViewModels;
@@ -33,6 +34,7 @@ namespace LMS_1_1.Controllers
         private readonly IProgramRepository _programRepository;
         private readonly IUserClaimsPrincipalFactory<LMSUser> _claimsFactory;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
         private readonly JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
   
 
@@ -43,6 +45,7 @@ namespace LMS_1_1.Controllers
           IProgramRepository programRepository
          ,IUserClaimsPrincipalFactory<LMSUser> claimsFactory
          ,IEmailSender emailSender
+            , ApplicationDbContext context
 
 
             )
@@ -55,6 +58,7 @@ namespace LMS_1_1.Controllers
             _programRepository = programRepository;
             _claimsFactory = claimsFactory;
             _emailSender = emailSender;
+            _context = context;
         }
 
         public IActionResult Login()
@@ -137,6 +141,45 @@ namespace LMS_1_1.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<Boolean>> DeleteUser([FromBody] CourseIdViewModel id)
+        {
+
+            var userid = id.CourseId;
+            var user = await _userManager.FindByIdAsync(userid);
+            var result = await _userManager.DeleteAsync(user);
+            var userId = await _userManager.GetUserIdAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Unexpected error occurred deleteing user with ID '{userId}'.");
+            }
+
+            var tempcoursuser = _context.CourseUsers.Where(cu => cu.LMSUserId == userid);
+
+            _context.CourseUsers.RemoveRange(tempcoursuser);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+            _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+
+
+            var res = Json(new
+            {
+                Ok = true
+            });
+
+            return Ok(res);
+        }
+
+
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<string>> RegisterNewUser([FromBody] RegisterUserViewModel registerUser)
         {
             if (ModelState.IsValid)
@@ -187,6 +230,154 @@ namespace LMS_1_1.Controllers
 
         }
 
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<string>> UpdateUserAdmin([FromBody] ManageUserViewModel registerUser)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+         
+
+                var user = new LMSUser { UserName = registerUser.Email, Email = registerUser.Email, FirstName = registerUser.FirstName, LastName = registerUser.LastName };
+                var Role = registerUser.Role;
+                var user2 = await _userManager.FindByIdAsync(registerUser.Id);
+                user2.FirstName = registerUser.FirstName;
+                user2.LastName = registerUser.LastName;
+
+                var result = await _userManager.UpdateAsync(user2);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User updated by admin");
+                    
+                    var roles =await _userManager.GetRolesAsync(user2);
+
+                    if (!roles.Contains(Role))
+                    {
+                        _logger.LogInformation("User role updated by Admin");
+                        var ok2 = await _userManager.RemoveFromRoleAsync(user2, roles[0]);
+                        if (!ok2.Succeeded)
+                        {
+                            throw new Exception(string.Join("\n", ok2.Errors));
+                        }
+                        var ok = await _userManager.AddToRoleAsync(user2, Role);
+                        if (!ok.Succeeded)
+                        {
+                            throw new Exception(string.Join("\n", ok.Errors));
+                        }
+                    }
+                    /*  var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                      var callbackUrl = Url.Page(
+                          "/Account/ConfirmEmail",
+                          pageHandler: null,
+                          values: new { userId = user.Id, code = code },
+                          protocol: Request.Scheme);
+
+                      await _emailSender.SendEmailAsync(registerUser.Email, "Confirm your email",
+                          $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                          */
+                    // teacher makes users so no log in.
+                    // await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    var res = Json(new
+                    {
+                        status = true
+                    });
+
+
+
+                    return Ok(res);
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return StatusCode(500, ModelState);
+
+        }
+
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<string>> UpdateUser([FromBody] ManageUserViewModel registerUser)
+        {
+            if (ModelState.IsValid)
+            {
+                var user2 = await _userManager.FindByNameAsync(User.Identity.Name);
+                var user = new LMSUser { UserName = registerUser.Email, Email = registerUser.Email, FirstName = registerUser.FirstName, LastName = registerUser.LastName };
+                // var Role = registerUser.Role;
+                user2.FirstName = registerUser.FirstName;
+                user2.LastName = registerUser.LastName;
+                if (User.Identity.Name != registerUser.Email)
+                {
+                    throw new AccessViolationException("User tryed to update other user");
+                }
+                if (registerUser.Password != "")
+                {// then try to update password
+
+                    var changePasswordResult = await _userManager.ChangePasswordAsync(user2, registerUser.Oldpassword, registerUser.Password);
+                    if (!changePasswordResult.Succeeded)
+                    {
+                        _logger.LogInformation("Failed to update Password by user");
+                        foreach (var error in changePasswordResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Password updated by user");
+                    }
+                }
+                var result = await _userManager.UpdateAsync(user2);
+                if (result.Succeeded)
+                {
+
+                    _logger.LogInformation("User updated by user");
+
+                   // var roles = await _userManager.GetRolesAsync(user2);
+
+                    /*if (!roles.Contains(Role))
+                    {
+                        _logger.LogInformation("User role updated by user");
+                        var ok2 = await _userManager.RemoveFromRoleAsync(user2, roles[0]);
+                        if (!ok2.Succeeded)
+                        {
+                            ModelState.AddModelError(string.Empty, string.Join("\n", ok2.Errors));
+                        }
+                        var ok = await _userManager.AddToRoleAsync(user2, Role);
+                        if (!ok.Succeeded)
+                        {
+                            ModelState.AddModelError(string.Empty, string.Join("\n", ok.Errors));
+                        }
+                    }*/
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                if(ModelState.Count>0)
+                { // errors
+                    return StatusCode(500, ModelState);
+                }
+                var res = Json(new
+                {
+                    status = true
+                });
+
+
+
+                return Ok(res);
+            }
+            
+            return StatusCode(500, ModelState);
+
+        }
         [HttpPost]
         public async Task<bool> IsTeacher(string token)
         {
