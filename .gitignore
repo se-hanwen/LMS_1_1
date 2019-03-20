@@ -8,8 +8,8 @@
 *.sln.docstates
 
 *.map
-/Attachements/*
-/ClientApp/assets/*
+Attachements/*
+ClientApp/assets/*
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
