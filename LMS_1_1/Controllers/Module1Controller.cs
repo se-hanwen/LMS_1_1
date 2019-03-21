@@ -154,18 +154,18 @@ namespace LMS_1_1.Controllers
 
         [HttpPost("TestIfInRange")]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<bool>> TestIfInRange(string type, string id, DateTime start, DateTime end)
+        public async Task<ActionResult<bool>> TestIfInRange([FromBody] DubbParas parmas)
         {
             bool res = false;
-            if(type=="Modules")
+            if (parmas.Dubbtype == "Module")
             {
-                 res = await _programrepository.CheckIfModuleInRange(id, start, end);
+                res = await _programrepository.CheckIfModuleInRange(parmas.Dubbid, parmas.Dubbstart, parmas.Dubbend);
 
 
             }
-            else if(type=="Activity")
+            else if (parmas.Dubbtype == "Activity")
             {
-                res = await _programrepository.CheckIfActivityInRange(id, start, end);
+                res = await _programrepository.CheckIfActivityInRange(parmas.Dubbid, parmas.Dubbstart, parmas.Dubbend);
             }
             else
             {
@@ -174,7 +174,7 @@ namespace LMS_1_1.Controllers
             }
             return Ok(res);
         }
-      private bool ModuleExists(Guid id)
+        private bool ModuleExists(Guid id)
         {
             return _context.Modules.Any(e => e.Id == id);
         }
