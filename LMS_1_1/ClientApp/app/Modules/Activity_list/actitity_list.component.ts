@@ -5,7 +5,7 @@ import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subscription, Subject } from 'rxjs';
 import { OnInit, Component, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { DataService } from 'ClientApp/app/data.service';
+
 
 @Component({
     selector: "activity_list",
@@ -25,7 +25,7 @@ export class ActitityListComponent implements OnInit, OnDestroy  {
      private CourseService: CourseService
      , private AuthService : AuthService
      , private cd: ChangeDetectorRef
-     , private data: DataService
+    
      ) 
      { }
  
@@ -51,7 +51,7 @@ export class ActitityListComponent implements OnInit, OnDestroy  {
       if(this.module.activities.find(a => a.id.toString()==aid).isExpanded ==" show")
      {
           this.module.activities.find(a => a.id.toString() == aid).isExpanded = "";
-          this.data.getData(aid);
+         
      }
       else
      {

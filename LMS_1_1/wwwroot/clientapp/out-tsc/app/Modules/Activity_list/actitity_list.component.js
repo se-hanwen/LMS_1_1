@@ -5,14 +5,12 @@ import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { DataService } from 'ClientApp/app/data.service';
 var ActitityListComponent = /** @class */ (function () {
-    function ActitityListComponent(route, CourseService, AuthService, cd, data) {
+    function ActitityListComponent(route, CourseService, AuthService, cd) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
-        this.data = data;
         this.unsubscribe = new Subject();
         this.isTeacher = false;
     }
@@ -31,7 +29,6 @@ var ActitityListComponent = /** @class */ (function () {
     ActitityListComponent.prototype.TogggelCollapse = function (aid) {
         if (this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded == " show") {
             this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded = "";
-            this.data.getData(aid);
         }
         else {
             this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded = " show";
@@ -54,8 +51,7 @@ var ActitityListComponent = /** @class */ (function () {
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute,
             CourseService,
             AuthService,
-            ChangeDetectorRef,
-            DataService])
+            ChangeDetectorRef])
     ], ActitityListComponent);
     return ActitityListComponent;
 }());

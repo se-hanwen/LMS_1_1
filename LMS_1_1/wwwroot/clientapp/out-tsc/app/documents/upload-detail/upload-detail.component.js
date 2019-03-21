@@ -4,14 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { DocumentService } from '../document.service';
 import { saveAs } from 'file-saver';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
-import { DataService } from 'ClientApp/app/data.service';
 var UploadDetailComponent = /** @class */ (function () {
-    function UploadDetailComponent(route, DocumentService, AuthService, data) {
+    function UploadDetailComponent(route, DocumentService, AuthService) {
         var _this = this;
         this.route = route;
         this.DocumentService = DocumentService;
         this.AuthService = AuthService;
-        this.data = data;
         this.documents = [];
         this.isTeacher = false;
         this.subscription = this.DocumentService.getUplaodtStatus().subscribe(function (status) {
@@ -61,8 +59,7 @@ var UploadDetailComponent = /** @class */ (function () {
         }),
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute,
             DocumentService,
-            AuthService,
-            DataService])
+            AuthService])
     ], UploadDetailComponent);
     return UploadDetailComponent;
 }());

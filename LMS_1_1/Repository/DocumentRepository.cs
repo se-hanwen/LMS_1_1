@@ -46,6 +46,17 @@ namespace LMS_1_1.Repository
 
         }
 
+        public async Task<bool> IsExistDocumentByPathAsync (string path)
+        {
+            var document= await _ctx.Documents
+                       .Where(d => d.Path == path).ToListAsync();
+            if(document.Count>0)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<IEnumerable<Document>> GetDocumentsByIdOwnerAsync (Guid OwnerId)
         {
             return await _ctx.Documents
@@ -58,9 +69,18 @@ namespace LMS_1_1.Repository
                         .FirstOrDefaultAsync(dt => dt.Id== documentTypeId);
         }
 
-        public void RemoveDocumentAsync (Document model)
+        public async void RemoveDocumentAsync (Document model)
         {
+            string fileNameTobeDeleted = model.Path;
             _ctx.Remove(model);
+             SaveAllAsync();
+            bool isExist = await IsExistDocumentByPathAsync(fileNameTobeDeleted);
+            if (isExist)
+            {
+                string folderpath = GetDocumentUploadPath();
+
+                await RemoveFile(folderpath, model.Path);
+            }
         }
 
         public void SaveAllAsync ()
@@ -83,14 +103,10 @@ namespace LMS_1_1.Repository
             Directory.CreateDirectory(path);
             return path;
         }
-
-
         public async Task<string> UploadFile (IFormFile file,string path)
         {
             try
             {
-                
-
                 if (file.Length > 0)
                 {
                    
@@ -163,7 +179,6 @@ namespace LMS_1_1.Repository
 
         public async Task<bool> RemoveFile (string path,string fileName)
         {
-           
             var file = Path.Combine(path, fileName);
             if (File.Exists(file))
             {

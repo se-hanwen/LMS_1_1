@@ -5,7 +5,7 @@ import { IDocument } from '../document';
 import { saveAs } from 'file-saver';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
-import { DataService } from 'ClientApp/app/data.service';
+
 @Component({
   selector: 'upload-detail',
   templateUrl: './upload-detail.component.html',
@@ -21,8 +21,7 @@ export class UploadDetailComponent implements OnInit,OnDestroy {
 
     constructor(private route: ActivatedRoute,
         private DocumentService: DocumentService,
-        private AuthService: AuthService,
-        private data: DataService
+        private AuthService: AuthService
     ) {
 
 
