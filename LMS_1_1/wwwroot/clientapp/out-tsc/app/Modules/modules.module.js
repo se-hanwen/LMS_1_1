@@ -42,6 +42,11 @@ var ModulesModule = /** @class */ (function () {
                         component: ModulDetailsComponent
                     },
                     {
+                        path: 'Modules/edit/:id',
+                        canActivate: [IsTeacherGuard],
+                        component: EditComponent
+                    },
+                    {
                         path: 'Modules/delete/:id',
                         canActivate: [IsTeacherGuard],
                         component: ModuleDeleteComponent
