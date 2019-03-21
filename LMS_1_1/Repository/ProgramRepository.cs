@@ -65,6 +65,7 @@ namespace LMS_1_1.Repository
             string rootPath = _environment.ContentRootPath;
             var folderName = Path.Combine("clientApp", "assets/img");
             var path = Path.Combine(rootPath, folderName);
+            Directory.CreateDirectory(path);
             return path;
         }
         #endregion
