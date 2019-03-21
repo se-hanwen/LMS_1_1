@@ -21,7 +21,7 @@ namespace LMS_1_1.Repository
 
         Task<DocumentType> GetDocumentTypeByIdAsync (int documentTypeId);
         Task AddDocumentAsync (Document model);
-        void RemoveDocumentAsync (Document model);
-        void SaveAllAsync ();
+        Task RemoveDocumentAsync (Document model);
+        Task SaveAllAsync ();
     }
 }
