@@ -12,6 +12,7 @@ namespace LMS_1_1.Repository
     {
         Task<string> UploadFile (IFormFile file,string path);
         Task<FileStream> DownloadFile (string path, string fileName);
+        Task<bool> IsExistDocumentByPathAsync (string path);
         Task<bool> RemoveFile (string path,string fileName);
         string GetDocumentUploadPath ();
         Task<IEnumerable<Document>> GetAllDocumentsAsync ();
