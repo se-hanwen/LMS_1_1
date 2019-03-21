@@ -24,10 +24,16 @@ export class CourseEditComponent implements OnInit {
         let id = this.route.snapshot.paramMap.get("id");
         this.CourseService.getCourseById(id).subscribe(
             tcourse => {
-                tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
+                let tmppath = tcourse.courseImgPath.substr(tcourse.courseImgPath.lastIndexOf('\\') + 1);
+                if (tmppath == null) {
+                    tmppath = "";
+                }
+                //tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
                 this.editCourse = tcourse;
+                this.editCourse.courseImgPath = tmppath;
             },
             error => { this.errorMsg = <any>error; });
+        console.log("XXXXXXXXXXXXXX=>" + this.editCourse.courseImgPath);
     } 
 
 
