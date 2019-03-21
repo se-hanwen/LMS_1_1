@@ -177,7 +177,7 @@ namespace LMS_1_1.Controllers
          var acDocuments =await _documentrepository.GetDocumentsByIdOwnerAsync(iD);
             foreach (Document doc in acDocuments)
             {
-                _documentrepository.RemoveDocumentAsync(doc);
+               await _documentrepository.RemoveDocumentAsync(doc);
             }
           
 

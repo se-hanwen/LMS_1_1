@@ -80,11 +80,11 @@ namespace LMS_1_1.Repository
                         .FirstOrDefaultAsync(dt => dt.Id== documentTypeId);
         }
 
-        public async void RemoveDocumentAsync (Document model)
+        public async Task RemoveDocumentAsync (Document model)
         {
             string fileNameTobeDeleted = model.Path;
             _ctx.Remove(model);
-             SaveAllAsync();
+           await   SaveAllAsync();
             bool isExist = await IsExistDocumentByPathAsync(fileNameTobeDeleted);
             if (isExist)
             {
@@ -94,11 +94,11 @@ namespace LMS_1_1.Repository
             }
         }
 
-        public void SaveAllAsync ()
+        public async Task SaveAllAsync ()
         {
             try
             {
-                  _ctx.SaveChanges() ;
+                  await _ctx.SaveChangesAsync() ;
             }
             catch(Exception ex)
             {
