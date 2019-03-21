@@ -1,6 +1,6 @@
 ﻿import { Injectable, OnDestroy } from '@angular/core';
 
-import { ICourse,course, IModule, IActivity2 } from './course';
+import { ICourse,course, IModule, IActivity2, IActivity } from './course';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
 
@@ -81,6 +81,12 @@ export class CourseService implements  OnDestroy {
         );
 
     }
+
+    getActivitybyId(ActvId: string): Observable<IActivity>
+    {
+
+    }
+
     getModulAndActivitybyId(Moduleid: string) : Observable<IModule>
     {
         return this.http.get<IModule>(this.courseUrl +"/MAndAfromMid?id=" +Moduleid,

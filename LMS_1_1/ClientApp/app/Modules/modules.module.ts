@@ -44,7 +44,13 @@ import { ActivityDeleteComponent } from './activity-delete/activity-delete.compo
                 path: 'Modules/delete/:id'
                 , canActivate: [IsTeacherGuard]
                 , component: ModuleDeleteComponent
+            },
+            {
+                path: 'Activity/delete/:id'
+                , canActivate: [IsTeacherGuard]
+                , component: ActivityDeleteComponent
             }
+
         ]
     )
   ]
