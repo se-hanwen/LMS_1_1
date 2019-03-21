@@ -8,22 +8,29 @@
            
 
             <div class="holder">
-                <div class="card text-center" *ngFor='let document of documents'>
+                <div class="card" style="margin-top: 10px;" *ngFor='let document of documents'>
 
-                    <div class="card-header">
-                        <h5 class="card-title btn btn-link" (click)="DownLoadFile(document.path)">{{document.name}}</h5>
-                    </div>
                     <div class="card-body">
-                        <p class="card-text">{{document.description}}</p>
-                      
+                        <h5 class="card-title">{{document.name}}</h5>
+                
+                            {{document.description}}
+
+                        
+                        <p style="text-align:right"><small><b>Upload date:</b> {{document.uploadDate|date:'yyyy-mm-dd'}} </small></p>
+
+
+
+
                     </div>
                     <div class="card-footer text-muted">
 
-                        <p *ngIf="isTeacher" class="card-title btn btn-info" (click)="DeleteFile(document.id)">Remove</p>
-                        <p *ngIf="!isTeacher" class="card-title btn btn-info" (click)="DeleteFile(document.id)">Submit</p>
-                        {{document.uploadDate |date: 'yyyy-MM-dd'}}
+                        <p *ngIf="isTeacher" class="card-title btn btn-info" style="margin-right:5px" (click)="DeleteFile(document.id)"><i class="fa fa-1x fa-trash"></i></p>
+                        <p class="card-title btn btn-info" style="margin-right:5px"  (click)="DownLoadFile(document.path)"><i class="fa fa-1x  fa-download"></i></p>
+                      <!--  <p class="card-title btn btn-info" style="margin-right:5px"><i class="fa fa-1x fa-paperclip"></i></p>-->
+
                     </div>
                 </div>
+          
             </div>
 
         </div>

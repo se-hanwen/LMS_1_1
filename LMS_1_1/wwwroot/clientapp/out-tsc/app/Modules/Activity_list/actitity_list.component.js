@@ -5,12 +5,14 @@ import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { DataService } from 'ClientApp/app/data.service';
 var ActitityListComponent = /** @class */ (function () {
-    function ActitityListComponent(route, CourseService, AuthService, cd) {
+    function ActitityListComponent(route, CourseService, AuthService, cd, data) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
+        this.data = data;
         this.unsubscribe = new Subject();
         this.isTeacher = false;
     }
@@ -27,35 +29,12 @@ var ActitityListComponent = /** @class */ (function () {
         }, function (error) { return _this.errorMessage = error; });
     };
     ActitityListComponent.prototype.TogggelCollapse = function (aid) {
-        if (this.module.activities.find(function (m) { return m.id.toString() == aid; }).isExpanded == " show") {
-            this.module.activities.find(function (m) { return m.id.toString() == aid; }).isExpanded = "";
-            // add here for filelist for activity
-            /*  if (this.savesubs.find( t => t[0]==mid))
-              {
-   
-                  this.savesubs.find( t => t[0]==mid)[1].unsubscribe();
-                  this.savesubs.splice(this.savesubs.indexOf(this.savesubs.find( t => t[0]==mid)),1);
-              }
-   */
+        if (this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded == " show") {
+            this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded = "";
+            this.data.getData(aid);
         }
         else {
-            this.module.activities.find(function (m) { return m.id.toString() == aid; }).isExpanded = " show";
-            /* let temp=this.CourseService.getActivitybymodulId(mid).subscribe(
-                      activities=>
-                      {
-                          this.course.modules.find(m => m.id.toString()==mid).activities=activities;
-                      },
-                      error => this.errorMessage = <any>error
-                  );
-              if (this.savesubs.find( t => t[0]==mid))
-              {
-                  this.savesubs.find( t => t[0]==mid)[1]=temp;
-              }
-              else
-              {
-                  this.savesubs.push([mid,temp])  ;
-              }
-              */
+            this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded = " show";
         }
     };
     ActitityListComponent.prototype.ngOnDestroy = function () {
@@ -75,7 +54,8 @@ var ActitityListComponent = /** @class */ (function () {
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute,
             CourseService,
             AuthService,
-            ChangeDetectorRef])
+            ChangeDetectorRef,
+            DataService])
     ], ActitityListComponent);
     return ActitityListComponent;
 }());

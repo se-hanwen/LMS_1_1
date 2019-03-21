@@ -80,6 +80,7 @@ namespace LMS_1_1.Repository
             string rootPath = _environment.ContentRootPath;
             var folderName = Path.Combine("Attachements", "Documents");
             var path = Path.Combine(rootPath, folderName);
+            Directory.CreateDirectory(path);
             return path;
         }
 
@@ -151,22 +152,18 @@ namespace LMS_1_1.Repository
             return filepath;
         }
 
-        public async Task<FileStream> DownloadFile (string fileName)
+        public async Task<FileStream> DownloadFile (string path,string fileName)
         {
-            string rootPath = _environment.ContentRootPath;
-            var folderName = Path.Combine("Attachements", "Documents");
-            var path = Path.Combine(rootPath, folderName);
+          
             var file = Path.Combine(path, fileName);
             if(File.Exists(file))
             return new FileStream(file, FileMode.Open, FileAccess.Read);
             return null;
         }
 
-        public async Task<bool> RemoveFile (string fileName)
+        public async Task<bool> RemoveFile (string path,string fileName)
         {
-            string rootPath = _environment.ContentRootPath;
-            var folderName = Path.Combine("Attachements", "Documents");
-            var path = Path.Combine(rootPath, folderName);
+           
             var file = Path.Combine(path, fileName);
             if (File.Exists(file))
             {

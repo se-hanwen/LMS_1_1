@@ -143,9 +143,9 @@ namespace LMS_1_1.Controllers
 
         [HttpPost("DownloadFile"), DisableRequestSizeLimit]
         public async Task<FileStream> DownloadFile (string fileName)
-        {      
-           
-            return  await _repository.DownloadFile(fileName);
+        {
+            string folderpath = _repository.GetDocumentUploadPath();
+            return  await _repository.DownloadFile(folderpath, fileName);
         }
 
         // DELETE: api/Documents1/5
@@ -159,7 +159,8 @@ namespace LMS_1_1.Controllers
                 return NotFound();
             }
             _repository.RemoveDocumentAsync(document);
-            await _repository.RemoveFile(document.Path);
+           string folderpath= _repository.GetDocumentUploadPath();
+            await _repository.RemoveFile(folderpath, document.Path);
             _repository.SaveAllAsync();
 
             return Ok(document);

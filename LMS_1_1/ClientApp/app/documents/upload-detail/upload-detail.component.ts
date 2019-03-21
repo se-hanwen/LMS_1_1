@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import { DocumentService } from '../document.service';
 import { IDocument } from '../document';
 import { saveAs } from 'file-saver';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
+import { DataService } from 'ClientApp/app/data.service';
 @Component({
   selector: 'upload-detail',
   templateUrl: './upload-detail.component.html',
@@ -16,8 +17,13 @@ export class UploadDetailComponent implements OnInit,OnDestroy {
     errorMessage: string;
     subscription: Subscription;
     isTeacher: boolean = false;
+    today: Data = Date.now();
 
-    constructor(private route: ActivatedRoute, private DocumentService: DocumentService, private AuthService: AuthService) {
+    constructor(private route: ActivatedRoute,
+        private DocumentService: DocumentService,
+        private AuthService: AuthService,
+        private data: DataService
+    ) {
 
 
         this.subscription = this.DocumentService.getUplaodtStatus().subscribe(status => {
