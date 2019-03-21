@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import { DocumentService } from '../document.service';
 import { IDocument } from '../document';
 import { saveAs } from 'file-saver';
@@ -17,6 +17,7 @@ export class UploadDetailComponent implements OnInit,OnDestroy {
     errorMessage: string;
     subscription: Subscription;
     isTeacher: boolean = false;
+    today: Data = Date.now();
 
     constructor(private route: ActivatedRoute,
         private DocumentService: DocumentService,

@@ -160,9 +160,10 @@ namespace LMS_1_1.Controllers
 
         }
 
-        private bool ActivityExists(Guid id)
+        private bool ActivityExists (Guid id)
         {
             return _context.LMSActivity.Any(e => e.Id == id);
+        }
         public async void Delete(Guid iD)
         {
             var actv = _context.LMSActivity.Find(iD);

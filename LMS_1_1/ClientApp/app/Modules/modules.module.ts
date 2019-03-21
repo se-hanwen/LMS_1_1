@@ -21,7 +21,7 @@ import { ActivityDeleteComponent } from './activity-delete/activity-delete.compo
       ModulDetailsComponent,
       ModuleDeleteComponent,
       CheckIfDubbsComponent,
-      EditComponent
+      EditComponent,
       ActivityDeleteComponent
      
   ],

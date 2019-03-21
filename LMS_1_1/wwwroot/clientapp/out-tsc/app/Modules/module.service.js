@@ -10,6 +10,7 @@ var ModuleService = /** @class */ (function () {
         this.http = http;
         this.AuthService = AuthService;
         this.moduleUrl = "https://localhost:44396/api/module1";
+        this.actvUrl = "https://localhost:44396/api/activity1";
         this.token = "";
         this.unsubscribe = new Subject();
         this.AuthService.token
@@ -57,6 +58,14 @@ var ModuleService = /** @class */ (function () {
     //Delete a module by a given guid.
     ModuleService.prototype.DeleteModule = function (id) {
         var urlString = this.moduleUrl + "/" + id;
+        return this.http.delete(urlString, {
+            headers: this.getAuthHeader()
+        })
+            .pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
+    //Delete an activity by a given guid.
+    ModuleService.prototype.DeleteActivity = function (id) {
+        var urlString = this.actvUrl + "/" + id;
         return this.http.delete(urlString, {
             headers: this.getAuthHeader()
         })

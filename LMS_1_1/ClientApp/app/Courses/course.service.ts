@@ -82,10 +82,7 @@ export class CourseService implements  OnDestroy {
 
     }
 
-    getActivitybyId(ActvId: string): Observable<IActivity>
-    {
-
-    }
+    
 
     getModulAndActivitybyId(Moduleid: string) : Observable<IModule>
     {
