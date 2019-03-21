@@ -82,11 +82,6 @@ export class CourseService implements  OnDestroy {
 
     }
 
-    getActivitybyId(ActvId: string): Observable<IActivity>
-    {
-
-    }
-
     getModulAndActivitybyId(Moduleid: string) : Observable<IModule>
     {
         return this.http.get<IModule>(this.courseUrl +"/MAndAfromMid?id=" +Moduleid,

@@ -8,13 +8,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LMS_1_1.Data;
-using LMS_1_1.Models;
 using LMS_1_1.ViewModels;
 using LMS_1_1.Repository;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 
 namespace LMS_1_1.Controllers
@@ -163,6 +161,8 @@ namespace LMS_1_1.Controllers
         private bool ActivityExists(Guid id)
         {
             return _context.LMSActivity.Any(e => e.Id == id);
+        }
+
         public async void Delete(Guid iD)
         {
             var actv = _context.LMSActivity.Find(iD);
