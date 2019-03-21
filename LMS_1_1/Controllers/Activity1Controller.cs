@@ -167,14 +167,14 @@ namespace LMS_1_1.Controllers
         [Authorize(Roles = "Teacher")]
         public async void Delete(Guid iD)
         {
-            var actv = _context.LMSActivity.Find(iD);
+            var actv = await _context.LMSActivity.FindAsync(iD);
             if (actv == null)
             {
                 return;
             }
 
             _context.LMSActivity.Remove(actv);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
     }
 }

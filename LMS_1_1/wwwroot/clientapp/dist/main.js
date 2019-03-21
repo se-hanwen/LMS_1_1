@@ -85,6 +85,10 @@ var AddActivitiesWithModulIdComponent = /** @class */ (function () {
     }
     AddActivitiesWithModulIdComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.messhandler.SendDubbId(this.Activity.moduleid);
+        this.messhandler.SendDubbType("Activity");
+        this.messhandler.SendDubbStart(new Date(this.Activity.startDate + ":00.000Z"));
+        this.messhandler.SendDubbEnd(new Date(this.Activity.endDate + ":00.000Z"));
         this.messhandler.Modulid
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
             .subscribe(function (status) {
@@ -1286,7 +1290,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"course\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <img class=\"card-img-top\" [src]=\"course.courseImgPath==null?'':course.courseImgPath\" alt=\"Card image cap\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{course.name}}</h3>\r\n                    <h5 class=\"card-title\">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{course.description}}</p>\r\n\r\n\r\n                    <a href=\"javascript:void(0);\" (click)=\"toggelPartipantList()\">{{showpartipantlistmsg}}  partipantlist</a>\r\n                    <app-partipant-list [courseid]='course.id'></app-partipant-list>\r\n\r\n                    <div class=\"card-body\" *ngIf=\"isTeacher\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-6\">\r\n                                <a [routerLink]=\"['/Modules/create']\">Add Module</a>\r\n                            </div>\r\n                            <div class=\"col-6\">\r\n                                <a [routerLink]=\"['/AddPartipant', course.id]\">Add Participant</a>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n\r\n              \r\n            </div>\r\n            </div>\r\n\r\n            <div class=\"col-md-4\">\r\n                <detail_list [courseid]=\"course.id\"></detail_list>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n                <div>\r\n                    <upload-detail [DocOwnerId]=\"course.id\"></upload-detail>\r\n                </div>\r\n                <doc-upload [DocOwnerId]=\"course.id\" [DocOwnerTypeId]=\"1\" [DocumentTypeId]=\"1\"></doc-upload>\r\n\r\n\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n\r\n"
+module.exports = "<div *ngIf=\"course\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <img class=\"card-img-top\" [src]=\"course.courseImgPath==null?'':course.courseImgPath\" alt=\"Card image cap\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{course.name}}</h3>\r\n                    <h5 class=\"card-title\">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{course.description}}</p>\r\n\r\n\r\n                    <a href=\"javascript:void(0);\" (click)=\"toggelPartipantList()\">{{showpartipantlistmsg}}  partipantlist</a>\r\n                    <app-partipant-list [courseid]='course.id'></app-partipant-list>\r\n\r\n                    <div class=\"card-body\" *ngIf=\"isTeacher\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-6\">\r\n                                <!-- <a [routerLink]=\"['/Modules/AddModuleWithCourseId', course.id]\">Add Module</a> -->\r\n                                <p>\r\n                                    <a class=\"btn btn-info\" asp-controller=\"Modules\" asp-action=\"CreateWithCourseid\" asp-route-id=\"@Model.Id\">\r\n                                        <i class=\"fa fa-1x fa-plus-square\"></i>\r\n                                    </a>\r\n                                </p>\r\n</div>\r\n                            <div class=\"col-6\">\r\n                                <a [routerLink]=\"['/AddPartipant', course.id]\">Add Participant</a>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n\r\n              \r\n            </div>\r\n            </div>\r\n\r\n            <div class=\"col-md-4\">\r\n                <detail_list [courseid]=\"course.id\"></detail_list>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n                <div>\r\n                    <upload-detail [DocOwnerId]=\"course.id\"></upload-detail>\r\n                </div>\r\n                <doc-upload [DocOwnerId]=\"course.id\" [DocOwnerTypeId]=\"1\" [DocumentTypeId]=\"1\"></doc-upload>\r\n\r\n\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n\r\n"
 
 /***/ }),
 
@@ -1437,9 +1441,15 @@ var CourseEditComponent = /** @class */ (function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
         this.CourseService.getCourseById(id).subscribe(function (tcourse) {
-            tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
+            var tmppath = tcourse.courseImgPath.substr(tcourse.courseImgPath.lastIndexOf('\\') + 1);
+            if (tmppath == null) {
+                tmppath = "";
+            }
+            //tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
             _this.editCourse = tcourse;
+            _this.editCourse.courseImgPath = tmppath;
         }, function (error) { _this.errorMsg = error; });
+        console.log("XXXXXXXXXXXXXX=>" + this.editCourse.courseImgPath);
     };
     CourseEditComponent.prototype.UpdateCourse = function () {
         var fileToUpload = (this.fileInputVariable.nativeElement.files.length == 0) ?
@@ -1971,7 +1981,7 @@ var CreateCourseComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"course && course.modules && course.modules.length>0\">\r\n    <div id=\"accordion\" >\r\n\r\n        <!--string name = Regex.Replace(@module.Name, @\"[\\W_]+\", string.Empty);-->\r\n        <div class=\"card\" *ngFor=\"let module of course.modules\">\r\n            <div class=\"card-header\" [id]=\"module.id\">\r\n                <div class=\"row\">\r\n                \r\n                    <div class=\"btn btn-link collapsed col-6\"\r\n                        [attr.data-target]=\"'#'+ module.name2\"\r\n                        [attr.aria-controls]=\"module.name2\"\r\n                        data-toggle=\"collapse\"\r\n                        [attr.aria-expanded]=\"false\"\r\n                        (click)=\"TogggelCollapse(module.id)\"\r\n                        >\r\n                        <h5 class=\"mb-0\">  \r\n                          \r\n                            {{ module.name }}\r\n                        </h5>\r\n                        \r\n                     \r\n                    </div>\r\n                    \r\n                \r\n                <div class=\"col-6 somepadding\">\r\n                        <h5 class=\"mb-0\"> \r\n                        <a [routerLink]=\"['/Modules/', module.id]\">Details</a>\r\n                    </h5>\r\n                     </div>\r\n                    </div>\r\n            </div>\r\n\r\n            <div [id]=\"module.name2\" [class]=\"'collapse'+ module.isExpanded\" [attr.aria-labelledby]=\"module.id\" data-parent=\"#accordion\">\r\n               \r\n                <span class=\"float-right\"> {{module.startDate |date: 'yyyy-MM-dd'}} -{{module.endDate |date: 'yyyy-MM-dd'}}</span>\r\n                <p>\r\n                    {{module.description}}\r\n                 \r\n                </p>\r\n                <div class=\"card-body\" *ngIf=\"module.activities && module.activities.length >0\">\r\n                    <h4>Activities</h4>\r\n                    <ul class=\"timeline\">\r\n\r\n                        <li *ngFor=\"let activity of module.activities\">\r\n                            <a asp-controller=\"LMSActivities\" asp-action=\"Details\" [attr.asp-route-id]=\"activity.id\">{{activity.name}}</a>\r\n                            <span class=\"float-right\"> {{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}}</span>\r\n                            <p>\r\n                                {{activity.description}}\r\n                                <br>{{activity.activityType}}\r\n                            </p>\r\n                            <div *ngIf=\"isTeacher\">\r\n                                <a [routerLink] =\"['/Activity/edit', activity.id ]\" >Edit Activity</a>&nbsp;|&nbsp;\r\n                                <a asp-controller=\"LMSActivities\" asp-action=\"Delete\" [attr.asp-route-id]=\"activity.id\">Delete Activity</a>\r\n                            </div>\r\n                        </li>\r\n\r\n                    </ul>\r\n                </div>\r\n                    <div *ngIf=\"isTeacher\">\r\n                        <a [routerLink]=\"['/Activity/create']\">Add module</a>\r\n                    </div>\r\n              \r\n\r\n            </div>\r\n\r\n        </div>\r\n\r\n     </div>\r\n\r\n</div>"
+module.exports = "<div *ngIf=\"course && course.modules && course.modules.length>0\">\r\n    <div id=\"accordion\" >\r\n\r\n        <!--string name = Regex.Replace(@module.Name, @\"[\\W_]+\", string.Empty);-->\r\n        <div class=\"card\" *ngFor=\"let module of course.modules\">\r\n            <div class=\"card-header\" [id]=\"module.id\">\r\n                <div class=\"row\">\r\n                \r\n                    <div class=\"btn btn-link collapsed col-6\"\r\n                        [attr.data-target]=\"'#'+ module.name2\"\r\n                        [attr.aria-controls]=\"module.name2\"\r\n                        data-toggle=\"collapse\"\r\n                        [attr.aria-expanded]=\"false\"\r\n                        (click)=\"TogggelCollapse(module.id)\"\r\n                        >\r\n                        <h5 class=\"mb-0\">  \r\n                          \r\n                            {{ module.name }}\r\n                        </h5>\r\n                        \r\n                     \r\n                    </div>\r\n                    \r\n                \r\n                <div class=\"col-6 somepadding\">\r\n                        <h5 class=\"mb-0  btn btn-info\"> \r\n                        <a [routerLink]=\"['/Modules/', module.id]\"> <i class=\"fa fa-1x fa-info\"></i></a>\r\n                    </h5>\r\n                     </div>\r\n                    </div>\r\n            </div>\r\n\r\n            <div [id]=\"module.name2\" [class]=\"'collapse'+ module.isExpanded\" [attr.aria-labelledby]=\"module.id\" data-parent=\"#accordion\">\r\n                <div>\r\n\r\n                    <p>\r\n                        {{module.description}}\r\n                    </p>\r\n                    <p style=\"text-align:right\">\r\n                        <small><b> {{module.startDate |date: 'yyyy-MM-dd'}} - {{module.endDate |date: 'yyyy-MM-dd'}} </b>  </small>\r\n                    </p>\r\n                </div>\r\n                <div class=\"card-body\" *ngIf=\"module.activities && module.activities.length >0\">\r\n                    <h4>Activities</h4>\r\n                    <ul class=\"timeline\">\r\n\r\n                        <li *ngFor=\"let activity of module.activities\">\r\n                            <div>\r\n                                <b>\r\n                                    <a asp-controller=\"LMSActivities\" asp-action=\"Details\" [attr.asp-route-id]=\"activity.id\">\r\n                                        {{activity.name}}\r\n                                    </a>\r\n                                </b>\r\n\r\n                                <p>\r\n                                    {{activity.description}}\r\n                                    <br> {{activity.activityType}}\r\n                                </p>\r\n\r\n                                <p style=\"text-align:right\"> <small>  <b>{{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}} </b>  </small></p>\r\n                            </div>\r\n                            <div *ngIf=\"isTeacher\">\r\n                                <a asp-controller=\"LMSActivities\" asp-action=\"Edit\" [attr.asp-route-id]=\"activity.id\" style=\"margin-left:5px\" class=\"btn btn-info\"> <i class=\"fa fa-1x fa-edit\"></i></a>&nbsp;\r\n                                <a [routerLink]=\"['/Activity/delete', activity.id]\"> <i class=\"fa fa-1x fa-minus-square\"></i></a>\r\n                               \r\n                            </div>\r\n                        </li>\r\n\r\n                    </ul>\r\n                    <div *ngIf=\"isTeacher\">\r\n                        <p class=\"btn btn-info\">  <i class=\"fa fa-1x fa-plus-square\"></i></p>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n\r\n     </div>\r\n\r\n</div>"
 
 /***/ }),
 
@@ -3174,6 +3184,8 @@ var ManageusersComponent = /** @class */ (function () {
         this.cd = cd;
         this.messhandler = messhandler;
         this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.togglechoose = false;
+        this.lastuserid = "";
         this.users = [];
     }
     ManageusersComponent.prototype.ngOnInit = function () {
@@ -3188,10 +3200,19 @@ var ManageusersComponent = /** @class */ (function () {
     };
     ManageusersComponent.prototype.ChooseUser = function (id) {
         if (this.users.find(function (u) { return u.id == id; }).role != "Teacher") {
-            this.messhandler.SendIsteacher(false);
-            this.messhandler.SendUserId(id);
+            if (this.togglechoose && this.lastuserid == id) {
+                this.togglechoose = false;
+                this.messhandler.SendIsteacher(true);
+            }
+            else {
+                this.togglechoose = true;
+                this.lastuserid = id;
+                this.messhandler.SendIsteacher(false);
+                this.messhandler.SendUserId(id);
+            }
         }
         else {
+            this.togglechoose = false;
             this.messhandler.SendIsteacher(true);
         }
     };
@@ -3695,7 +3716,7 @@ var User = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"module && module.activities && module.activities.length>0\">\r\n  <div id=\"accordion\" >\r\n\r\n      <!--string name = Regex.Replace(@module.Name, @\"[\\W_]+\", string.Empty);-->\r\n      <div class=\"card\" *ngFor=\"let activity of module.activities\">\r\n          <div class=\"card-header\" [id]=\"module.id\">\r\n              \r\n                  <div class=\"btn btn-link collapsed\"\r\n                      [attr.data-target]=\"'#'+ activity.name2\"\r\n                      [attr.aria-controls]=\"activity.name2\"\r\n                      data-toggle=\"collapse\"\r\n                      [attr.aria-expanded]=\"false\"\r\n                      (click)=\"TogggelCollapse(activity.id)\"\r\n                      >\r\n                      <h5 class=\"mb-0\"> \r\n                          {{ activity.name }}\r\n                        </h5>\r\n                  </div>\r\n              \r\n          </div>\r\n\r\n          <div [id]=\"activity.name2\" [class]=\"'collapse'+ activity.isExpanded\" [attr.aria-labelledby]=\"activity.id\" data-parent=\"#accordion\">\r\n              <div class=\"card-body\" *ngIf=\"module.activities && module.activities.length >0\">\r\n                  <!--<span class=\"float-right\"> {{activity.startDate |date: 'yyyy-MM-dd HH:mm'}} -{{activity.endDate |date: 'yyyy-MM-dd HH:mm'}}</span>\r\n    <p>{{activity.description}}\r\n    <br>{{activity.activityType}}</p>-->\r\n\r\n                  <div>\r\n                      <upload-detail [DocOwnerId]=\"activity.id\"></upload-detail>\r\n                  </div>\r\n                  <div *ngIf=\"isTeacher\">\r\n                      <doc-upload [DocOwnerId]=\"activity.id\" [DocOwnerTypeId]=\"3\" [DocumentTypeId]=\"2\"></doc-upload>\r\n                  </div>\r\n\r\n              </div>\r\n\r\n      </div>\r\n\r\n   </div>\r\n\r\n</div>"
+module.exports = "<div *ngIf=\"module && module.activities && module.activities.length>0\">\r\n  <div id=\"accordion\" >\r\n\r\n      <!--string name = Regex.Replace(@module.Name, @\"[\\W_]+\", string.Empty);-->\r\n      <div class=\"card\" *ngFor=\"let activity of module.activities\">\r\n          <div class=\"card-header\" [id]=\"module.id\">\r\n\r\n              <div class=\"btn btn-link collapsed\"\r\n                   [attr.data-target]=\"'#'+ activity.name2\"\r\n                   [attr.aria-controls]=\"activity.name2\"\r\n                   data-toggle=\"collapse\"\r\n                   [attr.aria-expanded]=\"false\"\r\n                   (click)=\"TogggelCollapse(activity.id)\">\r\n                  <h5 class=\"mb-0\">\r\n                      {{ activity.name }}\r\n                  </h5>\r\n              </div>\r\n\r\n          </div>\r\n          <div class=\"row\">\r\n\r\n              <div class=\"col-md-12\">\r\n\r\n             \r\n              <div [id]=\"activity.name2\" [class]=\"'collapse'+ activity.isExpanded\" [attr.aria-labelledby]=\"activity.id\" data-parent=\"#accordion\">\r\n                  <div  *ngIf=\"module.activities && module.activities.length >0\" >\r\n\r\n                  <!--<span class=\"float-right\"> {{activity.startDate |date: 'yyyy-MM-dd HH:mm'}} -{{activity.endDate |date: 'yyyy-MM-dd HH:mm'}}</span>\r\n            <p>{{activity.description}}\r\n            <br>{{activity.activityType}}</p>-->\r\n                      <div>\r\n                          <upload-detail [DocOwnerId]=\"activity.id\"></upload-detail>\r\n                      </div>\r\n                      <div *ngIf=\"isTeacher\">\r\n                          <doc-upload [DocOwnerId]=\"activity.id\" [DocOwnerTypeId]=\"3\" [DocumentTypeId]=\"2\"></doc-upload>\r\n                      </div>\r\n\r\n                  </div>\r\n\r\n              </div>\r\n               </div>\r\n          </div>\r\n      </div>\r\n\r\n</div>\r\n</div>"
 
 /***/ }),
 
@@ -3716,6 +3737,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var ClientApp_app_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ClientApp/app/data.service */ "./app/data.service.ts");
+
 
 
 
@@ -3724,11 +3747,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ActitityListComponent = /** @class */ (function () {
-    function ActitityListComponent(route, CourseService, AuthService, cd) {
+    function ActitityListComponent(route, CourseService, AuthService, cd, data) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
+        this.data = data;
         this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
         this.isTeacher = false;
     }
@@ -3745,35 +3769,12 @@ var ActitityListComponent = /** @class */ (function () {
         }, function (error) { return _this.errorMessage = error; });
     };
     ActitityListComponent.prototype.TogggelCollapse = function (aid) {
-        if (this.module.activities.find(function (m) { return m.id.toString() == aid; }).isExpanded == " show") {
-            this.module.activities.find(function (m) { return m.id.toString() == aid; }).isExpanded = "";
-            // add here for filelist for activity
-            /*  if (this.savesubs.find( t => t[0]==mid))
-              {
-   
-                  this.savesubs.find( t => t[0]==mid)[1].unsubscribe();
-                  this.savesubs.splice(this.savesubs.indexOf(this.savesubs.find( t => t[0]==mid)),1);
-              }
-   */
+        if (this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded == " show") {
+            this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded = "";
+            this.data.getData(aid);
         }
         else {
-            this.module.activities.find(function (m) { return m.id.toString() == aid; }).isExpanded = " show";
-            /* let temp=this.CourseService.getActivitybymodulId(mid).subscribe(
-                      activities=>
-                      {
-                          this.course.modules.find(m => m.id.toString()==mid).activities=activities;
-                      },
-                      error => this.errorMessage = <any>error
-                  );
-              if (this.savesubs.find( t => t[0]==mid))
-              {
-                  this.savesubs.find( t => t[0]==mid)[1]=temp;
-              }
-              else
-              {
-                  this.savesubs.push([mid,temp])  ;
-              }
-              */
+            this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded = " show";
         }
     };
     ActitityListComponent.prototype.ngOnDestroy = function () {
@@ -3792,7 +3793,8 @@ var ActitityListComponent = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
             ClientApp_app_Courses_course_service__WEBPACK_IMPORTED_MODULE_2__["CourseService"],
             ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"],
-            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ChangeDetectorRef"]])
+            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ChangeDetectorRef"],
+            ClientApp_app_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"]])
     ], ActitityListComponent);
     return ActitityListComponent;
 }());
@@ -4117,7 +4119,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"module\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{module.name}}</h3>\r\n                    <h5 class=\"card-title\">{{module.startDate |date: 'yyyy-MM-dd'}} - {{module.endDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{module.description}}</p>\r\n\r\n                </div>\r\n\r\n\r\n                <div class=\"card-body\">\r\n                    <div class=\"row\" *ngIf=\"isTeacher\">\r\n                        <div class=\"col-6\">\r\n                             <a [routerLink]=\"['/Modules/edit', module.id]\">Edit module</a> \r\n                           <!-- <a asp-controller=\"Modules\" asp-action=\"CreateWithCourseid\" asp-route-id=\"@Model.Id\" class=\"card-link\">Edit module</a>-->\r\n                        </div>\r\n                        <div class=\"col-6\">\r\n                            <!--<a [routerLink]=\"['/Modules/Delete', module.id]\">Delete module</a> -->\r\n                            Delete module\r\n                        </div>\r\n                        <div class=\"col-6\">\r\n                            <!-- <a [routerLink]=\"['/Activites/AddActivityWithModuleId', .id]\">Activity/a> -->\r\n                                <a [routerLink]=\"['/Activity/create']\">Add module</a>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-6\">\r\n                            <a [routerLink]=\"['/courses/', module.courseId]\">Go back</a>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n        </div>\r\n        <div class=\"col-md-4\">\r\n            <activity_list [moduleid]=\"module.id\"></activity_list>\r\n        </div>\r\n       \r\n\r\n        <div class=\"col-md-4\">\r\n            <div>\r\n                <upload-detail [DocOwnerId]=\"module.id\"></upload-detail>\r\n            </div>\r\n            <doc-upload [DocOwnerId]=\"module.id\" [DocOwnerTypeId]=\"2\" [DocumentTypeId]=\"3\"></doc-upload>\r\n\r\n\r\n        </div>\r\n    </div>\r\n    </div>\r\n  "
+module.exports = "<div *ngIf=\"module\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{module.name}}</h3>\r\n                    <h5 class=\"card-title\">{{module.startDate |date: 'yyyy-MM-dd'}} - {{module.endDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{module.description}}</p>\r\n\r\n                </div>\r\n\r\n\r\n                <div class=\"card-body\">\r\n                    <div class=\"row\" *ngIf=\"isTeacher\">\r\n                        <div class=\"col-6\">\r\n                             <a [routerLink]=\"['/Modules/edit', module.id]\">Edit module</a> \r\n                           <!-- <a asp-controller=\"Modules\" asp-action=\"CreateWithCourseid\" asp-route-id=\"@Model.Id\" class=\"card-link\">Edit module</a>-->\r\n                        </div>\r\n                        <div class=\"col-6\">\r\n                            <a [routerLink]=\"['/Modules/Delete', module.id]\">Delete module</a> -\r\n                            Delete module\r\n                        </div>\r\n                        <div class=\"col-6\">\r\n                            <!-- <a [routerLink]=\"['/Activites/AddActivityWithModuleId', .id]\">Activity/a> -->\r\n                                <a [routerLink]=\"['/Activity/create']\">Add module</a>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-6\">\r\n                            <a [routerLink]=\"['/courses/', module.courseId]\">Go back</a>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n        </div>\r\n        <div class=\"col-md-4\">\r\n            <activity_list [moduleid]=\"module.id\"></activity_list>\r\n        </div>\r\n       \r\n\r\n        <div class=\"col-md-4\">\r\n            <div>\r\n                <upload-detail [DocOwnerId]=\"module.id\"></upload-detail>\r\n            </div>\r\n            <doc-upload [DocOwnerId]=\"module.id\" [DocOwnerTypeId]=\"2\" [DocumentTypeId]=\"3\"></doc-upload>\r\n\r\n\r\n        </div>\r\n    </div>\r\n    </div>\r\n  "
 
 /***/ }),
 
@@ -5426,6 +5428,43 @@ var tokenData = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./app/data.service.ts":
+/*!*****************************!*\
+  !*** ./app/data.service.ts ***!
+  \*****************************/
+/*! exports provided: DataService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataService", function() { return DataService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+
+
+
+var DataService = /** @class */ (function () {
+    function DataService() {
+        this.activityData = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]("");
+        this.share = this.activityData.asObservable();
+    }
+    DataService.prototype.getData = function (type) {
+        this.activityData.next(type);
+    };
+    DataService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], DataService);
+    return DataService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./app/documents/document.service.ts":
 /*!*******************************************!*\
   !*** ./app/documents/document.service.ts ***!
@@ -5584,7 +5623,7 @@ var DocumentsModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".holder{}\r\ndiv.holder div.card:nth-child(2n+1) {\r\n    background-color: rgb(235, 235, 224);\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNsaWVudEFwcC9hcHAvZG9jdW1lbnRzL3VwbG9hZC1kZXRhaWwvdXBsb2FkLWRldGFpbC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLFFBQVE7QUFDUjtJQUNJLG9DQUFvQztBQUN4QyIsImZpbGUiOiJDbGllbnRBcHAvYXBwL2RvY3VtZW50cy91cGxvYWQtZGV0YWlsL3VwbG9hZC1kZXRhaWwuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ob2xkZXJ7fVxyXG5kaXYuaG9sZGVyIGRpdi5jYXJkOm50aC1jaGlsZCgybisxKSB7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjM1LCAyMzUsIDIyNCk7XHJcbn1cclxuIl19 */"
+module.exports = "/*.holder{}\r\ndiv.holder div.card:nth-child(2n+1) {\r\n    background-color: rgb(235, 235, 224);\r\n}*/\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNsaWVudEFwcC9hcHAvZG9jdW1lbnRzL3VwbG9hZC1kZXRhaWwvdXBsb2FkLWRldGFpbC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOzs7RUFHRSIsImZpbGUiOiJDbGllbnRBcHAvYXBwL2RvY3VtZW50cy91cGxvYWQtZGV0YWlsL3VwbG9hZC1kZXRhaWwuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi8qLmhvbGRlcnt9XHJcbmRpdi5ob2xkZXIgZGl2LmNhcmQ6bnRoLWNoaWxkKDJuKzEpIHtcclxuICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyMzUsIDIzNSwgMjI0KTtcclxufSovXHJcbiJdfQ== */"
 
 /***/ }),
 
@@ -5595,7 +5634,7 @@ module.exports = ".holder{}\r\ndiv.holder div.card:nth-child(2n+1) {\r\n    back
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n\r\n<div class=\"row\" *ngIf='documents && documents.length'>\r\n    <div class=\"col-md-12\">\r\n      \r\n        <div class=\"card\">\r\n            <h5 class=\"card-header\">Documents</h5>\r\n           \r\n\r\n            <div class=\"holder\">\r\n                <div class=\"card text-center\" *ngFor='let document of documents'>\r\n\r\n                    <div class=\"card-header\">\r\n                        <h5 class=\"card-title btn btn-link\" (click)=\"DownLoadFile(document.path)\">{{document.name}}</h5>\r\n                    </div>\r\n                    <div class=\"card-body\">\r\n                        <p class=\"card-text\">{{document.description}}</p>\r\n                      \r\n                    </div>\r\n                    <div class=\"card-footer text-muted\">\r\n\r\n                        <p *ngIf=\"isTeacher\" class=\"card-title btn btn-info\" (click)=\"DeleteFile(document.id)\">Remove</p>\r\n                        <p *ngIf=\"!isTeacher\" class=\"card-title btn btn-info\" (click)=\"DeleteFile(document.id)\">Submit</p>\r\n                        {{document.uploadDate |date: 'yyyy-MM-dd'}}\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n    </div>\r\n"
+module.exports = "\r\n\r\n<div class=\"row\" *ngIf='documents && documents.length'>\r\n    <div class=\"col-md-12\">\r\n      \r\n        <div class=\"card\">\r\n            <h5 class=\"card-header\">Documents</h5>\r\n           \r\n\r\n            <div class=\"holder\">\r\n                <div class=\"card\" style=\"margin-top: 10px;\" *ngFor='let document of documents'>\r\n\r\n                    <div class=\"card-body\">\r\n                        <h5 class=\"card-title\">{{document.name}}</h5>\r\n                \r\n                            {{document.description}}\r\n\r\n                        \r\n                        <p style=\"text-align:right\"><small><b>Upload date:</b> {{document.uploadDate|date:'yyyy-mm-dd'}} </small></p>\r\n\r\n\r\n\r\n\r\n                    </div>\r\n                    <div class=\"card-footer text-muted\">\r\n\r\n                        <p *ngIf=\"isTeacher\" class=\"card-title btn btn-info\" style=\"margin-right:5px\" (click)=\"DeleteFile(document.id)\"><i class=\"fa fa-1x fa-trash\"></i></p>\r\n                        <p class=\"card-title btn btn-info\" style=\"margin-right:5px\"  (click)=\"DownLoadFile(document.path)\"><i class=\"fa fa-1x  fa-download\"></i></p>\r\n                      <!--  <p class=\"card-title btn btn-info\" style=\"margin-right:5px\"><i class=\"fa fa-1x fa-paperclip\"></i></p>-->\r\n\r\n                    </div>\r\n                </div>\r\n          \r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n    </div>\r\n"
 
 /***/ }),
 
@@ -5616,6 +5655,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var file_saver__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! file-saver */ "../node_modules/file-saver/dist/FileSaver.min.js");
 /* harmony import */ var file_saver__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(file_saver__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
+/* harmony import */ var ClientApp_app_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ClientApp/app/data.service */ "./app/data.service.ts");
+
 
 
 
@@ -5623,11 +5664,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var UploadDetailComponent = /** @class */ (function () {
-    function UploadDetailComponent(route, DocumentService, AuthService) {
+    function UploadDetailComponent(route, DocumentService, AuthService, data) {
         var _this = this;
         this.route = route;
         this.DocumentService = DocumentService;
         this.AuthService = AuthService;
+        this.data = data;
         this.documents = [];
         this.isTeacher = false;
         this.subscription = this.DocumentService.getUplaodtStatus().subscribe(function (status) {
@@ -5675,7 +5717,10 @@ var UploadDetailComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./upload-detail.component.html */ "./app/documents/upload-detail/upload-detail.component.html"),
             styles: [__webpack_require__(/*! ./upload-detail.component.css */ "./app/documents/upload-detail/upload-detail.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _document_service__WEBPACK_IMPORTED_MODULE_3__["DocumentService"], ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
+            _document_service__WEBPACK_IMPORTED_MODULE_3__["DocumentService"],
+            ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"],
+            ClientApp_app_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"]])
     ], UploadDetailComponent);
     return UploadDetailComponent;
 }());
@@ -5702,7 +5747,7 @@ module.exports = ".has-error input[type=\"text\"],\r\n.has-error textarea,\r\n.h
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n\r\n\r\n\r\n<div class=\"row\" *ngIf=\"isTeacher\">\r\n    <div class=\"col-md-12\">\r\n\r\n        <div class=\"card\">\r\n            <h5 class=\"card-header\">Upload Document</h5>\r\n\r\n            <div class=\"card-body\">\r\n\r\n                <div class=\"row\" *ngIf=\"showMsg\">\r\n                    <div class=\"col-md-12\">\r\n                        <p class=\"alert alert-success\">\r\n                            <strong>Upload Success!</strong>\r\n\r\n                        </p>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-12\">\r\n\r\n                   \r\n                        <form [formGroup]=\"uploadForm\" (ngSubmit)=\"upload()\">\r\n\r\n                            <div *ngIf=\"isSubmitted && formControls.name.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.name.errors.required\">File name is required</div>\r\n                                <div *ngIf=\"formControls.name.errors.minlength\">File name must be more than {{formControls.name.errors.minlength}} characters</div>\r\n                                <div *ngIf=\"formControls.name.errors.maxlength\">File name must be less than {{formControls.name.errors.maxlength}}  characters</div>\r\n                            </div>\r\n\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.name.errors }\">\r\n\r\n                                <input type=\"text\" formControlName=\"name\" name=\"name\" placeholder=\"File Name\" class=\"form-control\" />\r\n\r\n                            </p>\r\n\r\n                            <div *ngIf=\"isSubmitted && formControls.description.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.description.errors.required\">Description is required</div>\r\n                                <div *ngIf=\"formControls.description.errors.minlength\">Description must be more than {{formControls.description.errors.minlength}} characters</div>\r\n                                <div *ngIf=\"formControls.description.errors.maxlength\">Description must be less than {{formControls.description.errors.maxlength}} characters</div>\r\n                            </div>\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.description.errors }\">\r\n\r\n                                <textarea formControlName=\"description\" placeholder=\"Description\" name=\"description\" class=\"form-control\"></textarea>\r\n\r\n                            </p>\r\n                            <div *ngIf=\"isSubmitted && formControls.fileData.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.fileData.errors.required\">File to be upload is required</div>\r\n\r\n                            </div>\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.fileData.errors }\">\r\n\r\n                                <input type=\"file\" #fileInput formControlName=\"fileData\" name=\"fileData\" class=\"form-control\" />\r\n\r\n                            </p>\r\n\r\n                            <div class=\"form-group\">\r\n                                <input type=\"submit\" value=\"Upload\" class=\"btn btn-primary\" />\r\n                            </div>\r\n\r\n                        </form>\r\n                  </div>\r\n                 </div>\r\n                </div>\r\n\r\n            </div>\r\n\r\n    </div>\r\n</div>\r\n"
+module.exports = "\r\n\r\n\r\n\r\n<div class=\"row\" style=\"margin-top: 10px;\" *ngIf=\"isTeacher\">\r\n    <div class=\"col-md-12\">\r\n\r\n        <div class=\"card\">\r\n            <h5 class=\"card-header\">Upload Document</h5>\r\n\r\n            <div class=\"card-body\">\r\n\r\n                <div class=\"row\" *ngIf=\"showMsg\">\r\n                    <div class=\"col-md-12\">\r\n                        <p class=\"alert alert-success\">\r\n                            <strong>Upload Success!</strong>\r\n\r\n                        </p>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-12\">\r\n\r\n                   \r\n                        <form [formGroup]=\"uploadForm\" (ngSubmit)=\"upload()\">\r\n\r\n                            <div *ngIf=\"isSubmitted && formControls.name.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.name.errors.required\">File name is required</div>\r\n                                <div *ngIf=\"formControls.name.errors.minlength\">File name must be more than {{formControls.name.errors.minlength}} characters</div>\r\n                                <div *ngIf=\"formControls.name.errors.maxlength\">File name must be less than {{formControls.name.errors.maxlength}}  characters</div>\r\n                            </div>\r\n\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.name.errors }\">\r\n\r\n                                <input type=\"text\" formControlName=\"name\" name=\"name\" placeholder=\"Name\" class=\"form-control\" />\r\n\r\n                            </p>\r\n\r\n                            <div *ngIf=\"isSubmitted && formControls.description.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.description.errors.required\">Description is required</div>\r\n                                <div *ngIf=\"formControls.description.errors.minlength\">Description must be more than {{formControls.description.errors.minlength}} characters</div>\r\n                                <div *ngIf=\"formControls.description.errors.maxlength\">Description must be less than {{formControls.description.errors.maxlength}} characters</div>\r\n                            </div>\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.description.errors }\">\r\n\r\n                                <textarea formControlName=\"description\" placeholder=\"Description\" name=\"description\" class=\"form-control\"></textarea>\r\n\r\n                            </p>\r\n                            <div *ngIf=\"isSubmitted && formControls.fileData.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.fileData.errors.required\">File to be upload is required</div>\r\n\r\n                            </div>\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.fileData.errors }\">\r\n\r\n                                <input type=\"file\" #fileInput formControlName=\"fileData\" name=\"fileData\" class=\"form-control\" />\r\n\r\n                            </p>\r\n\r\n                            <div class=\"form-group\">\r\n                                <input type=\"submit\" value=\"Upload\" class=\"btn btn-primary\" />\r\n                            </div>\r\n\r\n                        </form>\r\n                  </div>\r\n                 </div>\r\n                </div>\r\n\r\n            </div>\r\n\r\n    </div>\r\n</div>\r\n"
 
 /***/ }),
 
