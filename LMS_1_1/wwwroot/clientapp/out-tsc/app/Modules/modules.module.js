@@ -10,6 +10,8 @@ import { ModulDetailsComponent } from './Details/details.component';
 import { DocumentsModule } from '../documents/documents.module';
 import { ModuleDeleteComponent } from './module-delete/module-delete.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
+import { CheckIfDubbsComponent } from './Check-if-dubbs/check-if-dubbs.component';
+import { EditComponent } from '../Modules/edit/edit.component';
 import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
 import { ActivityDeleteComponent } from './activity-delete/activity-delete.component';
 var ModulesModule = /** @class */ (function () {
@@ -22,6 +24,8 @@ var ModulesModule = /** @class */ (function () {
                 ActitityListComponent,
                 ModulDetailsComponent,
                 ModuleDeleteComponent,
+                CheckIfDubbsComponent,
+                EditComponent
                 CheckIfDubbsComponent,
                 ActivityDeleteComponent
             ],
@@ -47,6 +51,9 @@ var ModulesModule = /** @class */ (function () {
                         component: ModuleDeleteComponent
                     }
                 ])
+            ],
+            exports: [
+                CheckIfDubbsComponent
             ]
         })
     ], ModulesModule);

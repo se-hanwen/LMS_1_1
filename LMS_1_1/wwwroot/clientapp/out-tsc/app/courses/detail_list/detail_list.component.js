@@ -5,12 +5,14 @@ import { CourseService } from '../course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoginMessageHandlerService } from 'ClientApp/app/Login/login-message-handler.service';
 var detailList = /** @class */ (function () {
-    function detailList(route, CourseService, AuthService, cd) {
+    function detailList(route, CourseService, AuthService, cd, messhandler) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
+        this.messhandler = messhandler;
         this.unsubscribe = new Subject();
         this.savesubs = new Array();
     }
@@ -42,6 +44,11 @@ var detailList = /** @class */ (function () {
         }
         else {
             this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = " show";
+            this.messhandler.SendModulid(mid);
+            var mod = this.course.modules.find(function (m) { return m.id.toString() == mid; });
+            this.messhandler.SendModulStartDate(mod.startDate);
+            this.messhandler.SendModulEndDate(mod.endDate);
+            this.messhandler.SendModulName(mod.name);
             var temp = this.CourseService.getActivitybymodulId(mid)
                 .pipe(takeUntil(this.unsubscribe))
                 .subscribe(function (activities) {
@@ -73,7 +80,8 @@ var detailList = /** @class */ (function () {
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute,
             CourseService,
             AuthService,
-            ChangeDetectorRef])
+            ChangeDetectorRef,
+            LoginMessageHandlerService])
     ], detailList);
     return detailList;
 }());

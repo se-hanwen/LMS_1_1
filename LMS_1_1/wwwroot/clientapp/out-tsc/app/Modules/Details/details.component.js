@@ -5,12 +5,14 @@ import { CourseService } from 'ClientApp/app/Courses/course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoginMessageHandlerService } from 'ClientApp/app/Login/login-message-handler.service';
 var ModulDetailsComponent = /** @class */ (function () {
-    function ModulDetailsComponent(route, CourseService, AuthService, cd) {
+    function ModulDetailsComponent(route, CourseService, AuthService, cd, messhandler) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
+        this.messhandler = messhandler;
         this.unsubscribe = new Subject();
     }
     ModulDetailsComponent.prototype.ngOnInit = function () {
@@ -39,7 +41,8 @@ var ModulDetailsComponent = /** @class */ (function () {
             styleUrls: ['./details.component.css']
         }),
         tslib_1.__metadata("design:paramtypes", [ActivatedRoute, CourseService, AuthService,
-            ChangeDetectorRef])
+            ChangeDetectorRef,
+            LoginMessageHandlerService])
     ], ModulDetailsComponent);
     return ModulDetailsComponent;
 }());

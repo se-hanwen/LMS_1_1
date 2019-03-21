@@ -9,7 +9,8 @@ import { ModulDetailsComponent } from './Details/details.component';
 import { DocumentsModule } from '../documents/documents.module';
 import { ModuleDeleteComponent } from './module-delete/module-delete.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
-import { CheckIfDubbsComponent } from '../Modules/check-if-dubbs.component';
+import { CheckIfDubbsComponent } from './Check-if-dubbs/check-if-dubbs.component';
+import { EditComponent } from '../Modules/edit/edit.component';
 import { ActivityDeleteComponent } from './activity-delete/activity-delete.component';
 
 
@@ -20,9 +21,11 @@ import { ActivityDeleteComponent } from './activity-delete/activity-delete.compo
       ModulDetailsComponent,
       ModuleDeleteComponent,
       CheckIfDubbsComponent,
+      EditComponent
       ActivityDeleteComponent
      
   ],
+
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -41,6 +44,11 @@ import { ActivityDeleteComponent } from './activity-delete/activity-delete.compo
               ,component: ModulDetailsComponent
             },
             {
+              path: 'Modules/edit/:id'
+              ,canActivate: [IsTeacherGuard]
+              ,component: EditComponent
+            },
+            {
                 path: 'Modules/delete/:id'
                 , canActivate: [IsTeacherGuard]
                 , component: ModuleDeleteComponent
@@ -53,6 +61,10 @@ import { ActivityDeleteComponent } from './activity-delete/activity-delete.compo
 
         ]
     )
+  ],
+  exports: [
+
+    CheckIfDubbsComponent
   ]
 })
 export class ModulesModule { }

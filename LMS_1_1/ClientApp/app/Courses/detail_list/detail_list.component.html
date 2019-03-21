@@ -49,16 +49,17 @@
                                 <br>{{activity.activityType}}
                             </p>
                             <div *ngIf="isTeacher">
-                                <a asp-controller="LMSActivities" asp-action="Edit" [attr.asp-route-id]="activity.id">Edit Activity</a>&nbsp;|&nbsp;
+                                <a [routerLink] ="['/Activity/edit', activity.id ]" >Edit Activity</a>&nbsp;|&nbsp;
                                 <a asp-controller="LMSActivities" asp-action="Delete" [attr.asp-route-id]="activity.id">Delete Activity</a>
                             </div>
                         </li>
 
                     </ul>
-                    <div *ngIf="isTeacher">
-                        Add Activity
-                    </div>
                 </div>
+                    <div *ngIf="isTeacher">
+                        <a [routerLink]="['/Activity/create']">Add module</a>
+                    </div>
+              
 
             </div>
 

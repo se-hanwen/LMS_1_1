@@ -37,6 +37,7 @@ var CourseDetailComponent = /** @class */ (function () {
             .subscribe(function (course) {
             _this.course = course;
             _this.messhandler.SendCourseStartDate(course.startDate);
+            _this.messhandler.SendCourseName(course.name);
             _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });
     };

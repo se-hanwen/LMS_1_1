@@ -1,15 +1,17 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Subject, throwError } from 'rxjs';
+import { Subject, throwError, Observable } from 'rxjs';
 import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
-import { IModule } from '../Courses/course';
+import { IModule, Module } from '../Courses/course';
 import { Guid } from 'guid-typescript';
+import { IDubbParas } from './Check-if-dubbs/DubbParas';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ModuleService implements OnDestroy {
+
     private moduleUrl = "https://localhost:44396/api/module1";
     private actvUrl = "https://localhost:44396/api/activity1";
     private token: string = "";
@@ -25,9 +27,22 @@ export class ModuleService implements OnDestroy {
             .subscribe(i => this.token = i);
     }
 
+    CheckIfDubblett(paras :IDubbParas):Observable<boolean>
+    {
+     
+      return this.http.post<boolean>(this.moduleUrl+"/TestIfInRange",paras
+      ,{
+        headers: this.getAuthHeader()
+    }).pipe(
+      tap(result => JSON.stringify(result)),
+      catchError(this.handleError)
+  );
+
+    }
+
 
     CreateModule(Module: IModule): any {
-        return this.http.post(this.moduleUrl, Module,
+        return this.http.post(this.moduleUrl+"/PostModule", Module,
             {
                 headers: this.getAuthHeader()
             }).pipe(
@@ -35,6 +50,26 @@ export class ModuleService implements OnDestroy {
                 catchError(this.handleError)
             );
     }
+
+    EditCreateModule(id: Guid, Module: IModule): any {
+        return this.http.put(this.moduleUrl+ "/" + id, Module,
+        {
+            headers: this.getAuthHeader()
+        }).pipe(
+            tap(result => JSON.stringify(result)),
+            catchError(this.handleError)
+        );
+      }
+
+
+      GetModule(Moduleid: string):  Observable<IModule>  {
+        return this.http.get<IModule>(this.moduleUrl+"/"+Moduleid,
+        {headers: this.getAuthHeader() 
+  }).pipe(
+            tap(data => console.log('All:' + JSON.stringify(data))),
+            catchError(this.handleError)
+            );
+      }
 
 
     private handleError(err: HttpErrorResponse) {
@@ -51,11 +86,6 @@ export class ModuleService implements OnDestroy {
         }
         console.error(errorMessage);
         return throwError(errorMessage);
-    }
-
-    ngOnDestroy(): void {
-        this.unsubscribe.next();
-        this.unsubscribe.complete();
     }
 
     //Delete a module by a given guid.
@@ -81,5 +111,12 @@ export class ModuleService implements OnDestroy {
                 tap(result => JSON.stringify(result)), catchError(this.handleError)
             );
     }
+
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    }
+
 
 }

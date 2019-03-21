@@ -15,6 +15,7 @@ import { ModulesModule } from './Modules/modules.module';
 import {  LoginComponent} from './Login/Login/login.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { CourseListComponent } from './Courses/course-list/course-list.component';
+import { ActivitiesModule } from './Activities/activities.module';
 //import { LoginpartialComponent } from './Login/LoginPartial/loginpartial.component';
 
 
@@ -56,6 +57,7 @@ export function tokenGetter() {
       NavbarModule,
       LoginModule,
       ModulesModule,
+      ActivitiesModule,
       AngularFontAwesomeModule
    
   ],

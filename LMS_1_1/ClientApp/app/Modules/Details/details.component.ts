@@ -5,6 +5,7 @@ import { CourseService } from 'ClientApp/app/Courses/course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoginMessageHandlerService } from 'ClientApp/app/Login/login-message-handler.service';
 
 @Component({
   selector: 'app-details',
@@ -18,7 +19,9 @@ export class ModulDetailsComponent implements OnInit, OnDestroy  {
   errorMessage: string;
   isTeacher: boolean;
   constructor(private route: ActivatedRoute, private CourseService: CourseService, private AuthService : AuthService
-    , private cd: ChangeDetectorRef) { }
+    , private cd: ChangeDetectorRef
+    ,private messhandler: LoginMessageHandlerService
+    ) { }
 
   ngOnInit(): void {
     this.isTeacher=this.AuthService.isTeacher;
@@ -27,11 +30,13 @@ export class ModulDetailsComponent implements OnInit, OnDestroy  {
       .subscribe( i => this.isTeacher=i);
       */
       let Modulid: string = this.route.snapshot.paramMap.get('id');
+     
       this.CourseService.getModulAndActivitybyId(Modulid)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(
           modul=> {
                   this.module = modul;
+
                   this.cd.markForCheck();
               },
               error => this.errorMessage = <any>error

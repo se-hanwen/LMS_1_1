@@ -1,0 +1,52 @@
+<h1>Create</h1>	
+
+ <h4>Activity on {{ModuleName}}</h4>	
+<hr />	
+<div class="row">	
+    <div class="col-md-4">	
+            <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
+         <form #theForm="ngForm"  (ngSubmit)="Register(theForm)"  novalidate>	
+
+             <input type="hidden" [(ngModel)]="Activity.Moduleid" name="ModuleId" />	
+
+             <div class="form-group">	
+                <label for="name" class="control-label">Name</label>	
+                <input  [(ngModel)]="Activity.name" name="name" id="name" class="form-control"   required #name="ngModel"/>
+             </div>	
+
+             <div class="form-group">	
+                <label for="startDate" class="control-label">Start Date</label>	
+                <input  type ="datetime-local" [(ngModel)]="Activity.startDate" name="startDate"  [min]="Modulestartdate"	[max]="Moduleenddate"
+                   id="startDate" class="form-control"   required #startdate="ngModel" (blur)="gotDate()"/>	
+                <div class="text-danger" *ngIf="startDate && startDate.touched && startDate.invalid && startDate.errors.require">Formaterror on startdate  </div>
+                <div class="text-danger" *ngIf="startDate && startDate.touched && startDate < Modulestartdate">May not start before the course</div>
+                <div class="text-danger" *ngIf="startDate && startDate.touched && endDate && endDate.touched && startdate>endDate">May not start before the end</div>
+             </div>	
+            <div class="form-group">	
+                <label for="endDate" class="control-label">End Date</label>	
+                <input  type ="datetime-local"  [(ngModel)]="Activity.endDate" name="endDate"  [min]="Modulestartdate"	[max]="Moduleenddate"
+                  id="endDate" class="form-control"  required #enddate="ngModel" (blur)="gotDate()"/>	
+                  <div class="text-danger" *ngIf="endDate && endDate.touched && endDate.invalid">Formaterror on startdate  </div>
+                  <div class="text-danger" *ngIf="endDate && endDate.touched && endDate < Modulestartdate">May not start before the course</div>
+                  <div class="text-danger" *ngIf="endDate && endDate.touched && startDate && startDate.touched && startdate>endDate">May not start before the end</div>
+             </div>	
+            <div class="form-group">	
+                <label for="description" class="control-label">Description</label>	
+                <textarea [(ngModel)]="Activity.description" name="description" class="form-control" cols="30" rows="5" required></textarea>
+             </div>
+             <div class="form-group">
+                <label for="ActitivtyType" class="control-label">Actitivty Type</label>
+                <select class="form-control" id="role" [(ngModel)]="Activity.activityTypeId" name="ActivityTypeId" required #activitytype="ngModel" >
+                   <option *ngFor="let ActivityType of ActivityTypes" [value]="ActivityType.id">{{ActivityType.name}}</option>                                    
+                </select>
+                
+              </div>
+            <div class="form-group">	
+                    <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
+                    <a [routerLink]="['/courses', Courseid]" class="btn btn-default" >Go back</a>
+            </div>	
+        </form>	
+        <div class="col-md-4">	
+            <check-if-dubbs></check-if-dubbs>
+        </div> 
+</div> 
