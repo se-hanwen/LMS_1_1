@@ -14,7 +14,8 @@ import { takeUntil } from 'rxjs/operators';
 export class ManageusersComponent implements OnInit , OnDestroy{
 
   private unsubscribe : Subject<void> = new Subject();
-
+ private togglechoose: boolean=false;
+ private lastuserid: string = ""
   public users: RegisterUser[]=[];
   constructor(private PartipantService: PartipantService, private route:Router
     ,private cd: ChangeDetectorRef
@@ -34,13 +35,25 @@ export class ManageusersComponent implements OnInit , OnDestroy{
 
   public ChooseUser(id)
   {
-    if(this.users.find(u => u.id==id).role!="Teacher")
+    if(this.users.find(u => u.id==id).role!="Teacher" )
     {
-      this.messhandler.SendIsteacher(false);
-      this.messhandler.SendUserId(id);
+       if(this.togglechoose && this.lastuserid==id)
+       {
+          this.togglechoose=false;
+          this.messhandler.SendIsteacher(true);
+       }
+       else
+       {
+        this.togglechoose=true;
+        this.lastuserid=id;
+        this.messhandler.SendIsteacher(false);
+        this.messhandler.SendUserId(id);
+       }
+
     }
     else
     {
+      this.togglechoose=false;
       this.messhandler.SendIsteacher(true);
     }
   }
