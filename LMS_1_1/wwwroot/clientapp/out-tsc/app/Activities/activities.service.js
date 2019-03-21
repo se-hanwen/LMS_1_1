@@ -25,7 +25,8 @@ var ActivitiesService = /** @class */ (function () {
         }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     ActivitiesService.prototype.getActitityTypes = function () {
-        return this.http.get(this.activityUrl + "/ActivityTypes", { headers: this.getAuthHeader()
+        return this.http.get(this.activityUrl + "/ActivityTypes", {
+            headers: this.getAuthHeader()
         }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     ActivitiesService.prototype.EditActivity = function (id, Activity) {
@@ -34,7 +35,8 @@ var ActivitiesService = /** @class */ (function () {
         }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     ActivitiesService.prototype.GetActivity = function (Activityid) {
-        return this.http.get(this.activityUrl + "/" + Activityid, { headers: this.getAuthHeader()
+        return this.http.get(this.activityUrl + "/" + Activityid, {
+            headers: this.getAuthHeader()
         }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     //Delete a activity by a given guid.

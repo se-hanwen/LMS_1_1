@@ -60,8 +60,9 @@
                                 <p style="text-align:right"> <small>  <b>{{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}} </b>  </small></p>
                             </div>
                             <div *ngIf="isTeacher">
-                                <a asp-controller="LMSActivities" asp-action="Edit" [attr.asp-route-id]="activity.id" style="margin-left:5px"  class="btn btn-info"> <i class="fa fa-1x fa-edit"></i></a>&nbsp; 
-                                <a asp-controller="LMSActivities" asp-action="Delete" [attr.asp-route-id]="activity.id"  class="btn btn-info"><i class="fa fa-1x fa-minus-square" ></i></a>
+                                <a asp-controller="LMSActivities" asp-action="Edit" [attr.asp-route-id]="activity.id" style="margin-left:5px" class="btn btn-info"> <i class="fa fa-1x fa-edit"></i></a>&nbsp;
+                                <a [routerLink]="['/Activity/delete', activity.id]"> <i class="fa fa-1x fa-minus-square"></i></a>
+                               
                             </div>
                         </li>
 
