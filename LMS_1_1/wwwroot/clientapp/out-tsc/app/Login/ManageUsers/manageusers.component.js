@@ -12,6 +12,8 @@ var ManageusersComponent = /** @class */ (function () {
         this.cd = cd;
         this.messhandler = messhandler;
         this.unsubscribe = new Subject();
+        this.togglechoose = false;
+        this.lastuserid = "";
         this.users = [];
     }
     ManageusersComponent.prototype.ngOnInit = function () {
@@ -26,10 +28,19 @@ var ManageusersComponent = /** @class */ (function () {
     };
     ManageusersComponent.prototype.ChooseUser = function (id) {
         if (this.users.find(function (u) { return u.id == id; }).role != "Teacher") {
-            this.messhandler.SendIsteacher(false);
-            this.messhandler.SendUserId(id);
+            if (this.togglechoose && this.lastuserid == id) {
+                this.togglechoose = false;
+                this.messhandler.SendIsteacher(true);
+            }
+            else {
+                this.togglechoose = true;
+                this.lastuserid = id;
+                this.messhandler.SendIsteacher(false);
+                this.messhandler.SendUserId(id);
+            }
         }
         else {
+            this.togglechoose = false;
             this.messhandler.SendIsteacher(true);
         }
     };

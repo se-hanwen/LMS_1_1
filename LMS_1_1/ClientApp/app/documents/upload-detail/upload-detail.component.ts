@@ -17,7 +17,7 @@ export class UploadDetailComponent implements OnInit,OnDestroy {
     errorMessage: string;
     subscription: Subscription;
     isTeacher: boolean = false;
-    today: Data = Date.now();
+    
 
     constructor(private route: ActivatedRoute,
         private DocumentService: DocumentService,

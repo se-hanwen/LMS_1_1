@@ -20,6 +20,10 @@ var AddActivitiesWithModulIdComponent = /** @class */ (function () {
     }
     AddActivitiesWithModulIdComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.messhandler.SendDubbId(this.Activity.moduleid);
+        this.messhandler.SendDubbType("Activity");
+        this.messhandler.SendDubbStart(new Date(this.Activity.startDate + ":00.000Z"));
+        this.messhandler.SendDubbEnd(new Date(this.Activity.endDate + ":00.000Z"));
         this.messhandler.Modulid
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(function (status) {
