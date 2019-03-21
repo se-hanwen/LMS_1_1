@@ -27,17 +27,17 @@ var ActivitiesModule = /** @class */ (function () {
                 ModulesModule,
                 RouterModule.forChild([
                     {
-                        path: 'Activity/create',
+                        path: 'Activities/create',
                         canActivate: [IsTeacherGuard],
                         component: AddActivitiesWithModulIdComponent
                     },
                     {
-                        path: 'Activity/edit/:id',
+                        path: 'Activities/edit/:id',
                         canActivate: [IsTeacherGuard],
                         component: EditComponent
                     },
                     {
-                        path: 'Activity/delete/:id',
+                        path: 'Activities/delete/:id',
                         canActivate: [IsTeacherGuard],
                         component: ActivityDeleteComponent
                     }

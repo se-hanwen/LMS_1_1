@@ -165,7 +165,7 @@ namespace LMS_1_1.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Teacher")]
-        public async void Delete(Guid iD)
+        public async Task Delete(Guid iD)
         {
             var actv = await _context.LMSActivity.FindAsync(iD);
             if (actv == null)
@@ -177,7 +177,7 @@ namespace LMS_1_1.Controllers
          var acDocuments =await _documentrepository.GetDocumentsByIdOwnerAsync(iD);
             foreach (Document doc in acDocuments)
             {
-                _documentrepository.RemoveDocumentAsync(doc);
+               await _documentrepository.RemoveDocumentAsync(doc);
             }
           
 

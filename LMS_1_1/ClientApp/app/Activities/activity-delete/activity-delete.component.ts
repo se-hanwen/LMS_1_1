@@ -4,6 +4,8 @@ import { Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { ActivitiesService } from '../activities.service';
+import { LoginMessageHandlerService } from 'ClientApp/app/Login/login-message-handler.service';
+import { Guid } from 'guid-typescript';
 
 @Component({
     selector: 'app-activity-delete',
@@ -14,10 +16,12 @@ export class ActivityDeleteComponent implements OnInit {
 
     private act_delete: IActivity;
     private unsubscribe: Subject<void> = new Subject();
+    private csid: Guid;
 
     constructor(private route: ActivatedRoute,
         private actvservice: ActivitiesService,
         private router: Router,
+        private messhandler: LoginMessageHandlerService,
         private cd: ChangeDetectorRef) { }
 
     ngOnInit() {
@@ -29,15 +33,24 @@ export class ActivityDeleteComponent implements OnInit {
                     this.act_delete = tactv;
                     this.cd.markForCheck();
                 },
-                error => { console.log(error); });
+            error => { console.log(error); });
+        this.messhandler.Courseid
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(
+                sid => {
+                    // let tmpguid= Guid.parse(status); 
+                    this.csid = Guid.parse(sid);
+                    this.cd.markForCheck();
+                });
     }
 
     DelActivity() {
+
         this.actvservice.DeleteActivity(this.act_delete.id)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(tact => {
                 this.cd.markForCheck();
-                this.router.navigate(['/courses']);
+                this.router.navigate(['/courses/'+this.csid]);
             });
 
     }

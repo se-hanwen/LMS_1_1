@@ -130,16 +130,25 @@ namespace LMS_1_1.Controllers
         }
         // DELETE: api/module1/5
         [HttpDelete("{id}")]
-        public async void Delete(Guid iD)
+        public async Task Delete(Guid iD)
         {
-            var module = _context.Modules.FindAsync(iD);
-            if (module == null)
+            try
             {
-                return;
-            }
 
-            _context.Remove(module);
-            await _context.SaveChangesAsync();
+
+                var module = await _context.Modules.FindAsync(iD);
+                if (module == null)
+                {
+                    return;
+                }
+
+                _context.Modules.Remove(module);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
 
