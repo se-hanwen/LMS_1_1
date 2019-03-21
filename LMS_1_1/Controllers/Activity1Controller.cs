@@ -98,6 +98,7 @@ namespace LMS_1_1.Controllers
 
         // PUT: api/Activity1/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<LMSActivity>> Put(string id, [FromBody] ActivityFormModel activtyVm)
         {
             //if (editModel.criD==null)

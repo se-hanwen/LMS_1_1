@@ -1,11 +1,11 @@
-<h1>Create</h1>	
+<h1>Edit</h1>	
 
  <h4>Module on {{courseName}}</h4>	
 <hr />	
 <div class="row">	
     <div class="col-md-4">	
             <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
-         <form #theForm="ngForm"  (ngSubmit)="Create(theForm)"  novalidate>	
+         <form #theForm="ngForm"  (ngSubmit)="Register(theForm)"  novalidate>	
 
              <input type="hidden" [(ngModel)]="Module.courseid" name="CourseId" />	
 
@@ -38,7 +38,7 @@
              </div>	
             <div class="form-group">	
                     <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
-                    <a [routerLink]="['/courses', Module.courseid]" class="btn btn-default" >Go back</a>
+                    <a [routerLink]="['/Modules', Module.id]" class="btn btn-default" >Go back</a>
             </div>	
         </form>	
 

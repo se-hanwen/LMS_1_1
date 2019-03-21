@@ -29,6 +29,15 @@ var ModuleService = /** @class */ (function () {
             headers: this.getAuthHeader()
         }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
+    ModuleService.prototype.EditCreateModule = function (id, Module) {
+        return this.http.put(this.moduleUrl + "/" + id, Module, {
+            headers: this.getAuthHeader()
+        }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
+    ModuleService.prototype.GetModule = function (Moduleid) {
+        return this.http.get(this.moduleUrl + "/" + Moduleid, { headers: this.getAuthHeader()
+        }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
+    };
     ModuleService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure
         // instead of just logging it to the console

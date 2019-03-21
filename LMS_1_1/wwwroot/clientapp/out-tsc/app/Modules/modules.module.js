@@ -11,6 +11,7 @@ import { DocumentsModule } from '../documents/documents.module';
 import { ModuleDeleteComponent } from './module-delete/module-delete.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { CheckIfDubbsComponent } from './Check-if-dubbs/check-if-dubbs.component';
+import { EditComponent } from '../Modules/edit/edit.component';
 var ModulesModule = /** @class */ (function () {
     function ModulesModule() {
     }
@@ -21,7 +22,8 @@ var ModulesModule = /** @class */ (function () {
                 ActitityListComponent,
                 ModulDetailsComponent,
                 ModuleDeleteComponent,
-                CheckIfDubbsComponent
+                CheckIfDubbsComponent,
+                EditComponent
             ],
             imports: [
                 CommonModule,

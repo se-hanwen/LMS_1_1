@@ -3,7 +3,7 @@ import { Subject, throwError, Observable } from 'rxjs';
 import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
-import { IModule } from '../Courses/course';
+import { IModule, Module } from '../Courses/course';
 import { Guid } from 'guid-typescript';
 import { IDubbParas } from './Check-if-dubbs/DubbParas';
 
@@ -11,6 +11,7 @@ import { IDubbParas } from './Check-if-dubbs/DubbParas';
     providedIn: 'root'
 })
 export class ModuleService implements OnDestroy {
+
     private moduleUrl = "https://localhost:44396/api/module1";
     private token: string = "";
     private unsubscribe: Subject<void> = new Subject();
@@ -48,6 +49,26 @@ export class ModuleService implements OnDestroy {
                 catchError(this.handleError)
             );
     }
+
+    EditCreateModule(id: Guid, Module: IModule): any {
+        return this.http.put(this.moduleUrl+ "/" + id, Module,
+        {
+            headers: this.getAuthHeader()
+        }).pipe(
+            tap(result => JSON.stringify(result)),
+            catchError(this.handleError)
+        );
+      }
+
+
+      GetModule(Moduleid: string):  Observable<IModule>  {
+        return this.http.get<IModule>(this.moduleUrl+"/"+Moduleid,
+        {headers: this.getAuthHeader() 
+  }).pipe(
+            tap(data => console.log('All:' + JSON.stringify(data))),
+            catchError(this.handleError)
+            );
+      }
 
 
     private handleError(err: HttpErrorResponse) {

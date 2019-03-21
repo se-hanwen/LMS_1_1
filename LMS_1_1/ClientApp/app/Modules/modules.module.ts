@@ -10,6 +10,7 @@ import { DocumentsModule } from '../documents/documents.module';
 import { ModuleDeleteComponent } from './module-delete/module-delete.component';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { CheckIfDubbsComponent } from './Check-if-dubbs/check-if-dubbs.component';
+import { EditComponent } from '../Modules/edit/edit.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { CheckIfDubbsComponent } from './Check-if-dubbs/check-if-dubbs.component
     ActitityListComponent,
       ModulDetailsComponent,
       ModuleDeleteComponent,
-      CheckIfDubbsComponent
+      CheckIfDubbsComponent,
+      EditComponent
      
   ],
 
@@ -38,6 +40,11 @@ import { CheckIfDubbsComponent } from './Check-if-dubbs/check-if-dubbs.component
               path: 'Modules/:id'
               ,canActivate: [IsAuthenticatedGuard]
               ,component: ModulDetailsComponent
+            },
+            {
+              path: 'Modules/edit/:id'
+              ,canActivate: [IsTeacherGuard]
+              ,component: EditComponent
             },
             {
                 path: 'Modules/delete/:id'
