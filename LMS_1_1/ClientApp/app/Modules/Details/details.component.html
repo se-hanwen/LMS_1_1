@@ -1,8 +1,8 @@
 <div *ngIf="module">
     <div class="row">
 
-        <div class="col-md-4">
-            <div class="card" style="width: 19rem;">
+        <div class="col-md-3">
+            <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">{{module.name}}</h3>
                     <h5 class="card-title">{{module.startDate |date: 'yyyy-MM-dd'}} - {{module.endDate |date: 'yyyy-MM-dd'}}</h5>
@@ -36,7 +36,7 @@
 
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <activity_list [moduleid]="module.id"></activity_list>
         </div>
        

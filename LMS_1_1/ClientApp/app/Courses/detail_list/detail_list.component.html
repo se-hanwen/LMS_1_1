@@ -2,7 +2,7 @@
     <div id="accordion" >
 
         <!--string name = Regex.Replace(@module.Name, @"[\W_]+", string.Empty);-->
-        <div class="card" *ngFor="let module of course.modules">
+        <div  *ngFor="let module of course.modules">
             <div class="card-header" [id]="module.id">
                 <div class="row">
                 
@@ -60,7 +60,7 @@
                                 <p style="text-align:right"> <small>  <b>{{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}} </b>  </small></p>
                             </div>
                             <div *ngIf="isTeacher">
-                                <a [routerLink]="['/Activities/edit', activity.id]" [title]="'Edit activity '+activity.name" class="btn btn-info"> <i class="fa fa-1x fa-edit"></i></a>&nbsp; 
+                                <a [routerLink]="['/Activities/edit', activity.id]" [title]="'Edit activity '+activity.name" style="margin-left:5px" class="btn btn-info"> <i class="fa fa-1x fa-edit"></i></a>&nbsp; 
                                 <a [routerLink]="['/Activities/delete', activity.id]" [title]="'Delete activity '+activity.name"  class="btn btn-info"><i class="fa fa-1x fa-minus-square" ></i></a>
                             </div>
                         </li>

@@ -158,10 +158,10 @@ namespace LMS_1_1.Controllers
             {
                 return NotFound();
             }
+
+         
             _repository.RemoveDocumentAsync(document);
-           string folderpath= _repository.GetDocumentUploadPath();
-            await _repository.RemoveFile(folderpath, document.Path);
-            _repository.SaveAllAsync();
+          
 
             return Ok(document);
         }

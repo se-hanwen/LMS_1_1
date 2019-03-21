@@ -13,7 +13,6 @@ import { IDubbParas } from './Check-if-dubbs/DubbParas';
 export class ModuleService implements OnDestroy {
 
     private moduleUrl = "https://localhost:44396/api/module1";
-    private actvUrl = "https://localhost:44396/api/activity1";
     private token: string = "";
     private unsubscribe: Subject<void> = new Subject();
 
@@ -99,19 +98,6 @@ export class ModuleService implements OnDestroy {
                 tap(result => JSON.stringify(result)), catchError(this.handleError)
             );
     }
-
-    //Delete an activity by a given guid.
-    DeleteActivity(id: Guid) {
-        let urlString = this.actvUrl + "/" + id;
-        return this.http.delete(urlString,
-            {
-                headers: this.getAuthHeader()
-            })
-            .pipe(
-                tap(result => JSON.stringify(result)), catchError(this.handleError)
-            );
-    }
-
 
     ngOnDestroy(): void {
         this.unsubscribe.next();

@@ -14,9 +14,15 @@ var CourseEditComponent = /** @class */ (function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
         this.CourseService.getCourseById(id).subscribe(function (tcourse) {
-            tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
+            var tmppath = tcourse.courseImgPath.substr(tcourse.courseImgPath.lastIndexOf('\\') + 1);
+            if (tmppath == null) {
+                tmppath = "";
+            }
+            //tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
             _this.editCourse = tcourse;
+            _this.editCourse.courseImgPath = tmppath;
         }, function (error) { _this.errorMsg = error; });
+        console.log("XXXXXXXXXXXXXX=>" + this.editCourse.courseImgPath);
     };
     CourseEditComponent.prototype.UpdateCourse = function () {
         var fileToUpload = (this.fileInputVariable.nativeElement.files.length == 0) ?

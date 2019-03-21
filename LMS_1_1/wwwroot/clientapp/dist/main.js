@@ -23,6 +23,632 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
+/***/ "./app/Activities/Create/add-activities-with-modul-id.component.css":
+/*!**************************************************************************!*\
+  !*** ./app/Activities/Create/add-activities-with-modul-id.component.css ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL0FjdGl2aXRpZXMvQ3JlYXRlL2FkZC1hY3Rpdml0aWVzLXdpdGgtbW9kdWwtaWQuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./app/Activities/Create/add-activities-with-modul-id.component.html":
+/*!***************************************************************************!*\
+  !*** ./app/Activities/Create/add-activities-with-modul-id.component.html ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1>Create</h1>\t\r\n\r\n <h4>Activity on {{ModuleName}}</h4>\t\r\n<hr />\t\r\n<div class=\"row\">\t\r\n    <div class=\"col-md-4\">\t\r\n            <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n         <form #theForm=\"ngForm\"  (ngSubmit)=\"Create(theForm)\"  novalidate>\t\r\n\r\n             <input type=\"hidden\" [(ngModel)]=\"Activity.Moduleid\" name=\"ModuleId\" />\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"name\" class=\"control-label\">Name</label>\t\r\n                <input  [(ngModel)]=\"Activity.name\" name=\"name\" id=\"name\" class=\"form-control\"   required #name=\"ngModel\"/>\r\n             </div>\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"startDate\" class=\"control-label\">Start Date</label>\t\r\n                <input  type =\"datetime-local\" [(ngModel)]=\"Activity.startDate\" name=\"startDate\"  [min]=\"Modulestartdate\"\t[max]=\"Moduleenddate\"\r\n                   id=\"startDate\" class=\"form-control\"   required #startdate=\"ngModel\" (blur)=\"gotDate()\"/>\t\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate.invalid && startDate.errors.require\">Formaterror on startdate  </div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate < Modulestartdate\">May not start before the course</div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && endDate && endDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"endDate\" class=\"control-label\">End Date</label>\t\r\n                <input  type =\"datetime-local\"  [(ngModel)]=\"Activity.endDate\" name=\"endDate\"  [min]=\"Modulestartdate\"\t[max]=\"Moduleenddate\"\r\n                  id=\"endDate\" class=\"form-control\"  required #enddate=\"ngModel\" (blur)=\"gotDate()\"/>\t\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate.invalid\">Formaterror on startdate  </div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate < Modulestartdate\">May not start before the course</div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && startDate && startDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"description\" class=\"control-label\">Description</label>\t\r\n                <textarea [(ngModel)]=\"Activity.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\" required></textarea>\r\n             </div>\r\n             <div class=\"form-group\">\r\n                <label for=\"ActitivtyType\" class=\"control-label\">Actitivty Type</label>\r\n                <select class=\"form-control\" id=\"role\" [(ngModel)]=\"Activity.activityTypeId\" name=\"ActivityTypeId\" required #activitytype=\"ngModel\" >\r\n                   <option *ngFor=\"let ActivityType of ActivityTypes\" [value]=\"ActivityType.id\">{{ActivityType.name}}</option>                                    \r\n                </select>\r\n                \r\n              </div>\r\n            <div class=\"form-group\">\t\r\n                    <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid\" />\r\n                    <a [routerLink]=\"['/courses', Courseid]\" class=\"btn btn-default\" >Go back</a>\r\n            </div>\t\r\n        </form>\t\r\n\r\n\r\n     </div>\t\r\n\r\n     <div class=\"col-md-4\">\t\r\n            <check-if-dubbs></check-if-dubbs>\r\n        </div> \r\n</div> "
+
+/***/ }),
+
+/***/ "./app/Activities/Create/add-activities-with-modul-id.component.ts":
+/*!*************************************************************************!*\
+  !*** ./app/Activities/Create/add-activities-with-modul-id.component.ts ***!
+  \*************************************************************************/
+/*! exports provided: AddActivitiesWithModulIdComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddActivitiesWithModulIdComponent", function() { return AddActivitiesWithModulIdComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var ClientApp_app_Courses_course__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ClientApp/app/Courses/course */ "./app/Courses/course.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
+/* harmony import */ var ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ClientApp/app/Login/login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _activities_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../activities.service */ "./app/Activities/activities.service.ts");
+
+
+
+
+
+
+
+
+var AddActivitiesWithModulIdComponent = /** @class */ (function () {
+    function AddActivitiesWithModulIdComponent(db, cd, messhandler, ActivititesService) {
+        this.db = db;
+        this.cd = cd;
+        this.messhandler = messhandler;
+        this.ActivititesService = ActivititesService;
+        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+        this.Activity = new ClientApp_app_Courses_course__WEBPACK_IMPORTED_MODULE_2__["Activity"]();
+        this.errorMessage = "";
+        this.ModuleName = "";
+        this.Courseid = "";
+    }
+    AddActivitiesWithModulIdComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.messhandler.SendDubbId(this.Activity.moduleid);
+        this.messhandler.SendDubbType("Activity");
+        this.messhandler.SendDubbStart(new Date(this.Activity.startDate + ":00.000Z"));
+        this.messhandler.SendDubbEnd(new Date(this.Activity.endDate + ":00.000Z"));
+        this.messhandler.Modulid
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            // let tmpguid= Guid.parse(status); 
+            _this.Activity.moduleid = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.Courseid
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            // let tmpguid= Guid.parse(status); 
+            _this.Courseid = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.ModulStartDate
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.Modulestartdate = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.ModulEndDate
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.Moduleenddate = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.ModulName
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.ModuleName = status;
+            _this.cd.markForCheck();
+        });
+        this.ActivititesService.getActitityTypes()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (resp) {
+            _this.ActivityTypes = resp;
+            _this.cd.markForCheck();
+        });
+    };
+    AddActivitiesWithModulIdComponent.prototype.gotDate = function () {
+        if (this.Activity.startDate != null && this.Activity.endDate != null) {
+            this.messhandler.SendDubbId(this.Activity.moduleid);
+            this.messhandler.SendDubbType("Activity");
+            this.messhandler.SendDubbStart(new Date(this.Activity.startDate + ":00.000Z"));
+            this.messhandler.SendDubbEnd(new Date(this.Activity.endDate + ":00.000Z"));
+        }
+        // post data
+    };
+    AddActivitiesWithModulIdComponent.prototype.Create = function (theForm) {
+        var _this = this;
+        this.errorMessage = "";
+        if (new Date(this.Activity.startDate + ":00").valueOf() < this.Modulestartdate.valueOf() + 1) {
+            var asd = this.Activity.startDate.valueOf();
+            var msd = this.Modulestartdate.valueOf();
+            this.errorMessage = this.errorMessage + "Start date on activity may not be before module start date (" + this.Modulestartdate + ")";
+        }
+        if (new Date(this.Activity.endDate + ":59").valueOf() < this.Modulestartdate.valueOf()) {
+            this.errorMessage = this.errorMessage + "End date on activity may not be before module start date (" + this.Modulestartdate + ")";
+        }
+        if (new Date(this.Activity.startDate + ":00").valueOf() > this.Moduleenddate.valueOf()) {
+            this.errorMessage = this.errorMessage + "Start date on activity may not be after module end date (" + this.Moduleenddate + ")";
+        }
+        if (new Date(this.Activity.endDate + ":59").valueOf() > this.Moduleenddate.valueOf()) {
+            this.errorMessage = this.errorMessage + "End date on activity may not be after module end date (" + this.Moduleenddate + ")";
+        }
+        if (this.Activity.endDate.valueOf() < this.Activity.startDate.valueOf()) {
+            this.errorMessage = this.errorMessage + " A module must end after it's start";
+        }
+        if (this.errorMessage == "") {
+            this.ActivititesService.CreateActivity(this.Activity)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
+                .subscribe(function (status) {
+                if (status) {
+                    _this.errorMessage = "Activity " + _this.Activity.name + " Activity";
+                }
+                _this.cd.markForCheck();
+            }, function (err) { return _this.errorMessage = err; });
+        }
+    };
+    AddActivitiesWithModulIdComponent.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
+    AddActivitiesWithModulIdComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-add-activities-with-modul-id',
+            template: __webpack_require__(/*! ./add-activities-with-modul-id.component.html */ "./app/Activities/Create/add-activities-with-modul-id.component.html"),
+            styles: [__webpack_require__(/*! ./add-activities-with-modul-id.component.css */ "./app/Activities/Create/add-activities-with-modul-id.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"],
+            ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_5__["LoginMessageHandlerService"],
+            _activities_service__WEBPACK_IMPORTED_MODULE_7__["ActivitiesService"]])
+    ], AddActivitiesWithModulIdComponent);
+    return AddActivitiesWithModulIdComponent;
+}());
+
+//Activity.moduleid
+//ModuleName
+
+
+/***/ }),
+
+/***/ "./app/Activities/activities.module.ts":
+/*!*********************************************!*\
+  !*** ./app/Activities/activities.module.ts ***!
+  \*********************************************/
+/*! exports provided: ActivitiesModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActivitiesModule", function() { return ActivitiesModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "../node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _Create_add_activities_with_modul_id_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Create/add-activities-with-modul-id.component */ "./app/Activities/Create/add-activities-with-modul-id.component.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "../node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _documents_documents_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../documents/documents.module */ "./app/documents/documents.module.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Shared/is-teacher.guard */ "./app/Shared/is-teacher.guard.ts");
+/* harmony import */ var ClientApp_app_Modules_modules_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ClientApp/app/Modules/modules.module */ "./app/Modules/modules.module.ts");
+/* harmony import */ var _Activities_edit_edit_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Activities/edit/edit.component */ "./app/Activities/edit/edit.component.ts");
+/* harmony import */ var _activity_delete_activity_delete_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./activity-delete/activity-delete.component */ "./app/Activities/activity-delete/activity-delete.component.ts");
+
+
+
+
+
+
+
+
+
+
+
+var ActivitiesModule = /** @class */ (function () {
+    function ActivitiesModule() {
+    }
+    ActivitiesModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+            declarations: [
+                _Create_add_activities_with_modul_id_component__WEBPACK_IMPORTED_MODULE_3__["AddActivitiesWithModulIdComponent"],
+                _Activities_edit_edit_component__WEBPACK_IMPORTED_MODULE_9__["EditComponent"],
+                _activity_delete_activity_delete_component__WEBPACK_IMPORTED_MODULE_10__["ActivityDeleteComponent"]
+            ],
+            imports: [
+                _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
+                _documents_documents_module__WEBPACK_IMPORTED_MODULE_5__["DocumentsModule"],
+                ClientApp_app_Modules_modules_module__WEBPACK_IMPORTED_MODULE_8__["ModulesModule"],
+                _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterModule"].forChild([
+                    {
+                        path: 'Activity/create',
+                        canActivate: [_Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_7__["IsTeacherGuard"]],
+                        component: _Create_add_activities_with_modul_id_component__WEBPACK_IMPORTED_MODULE_3__["AddActivitiesWithModulIdComponent"]
+                    },
+                    {
+                        path: 'Activity/edit/:id',
+                        canActivate: [_Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_7__["IsTeacherGuard"]],
+                        component: _Activities_edit_edit_component__WEBPACK_IMPORTED_MODULE_9__["EditComponent"]
+                    },
+                    {
+                        path: 'Activity/delete/:id',
+                        canActivate: [_Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_7__["IsTeacherGuard"]],
+                        component: _activity_delete_activity_delete_component__WEBPACK_IMPORTED_MODULE_10__["ActivityDeleteComponent"]
+                    }
+                    /*,  {
+                         path: 'Modules/delete/:id'
+                         , canActivate: [IsTeacherGuard]
+                         , component: ModuleDeleteComponent
+                     }*/
+                ])
+            ]
+        })
+    ], ActivitiesModule);
+    return ActivitiesModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./app/Activities/activities.service.ts":
+/*!**********************************************!*\
+  !*** ./app/Activities/activities.service.ts ***!
+  \**********************************************/
+/*! exports provided: ActivitiesService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActivitiesService", function() { return ActivitiesService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "../node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _auth_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../auth/auth.service */ "./app/auth/auth.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+
+
+var ActivitiesService = /** @class */ (function () {
+    function ActivitiesService(http, AuthService) {
+        var _this = this;
+        this.http = http;
+        this.AuthService = AuthService;
+        this.activityUrl = "https://localhost:44396/api/activity1";
+        this.token = "";
+        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.AuthService.token
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (i) { return _this.token = i; });
+    }
+    ActivitiesService.prototype.getAuthHeader = function () {
+        return new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpHeaders"]({ "Authorization": "Bearer " + this.token });
+    };
+    ActivitiesService.prototype.CreateActivity = function (Activity) {
+        return this.http.post(this.activityUrl + "/PostActivity", Activity, {
+            headers: this.getAuthHeader()
+        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (result) { return JSON.stringify(result); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
+    };
+    ActivitiesService.prototype.getActitityTypes = function () {
+        return this.http.get(this.activityUrl + "/ActivityTypes", {
+            headers: this.getAuthHeader()
+        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (data) { return console.log('All:' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
+    };
+    ActivitiesService.prototype.EditActivity = function (id, Activity) {
+        return this.http.put(this.activityUrl + "/" + id, Activity, {
+            headers: this.getAuthHeader()
+        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (result) { return JSON.stringify(result); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
+    };
+    ActivitiesService.prototype.GetActivity = function (Activityid) {
+        return this.http.get(this.activityUrl + "/" + Activityid, {
+            headers: this.getAuthHeader()
+        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (data) { return console.log('All:' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
+    };
+    //Delete a activity by a given guid.
+    ActivitiesService.prototype.DeleteActivity = function (id) {
+        var urlString = this.activityUrl + "/" + id;
+        return this.http.delete(urlString, {
+            headers: this.getAuthHeader()
+        })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (result) { return JSON.stringify(result); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
+    };
+    ActivitiesService.prototype.handleError = function (err) {
+        // in a real world app, we may send the server to some remote logging infrastructure
+        // instead of just logging it to the console
+        var errorMessage = '';
+        if (err.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            errorMessage = "An error occurred: " + err.error.message;
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            errorMessage = "Server returned code: " + err.status + ", error message is: " + err.message;
+        }
+        console.error(errorMessage);
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(errorMessage);
+    };
+    ActivitiesService.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
+    ActivitiesService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"], _auth_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"]])
+    ], ActivitiesService);
+    return ActivitiesService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./app/Activities/activity-delete/activity-delete.component.css":
+/*!**********************************************************************!*\
+  !*** ./app/Activities/activity-delete/activity-delete.component.css ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL0FjdGl2aXRpZXMvYWN0aXZpdHktZGVsZXRlL2FjdGl2aXR5LWRlbGV0ZS5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./app/Activities/activity-delete/activity-delete.component.html":
+/*!***********************************************************************!*\
+  !*** ./app/Activities/activity-delete/activity-delete.component.html ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1>Delete activity</h1>\r\n\r\n<h3>Are you sure you want to delete this?</h3>\r\n<div>\r\n    <h4>LMSActivity</h4>\r\n    <hr />\r\n    <dl class=\"row\">\r\n        <dt class=\"col-sm-2\">\r\n            Activity Name\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{act_delete.name}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            Start Date\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{act_delete.startDate}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            End Date\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{act_delete.endDate}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            Description\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{act_delete.description}}\r\n        </dd>\r\n        <!--<dt class=\"col-sm-2\">\r\n            @Html.DisplayNameFor(model => model.Modules)\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            @Html.DisplayFor(model => model.Modules.Id)\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            @Html.DisplayNameFor(model => model.ActivityType)\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            @Html.DisplayFor(model => model.ActivityType.Id)\r\n        </dd>-->\r\n    </dl>\r\n\r\n    <form #myform=\"ngForm\" (ngSubmit)=\"DelActivity()\">\r\n        <input type=\"submit\" value=\"Delete\" class=\"btn btn-danger\" /> |\r\n        <a [routerLink]=\"['/courses']\">Back to List</a>\r\n    </form>\r\n</div>"
+
+/***/ }),
+
+/***/ "./app/Activities/activity-delete/activity-delete.component.ts":
+/*!*********************************************************************!*\
+  !*** ./app/Activities/activity-delete/activity-delete.component.ts ***!
+  \*********************************************************************/
+/*! exports provided: ActivityDeleteComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActivityDeleteComponent", function() { return ActivityDeleteComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _activities_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../activities.service */ "./app/Activities/activities.service.ts");
+
+
+
+
+
+
+var ActivityDeleteComponent = /** @class */ (function () {
+    function ActivityDeleteComponent(route, actvservice, router, cd) {
+        this.route = route;
+        this.actvservice = actvservice;
+        this.router = router;
+        this.cd = cd;
+        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+    }
+    ActivityDeleteComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var id = this.route.snapshot.paramMap.get("id");
+        this.actvservice.GetActivity(id)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (tactv) {
+            _this.act_delete = tactv;
+            _this.cd.markForCheck();
+        }, function (error) { console.log(error); });
+    };
+    ActivityDeleteComponent.prototype.DelActivity = function () {
+        var _this = this;
+        this.actvservice.DeleteActivity(this.act_delete.id)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (tact) {
+            _this.cd.markForCheck();
+            _this.router.navigate(['/courses']);
+        });
+    };
+    ActivityDeleteComponent.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
+    ActivityDeleteComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-activity-delete',
+            template: __webpack_require__(/*! ./activity-delete.component.html */ "./app/Activities/activity-delete/activity-delete.component.html"),
+            styles: [__webpack_require__(/*! ./activity-delete.component.css */ "./app/Activities/activity-delete/activity-delete.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"],
+            _activities_service__WEBPACK_IMPORTED_MODULE_5__["ActivitiesService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"]])
+    ], ActivityDeleteComponent);
+    return ActivityDeleteComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./app/Activities/edit/edit.component.css":
+/*!************************************************!*\
+  !*** ./app/Activities/edit/edit.component.css ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL0FjdGl2aXRpZXMvZWRpdC9lZGl0LmNvbXBvbmVudC5jc3MifQ== */"
+
+/***/ }),
+
+/***/ "./app/Activities/edit/edit.component.html":
+/*!*************************************************!*\
+  !*** ./app/Activities/edit/edit.component.html ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1>Create</h1>\t\r\n\r\n <h4>Activity on {{ModuleName}}</h4>\t\r\n<hr />\t\r\n<div class=\"row\">\t\r\n    <div class=\"col-md-4\">\t\r\n            <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n         <form #theForm=\"ngForm\"  (ngSubmit)=\"Register(theForm)\"  novalidate>\t\r\n\r\n             <input type=\"hidden\" [(ngModel)]=\"Activity.Moduleid\" name=\"ModuleId\" />\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"name\" class=\"control-label\">Name</label>\t\r\n                <input  [(ngModel)]=\"Activity.name\" name=\"name\" id=\"name\" class=\"form-control\"   required #name=\"ngModel\"/>\r\n             </div>\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"startDate\" class=\"control-label\">Start Date</label>\t\r\n                <input  type =\"datetime-local\" [(ngModel)]=\"Activity.startDate\" name=\"startDate\"  [min]=\"Modulestartdate\"\t[max]=\"Moduleenddate\"\r\n                   id=\"startDate\" class=\"form-control\"   required #startdate=\"ngModel\" (blur)=\"gotDate()\"/>\t\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate.invalid && startDate.errors.require\">Formaterror on startdate  </div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate < Modulestartdate\">May not start before the course</div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && endDate && endDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"endDate\" class=\"control-label\">End Date</label>\t\r\n                <input  type =\"datetime-local\"  [(ngModel)]=\"Activity.endDate\" name=\"endDate\"  [min]=\"Modulestartdate\"\t[max]=\"Moduleenddate\"\r\n                  id=\"endDate\" class=\"form-control\"  required #enddate=\"ngModel\" (blur)=\"gotDate()\"/>\t\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate.invalid\">Formaterror on startdate  </div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate < Modulestartdate\">May not start before the course</div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && startDate && startDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"description\" class=\"control-label\">Description</label>\t\r\n                <textarea [(ngModel)]=\"Activity.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\" required></textarea>\r\n             </div>\r\n             <div class=\"form-group\">\r\n                <label for=\"ActitivtyType\" class=\"control-label\">Actitivty Type</label>\r\n                <select class=\"form-control\" id=\"role\" [(ngModel)]=\"Activity.activityTypeId\" name=\"ActivityTypeId\" required #activitytype=\"ngModel\" >\r\n                   <option *ngFor=\"let ActivityType of ActivityTypes\" [value]=\"ActivityType.id\">{{ActivityType.name}}</option>                                    \r\n                </select>\r\n                \r\n              </div>\r\n            <div class=\"form-group\">\t\r\n                    <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid\" />\r\n                    <a [routerLink]=\"['/courses', Courseid]\" class=\"btn btn-default\" >Go back</a>\r\n            </div>\t\r\n        </form>\t\r\n        <div class=\"col-md-4\">\t\r\n            <check-if-dubbs></check-if-dubbs>\r\n        </div> \r\n</div> "
+
+/***/ }),
+
+/***/ "./app/Activities/edit/edit.component.ts":
+/*!***********************************************!*\
+  !*** ./app/Activities/edit/edit.component.ts ***!
+  \***********************************************/
+/*! exports provided: EditComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditComponent", function() { return EditComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var ClientApp_app_Courses_course__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ClientApp/app/Courses/course */ "./app/Courses/course.ts");
+/* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
+/* harmony import */ var ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ClientApp/app/Login/login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
+/* harmony import */ var _activities_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../activities.service */ "./app/Activities/activities.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
+
+
+
+
+
+
+
+
+
+var EditComponent = /** @class */ (function () {
+    function EditComponent(db, cd, route, messhandler, ActivititesService) {
+        this.db = db;
+        this.cd = cd;
+        this.route = route;
+        this.messhandler = messhandler;
+        this.ActivititesService = ActivititesService;
+        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.Activity = new ClientApp_app_Courses_course__WEBPACK_IMPORTED_MODULE_3__["Activity"]();
+        this.errorMessage = "";
+        this.ModuleName = "";
+        this.Activityid = "";
+        this.Courseid = "";
+    }
+    EditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.Activityid = this.route.snapshot.paramMap.get("id"); // null if no hit?
+        this.messhandler.Modulid
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            // let tmpguid= Guid.parse(status); 
+            _this.Activity.moduleid = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.Courseid
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            // let tmpguid= Guid.parse(status); 
+            _this.Courseid = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.ModulStartDate
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.Modulestartdate = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.ModulEndDate
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.Moduleenddate = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.ModulName
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.ModuleName = status;
+            _this.cd.markForCheck();
+        });
+        this.ActivititesService.getActitityTypes()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (resp) {
+            _this.ActivityTypes = resp;
+            _this.cd.markForCheck();
+        });
+        this.ActivititesService.GetActivity(this.Activityid)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (resp) {
+            _this.Activity = resp;
+            _this.cd.markForCheck();
+        });
+    };
+    EditComponent.prototype.gotDate = function () {
+        if (this.Activity.startDate != null && this.Activity.endDate != null) {
+            var startdatework = void 0;
+            if ((this.Activity.startDate.toLocaleString().length == 16)) {
+                startdatework = new Date(this.Activity.startDate + ":00.000Z");
+            }
+            else {
+                startdatework = this.Activity.startDate;
+            }
+            var enddatework = void 0;
+            if ((this.Activity.endDate.toLocaleString().length == 16)) {
+                enddatework = new Date(this.Activity.endDate + ":59.000Z");
+            }
+            else {
+                enddatework = this.Activity.endDate;
+            }
+            this.messhandler.SendDubbId(this.Activity.moduleid);
+            this.messhandler.SendDubbType("Activity");
+            this.messhandler.SendDubbStart(startdatework);
+            this.messhandler.SendDubbEnd(enddatework);
+        }
+        // post data
+    };
+    EditComponent.prototype.Register = function (theForm) {
+        var _this = this;
+        this.errorMessage = "";
+        if (new Date(this.Activity.startDate + ":00").valueOf() < this.Modulestartdate.valueOf() + 1) {
+            var asd = this.Activity.startDate.valueOf();
+            var msd = this.Modulestartdate.valueOf();
+            this.errorMessage = this.errorMessage + "Start date on activity may not be before module start date (" + this.Modulestartdate + ")";
+        }
+        if (new Date(this.Activity.endDate + ":59").valueOf() < this.Modulestartdate.valueOf()) {
+            this.errorMessage = this.errorMessage + "End date on activity may not be before module start date (" + this.Modulestartdate + ")";
+        }
+        if (new Date(this.Activity.startDate + ":00").valueOf() > this.Moduleenddate.valueOf()) {
+            this.errorMessage = this.errorMessage + "Start date on activity may not be after module end date (" + this.Moduleenddate + ")";
+        }
+        if (new Date(this.Activity.endDate + ":59").valueOf() > this.Moduleenddate.valueOf()) {
+            this.errorMessage = this.errorMessage + "End date on activity may not be after module end date (" + this.Moduleenddate + ")";
+        }
+        if (this.Activity.endDate.valueOf() < this.Activity.startDate.valueOf()) {
+            this.errorMessage = this.errorMessage + " A module must end after it's start";
+        }
+        if (this.errorMessage == "") {
+            this.ActivititesService.EditActivity(this.Activity.id, this.Activity)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+                .subscribe(function (status) {
+                _this.errorMessage = "Activity updated";
+                _this.cd.markForCheck();
+            }, function (err) { return _this.errorMessage = err; });
+        }
+    };
+    EditComponent.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
+    EditComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-edit',
+            template: __webpack_require__(/*! ./edit.component.html */ "./app/Activities/edit/edit.component.html"),
+            styles: [__webpack_require__(/*! ./edit.component.css */ "./app/Activities/edit/edit.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"], _angular_router__WEBPACK_IMPORTED_MODULE_8__["ActivatedRoute"],
+            ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_5__["LoginMessageHandlerService"],
+            _activities_service__WEBPACK_IMPORTED_MODULE_6__["ActivitiesService"]])
+    ], EditComponent);
+    return EditComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./app/AddPartipant/add-partipant.component.css":
 /*!******************************************************!*\
   !*** ./app/AddPartipant/add-partipant.component.css ***!
@@ -664,7 +1290,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"course\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <img class=\"card-img-top\" [src]=\"course.courseImgPath==null?'':course.courseImgPath\" alt=\"Card image cap\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{course.name}}</h3>\r\n                    <h5 class=\"card-title\">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{course.description}}</p>\r\n\r\n\r\n                    <a href=\"javascript:void(0);\" (click)=\"toggelPartipantList()\">{{showpartipantlistmsg}}  partipantlist</a>\r\n                    <app-partipant-list [courseid]='course.id'></app-partipant-list>\r\n\r\n                    <div class=\"card-body\" *ngIf=\"isTeacher\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-6\">\r\n                                <a [routerLink]=\"['/Modules/create']\">Add Module</a>\r\n                            </div>\r\n                            <div class=\"col-6\">\r\n                                <a [routerLink]=\"['/AddPartipant', course.id]\">Add Participant</a>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n\r\n              \r\n            </div>\r\n            </div>\r\n\r\n            <div class=\"col-md-4\">\r\n                <detail_list [courseid]=\"course.id\"></detail_list>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n                <div>\r\n                    <upload-detail [DocOwnerId]=\"course.id\"></upload-detail>\r\n                </div>\r\n                <doc-upload [DocOwnerId]=\"course.id\" [DocOwnerTypeId]=\"1\" [DocumentTypeId]=\"1\"></doc-upload>\r\n\r\n\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n\r\n"
+module.exports = "<div *ngIf=\"course\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <img class=\"card-img-top\" [src]=\"course.courseImgPath==null?'':course.courseImgPath\" alt=\"Card image cap\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{course.name}}</h3>\r\n                    <h5 class=\"card-title\">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{course.description}}</p>\r\n\r\n\r\n                    <a href=\"javascript:void(0);\" (click)=\"toggelPartipantList()\">{{showpartipantlistmsg}}  partipantlist</a>\r\n                    <app-partipant-list [courseid]='course.id'></app-partipant-list>\r\n\r\n                    <div class=\"card-body\" *ngIf=\"isTeacher\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-6\">\r\n                                <!-- <a [routerLink]=\"['/Modules/AddModuleWithCourseId', course.id]\">Add Module</a> -->\r\n                                <p>\r\n                                    <a class=\"btn btn-info\" asp-controller=\"Modules\" asp-action=\"CreateWithCourseid\" asp-route-id=\"@Model.Id\">\r\n                                        <i class=\"fa fa-1x fa-plus-square\"></i>\r\n                                    </a>\r\n                                </p>\r\n</div>\r\n                            <div class=\"col-6\">\r\n                                <a [routerLink]=\"['/AddPartipant', course.id]\">Add Participant</a>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n\r\n              \r\n            </div>\r\n            </div>\r\n\r\n            <div class=\"col-md-4\">\r\n                <detail_list [courseid]=\"course.id\"></detail_list>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n                <div>\r\n                    <upload-detail [DocOwnerId]=\"course.id\"></upload-detail>\r\n                </div>\r\n                <doc-upload [DocOwnerId]=\"course.id\" [DocOwnerTypeId]=\"1\" [DocumentTypeId]=\"1\"></doc-upload>\r\n\r\n\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n\r\n"
 
 /***/ }),
 
@@ -726,6 +1352,7 @@ var CourseDetailComponent = /** @class */ (function () {
             .subscribe(function (course) {
             _this.course = course;
             _this.messhandler.SendCourseStartDate(course.startDate);
+            _this.messhandler.SendCourseName(course.name);
             _this.cd.markForCheck();
         }, function (error) { return _this.errorMessage = error; });
     };
@@ -779,7 +1406,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Edit</h1>\r\n\r\n<h4>Course</h4>\r\n<hr />\r\n<div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n        <form #mycourse=\"ngForm\" (ngSubmit)=\"UpdateCourse()\">\r\n                <div class=\"form-group\">\r\n                    <label for=\"cname\" class=\"control-label\">Course Name</label>\r\n                    <input type=\"text\" required [(ngModel)]=\"editCourse.name\" name=\"cname\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"startDate\" class=\"control-label\">Start Date</label>\r\n                    <input required type=\"datetime-local\" [(ngModel)]=\"editCourse.startDate\" name=\"startDate\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"Description\" class=\"control-label\">Description</label>\r\n                    <!--<textarea [(ngModel)]=\"editCourse.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\"/>-->\r\n                    <input [(ngModel)]=\"editCourse.description\" name=\"description\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <b>File:  </b>\r\n                    <label for=\"courseImgPath\" class=\"control-label\">{{editCourse.courseImgPath}}</label>\r\n                    <input type=\"file\" #fileInput [(ngModel)]=\"editCourse.courseImgPath\" name=\"courseImgPath\" class=\"form-control\" \r\n                           id=\"selectedFile\" style=\"display: none;\" />\r\n                    <div style=\"padding-left:20px\"></div>\r\n                    <input type=\"button\" value=\" Select a file \" onclick=\"document.getElementById('selectedFile').click();\" class=\"btn-secondary\" />\r\n                    <!--<input type=\"file\" name=\"coursePath\" class=\"form-control\" />-->\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"submit\" value=\"Save\" class=\"btn btn-primary\" />\r\n                </div>\r\n        </form>\r\n    </div>\r\n</div>\r\n\r\n<div>\r\n    <a [routerLink]=\"['/courses']\">Back to List</a>\r\n</div>\r\n\r\n"
+module.exports = "<h1>Edit</h1>\r\n\r\n<h4>Course</h4>\r\n<hr />\r\n<div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n        <form #mycourse=\"ngForm\" (ngSubmit)=\"UpdateCourse()\">\r\n                <div class=\"form-group\">\r\n                    <label for=\"cname\" class=\"control-label\">Course Name</label>\r\n                    <input type=\"text\" required [(ngModel)]=\"editCourse.name\" name=\"cname\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"startDate\" class=\"control-label\">Start Date</label>\r\n                    <input required type=\"datetime-local\" [(ngModel)]=\"editCourse.startDate\" name=\"startDate\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"Description\" class=\"control-label\">Description</label>\r\n                    <!--<textarea [(ngModel)]=\"editCourse.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\"/>-->\r\n                    <input [(ngModel)]=\"editCourse.description\" name=\"description\" class=\"form-control\" />\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <b>File:  </b>\r\n                    <label for=\"courseImgPath\" class=\"control-label\">{{editCourse.courseImgPath}}</label>\r\n                    <input type=\"file\" #fileInput [(ngModel)]=\"editCourse.courseImgPath\" name=\"courseImgPath\" class=\"form-control\" \r\n                           id=\"selectedFile\" style=\"display: none;\"/>\r\n                    <div style=\"padding-left:20px\"></div>\r\n                    <input type=\"button\" value=\" Select a file \" onclick=\"document.getElementById('selectedFile').click();\" class=\"btn-secondary\" />\r\n                    <!--<input type=\"file\" name=\"coursePath\" class=\"form-control\" />-->\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"submit\" value=\"Save\" class=\"btn btn-primary\" />\r\n                </div>\r\n        </form>\r\n    </div>\r\n</div>\r\n\r\n<div>\r\n    <a [routerLink]=\"['/courses']\">Back to List</a>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -814,9 +1441,15 @@ var CourseEditComponent = /** @class */ (function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
         this.CourseService.getCourseById(id).subscribe(function (tcourse) {
-            tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
+            var tmppath = tcourse.courseImgPath.substr(tcourse.courseImgPath.lastIndexOf('\\') + 1);
+            if (tmppath == null) {
+                tmppath = "";
+            }
+            //tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
             _this.editCourse = tcourse;
+            _this.editCourse.courseImgPath = tmppath;
         }, function (error) { _this.errorMsg = error; });
+        console.log("XXXXXXXXXXXXXX=>" + this.editCourse.courseImgPath);
     };
     CourseEditComponent.prototype.UpdateCourse = function () {
         var fileToUpload = (this.fileInputVariable.nativeElement.files.length == 0) ?
@@ -1068,6 +1701,44 @@ var CourseService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./app/Courses/course.ts":
+/*!*******************************!*\
+  !*** ./app/Courses/course.ts ***!
+  \*******************************/
+/*! exports provided: course, Module, Activity */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "course", function() { return course; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Module", function() { return Module; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Activity", function() { return Activity; });
+var course = /** @class */ (function () {
+    function course() {
+    }
+    return course;
+}());
+
+var Module = /** @class */ (function () {
+    function Module() {
+        this.name = "";
+        this.description = "";
+    }
+    return Module;
+}());
+
+var Activity = /** @class */ (function () {
+    function Activity() {
+    }
+    return Activity;
+}());
+
+//it is also possible to define course class that implement the Icourse interface
+//when needed
+
+
+/***/ }),
+
 /***/ "./app/Courses/courses.module.ts":
 /*!***************************************!*\
   !*** ./app/Courses/courses.module.ts ***!
@@ -1310,7 +1981,7 @@ var CreateCourseComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"course && course.modules && course.modules.length>0\">\r\n    <div id=\"accordion\" >\r\n\r\n        <!--string name = Regex.Replace(@module.Name, @\"[\\W_]+\", string.Empty);-->\r\n        <div class=\"card\" *ngFor=\"let module of course.modules\">\r\n            <div class=\"card-header\" [id]=\"module.id\">\r\n                <div class=\"row\">\r\n                \r\n                    <div class=\"btn btn-link collapsed col-6\"\r\n                        [attr.data-target]=\"'#'+ module.name2\"\r\n                        [attr.aria-controls]=\"module.name2\"\r\n                        data-toggle=\"collapse\"\r\n                        [attr.aria-expanded]=\"false\"\r\n                        (click)=\"TogggelCollapse(module.id)\"\r\n                        >\r\n                        <h5 class=\"mb-0\">  \r\n                          \r\n                            {{ module.name }}\r\n                        </h5>\r\n                        \r\n                     \r\n                    </div>\r\n                    \r\n                \r\n                <div class=\"col-6 somepadding\">\r\n                        <h5 class=\"mb-0\"> \r\n                        <a [routerLink]=\"['/Modules/', module.id]\">Details</a>\r\n                    </h5>\r\n                     </div>\r\n                    </div>\r\n            </div>\r\n\r\n            <div [id]=\"module.name2\" [class]=\"'collapse'+ module.isExpanded\" [attr.aria-labelledby]=\"module.id\" data-parent=\"#accordion\">\r\n               \r\n                <span class=\"float-right\"> {{module.startDate |date: 'yyyy-MM-dd'}} -{{module.endDate |date: 'yyyy-MM-dd'}}</span>\r\n                <p>\r\n                    {{module.description}}\r\n                 \r\n                </p>\r\n                <div class=\"card-body\" *ngIf=\"module.activities && module.activities.length >0\">\r\n                    <h4>Activities</h4>\r\n                    <ul class=\"timeline\">\r\n\r\n                        <li *ngFor=\"let activity of module.activities\">\r\n                            <a asp-controller=\"LMSActivities\" asp-action=\"Details\" [attr.asp-route-id]=\"activity.id\">{{activity.name}}</a>\r\n                            <span class=\"float-right\"> {{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}}</span>\r\n                            <p>\r\n                                {{activity.description}}\r\n                                <br>{{activity.activityType}}\r\n                            </p>\r\n                            <div *ngIf=\"isTeacher\">\r\n                                <a asp-controller=\"LMSActivities\" asp-action=\"Edit\" [attr.asp-route-id]=\"activity.id\">Edit Activity</a>&nbsp;|&nbsp;\r\n                                <a asp-controller=\"LMSActivities\" asp-action=\"Delete\" [attr.asp-route-id]=\"activity.id\">Delete Activity</a>\r\n                            </div>\r\n                        </li>\r\n\r\n                    </ul>\r\n                    <div *ngIf=\"isTeacher\">\r\n                        Add Activity\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n\r\n     </div>\r\n\r\n</div>"
+module.exports = "<div *ngIf=\"course && course.modules && course.modules.length>0\">\r\n    <div id=\"accordion\" >\r\n\r\n        <!--string name = Regex.Replace(@module.Name, @\"[\\W_]+\", string.Empty);-->\r\n        <div class=\"card\" *ngFor=\"let module of course.modules\">\r\n            <div class=\"card-header\" [id]=\"module.id\">\r\n                <div class=\"row\">\r\n                \r\n                    <div class=\"btn btn-link collapsed col-6\"\r\n                        [attr.data-target]=\"'#'+ module.name2\"\r\n                        [attr.aria-controls]=\"module.name2\"\r\n                        data-toggle=\"collapse\"\r\n                        [attr.aria-expanded]=\"false\"\r\n                        (click)=\"TogggelCollapse(module.id)\"\r\n                        >\r\n                        <h5 class=\"mb-0\">  \r\n                          \r\n                            {{ module.name }}\r\n                        </h5>\r\n                        \r\n                     \r\n                    </div>\r\n                    \r\n                \r\n                <div class=\"col-6 somepadding\">\r\n                        <h5 class=\"mb-0  btn btn-info\"> \r\n                        <a [routerLink]=\"['/Modules/', module.id]\"> <i class=\"fa fa-1x fa-info\"></i></a>\r\n                    </h5>\r\n                     </div>\r\n                    </div>\r\n            </div>\r\n\r\n            <div [id]=\"module.name2\" [class]=\"'collapse'+ module.isExpanded\" [attr.aria-labelledby]=\"module.id\" data-parent=\"#accordion\">\r\n                <div>\r\n\r\n                    <p>\r\n                        {{module.description}}\r\n                    </p>\r\n                    <p style=\"text-align:right\">\r\n                        <small><b> {{module.startDate |date: 'yyyy-MM-dd'}} - {{module.endDate |date: 'yyyy-MM-dd'}} </b>  </small>\r\n                    </p>\r\n                </div>\r\n                <div class=\"card-body\" *ngIf=\"module.activities && module.activities.length >0\">\r\n                    <h4>Activities</h4>\r\n                    <ul class=\"timeline\">\r\n\r\n                        <li *ngFor=\"let activity of module.activities\">\r\n                            <div>\r\n                                <b>\r\n                                    <a asp-controller=\"LMSActivities\" asp-action=\"Details\" [attr.asp-route-id]=\"activity.id\">\r\n                                        {{activity.name}}\r\n                                    </a>\r\n                                </b>\r\n\r\n                                <p>\r\n                                    {{activity.description}}\r\n                                    <br> {{activity.activityType}}\r\n                                </p>\r\n\r\n                                <p style=\"text-align:right\"> <small>  <b>{{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}} </b>  </small></p>\r\n                            </div>\r\n                            <div *ngIf=\"isTeacher\">\r\n                                <a asp-controller=\"LMSActivities\" asp-action=\"Edit\" [attr.asp-route-id]=\"activity.id\" style=\"margin-left:5px\" class=\"btn btn-info\"> <i class=\"fa fa-1x fa-edit\"></i></a>&nbsp;\r\n                                <a [routerLink]=\"['/Activity/delete', activity.id]\"> <i class=\"fa fa-1x fa-minus-square\"></i></a>\r\n                               \r\n                            </div>\r\n                        </li>\r\n\r\n                    </ul>\r\n                    <div *ngIf=\"isTeacher\">\r\n                        <p class=\"btn btn-info\">  <i class=\"fa fa-1x fa-plus-square\"></i></p>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n\r\n     </div>\r\n\r\n</div>"
 
 /***/ }),
 
@@ -1331,6 +2002,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ClientApp/app/Login/login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
+
 
 
 
@@ -1339,11 +2012,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var detailList = /** @class */ (function () {
-    function detailList(route, CourseService, AuthService, cd) {
+    function detailList(route, CourseService, AuthService, cd, messhandler) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
+        this.messhandler = messhandler;
         this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
         this.savesubs = new Array();
     }
@@ -1375,6 +2049,11 @@ var detailList = /** @class */ (function () {
         }
         else {
             this.course.modules.find(function (m) { return m.id.toString() == mid; }).isExpanded = " show";
+            this.messhandler.SendModulid(mid);
+            var mod = this.course.modules.find(function (m) { return m.id.toString() == mid; });
+            this.messhandler.SendModulStartDate(mod.startDate);
+            this.messhandler.SendModulEndDate(mod.endDate);
+            this.messhandler.SendModulName(mod.name);
             var temp = this.CourseService.getActivitybymodulId(mid)
                 .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
                 .subscribe(function (activities) {
@@ -1405,7 +2084,8 @@ var detailList = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
             _course_service__WEBPACK_IMPORTED_MODULE_3__["CourseService"],
             ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"],
-            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"]])
+            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"],
+            ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_7__["LoginMessageHandlerService"]])
     ], detailList);
     return detailList;
 }());
@@ -2504,6 +3184,8 @@ var ManageusersComponent = /** @class */ (function () {
         this.cd = cd;
         this.messhandler = messhandler;
         this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.togglechoose = false;
+        this.lastuserid = "";
         this.users = [];
     }
     ManageusersComponent.prototype.ngOnInit = function () {
@@ -2518,10 +3200,19 @@ var ManageusersComponent = /** @class */ (function () {
     };
     ManageusersComponent.prototype.ChooseUser = function (id) {
         if (this.users.find(function (u) { return u.id == id; }).role != "Teacher") {
-            this.messhandler.SendIsteacher(false);
-            this.messhandler.SendUserId(id);
+            if (this.togglechoose && this.lastuserid == id) {
+                this.togglechoose = false;
+                this.messhandler.SendIsteacher(true);
+            }
+            else {
+                this.togglechoose = true;
+                this.lastuserid = id;
+                this.messhandler.SendIsteacher(false);
+                this.messhandler.SendUserId(id);
+            }
         }
         else {
+            this.togglechoose = false;
             this.messhandler.SendIsteacher(true);
         }
     };
@@ -2761,6 +3452,24 @@ var LoginMessageHandlerService = /** @class */ (function () {
         this.CourseStartDate = this.CourseStartDateSource.asObservable();
         this.CourseidSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
         this.Courseid = this.CourseidSource.asObservable();
+        this.DubbTypeSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.DubbType = this.DubbTypeSource.asObservable();
+        this.DubbIdSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.DubbId = this.DubbIdSource.asObservable();
+        this.DubbStartSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.DubbStart = this.DubbStartSource.asObservable();
+        this.DubbEndSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.DubbEnd = this.DubbEndSource.asObservable();
+        this.ModulidSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.Modulid = this.ModulidSource.asObservable();
+        this.ModulStartDateSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.ModulStartDate = this.ModulStartDateSource.asObservable();
+        this.ModulEndDateSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.ModulEndDate = this.ModulEndDateSource.asObservable();
+        this.ModulNameSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.ModulName = this.ModulNameSource.asObservable();
+        this.CourseNameSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.CourseName = this.CourseNameSource.asObservable();
     }
     LoginMessageHandlerService.prototype.SendUserId = function (userid) {
         this.useridSource.next(userid == null ? '' : userid);
@@ -2812,6 +3521,42 @@ var LoginMessageHandlerService = /** @class */ (function () {
     };
     LoginMessageHandlerService.prototype.SendConfirmGoBackUrl = function (arg) {
         this.ConfirmGoBackUrlSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendDubbType = function (arg) {
+        this.DubbTypeSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendDubbId = function (arg) {
+        this.DubbIdSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendDubbStart = function (arg) {
+        this.DubbStartSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendDubbEnd = function (arg) {
+        this.DubbEndSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendModulid = function (arg) {
+        this.ModulidSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendModulStartDate = function (arg) {
+        this.ModulStartDateSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendModulEndDate = function (arg) {
+        this.ModulEndDateSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendModulName = function (arg) {
+        this.ModulNameSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendCourseName = function (arg) {
+        this.CourseNameSource.next(arg);
         return true;
     };
     LoginMessageHandlerService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -2971,7 +3716,7 @@ var User = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"module && module.activities && module.activities.length>0\">\r\n  <div id=\"accordion\" >\r\n\r\n      <!--string name = Regex.Replace(@module.Name, @\"[\\W_]+\", string.Empty);-->\r\n      <div class=\"card\" *ngFor=\"let activity of module.activities\">\r\n          <div class=\"card-header\" [id]=\"module.id\">\r\n              \r\n                  <div class=\"btn btn-link collapsed\"\r\n                      [attr.data-target]=\"'#'+ activity.name2\"\r\n                      [attr.aria-controls]=\"activity.name2\"\r\n                      data-toggle=\"collapse\"\r\n                      [attr.aria-expanded]=\"false\"\r\n                      (click)=\"TogggelCollapse(activity.id)\"\r\n                      >\r\n                      <h5 class=\"mb-0\"> \r\n                          {{ activity.name }}\r\n                        </h5>\r\n                  </div>\r\n              \r\n          </div>\r\n\r\n          <div [id]=\"activity.name2\" [class]=\"'collapse'+ activity.isExpanded\" [attr.aria-labelledby]=\"activity.id\" data-parent=\"#accordion\">\r\n              <div class=\"card-body\" *ngIf=\"module.activities && module.activities.length >0\">\r\n                  <!--<span class=\"float-right\"> {{activity.startDate |date: 'yyyy-MM-dd HH:mm'}} -{{activity.endDate |date: 'yyyy-MM-dd HH:mm'}}</span>\r\n    <p>{{activity.description}}\r\n    <br>{{activity.activityType}}</p>-->\r\n\r\n                  <div>\r\n                      <upload-detail [DocOwnerId]=\"activity.id\"></upload-detail>\r\n                  </div>\r\n                  <div *ngIf=\"isTeacher\">\r\n                      <doc-upload [DocOwnerId]=\"activity.id\" [DocOwnerTypeId]=\"3\" [DocumentTypeId]=\"2\"></doc-upload>\r\n                  </div>\r\n\r\n              </div>\r\n\r\n      </div>\r\n\r\n   </div>\r\n\r\n</div>"
+module.exports = "<div *ngIf=\"module && module.activities && module.activities.length>0\">\r\n  <div id=\"accordion\" >\r\n\r\n      <!--string name = Regex.Replace(@module.Name, @\"[\\W_]+\", string.Empty);-->\r\n      <div class=\"card\" *ngFor=\"let activity of module.activities\">\r\n          <div class=\"card-header\" [id]=\"module.id\">\r\n\r\n              <div class=\"btn btn-link collapsed\"\r\n                   [attr.data-target]=\"'#'+ activity.name2\"\r\n                   [attr.aria-controls]=\"activity.name2\"\r\n                   data-toggle=\"collapse\"\r\n                   [attr.aria-expanded]=\"false\"\r\n                   (click)=\"TogggelCollapse(activity.id)\">\r\n                  <h5 class=\"mb-0\">\r\n                      {{ activity.name }}\r\n                  </h5>\r\n              </div>\r\n\r\n          </div>\r\n          <div class=\"row\">\r\n\r\n              <div class=\"col-md-12\">\r\n\r\n             \r\n              <div [id]=\"activity.name2\" [class]=\"'collapse'+ activity.isExpanded\" [attr.aria-labelledby]=\"activity.id\" data-parent=\"#accordion\">\r\n                  <div  *ngIf=\"module.activities && module.activities.length >0\" >\r\n\r\n                  <!--<span class=\"float-right\"> {{activity.startDate |date: 'yyyy-MM-dd HH:mm'}} -{{activity.endDate |date: 'yyyy-MM-dd HH:mm'}}</span>\r\n            <p>{{activity.description}}\r\n            <br>{{activity.activityType}}</p>-->\r\n                      <div>\r\n                          <upload-detail [DocOwnerId]=\"activity.id\"></upload-detail>\r\n                      </div>\r\n                      <div *ngIf=\"isTeacher\">\r\n                          <doc-upload [DocOwnerId]=\"activity.id\" [DocOwnerTypeId]=\"3\" [DocumentTypeId]=\"2\"></doc-upload>\r\n                      </div>\r\n\r\n                  </div>\r\n\r\n              </div>\r\n               </div>\r\n          </div>\r\n      </div>\r\n\r\n</div>\r\n</div>"
 
 /***/ }),
 
@@ -2992,6 +3737,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var ClientApp_app_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ClientApp/app/data.service */ "./app/data.service.ts");
+
 
 
 
@@ -3000,11 +3747,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ActitityListComponent = /** @class */ (function () {
-    function ActitityListComponent(route, CourseService, AuthService, cd) {
+    function ActitityListComponent(route, CourseService, AuthService, cd, data) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
+        this.data = data;
         this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
         this.isTeacher = false;
     }
@@ -3021,35 +3769,12 @@ var ActitityListComponent = /** @class */ (function () {
         }, function (error) { return _this.errorMessage = error; });
     };
     ActitityListComponent.prototype.TogggelCollapse = function (aid) {
-        if (this.module.activities.find(function (m) { return m.id.toString() == aid; }).isExpanded == " show") {
-            this.module.activities.find(function (m) { return m.id.toString() == aid; }).isExpanded = "";
-            // add here for filelist for activity
-            /*  if (this.savesubs.find( t => t[0]==mid))
-              {
-   
-                  this.savesubs.find( t => t[0]==mid)[1].unsubscribe();
-                  this.savesubs.splice(this.savesubs.indexOf(this.savesubs.find( t => t[0]==mid)),1);
-              }
-   */
+        if (this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded == " show") {
+            this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded = "";
+            this.data.getData(aid);
         }
         else {
-            this.module.activities.find(function (m) { return m.id.toString() == aid; }).isExpanded = " show";
-            /* let temp=this.CourseService.getActivitybymodulId(mid).subscribe(
-                      activities=>
-                      {
-                          this.course.modules.find(m => m.id.toString()==mid).activities=activities;
-                      },
-                      error => this.errorMessage = <any>error
-                  );
-              if (this.savesubs.find( t => t[0]==mid))
-              {
-                  this.savesubs.find( t => t[0]==mid)[1]=temp;
-              }
-              else
-              {
-                  this.savesubs.push([mid,temp])  ;
-              }
-              */
+            this.module.activities.find(function (a) { return a.id.toString() == aid; }).isExpanded = " show";
         }
     };
     ActitityListComponent.prototype.ngOnDestroy = function () {
@@ -3068,9 +3793,159 @@ var ActitityListComponent = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
             ClientApp_app_Courses_course_service__WEBPACK_IMPORTED_MODULE_2__["CourseService"],
             ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"],
-            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ChangeDetectorRef"]])
+            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ChangeDetectorRef"],
+            ClientApp_app_data_service__WEBPACK_IMPORTED_MODULE_7__["DataService"]])
     ], ActitityListComponent);
     return ActitityListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./app/Modules/Check-if-dubbs/DubbParas.ts":
+/*!*************************************************!*\
+  !*** ./app/Modules/Check-if-dubbs/DubbParas.ts ***!
+  \*************************************************/
+/*! exports provided: DubbParas */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DubbParas", function() { return DubbParas; });
+;
+var DubbParas = /** @class */ (function () {
+    function DubbParas() {
+        this.dubbtype = "";
+        this.dubbid = "";
+        this.dubbstart = null;
+        this.dubbend = null;
+    }
+    return DubbParas;
+}());
+
+;
+
+
+/***/ }),
+
+/***/ "./app/Modules/Check-if-dubbs/check-if-dubbs.component.css":
+/*!*****************************************************************!*\
+  !*** ./app/Modules/Check-if-dubbs/check-if-dubbs.component.css ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL01vZHVsZXMvQ2hlY2staWYtZHViYnMvY2hlY2staWYtZHViYnMuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./app/Modules/Check-if-dubbs/check-if-dubbs.component.html":
+/*!******************************************************************!*\
+  !*** ./app/Modules/Check-if-dubbs/check-if-dubbs.component.html ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\r\n    <div *ngIf=\"Warning\" class=\"alert-warning\">{{ Warning }}</div>\r\n\r\n"
+
+/***/ }),
+
+/***/ "./app/Modules/Check-if-dubbs/check-if-dubbs.component.ts":
+/*!****************************************************************!*\
+  !*** ./app/Modules/Check-if-dubbs/check-if-dubbs.component.ts ***!
+  \****************************************************************/
+/*! exports provided: CheckIfDubbsComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CheckIfDubbsComponent", function() { return CheckIfDubbsComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Login/login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
+/* harmony import */ var _module_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../module.service */ "./app/Modules/module.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _DubbParas__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./DubbParas */ "./app/Modules/Check-if-dubbs/DubbParas.ts");
+
+
+
+
+
+
+
+var CheckIfDubbsComponent = /** @class */ (function () {
+    function CheckIfDubbsComponent(messhandler, ModuleService, cd) {
+        this.messhandler = messhandler;
+        this.ModuleService = ModuleService;
+        this.cd = cd;
+        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.paras = new _DubbParas__WEBPACK_IMPORTED_MODULE_6__["DubbParas"]();
+        this.Warning = "";
+    }
+    CheckIfDubbsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.messhandler.DubbType
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.paras.dubbtype = status;
+            _this.testandrun();
+            _this.cd.markForCheck();
+        });
+        this.messhandler.DubbId
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.paras.dubbid = status;
+            _this.testandrun();
+            _this.cd.markForCheck();
+        });
+        this.messhandler.DubbStart
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.paras.dubbstart = status;
+            _this.testandrun();
+            _this.cd.markForCheck();
+        });
+        this.messhandler.DubbEnd
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.paras.dubbend = status;
+            _this.testandrun();
+            _this.cd.markForCheck();
+        });
+    };
+    CheckIfDubbsComponent.prototype.testandrun = function () {
+        var _this = this;
+        if (this.paras.dubbtype != "" && this.paras.dubbid != "" && this.paras.dubbstart != null && this.paras.dubbend != null) {
+            this.ModuleService.CheckIfDubblett(this.paras)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this.unsubscribe))
+                .subscribe(function (status) {
+                if (status) {
+                    _this.Warning = "There exists allready " + _this.paras.dubbtype + " in the selected range";
+                }
+                else {
+                    _this.Warning = "";
+                }
+                _this.cd.markForCheck();
+            });
+        }
+    };
+    CheckIfDubbsComponent.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
+    CheckIfDubbsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'check-if-dubbs',
+            template: __webpack_require__(/*! ./check-if-dubbs.component.html */ "./app/Modules/Check-if-dubbs/check-if-dubbs.component.html"),
+            styles: [__webpack_require__(/*! ./check-if-dubbs.component.css */ "./app/Modules/Check-if-dubbs/check-if-dubbs.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_3__["LoginMessageHandlerService"],
+            _module_service__WEBPACK_IMPORTED_MODULE_4__["ModuleService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"]])
+    ], CheckIfDubbsComponent);
+    return CheckIfDubbsComponent;
 }());
 
 
@@ -3095,7 +3970,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Create</h1>\t\r\n\r\n <h4>Module on {{courseID}}</h4>\t\r\n<hr />\t\r\n<div class=\"row\">\t\r\n    <div class=\"col-md-4\">\t\r\n            <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n         <form #theForm=\"ngForm\"  (ngSubmit)=\"Create(theForm)\"  novalidate>\t\r\n\r\n             <input type=\"hidden\" [(ngModel)]=\"Module.courseid\" name=\"CourseId\" />\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"name\" class=\"control-label\">Name</label>\t\r\n                <input  [(ngModel)]=\"Module.name\" name=\"name\" id=\"name\" class=\"form-control\"   required #name=\"ngModel\"/>\r\n             </div>\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"startDate\" class=\"control-label\">Start Date</label>\t\r\n                <input  type =\"datetime-local\" [(ngModel)]=\"Module.startDate\" name=\"startDate\"  [min]=\"coursestartdate\"\t\r\n                   id=\"startDate\" class=\"form-control\"   required #startdate=\"ngModel\" (change)=\"gotDate()\"/>\t\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate.invalid && startDate.errors.require\">Formaterror on startdate  </div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate < coursestartdate\">May not start before the course</div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && endDate && endDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"endDate\" class=\"control-label\">End Date</label>\t\r\n                <input  type =\"datetime-local\"  [(ngModel)]=\"Module.endDate\" name=\"endDate\"  [min]=\"coursestartdate\"\t\r\n                  id=\"endDate\" class=\"form-control\"  required #enddate=\"ngModel\" (change)=\"gotDate()\"/>\t\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate.invalid\">Formaterror on startdate  </div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate < coursestartdate\">May not start before the course</div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && startDate && startDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"description\" class=\"control-label\">Description</label>\t\r\n                <textarea [(ngModel)]=\"Module.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\" required></textarea>\r\n            \r\n\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                    <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid\" />\r\n                    <a [routerLink]=\"['/courses', Module.CourseId]\" class=\"btn btn-default\" >Go back</a>\r\n            </div>\t\r\n        </form>\t\r\n\r\n\r\n     </div>\t\r\n\r\n     <div class=\"col-md-4\">\t\r\n            <check-if-dubbs></check-if-dubbs>\r\n        </div> \r\n</div> "
+module.exports = "<h1>Create</h1>\t\r\n\r\n <h4>Module on {{courseName}}</h4>\t\r\n<hr />\t\r\n<div class=\"row\">\t\r\n    <div class=\"col-md-4\">\t\r\n            <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n         <form #theForm=\"ngForm\"  (ngSubmit)=\"Create(theForm)\"  novalidate>\t\r\n\r\n             <input type=\"hidden\" [(ngModel)]=\"Module.courseid\" name=\"CourseId\" />\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"name\" class=\"control-label\">Name</label>\t\r\n                <input  [(ngModel)]=\"Module.name\" name=\"name\" id=\"name\" class=\"form-control\"   required #name=\"ngModel\"/>\r\n             </div>\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"startDate\" class=\"control-label\">Start Date</label>\t\r\n                <input  type =\"datetime-local\" [(ngModel)]=\"Module.startDate\" name=\"startDate\"  [min]=\"coursestartdate\"\t\r\n                   id=\"startDate\" class=\"form-control\"   required #startdate=\"ngModel\" (blur)=\"gotDate()\"/>\t\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate.invalid && startDate.errors.require\">Formaterror on startdate  </div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate < coursestartdate\">May not start before the course</div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && endDate && endDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"endDate\" class=\"control-label\">End Date</label>\t\r\n                <input  type =\"datetime-local\"  [(ngModel)]=\"Module.endDate\" name=\"endDate\"  [min]=\"coursestartdate\"\t\r\n                  id=\"endDate\" class=\"form-control\"  required #enddate=\"ngModel\" (blur)=\"gotDate()\"/>\t\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate.invalid\">Formaterror on startdate  </div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate < coursestartdate\">May not start before the course</div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && startDate && startDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"description\" class=\"control-label\">Description</label>\t\r\n                <textarea [(ngModel)]=\"Module.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\" required></textarea>\r\n            \r\n\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                    <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid\" />\r\n                    <a [routerLink]=\"['/courses', Module.courseid]\" class=\"btn btn-default\" >Go back</a>\r\n            </div>\t\r\n        </form>\t\r\n\r\n\r\n     </div>\t\r\n\r\n     <div class=\"col-md-4\">\t\r\n            <check-if-dubbs></check-if-dubbs>\r\n        </div> \r\n</div> "
 
 /***/ }),
 
@@ -3111,15 +3986,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddModuleWithCourseIdComponent", function() { return AddModuleWithCourseIdComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _courses_course__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../courses/course */ "./app/courses/course.ts");
+/* harmony import */ var _Courses_course__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Courses/course */ "./app/Courses/course.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
 /* harmony import */ var ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ClientApp/app/Login/login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
-/* harmony import */ var ClientApp_app_Courses_course_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ClientApp/app/Courses/course.service */ "./app/Courses/course.service.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _module_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../module.service */ "./app/Modules/module.service.ts");
-
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _module_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../module.service */ "./app/Modules/module.service.ts");
 
 
 
@@ -3130,35 +4003,53 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var AddModuleWithCourseIdComponent = /** @class */ (function () {
-    function AddModuleWithCourseIdComponent(route, db, cd, messhandler, CourseService, ModuleService, router) {
+    function AddModuleWithCourseIdComponent(route, db, cd, messhandler
+    // ,private CourseService: CourseService
+    , ModuleService
+    //  ,  private router: Router
+    ) {
         this.route = route;
         this.db = db;
         this.cd = cd;
         this.messhandler = messhandler;
-        this.CourseService = CourseService;
         this.ModuleService = ModuleService;
-        this.router = router;
         this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
         // get course set up coursestatdate
-        this.Module = new _courses_course__WEBPACK_IMPORTED_MODULE_2__["Module"]();
+        this.Module = new _Courses_course__WEBPACK_IMPORTED_MODULE_2__["Module"]();
         this.CourseId = "";
         this.errorMessage = "";
+        this.CourseName = "";
     }
     AddModuleWithCourseIdComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.messhandler.Courseid
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
             .subscribe(function (status) {
             // let tmpguid= Guid.parse(status); 
             _this.Module.courseid = status;
             _this.cd.markForCheck();
         });
         this.messhandler.CourseStartDate
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
             .subscribe(function (status) {
             _this.coursestartdate = status;
             _this.cd.markForCheck();
         });
+        this.messhandler.CourseName
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.CourseName = status;
+            _this.cd.markForCheck();
+        });
+    };
+    AddModuleWithCourseIdComponent.prototype.gotDate = function () {
+        if (this.Module.startDate != null && this.Module.endDate != null) {
+            this.messhandler.SendDubbId(this.Module.courseid);
+            this.messhandler.SendDubbType("Module");
+            this.messhandler.SendDubbStart(new Date(this.Module.startDate + ":00.000Z"));
+            this.messhandler.SendDubbEnd(new Date(this.Module.endDate + ":00.000Z"));
+        }
+        // post data
     };
     AddModuleWithCourseIdComponent.prototype.Create = function (theForm) {
         var _this = this;
@@ -3174,7 +4065,7 @@ var AddModuleWithCourseIdComponent = /** @class */ (function () {
         }
         if (this.errorMessage == "") {
             this.ModuleService.CreateModule(this.Module)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
                 .subscribe(function (status) {
                 if (status) {
                     _this.errorMessage = "Module " + _this.Module.name + " saved";
@@ -3196,10 +4087,12 @@ var AddModuleWithCourseIdComponent = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"],
             ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"],
             _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"],
-            ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_6__["LoginMessageHandlerService"],
-            ClientApp_app_Courses_course_service__WEBPACK_IMPORTED_MODULE_7__["CourseService"],
-            _module_service__WEBPACK_IMPORTED_MODULE_9__["ModuleService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
+            ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_6__["LoginMessageHandlerService"]
+            // ,private CourseService: CourseService
+            ,
+            _module_service__WEBPACK_IMPORTED_MODULE_8__["ModuleService"]
+            //  ,  private router: Router
+        ])
     ], AddModuleWithCourseIdComponent);
     return AddModuleWithCourseIdComponent;
 }());
@@ -3226,7 +4119,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"module\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{module.name}}</h3>\r\n                    <h5 class=\"card-title\">{{module.startDate |date: 'yyyy-MM-dd'}} - {{module.endDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{module.description}}</p>\r\n\r\n                </div>\r\n\r\n\r\n                <div class=\"card-body\">\r\n                    <div class=\"row\" *ngIf=\"isTeacher\">\r\n                        <div class=\"col-6\">\r\n                            <!-- <a [routerLink]=\"['/Modules/Edit', module.id]\">Activity/a> -->\r\n                            <a asp-controller=\"Modules\" asp-action=\"CreateWithCourseid\" asp-route-id=\"@Model.Id\" class=\"card-link\">Edit module</a>\r\n                        </div>\r\n                        <div class=\"col-6\">\r\n                            <!--<a [routerLink]=\"['/Modules/Delete', module.id]\">Delete module</a> -->\r\n                            Delete module\r\n                        </div>\r\n                        <div class=\"col-6\">\r\n                            <!-- <a [routerLink]=\"['/Activites/AddActivityWithModuleId', .id]\">Activity/a> -->\r\n                            <a asp-controller=\"Modules\" asp-action=\"CreateWithCourseid\" asp-route-id=\"@Model.Id\" class=\"card-link\">Add Actitiy</a>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-6\">\r\n                            <a [routerLink]=\"['/courses/', module.courseId]\">Go back</a>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n        </div>\r\n        <div class=\"col-md-4\">\r\n            <activity_list [moduleid]=\"module.id\"></activity_list>\r\n        </div>\r\n       \r\n\r\n        <div class=\"col-md-4\">\r\n            <div>\r\n                <upload-detail [DocOwnerId]=\"module.id\"></upload-detail>\r\n            </div>\r\n            <doc-upload [DocOwnerId]=\"module.id\" [DocOwnerTypeId]=\"2\" [DocumentTypeId]=\"3\"></doc-upload>\r\n\r\n\r\n        </div>\r\n    </div>\r\n    </div>\r\n  "
+module.exports = "<div *ngIf=\"module\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{module.name}}</h3>\r\n                    <h5 class=\"card-title\">{{module.startDate |date: 'yyyy-MM-dd'}} - {{module.endDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{module.description}}</p>\r\n\r\n                </div>\r\n\r\n\r\n                <div class=\"card-body\">\r\n                    <div class=\"row\" *ngIf=\"isTeacher\">\r\n                        <div class=\"col-6\">\r\n                             <a [routerLink]=\"['/Modules/edit', module.id]\">Edit module</a> \r\n                           <!-- <a asp-controller=\"Modules\" asp-action=\"CreateWithCourseid\" asp-route-id=\"@Model.Id\" class=\"card-link\">Edit module</a>-->\r\n                        </div>\r\n                        <div class=\"col-6\">\r\n                            <a [routerLink]=\"['/Modules/Delete', module.id]\">Delete module</a> -\r\n                            Delete module\r\n                        </div>\r\n                        <div class=\"col-6\">\r\n                            <!-- <a [routerLink]=\"['/Activites/AddActivityWithModuleId', .id]\">Activity/a> -->\r\n                                <a [routerLink]=\"['/Activity/create']\">Add module</a>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-6\">\r\n                            <a [routerLink]=\"['/courses/', module.courseId]\">Go back</a>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n        </div>\r\n        <div class=\"col-md-4\">\r\n            <activity_list [moduleid]=\"module.id\"></activity_list>\r\n        </div>\r\n       \r\n\r\n        <div class=\"col-md-4\">\r\n            <div>\r\n                <upload-detail [DocOwnerId]=\"module.id\"></upload-detail>\r\n            </div>\r\n            <doc-upload [DocOwnerId]=\"module.id\" [DocOwnerTypeId]=\"2\" [DocumentTypeId]=\"3\"></doc-upload>\r\n\r\n\r\n        </div>\r\n    </div>\r\n    </div>\r\n  "
 
 /***/ }),
 
@@ -3247,6 +4140,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ClientApp/app/Login/login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
+
 
 
 
@@ -3255,11 +4150,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ModulDetailsComponent = /** @class */ (function () {
-    function ModulDetailsComponent(route, CourseService, AuthService, cd) {
+    function ModulDetailsComponent(route, CourseService, AuthService, cd, messhandler) {
         this.route = route;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
         this.cd = cd;
+        this.messhandler = messhandler;
         this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
     }
     ModulDetailsComponent.prototype.ngOnInit = function () {
@@ -3288,7 +4184,8 @@ var ModulDetailsComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./details.component.css */ "./app/Modules/Details/details.component.css")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], ClientApp_app_Courses_course_service__WEBPACK_IMPORTED_MODULE_3__["CourseService"], ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"],
-            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"]])
+            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"],
+            ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_7__["LoginMessageHandlerService"]])
     ], ModulDetailsComponent);
     return ModulDetailsComponent;
 }());
@@ -3297,56 +4194,151 @@ var ModulDetailsComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./app/Modules/check-if-dubbs.component.css":
-/*!**************************************************!*\
-  !*** ./app/Modules/check-if-dubbs.component.css ***!
-  \**************************************************/
+/***/ "./app/Modules/edit/edit.component.css":
+/*!*********************************************!*\
+  !*** ./app/Modules/edit/edit.component.css ***!
+  \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL01vZHVsZXMvY2hlY2staWYtZHViYnMuY29tcG9uZW50LmNzcyJ9 */"
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL01vZHVsZXMvZWRpdC9lZGl0LmNvbXBvbmVudC5jc3MifQ== */"
 
 /***/ }),
 
-/***/ "./app/Modules/check-if-dubbs.component.html":
-/*!***************************************************!*\
-  !*** ./app/Modules/check-if-dubbs.component.html ***!
-  \***************************************************/
+/***/ "./app/Modules/edit/edit.component.html":
+/*!**********************************************!*\
+  !*** ./app/Modules/edit/edit.component.html ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\r\n    <div *ngIf=\"Warning\" class=\"alert-warning\">{{ Warning }}</div>\r\n</p>\r\n"
+module.exports = "<h1>Edit</h1>\t\r\n\r\n <h4>Module on {{courseName}}</h4>\t\r\n<hr />\t\r\n<div class=\"row\">\t\r\n    <div class=\"col-md-4\">\t\r\n            <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n         <form #theForm=\"ngForm\"  (ngSubmit)=\"Register(theForm)\"  novalidate>\t\r\n\r\n             <input type=\"hidden\" [(ngModel)]=\"Module.courseid\" name=\"CourseId\" />\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"name\" class=\"control-label\">Name</label>\t\r\n                <input  [(ngModel)]=\"Module.name\" name=\"name\" id=\"name\" class=\"form-control\"   required #name=\"ngModel\"/>\r\n             </div>\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"startDate\" class=\"control-label\">Start Date</label>\t\r\n                <input  type =\"datetime-local\" [(ngModel)]=\"Module.startDate\" name=\"startDate\"  [min]=\"coursestartdate\"\t\r\n                   id=\"startDate\" class=\"form-control\"   required #startdate=\"ngModel\" (blur)=\"gotDate()\"/>\t\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate.invalid && startDate.errors.require\">Formaterror on startdate  </div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate < coursestartdate\">May not start before the course</div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && endDate && endDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"endDate\" class=\"control-label\">End Date</label>\t\r\n                <input  type =\"datetime-local\"  [(ngModel)]=\"Module.endDate\" name=\"endDate\"  [min]=\"coursestartdate\"\t\r\n                  id=\"endDate\" class=\"form-control\"  required #enddate=\"ngModel\" (blur)=\"gotDate()\"/>\t\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate.invalid\">Formaterror on startdate  </div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate < coursestartdate\">May not start before the course</div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && startDate && startDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"description\" class=\"control-label\">Description</label>\t\r\n                <textarea [(ngModel)]=\"Module.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\" required></textarea>\r\n            \r\n\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                    <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid\" />\r\n                    <a [routerLink]=\"['/Modules', Module.id]\" class=\"btn btn-default\" >Go back</a>\r\n            </div>\t\r\n        </form>\t\r\n\r\n\r\n     </div>\t\r\n\r\n     <div class=\"col-md-4\">\t\r\n            <check-if-dubbs></check-if-dubbs>\r\n        </div> \r\n</div> "
 
 /***/ }),
 
-/***/ "./app/Modules/check-if-dubbs.component.ts":
-/*!*************************************************!*\
-  !*** ./app/Modules/check-if-dubbs.component.ts ***!
-  \*************************************************/
-/*! exports provided: CheckIfDubbsComponent */
+/***/ "./app/Modules/edit/edit.component.ts":
+/*!********************************************!*\
+  !*** ./app/Modules/edit/edit.component.ts ***!
+  \********************************************/
+/*! exports provided: EditComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CheckIfDubbsComponent", function() { return CheckIfDubbsComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditComponent", function() { return EditComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var ClientApp_app_Courses_course__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ClientApp/app/Courses/course */ "./app/Courses/course.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
+/* harmony import */ var ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ClientApp/app/Login/login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
+/* harmony import */ var _module_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../module.service */ "./app/Modules/module.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
 
 
-var CheckIfDubbsComponent = /** @class */ (function () {
-    function CheckIfDubbsComponent() {
+
+
+
+
+
+
+
+var EditComponent = /** @class */ (function () {
+    function EditComponent(route, db, cd, messhandler
+    // ,private CourseService: CourseService
+    , ModuleService) {
+        this.route = route;
+        this.db = db;
+        this.cd = cd;
+        this.messhandler = messhandler;
+        this.ModuleService = ModuleService;
+        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        // get course set up coursestatdate
+        this.Module = new ClientApp_app_Courses_course__WEBPACK_IMPORTED_MODULE_3__["Module"]();
+        this.CourseId = "";
+        this.errorMessage = "";
+        this.CourseName = "";
+        this.Moduleid = "";
     }
-    CheckIfDubbsComponent.prototype.ngOnInit = function () {
+    EditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.Moduleid = this.route.snapshot.paramMap.get("id"); // null if no hit?
+        this.messhandler.Courseid
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            // let tmpguid= Guid.parse(status); 
+            _this.Module.courseid = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.CourseStartDate
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.coursestartdate = status;
+            _this.cd.markForCheck();
+        });
+        this.messhandler.CourseName
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            _this.CourseName = status;
+            _this.cd.markForCheck();
+        });
+        this.ModuleService.GetModule(this.Moduleid)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (resp) {
+            _this.Module = resp;
+            _this.cd.markForCheck();
+        });
     };
-    CheckIfDubbsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    EditComponent.prototype.gotDate = function () {
+        if (this.Module.startDate != null && this.Module.endDate != null) {
+            this.messhandler.SendDubbId(this.Module.courseid);
+            this.messhandler.SendDubbType("Module");
+            this.messhandler.SendDubbStart(new Date(this.Module.startDate + ":00.000Z"));
+            this.messhandler.SendDubbEnd(new Date(this.Module.endDate + ":00.000Z"));
+        }
+        // post data
+    };
+    EditComponent.prototype.Register = function (theForm) {
+        var _this = this;
+        this.errorMessage = "";
+        if (this.Module.startDate.valueOf() < this.coursestartdate.valueOf()) {
+            this.errorMessage = this.errorMessage + "Start date on module may not be before course start date (" + this.coursestartdate + ")";
+        }
+        if (this.Module.endDate.valueOf() < this.coursestartdate.valueOf()) {
+            this.errorMessage = this.errorMessage + "End date on module may not be before course start date (" + this.coursestartdate + ")";
+        }
+        if (this.Module.endDate.valueOf() < this.Module.startDate.valueOf()) {
+            this.errorMessage = this.errorMessage + " A module must end after it's start";
+        }
+        if (this.errorMessage == "") {
+            this.ModuleService.EditCreateModule(this.Module.id, this.Module)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+                .subscribe(function (status) {
+                _this.errorMessage = "Module updated";
+                _this.cd.markForCheck();
+            }, function (err) { return _this.errorMessage = err; });
+        }
+    };
+    EditComponent.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    };
+    EditComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-            selector: 'check-if-dubbs',
-            template: __webpack_require__(/*! ./check-if-dubbs.component.html */ "./app/Modules/check-if-dubbs.component.html"),
-            styles: [__webpack_require__(/*! ./check-if-dubbs.component.css */ "./app/Modules/check-if-dubbs.component.css")]
+            selector: 'app-edit',
+            template: __webpack_require__(/*! ./edit.component.html */ "./app/Modules/edit/edit.component.html"),
+            styles: [__webpack_require__(/*! ./edit.component.css */ "./app/Modules/edit/edit.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
-    ], CheckIfDubbsComponent);
-    return CheckIfDubbsComponent;
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"],
+            ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"],
+            ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_6__["LoginMessageHandlerService"]
+            // ,private CourseService: CourseService
+            ,
+            _module_service__WEBPACK_IMPORTED_MODULE_7__["ModuleService"]])
+    ], EditComponent);
+    return EditComponent;
 }());
 
 
@@ -3371,7 +4363,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Delete module</h1>\r\n\r\n<h3>Are you sure you want to delete this?</h3>\r\n<div>\r\n    <h4>Module</h4>\r\n    <hr />\r\n    <dl class=\"row\">\r\n        <dt class=\"col-sm-2\">\r\n            Name\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{module_delete.name}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            StartDate\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{module_delete.startDate}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            EndDate\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{module_delete.endDate}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            Description\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{module_delete.description}}\r\n        </dd>\r\n    </dl>\r\n\r\n    <form asp-action=\"Delete\">\r\n        <input type=\"hidden\" asp-for=\"Id\" />\r\n        <input type=\"submit\" value=\"Delete\" class=\"btn btn-danger\" /> |\r\n        <a asp-action=\"Index\">Back to List</a>\r\n    </form>\r\n    <form #myform=\"ngForm\" (ngSubmit)=\"ConfirmedDelete()\">\r\n        <input type=\"hidden\" />\r\n        <input type=\"submit\" value=\"Delete\" class=\"btn btn-danger\" /> |\r\n        <a [routerLink]=\"['/courses']\">Back to List</a>\r\n    </form>\r\n\r\n</div>\r\n"
+module.exports = "<h1>Delete module</h1>\r\n\r\n<h3>Are you sure you want to delete this?</h3>\r\n<div>\r\n    <h4>Module</h4>\r\n    <hr />\r\n    <dl class=\"row\">\r\n        <dt class=\"col-sm-2\">\r\n            Name\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{module_delete.name}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            StartDate\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{module_delete.startDate}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            EndDate\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{module_delete.endDate}}\r\n        </dd>\r\n        <dt class=\"col-sm-2\">\r\n            Description\r\n        </dt>\r\n        <dd class=\"col-sm-10\">\r\n            {{module_delete.description}}\r\n        </dd>\r\n    </dl>\r\n\r\n    <form #myform=\"ngForm\" (ngSubmit)=\"ConfirmedDelete()\">\r\n        <input type=\"submit\" value=\"Delete\" class=\"btn btn-danger\" /> |\r\n        <a [routerLink]=\"['/courses']\">Back to List</a>\r\n    </form>\r\n\r\n</div>\r\n"
 
 /***/ }),
 
@@ -3482,10 +4474,24 @@ var ModuleService = /** @class */ (function () {
     ModuleService.prototype.getAuthHeader = function () {
         return new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpHeaders"]({ "Authorization": "Bearer " + this.token });
     };
-    ModuleService.prototype.CreateModule = function (Module) {
-        return this.http.post(this.moduleUrl, Module, {
+    ModuleService.prototype.CheckIfDubblett = function (paras) {
+        return this.http.post(this.moduleUrl + "/TestIfInRange", paras, {
             headers: this.getAuthHeader()
         }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (result) { return JSON.stringify(result); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
+    };
+    ModuleService.prototype.CreateModule = function (Module) {
+        return this.http.post(this.moduleUrl + "/PostModule", Module, {
+            headers: this.getAuthHeader()
+        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (result) { return JSON.stringify(result); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
+    };
+    ModuleService.prototype.EditCreateModule = function (id, Module) {
+        return this.http.put(this.moduleUrl + "/" + id, Module, {
+            headers: this.getAuthHeader()
+        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (result) { return JSON.stringify(result); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
+    };
+    ModuleService.prototype.GetModule = function (Moduleid) {
+        return this.http.get(this.moduleUrl + "/" + Moduleid, { headers: this.getAuthHeader()
+        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (data) { return console.log('All:' + JSON.stringify(data)); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
     };
     ModuleService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure
@@ -3503,10 +4509,6 @@ var ModuleService = /** @class */ (function () {
         console.error(errorMessage);
         return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(errorMessage);
     };
-    ModuleService.prototype.ngOnDestroy = function () {
-        this.unsubscribe.next();
-        this.unsubscribe.complete();
-    };
     //Delete a module by a given guid.
     ModuleService.prototype.DeleteModule = function (id) {
         var urlString = this.moduleUrl + "/" + id;
@@ -3514,6 +4516,10 @@ var ModuleService = /** @class */ (function () {
             headers: this.getAuthHeader()
         })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (result) { return JSON.stringify(result); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(this.handleError));
+    };
+    ModuleService.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     };
     ModuleService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -3550,7 +4556,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _documents_documents_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../documents/documents.module */ "./app/documents/documents.module.ts");
 /* harmony import */ var _module_delete_module_delete_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./module-delete/module-delete.component */ "./app/Modules/module-delete/module-delete.component.ts");
 /* harmony import */ var _Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../Shared/is-teacher.guard */ "./app/Shared/is-teacher.guard.ts");
-/* harmony import */ var _Modules_check_if_dubbs_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../Modules/check-if-dubbs.component */ "./app/Modules/check-if-dubbs.component.ts");
+/* harmony import */ var _Check_if_dubbs_check_if_dubbs_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Check-if-dubbs/check-if-dubbs.component */ "./app/Modules/Check-if-dubbs/check-if-dubbs.component.ts");
+/* harmony import */ var _Modules_edit_edit_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../Modules/edit/edit.component */ "./app/Modules/edit/edit.component.ts");
+
 
 
 
@@ -3574,7 +4582,8 @@ var ModulesModule = /** @class */ (function () {
                 _Activity_list_actitity_list_component__WEBPACK_IMPORTED_MODULE_6__["ActitityListComponent"],
                 _Details_details_component__WEBPACK_IMPORTED_MODULE_8__["ModulDetailsComponent"],
                 _module_delete_module_delete_component__WEBPACK_IMPORTED_MODULE_10__["ModuleDeleteComponent"],
-                _Modules_check_if_dubbs_component__WEBPACK_IMPORTED_MODULE_12__["CheckIfDubbsComponent"]
+                _Check_if_dubbs_check_if_dubbs_component__WEBPACK_IMPORTED_MODULE_12__["CheckIfDubbsComponent"],
+                _Modules_edit_edit_component__WEBPACK_IMPORTED_MODULE_13__["EditComponent"]
             ],
             imports: [
                 _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
@@ -3593,11 +4602,19 @@ var ModulesModule = /** @class */ (function () {
                         component: _Details_details_component__WEBPACK_IMPORTED_MODULE_8__["ModulDetailsComponent"]
                     },
                     {
+                        path: 'Modules/edit/:id',
+                        canActivate: [_Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_11__["IsTeacherGuard"]],
+                        component: _Modules_edit_edit_component__WEBPACK_IMPORTED_MODULE_13__["EditComponent"]
+                    },
+                    {
                         path: 'Modules/delete/:id',
                         canActivate: [_Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_11__["IsTeacherGuard"]],
                         component: _module_delete_module_delete_component__WEBPACK_IMPORTED_MODULE_10__["ModuleDeleteComponent"]
                     }
                 ])
+            ],
+            exports: [
+                _Check_if_dubbs_check_if_dubbs_component__WEBPACK_IMPORTED_MODULE_12__["CheckIfDubbsComponent"]
             ]
         })
     ], ModulesModule);
@@ -4032,6 +5049,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Modules_modules_module__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Modules/modules.module */ "./app/Modules/modules.module.ts");
 /* harmony import */ var angular_font_awesome__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! angular-font-awesome */ "../node_modules/angular-font-awesome/dist/angular-font-awesome.es5.js");
 /* harmony import */ var _Courses_course_list_course_list_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./Courses/course-list/course-list.component */ "./app/Courses/course-list/course-list.component.ts");
+/* harmony import */ var _Activities_activities_module__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./Activities/activities.module */ "./app/Activities/activities.module.ts");
 
 
 
@@ -4042,6 +5060,7 @@ __webpack_require__.r(__webpack_exports__);
 
 //import { NoRouteModule } from './NoRoute/no-route.module';
 //import { NoRouteComponent } from './NoRoute/no-route.component';
+
 
 
 
@@ -4089,6 +5108,7 @@ var AppModule = /** @class */ (function () {
                 _Navbar_navbar_module__WEBPACK_IMPORTED_MODULE_10__["NavbarModule"],
                 _Login_login_module__WEBPACK_IMPORTED_MODULE_11__["LoginModule"],
                 _Modules_modules_module__WEBPACK_IMPORTED_MODULE_12__["ModulesModule"],
+                _Activities_activities_module__WEBPACK_IMPORTED_MODULE_15__["ActivitiesModule"],
                 angular_font_awesome__WEBPACK_IMPORTED_MODULE_13__["AngularFontAwesomeModule"]
             ],
             providers: [],
@@ -4408,33 +5428,39 @@ var tokenData = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./app/courses/course.ts":
-/*!*******************************!*\
-  !*** ./app/courses/course.ts ***!
-  \*******************************/
-/*! exports provided: course, Module */
+/***/ "./app/data.service.ts":
+/*!*****************************!*\
+  !*** ./app/data.service.ts ***!
+  \*****************************/
+/*! exports provided: DataService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "course", function() { return course; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Module", function() { return Module; });
-var course = /** @class */ (function () {
-    function course() {
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataService", function() { return DataService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+
+
+
+var DataService = /** @class */ (function () {
+    function DataService() {
+        this.activityData = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]("");
+        this.share = this.activityData.asObservable();
     }
-    return course;
+    DataService.prototype.getData = function (type) {
+        this.activityData.next(type);
+    };
+    DataService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], DataService);
+    return DataService;
 }());
 
-var Module = /** @class */ (function () {
-    function Module() {
-        this.name = "";
-        this.description = "";
-    }
-    return Module;
-}());
-
-//it is also possible to define course class that implement the Icourse interface
-//when needed
 
 
 /***/ }),
@@ -4597,7 +5623,7 @@ var DocumentsModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".holder{}\r\ndiv.holder div.card:nth-child(2n+1) {\r\n    background-color: rgb(235, 235, 224);\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNsaWVudEFwcC9hcHAvZG9jdW1lbnRzL3VwbG9hZC1kZXRhaWwvdXBsb2FkLWRldGFpbC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLFFBQVE7QUFDUjtJQUNJLG9DQUFvQztBQUN4QyIsImZpbGUiOiJDbGllbnRBcHAvYXBwL2RvY3VtZW50cy91cGxvYWQtZGV0YWlsL3VwbG9hZC1kZXRhaWwuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ob2xkZXJ7fVxyXG5kaXYuaG9sZGVyIGRpdi5jYXJkOm50aC1jaGlsZCgybisxKSB7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjM1LCAyMzUsIDIyNCk7XHJcbn1cclxuIl19 */"
+module.exports = "/*.holder{}\r\ndiv.holder div.card:nth-child(2n+1) {\r\n    background-color: rgb(235, 235, 224);\r\n}*/\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNsaWVudEFwcC9hcHAvZG9jdW1lbnRzL3VwbG9hZC1kZXRhaWwvdXBsb2FkLWRldGFpbC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOzs7RUFHRSIsImZpbGUiOiJDbGllbnRBcHAvYXBwL2RvY3VtZW50cy91cGxvYWQtZGV0YWlsL3VwbG9hZC1kZXRhaWwuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi8qLmhvbGRlcnt9XHJcbmRpdi5ob2xkZXIgZGl2LmNhcmQ6bnRoLWNoaWxkKDJuKzEpIHtcclxuICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyMzUsIDIzNSwgMjI0KTtcclxufSovXHJcbiJdfQ== */"
 
 /***/ }),
 
@@ -4608,7 +5634,7 @@ module.exports = ".holder{}\r\ndiv.holder div.card:nth-child(2n+1) {\r\n    back
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n\r\n<div class=\"row\" *ngIf='documents && documents.length'>\r\n    <div class=\"col-md-12\">\r\n      \r\n        <div class=\"card\">\r\n            <h5 class=\"card-header\">Documents</h5>\r\n           \r\n\r\n            <div class=\"holder\">\r\n                <div class=\"card text-center\" *ngFor='let document of documents'>\r\n\r\n                    <div class=\"card-header\">\r\n                        <h5 class=\"card-title btn btn-link\" (click)=\"DownLoadFile(document.path)\">{{document.name}}</h5>\r\n                    </div>\r\n                    <div class=\"card-body\">\r\n                        <p class=\"card-text\">{{document.description}}</p>\r\n                      \r\n                    </div>\r\n                    <div class=\"card-footer text-muted\">\r\n\r\n                        <p *ngIf=\"isTeacher\" class=\"card-title btn btn-info\" (click)=\"DeleteFile(document.id)\">Remove</p>\r\n                        <p *ngIf=\"!isTeacher\" class=\"card-title btn btn-info\" (click)=\"DeleteFile(document.id)\">Submit</p>\r\n                        {{document.uploadDate |date: 'yyyy-MM-dd'}}\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n    </div>\r\n"
+module.exports = "\r\n\r\n<div class=\"row\" *ngIf='documents && documents.length'>\r\n    <div class=\"col-md-12\">\r\n      \r\n        <div class=\"card\">\r\n            <h5 class=\"card-header\">Documents</h5>\r\n           \r\n\r\n            <div class=\"holder\">\r\n                <div class=\"card\" style=\"margin-top: 10px;\" *ngFor='let document of documents'>\r\n\r\n                    <div class=\"card-body\">\r\n                        <h5 class=\"card-title\">{{document.name}}</h5>\r\n                \r\n                            {{document.description}}\r\n\r\n                        \r\n                        <p style=\"text-align:right\"><small><b>Upload date:</b> {{document.uploadDate|date:'yyyy-mm-dd'}} </small></p>\r\n\r\n\r\n\r\n\r\n                    </div>\r\n                    <div class=\"card-footer text-muted\">\r\n\r\n                        <p *ngIf=\"isTeacher\" class=\"card-title btn btn-info\" style=\"margin-right:5px\" (click)=\"DeleteFile(document.id)\"><i class=\"fa fa-1x fa-trash\"></i></p>\r\n                        <p class=\"card-title btn btn-info\" style=\"margin-right:5px\"  (click)=\"DownLoadFile(document.path)\"><i class=\"fa fa-1x  fa-download\"></i></p>\r\n                      <!--  <p class=\"card-title btn btn-info\" style=\"margin-right:5px\"><i class=\"fa fa-1x fa-paperclip\"></i></p>-->\r\n\r\n                    </div>\r\n                </div>\r\n          \r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n    </div>\r\n"
 
 /***/ }),
 
@@ -4629,6 +5655,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var file_saver__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! file-saver */ "../node_modules/file-saver/dist/FileSaver.min.js");
 /* harmony import */ var file_saver__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(file_saver__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
+/* harmony import */ var ClientApp_app_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ClientApp/app/data.service */ "./app/data.service.ts");
+
 
 
 
@@ -4636,11 +5664,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var UploadDetailComponent = /** @class */ (function () {
-    function UploadDetailComponent(route, DocumentService, AuthService) {
+    function UploadDetailComponent(route, DocumentService, AuthService, data) {
         var _this = this;
         this.route = route;
         this.DocumentService = DocumentService;
         this.AuthService = AuthService;
+        this.data = data;
         this.documents = [];
         this.isTeacher = false;
         this.subscription = this.DocumentService.getUplaodtStatus().subscribe(function (status) {
@@ -4688,7 +5717,10 @@ var UploadDetailComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./upload-detail.component.html */ "./app/documents/upload-detail/upload-detail.component.html"),
             styles: [__webpack_require__(/*! ./upload-detail.component.css */ "./app/documents/upload-detail/upload-detail.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _document_service__WEBPACK_IMPORTED_MODULE_3__["DocumentService"], ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
+            _document_service__WEBPACK_IMPORTED_MODULE_3__["DocumentService"],
+            ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"],
+            ClientApp_app_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"]])
     ], UploadDetailComponent);
     return UploadDetailComponent;
 }());
@@ -4715,7 +5747,7 @@ module.exports = ".has-error input[type=\"text\"],\r\n.has-error textarea,\r\n.h
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n\r\n\r\n\r\n<div class=\"row\" *ngIf=\"isTeacher\">\r\n    <div class=\"col-md-12\">\r\n\r\n        <div class=\"card\">\r\n            <h5 class=\"card-header\">Upload Document</h5>\r\n\r\n            <div class=\"card-body\">\r\n\r\n                <div class=\"row\" *ngIf=\"showMsg\">\r\n                    <div class=\"col-md-12\">\r\n                        <p class=\"alert alert-success\">\r\n                            <strong>Upload Success!</strong>\r\n\r\n                        </p>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-12\">\r\n\r\n                   \r\n                        <form [formGroup]=\"uploadForm\" (ngSubmit)=\"upload()\">\r\n\r\n                            <div *ngIf=\"isSubmitted && formControls.name.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.name.errors.required\">File name is required</div>\r\n                                <div *ngIf=\"formControls.name.errors.minlength\">File name must be more than {{formControls.name.errors.minlength}} characters</div>\r\n                                <div *ngIf=\"formControls.name.errors.maxlength\">File name must be less than {{formControls.name.errors.maxlength}}  characters</div>\r\n                            </div>\r\n\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.name.errors }\">\r\n\r\n                                <input type=\"text\" formControlName=\"name\" name=\"name\" placeholder=\"File Name\" class=\"form-control\" />\r\n\r\n                            </p>\r\n\r\n                            <div *ngIf=\"isSubmitted && formControls.description.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.description.errors.required\">Description is required</div>\r\n                                <div *ngIf=\"formControls.description.errors.minlength\">Description must be more than {{formControls.description.errors.minlength}} characters</div>\r\n                                <div *ngIf=\"formControls.description.errors.maxlength\">Description must be less than {{formControls.description.errors.maxlength}} characters</div>\r\n                            </div>\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.description.errors }\">\r\n\r\n                                <textarea formControlName=\"description\" placeholder=\"Description\" name=\"description\" class=\"form-control\"></textarea>\r\n\r\n                            </p>\r\n                            <div *ngIf=\"isSubmitted && formControls.fileData.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.fileData.errors.required\">File to be upload is required</div>\r\n\r\n                            </div>\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.fileData.errors }\">\r\n\r\n                                <input type=\"file\" #fileInput formControlName=\"fileData\" name=\"fileData\" class=\"form-control\" />\r\n\r\n                            </p>\r\n\r\n                            <div class=\"form-group\">\r\n                                <input type=\"submit\" value=\"Upload\" class=\"btn btn-primary\" />\r\n                            </div>\r\n\r\n                        </form>\r\n                  </div>\r\n                 </div>\r\n                </div>\r\n\r\n            </div>\r\n\r\n    </div>\r\n</div>\r\n"
+module.exports = "\r\n\r\n\r\n\r\n<div class=\"row\" style=\"margin-top: 10px;\" *ngIf=\"isTeacher\">\r\n    <div class=\"col-md-12\">\r\n\r\n        <div class=\"card\">\r\n            <h5 class=\"card-header\">Upload Document</h5>\r\n\r\n            <div class=\"card-body\">\r\n\r\n                <div class=\"row\" *ngIf=\"showMsg\">\r\n                    <div class=\"col-md-12\">\r\n                        <p class=\"alert alert-success\">\r\n                            <strong>Upload Success!</strong>\r\n\r\n                        </p>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-12\">\r\n\r\n                   \r\n                        <form [formGroup]=\"uploadForm\" (ngSubmit)=\"upload()\">\r\n\r\n                            <div *ngIf=\"isSubmitted && formControls.name.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.name.errors.required\">File name is required</div>\r\n                                <div *ngIf=\"formControls.name.errors.minlength\">File name must be more than {{formControls.name.errors.minlength}} characters</div>\r\n                                <div *ngIf=\"formControls.name.errors.maxlength\">File name must be less than {{formControls.name.errors.maxlength}}  characters</div>\r\n                            </div>\r\n\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.name.errors }\">\r\n\r\n                                <input type=\"text\" formControlName=\"name\" name=\"name\" placeholder=\"Name\" class=\"form-control\" />\r\n\r\n                            </p>\r\n\r\n                            <div *ngIf=\"isSubmitted && formControls.description.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.description.errors.required\">Description is required</div>\r\n                                <div *ngIf=\"formControls.description.errors.minlength\">Description must be more than {{formControls.description.errors.minlength}} characters</div>\r\n                                <div *ngIf=\"formControls.description.errors.maxlength\">Description must be less than {{formControls.description.errors.maxlength}} characters</div>\r\n                            </div>\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.description.errors }\">\r\n\r\n                                <textarea formControlName=\"description\" placeholder=\"Description\" name=\"description\" class=\"form-control\"></textarea>\r\n\r\n                            </p>\r\n                            <div *ngIf=\"isSubmitted && formControls.fileData.errors\" class=\"alert alert-warning\">\r\n                                <div *ngIf=\"formControls.fileData.errors.required\">File to be upload is required</div>\r\n\r\n                            </div>\r\n                            <p [ngClass]=\"{ 'has-error': isSubmitted && formControls.fileData.errors }\">\r\n\r\n                                <input type=\"file\" #fileInput formControlName=\"fileData\" name=\"fileData\" class=\"form-control\" />\r\n\r\n                            </p>\r\n\r\n                            <div class=\"form-group\">\r\n                                <input type=\"submit\" value=\"Upload\" class=\"btn btn-primary\" />\r\n                            </div>\r\n\r\n                        </form>\r\n                  </div>\r\n                 </div>\r\n                </div>\r\n\r\n            </div>\r\n\r\n    </div>\r\n</div>\r\n"
 
 /***/ }),
 

@@ -143,37 +143,38 @@ namespace LMS_1_1.Controllers
         }
 
         // DELETE: api/Activity1/5
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "Teacher")]
-        public async Task Delete(int id)
-        {
-            var activity = _context.LMSActivity.FindAsync(id);
-            if (activity == null)
-            {
-                return;
-            }
+        //[HttpDelete("{id}")]
+        //[Authorize(Roles = "Teacher")]
+        //public async Task Delete(int id)
+        //{
+        //    var activity = _context.LMSActivity.FindAsync(id);
+        //    if (activity == null)
+        //    {
+        //        return;
+        //    }
 
-            _context.Remove(activity);
-            await _context.SaveChangesAsync();
+        //    _context.Remove(activity);
+        //    await _context.SaveChangesAsync();
 
-        }
+        //}
 
         private bool ActivityExists(Guid id)
         {
             return _context.LMSActivity.Any(e => e.Id == id);
         }
 
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async void Delete(Guid iD)
         {
-            var actv = _context.LMSActivity.Find(iD);
+            var actv = await _context.LMSActivity.FindAsync(iD);
             if (actv == null)
             {
                 return;
             }
 
             _context.LMSActivity.Remove(actv);
-            await _context.SaveChangesAsync();
-
+            _context.SaveChanges();
         }
     }
 }
