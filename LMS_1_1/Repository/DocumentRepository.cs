@@ -59,8 +59,19 @@ namespace LMS_1_1.Repository
 
         public async Task<IEnumerable<Document>> GetDocumentsByIdOwnerAsync (Guid OwnerId)
         {
-            return await _ctx.Documents
-                     .Where(d => d.CourseId == OwnerId|| d.ModuleId == OwnerId || d.LMSActivityId == OwnerId).ToListAsync();
+            
+            try
+            {
+               var  documents = await _ctx.Documents
+                         .Where(d => (d.CourseId == OwnerId || d.ModuleId == OwnerId || d.LMSActivityId == OwnerId)).ToListAsync();
+                return documents;
+            }
+            catch(Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return null;
+
         }
 
         public async Task<DocumentType> GetDocumentTypeByIdAsync (int documentTypeId)

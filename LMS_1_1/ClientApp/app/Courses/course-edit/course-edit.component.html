@@ -7,16 +7,29 @@
         <form #mycourse="ngForm" (ngSubmit)="UpdateCourse()">
                 <div class="form-group">
                     <label for="cname" class="control-label">Course Name</label>
-                    <input type="text" required [(ngModel)]="editCourse.name" name="cname" class="form-control" />
+                    <input type="text" required minlength="4" maxlength="25"
+                           [(ngModel)]="editCourse.name" name="cname" class="form-control" #vdname="ngModel" />
+                    <div *ngIf="vdname.invalid && (vdname.dirty || vdname.touched)" class="alert alert-danger">
+                        <div *ngIf="vdname.errors.required">Course name is required</div>
+                        <div *ngIf="vdname.errors.minlength">Course name must be more than 4 characters</div>
+                        <div *ngIf="vdname.errors.maxlength">Course name must be less than 25 characters</div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="startDate" class="control-label">Start Date</label>
-                    <input required type="datetime-local" [(ngModel)]="editCourse.startDate" name="startDate" class="form-control" />
+                    <input required type="datetime-local" [(ngModel)]="editCourse.startDate" name="startDate" class="form-control" #vdstart="ngModel"/>
+                    <div *ngIf="vdstart.invalid && (vdstart.dirty || vdstart.touched)" class="alert alert-danger">
+                        <div *ngIf="vdstart.errors.required">Course start date is required</div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="Description" class="control-label">Description</label>
-                    <!--<textarea [(ngModel)]="editCourse.description" name="description" class="form-control" cols="30" rows="5"/>-->
-                    <input [(ngModel)]="editCourse.description" name="description" class="form-control" />
+                    <input type="text" required minlength="4" maxlength="200" [(ngModel)]="editCourse.description" name="description" class="form-control" #vddesc="ngModel"/>
+                    <div *ngIf="vddesc.invalid && (vddesc.dirty || vddesc.touched)" class="alert alert-danger">
+                        <div *ngIf="vddesc.errors.required">Description is required</div>
+                        <div *ngIf="vddesc.errors.minlength">Description must be more than 4 characters</div>
+                        <div *ngIf="vddesc.errors.maxlength">Description must be less than 200 characters</div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <b>File:  </b>
