@@ -41,32 +41,19 @@ namespace LMS_1_1.Controllers
             _documentrepository = documentrepository;
             _context = context;
             _environment = environment;
-       
-      
         }
 
 
 
         // GET: api/Module1/5
-        [HttpGet("{id}")]
-        [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<Module>> GetModuleById(string id)
+        [HttpGet("{id}", Name = "GetModule")]
+        public string GetModuleById(int id)
         {
-            Guid idG = Guid.Parse(id);
-            Module module = await _context.Modules.FindAsync(idG);
-
-
-            if (module == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(module);
+            return "value";
         }
 
         // POST: api/Module1
-        [HttpPost("PostModule")]
-        [Authorize(Roles = "Teacher")]
+        [HttpPost]
         public async Task<ActionResult<Module>> PostModule([FromBody] ModuleViewModel modelVm)
         {
             if (!ModelState.IsValid)
@@ -89,79 +76,39 @@ namespace LMS_1_1.Controllers
 
         // PUT: api/Module1/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<LMSActivity>>  Put(string id, [FromBody]  ModuleViewModel modelVm)
+        public void Put(int id, [FromBody] string value)
         {
-            //if (editModel.criD==null)
-            if (id != modelVm.Id.ToString())
-            {
-                return BadRequest();
-            }
-
-            //  Guid Crid = new Guid(activtyVm.id);
-
-            Module module = new Module
-            {
-                Id = Guid.Parse(modelVm.Id),
-                Name = modelVm.Name,
-                StartDate = modelVm.StartDate,
-                EndDate = modelVm.EndDate,
-                Description = modelVm.Description,
-                CourseId= modelVm.CourseId
-            };
-
-            _context.Entry(module).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ModuleExists(module.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // DELETE: api/module1/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Teacher")]
         public async void Delete(Guid iD)
         {
-            var module = _context.Modules.Find(iD);
+            var module = _context.Modules.FindAsync(iD);
             if (module == null)
             {
                 return;
             }
 
-            _context.Modules.Remove(module);
+            _context.Remove(module);
             await _context.SaveChangesAsync();
         }
 
 
-        [HttpPost("TestIfInRange")]
+        [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<bool>> TestIfInRange([FromBody] DubbParas parmas)
+        public async Task<ActionResult<bool>> TestIfInRange(string type, string id, DateTime start, DateTime end)
         {
             bool res = false;
-            if(parmas.Dubbtype == "Module")
+            if(type=="Modules")
             {
-                 res = await _programrepository.CheckIfModuleInRange(parmas.Dubbid, parmas.Dubbstart, parmas.Dubbend);
+                 res = await _programrepository.CheckIfModuleInRange(id, start, end);
 
 
             }
-            else if(parmas.Dubbtype == "Activity")
+            else if(type=="Activity")
             {
-                res = await _programrepository.CheckIfActivityInRange(parmas.Dubbid, parmas.Dubbstart, parmas.Dubbend);
+                res = await _programrepository.CheckIfActivityInRange(id, start, end);
             }
             else
             {
@@ -171,10 +118,5 @@ namespace LMS_1_1.Controllers
             return Ok(res);
         }
 
-
-        private bool ModuleExists(Guid id)
-        {
-            return _context.Modules.Any(e => e.Id == id);
-        }
     }
 }
