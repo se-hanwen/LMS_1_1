@@ -24,12 +24,12 @@ imports: [
   RouterModule.forChild(
       [
           {
-              path: 'Activity/create'
+              path: 'Activities/create'
               ,canActivate: [IsTeacherGuard]
               , component: AddActivitiesWithModulIdComponent
           }  
        ,{
-            path: 'Activity/edit/:id'
+            path: 'Activities/edit/:id'
             ,canActivate: [IsTeacherGuard]
             ,component: EditComponent
           }

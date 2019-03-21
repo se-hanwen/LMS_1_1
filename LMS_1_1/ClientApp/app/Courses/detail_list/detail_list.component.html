@@ -24,7 +24,7 @@
                 
                 <div class="col-6 somepadding">
                         <h5 class="mb-0  btn btn-info"> 
-                        <a [routerLink]="['/Modules/', module.id]"> <i class="fa fa-1x fa-info"></i></a>
+                        <a [routerLink]="['/Modules/', module.id]" title="Detail info"> <i class="fa fa-1x fa-info"></i></a>
                     </h5>
                      </div>
                     </div>
@@ -60,14 +60,14 @@
                                 <p style="text-align:right"> <small>  <b>{{activity.startDate |date: 'yyyy-MM-dd hh:mm:ss'}} </b>  </small></p>
                             </div>
                             <div *ngIf="isTeacher">
-                                <a asp-controller="LMSActivities" asp-action="Edit" [attr.asp-route-id]="activity.id" style="margin-left:5px"  class="btn btn-info"> <i class="fa fa-1x fa-edit"></i></a>&nbsp; 
-                                <a asp-controller="LMSActivities" asp-action="Delete" [attr.asp-route-id]="activity.id"  class="btn btn-info"><i class="fa fa-1x fa-minus-square" ></i></a>
+                                <a [routerLink]="['/Activities/edit', activity.id]" [title]="'Edit activity '+activity.name" class="btn btn-info"> <i class="fa fa-1x fa-edit"></i></a>&nbsp; 
+                                <a [routerLink]="['/Activities/delete', activity.id]" [title]="'Delete activity '+activity.name"  class="btn btn-info"><i class="fa fa-1x fa-minus-square" ></i></a>
                             </div>
                         </li>
-
+                
                     </ul>
                     <div *ngIf="isTeacher">
-                        <p class="btn btn-info">  <i class="fa fa-1x fa-plus-square"></i></p>
+                        <p class="btn btn-info"> <a [routerLink]="['/Activities/create']" [title]="'Add activity '"> <i class="fa fa-1x fa-plus-square"></i></a></p>
                     </div>
                 </div>
 

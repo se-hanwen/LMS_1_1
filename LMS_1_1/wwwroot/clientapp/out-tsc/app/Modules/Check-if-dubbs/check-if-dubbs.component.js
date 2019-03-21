@@ -47,12 +47,12 @@ var CheckIfDubbsComponent = /** @class */ (function () {
     };
     CheckIfDubbsComponent.prototype.testandrun = function () {
         var _this = this;
-        if (this.paras.dubbtype != "" && this.paras.dubbid != "" && this.paras.dubbstart != null && this.paras.dubbend != null) {
+        if (this.paras.dubbtype != null && this.paras.dubbid != null && this.paras.dubbstart != null && this.paras.dubbend != null && this.paras.dubbtype != "" && this.paras.dubbid != "") {
             this.ModuleService.CheckIfDubblett(this.paras)
                 .pipe(takeUntil(this.unsubscribe))
                 .subscribe(function (status) {
                 if (status) {
-                    _this.Warning = "There exists allready " + _this.paras.dubbtype + " in the selected range";
+                    _this.Warning = "There exists already " + _this.paras.dubbtype + " in the selected range";
                 }
                 else {
                     _this.Warning = "";

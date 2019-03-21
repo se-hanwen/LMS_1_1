@@ -61,7 +61,7 @@ export class CheckIfDubbsComponent implements OnInit, OnDestroy {
 
    private testandrun()
    {  
-      if (this.paras.dubbtype != "" && this.paras.dubbid != "" && this.paras.dubbstart != null && this.paras.dubbend != null)
+      if (this.paras.dubbtype != null && this.paras.dubbid != null && this.paras.dubbstart != null && this.paras.dubbend != null && this.paras.dubbtype != "" && this.paras.dubbid != "" )
       {
         this.ModuleService.CheckIfDubblett(this.paras)
         .pipe(takeUntil(this.unsubscribe))
@@ -70,7 +70,7 @@ export class CheckIfDubbsComponent implements OnInit, OnDestroy {
            {
               if (status)
               {
-                this.Warning= "There exists allready "+this.paras.dubbtype+" in the selected range";
+                this.Warning= "There exists already "+this.paras.dubbtype+" in the selected range";
               }
               else
               {

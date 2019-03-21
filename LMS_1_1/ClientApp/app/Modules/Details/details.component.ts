@@ -36,7 +36,6 @@ export class ModulDetailsComponent implements OnInit, OnDestroy  {
       .subscribe(
           modul=> {
                   this.module = modul;
-
                   this.cd.markForCheck();
               },
               error => this.errorMessage = <any>error

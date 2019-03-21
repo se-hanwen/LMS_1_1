@@ -297,9 +297,36 @@ namespace LMS_1_1.Controllers
             return Ok(Module1);
         }
 
+        [HttpPost("Clone")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<Course>> Clone([FromForm] CloneFormModel CloneFormModel )
+        {
+                //CloneFormModel => old courseid, new start, new image may be null
+           // get course
+             /* var  course1 = await _context.Courses
+                            .Include(c => c.Modules)
+                            .ThenInclude(m => m.LMSActivities)
+                            .ThenInclude(a => a.ActivityType)
+                
+                            .FirstOrDefaultAsync(c => CloneFormModel.Id.ToString() == id);
+            */
+            // get documents
 
+
+            // update course name and date
+            // add course, Save Old and new courseid
+                // if a img add img.
+            // update modules, courseid and date
+            // add modules Save old and new modulid
+            // update activities, modulid and date
+            // add activitities save old and new activitiyid
+            // update documents, courseid, moduleid and activitiyid
+            // add documents
+            return Ok(new Course());
+        }
         // PUT: api/Courses1
         [HttpPut("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> PutCourse(string id, [FromForm] CourseViewModel editModel)
         {
             //if (editModel.criD==null)
@@ -348,6 +375,7 @@ namespace LMS_1_1.Controllers
 
         // POST: api/Courses1
         [HttpPost, DisableRequestSizeLimit]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<Course>> PostCourse([FromForm] CourseViewModel courseVm)
         {
             if (!ModelState.IsValid)
@@ -370,6 +398,7 @@ namespace LMS_1_1.Controllers
         }
         // DELETE: api/Courses1/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<Course>> DeleteCourse(Guid iD)
         {
             var course = await _context.Courses.FindAsync(iD);

@@ -54,7 +54,7 @@ var ModulesModule = /** @class */ (function () {
                         component: ModuleDeleteComponent
                     },
                     {
-                        path: 'Activity/delete/:id',
+                        path: 'Activities/delete/:id',
                         canActivate: [IsTeacherGuard],
                         component: ActivityDeleteComponent
                     }

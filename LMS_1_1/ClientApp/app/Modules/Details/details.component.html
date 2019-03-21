@@ -14,18 +14,19 @@
                 <div class="card-body">
                     <div class="row" *ngIf="isTeacher">
                         <div class="col-6">
-                             <a [routerLink]="['/Modules/edit', module.id]">Edit module</a> 
+                             <a [routerLink]="['/Modules/edit', module.id]" title="Edit this module" class="btn btn-info"><i class="fa fa-1x fa-edit"></i></a> 
                            <!-- <a asp-controller="Modules" asp-action="CreateWithCourseid" asp-route-id="@Model.Id" class="card-link">Edit module</a>-->
                         </div>
                         <div class="col-6">
-                            <!--<a [routerLink]="['/Modules/Delete', module.id]">Delete module</a> -->
-                            Delete module
+                            <a [routerLink]="['/Modules/Delete', module.id]" title="Delete this module" class="btn btn-info"><i class="fa fa-1x fa-minus-square" ></i></a>
+                
                         </div>
                         <div class="col-6">
                             <!-- <a [routerLink]="['/Activites/AddActivityWithModuleId', .id]">Activity/a> -->
-                                <a [routerLink]="['/Activity/create']">Add module</a>
+                                <a [routerLink]="['/Activites/create']" title="Add a activity" class="btn btn-info"><i class="fa fa-1x fa-plus-square"></i></a>
                         </div>
                     </div>
+                 
                     <div class="row">
                         <div class="col-6">
                             <a [routerLink]="['/courses/', module.courseId]">Go back</a>
