@@ -5,6 +5,7 @@ import { CourseService } from '../course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoginMessageHandlerService } from 'ClientApp/app/Login/login-message-handler.service';
 
 @Component({
     selector: "detail_list",
@@ -25,6 +26,7 @@ export class detailList implements OnInit, OnDestroy {
         private CourseService: CourseService
         , private AuthService : AuthService
         ,private cd: ChangeDetectorRef
+        ,private messhandler: LoginMessageHandlerService
         ) 
         { }
     
@@ -54,6 +56,7 @@ export class detailList implements OnInit, OnDestroy {
     {
          if(this.course.modules.find(m => m.id.toString()==mid).isExpanded ==" show")
         {
+
               this.course.modules.find(m => m.id.toString()==mid).isExpanded="";
               if (this.savesubs.find( t => t[0]==mid))
               {
@@ -66,6 +69,11 @@ export class detailList implements OnInit, OnDestroy {
          else
         {
            this.course.modules.find(m => m.id.toString()==mid).isExpanded=" show";
+           this.messhandler.SendModulid(mid);
+           let mod=this.course.modules.find(m => m.id.toString()==mid);
+           this.messhandler.SendModulStartDate(mod.startDate);
+           this.messhandler.SendModulEndDate(mod.endDate);
+           this.messhandler.SendModulName(mod.name);
            let temp=this.CourseService.getActivitybymodulId(mid)
            .pipe(takeUntil(this.unsubscribe))
            .subscribe(

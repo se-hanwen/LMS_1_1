@@ -19,10 +19,24 @@ var ModuleService = /** @class */ (function () {
     ModuleService.prototype.getAuthHeader = function () {
         return new HttpHeaders({ "Authorization": "Bearer " + this.token });
     };
-    ModuleService.prototype.CreateModule = function (Module) {
-        return this.http.post(this.moduleUrl, Module, {
+    ModuleService.prototype.CheckIfDubblett = function (paras) {
+        return this.http.post(this.moduleUrl + "/TestIfInRange", paras, {
             headers: this.getAuthHeader()
         }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
+    ModuleService.prototype.CreateModule = function (Module) {
+        return this.http.post(this.moduleUrl + "/PostModule", Module, {
+            headers: this.getAuthHeader()
+        }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
+    ModuleService.prototype.EditCreateModule = function (id, Module) {
+        return this.http.put(this.moduleUrl + "/" + id, Module, {
+            headers: this.getAuthHeader()
+        }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
+    ModuleService.prototype.GetModule = function (Moduleid) {
+        return this.http.get(this.moduleUrl + "/" + Moduleid, { headers: this.getAuthHeader()
+        }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     ModuleService.prototype.handleError = function (err) {
         // in a real world app, we may send the server to some remote logging infrastructure
@@ -40,10 +54,6 @@ var ModuleService = /** @class */ (function () {
         console.error(errorMessage);
         return throwError(errorMessage);
     };
-    ModuleService.prototype.ngOnDestroy = function () {
-        this.unsubscribe.next();
-        this.unsubscribe.complete();
-    };
     //Delete a module by a given guid.
     ModuleService.prototype.DeleteModule = function (id) {
         var urlString = this.moduleUrl + "/" + id;
@@ -51,6 +61,10 @@ var ModuleService = /** @class */ (function () {
             headers: this.getAuthHeader()
         })
             .pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
+    ModuleService.prototype.ngOnDestroy = function () {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     };
     ModuleService = tslib_1.__decorate([
         Injectable({

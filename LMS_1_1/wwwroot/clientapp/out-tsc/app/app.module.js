@@ -15,6 +15,7 @@ import { LoginModule } from './Login/login.module';
 import { ModulesModule } from './Modules/modules.module';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { CourseListComponent } from './Courses/course-list/course-list.component';
+import { ActivitiesModule } from './Activities/activities.module';
 //import { LoginpartialComponent } from './Login/LoginPartial/loginpartial.component';
 export function tokenGetter() {
     return localStorage.getItem('id_token');
@@ -55,6 +56,7 @@ var AppModule = /** @class */ (function () {
                 NavbarModule,
                 LoginModule,
                 ModulesModule,
+                ActivitiesModule,
                 AngularFontAwesomeModule
             ],
             providers: [],

@@ -6,49 +6,174 @@ using LMS_1_1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using LMS_1_1.Data;
+using LMS_1_1.Models;
+using LMS_1_1.ViewModels;
+using LMS_1_1.Repository;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LMS_1_1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Activity1Controller : ControllerBase
     {
         private UserManager<LMSUser> _userManager;
-        public Activity1Controller(UserManager<LMSUser> userManager)
+
+        private IProgramRepository _programrepository;
+        private IDocumentRepository _documentrepository;
+        private ApplicationDbContext _context;
+        private IHostingEnvironment _environment;
+
+        public Activity1Controller(IProgramRepository programrepository
+            , IDocumentRepository documentrepository
+            , ILogger<CoursesController> logger
+            , ApplicationDbContext context
+            , IHostingEnvironment environment
+            , UserManager<LMSUser> userManager)
         {
             _userManager = userManager;
-        }
+            _programrepository = programrepository;
+            _documentrepository = documentrepository;
+            _context = context;
+            _environment = environment;
 
-        // GET: api/Activity1
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
+
         }
 
         // GET: api/Activity1/5
-        [HttpGet("{id}", Name = "GetAct")]
-        public string GetActivityById(int id)
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<LMSActivity>> GetActivityById(string id)
         {
-            return "value";
+            Guid idG = Guid.Parse(id);
+            LMSActivity Activity = await _context.LMSActivity.FindAsync(idG);
+
+
+            if (Activity == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Activity);
         }
 
-        // POST: api/Activity1
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("ActivityTypes")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<ICollection<ActivityType>>> GetActivityTypes()
         {
+          return await  _context.ActivityTypes.ToListAsync();
+        }
+
+
+        // POST: api/Activity1
+        // POST: api/Module1
+        [HttpPost("PostActivity")]
+        [Authorize(Roles = "Teacher")]
+        //public async Task<ActionResult<LMSActivity>> PostActivity([FromBody] dynamic activtyVm)
+        public async Task<ActionResult<LMSActivity>> PostActivity([FromBody] ActivityFormModel activtyVm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            LMSActivity activity = new LMSActivity
+            {
+                Name = activtyVm.Name,
+                StartDate = activtyVm.StartDate,
+                EndDate = activtyVm.EndDate,
+                Description = activtyVm.Description,
+                ModuleId = Guid.Parse(activtyVm.moduleid),
+                ActivityTypeId= activtyVm.ActivityTypeId
+            };
+
+            _context.Add(activity);
+            await _context.SaveChangesAsync();
+            return Created("", activity);
         }
 
         // PUT: api/Activity1/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<LMSActivity>> Put(string id, [FromBody] ActivityFormModel activtyVm)
         {
+            //if (editModel.criD==null)
+            if (id != activtyVm.Id.ToString())
+            {
+                return BadRequest();
+            }
+
+          //  Guid Crid = new Guid(activtyVm.id);
+
+            LMSActivity Activity = new LMSActivity
+            {
+                Id = activtyVm.Id.Value,
+                Name = activtyVm.Name,
+                StartDate = activtyVm.StartDate,
+                EndDate = activtyVm.EndDate,
+                Description = activtyVm.Description,
+                ActivityTypeId= activtyVm.ActivityTypeId,
+                ModuleId=Guid.Parse(activtyVm.moduleid)
+            };
+
+            _context.Entry(Activity).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ActivityExists(activtyVm.Id.Value))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+   
+            return NoContent();
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Activity1/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [Authorize(Roles = "Teacher")]
+        public async Task Delete(int id)
         {
+            var activity = _context.LMSActivity.FindAsync(id);
+            if (activity == null)
+            {
+                return;
+            }
+
+            _context.Remove(activity);
+            await _context.SaveChangesAsync();
+
+        }
+
+        private bool ActivityExists(Guid id)
+        {
+            return _context.LMSActivity.Any(e => e.Id == id);
+        public async void Delete(Guid iD)
+        {
+            var actv = _context.LMSActivity.Find(iD);
+            if (actv == null)
+            {
+                return;
+            }
+
+            _context.LMSActivity.Remove(actv);
+            await _context.SaveChangesAsync();
+
         }
     }
 }

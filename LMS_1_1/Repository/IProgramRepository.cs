@@ -34,6 +34,8 @@ namespace LMS_1_1.Repository
         Task<bool> IsTeacher(string token);
 
 
+        Task<bool> CheckIfModuleInRange(string courseid, DateTime start, DateTime end);
+        Task<bool> CheckIfActivityInRange(string modulid, DateTime start, DateTime end);
         Task<bool> SaveAllAsync ();
         Task AddEntityAsync (object model);
         void UpdateEntity (object model);

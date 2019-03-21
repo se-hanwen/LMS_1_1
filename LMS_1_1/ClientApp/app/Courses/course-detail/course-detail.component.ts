@@ -40,12 +40,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy  {
           });*/
         let id: string = this.route.snapshot.paramMap.get('id');
         this.messhandler.SendCourseid(id);
+        
         this.CourseService.getCourseAndModulebyId(id)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe(
                 (course : ICourse) => {
                     this.course = course;
                     this.messhandler.SendCourseStartDate(course.startDate);
+                    this.messhandler.SendCourseName(course.name);
                     this.cd.markForCheck();
                 },
                 error => this.errorMessage = <any>error

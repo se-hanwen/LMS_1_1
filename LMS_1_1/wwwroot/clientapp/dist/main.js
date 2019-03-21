@@ -664,7 +664,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"course\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <img class=\"card-img-top\" [src]=\"course.courseImgPath==null?'':course.courseImgPath\" alt=\"Card image cap\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{course.name}}</h3>\r\n                    <h5 class=\"card-title\">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{course.description}}</p>\r\n\r\n\r\n                    <a href=\"javascript:void(0);\" (click)=\"toggelPartipantList()\">{{showpartipantlistmsg}}  partipantlist</a>\r\n                    <app-partipant-list [courseid]='course.id'></app-partipant-list>\r\n\r\n                    <div class=\"card-body\" *ngIf=\"isTeacher\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-6\">\r\n                                <!-- <a [routerLink]=\"['/Modules/AddModuleWithCourseId', course.id]\">Add Module</a> -->\r\n                                <a asp-controller=\"Modules\" asp-action=\"CreateWithCourseid\" asp-route-id=\"@Model.Id\" class=\"card-link\">Add Module</a>\r\n                            </div>\r\n                            <div class=\"col-6\">\r\n                                <a [routerLink]=\"['/AddPartipant', course.id]\">Add Participant</a>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n\r\n              \r\n            </div>\r\n            </div>\r\n\r\n            <div class=\"col-md-4\">\r\n                <detail_list [courseid]=\"course.id\"></detail_list>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n                <div>\r\n                    <upload-detail [DocOwnerId]=\"course.id\"></upload-detail>\r\n                </div>\r\n                <doc-upload [DocOwnerId]=\"course.id\" [DocOwnerTypeId]=\"1\" [DocumentTypeId]=\"1\"></doc-upload>\r\n\r\n\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n\r\n"
+module.exports = "<div *ngIf=\"course\">\r\n    <div class=\"row\">\r\n\r\n        <div class=\"col-md-4\">\r\n            <div class=\"card\" style=\"width: 19rem;\">\r\n                <img class=\"card-img-top\" [src]=\"course.courseImgPath==null?'':course.courseImgPath\" alt=\"Card image cap\">\r\n                <div class=\"card-body\">\r\n                    <h3 class=\"card-title\">{{course.name}}</h3>\r\n                    <h5 class=\"card-title\">{{course.startDate |date: 'yyyy-MM-dd'}}</h5>\r\n                    <p class=\"card-text\"> {{course.description}}</p>\r\n\r\n\r\n                    <a href=\"javascript:void(0);\" (click)=\"toggelPartipantList()\">{{showpartipantlistmsg}}  partipantlist</a>\r\n                    <app-partipant-list [courseid]='course.id'></app-partipant-list>\r\n\r\n                    <div class=\"card-body\" *ngIf=\"isTeacher\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-6\">\r\n                                <a [routerLink]=\"['/Modules/create']\">Add Module</a>\r\n                            </div>\r\n                            <div class=\"col-6\">\r\n                                <a [routerLink]=\"['/AddPartipant', course.id]\">Add Participant</a>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n\r\n                </div>\r\n\r\n\r\n              \r\n            </div>\r\n            </div>\r\n\r\n            <div class=\"col-md-4\">\r\n                <detail_list [courseid]=\"course.id\"></detail_list>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n                <div>\r\n                    <upload-detail [DocOwnerId]=\"course.id\"></upload-detail>\r\n                </div>\r\n                <doc-upload [DocOwnerId]=\"course.id\" [DocOwnerTypeId]=\"1\" [DocumentTypeId]=\"1\"></doc-upload>\r\n\r\n\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n\r\n"
 
 /***/ }),
 
@@ -720,6 +720,7 @@ var CourseDetailComponent = /** @class */ (function () {
             this.cd.markForCheck();
           });*/
         var id = this.route.snapshot.paramMap.get('id');
+        this.messhandler.SendCourseid(id);
         this.CourseService.getCourseAndModulebyId(id)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
             .subscribe(function (course) {
@@ -2409,19 +2410,24 @@ var ManageComponent = /** @class */ (function () {
     ManageComponent.prototype.onRegister = function (theForm) {
         var _this = this;
         this.errorMessage = "";
-        if (this.user.oldpassword == null)
-            this.user.oldpassword = "";
-        this.db.UpdateUser(this.user)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
-            .subscribe(function (status) {
-            if (status) {
-                _this.errorMessage = "Update succeded";
-            }
-            else {
-                _this.errorMessage = "Update failed";
-            }
-            _this.cd.markForCheck();
-        });
+        if (this.user.password != this.user.confirmpassword) {
+            this.errorMessage = "Passwords doesn't match";
+        }
+        else {
+            if (this.user.oldpassword == null)
+                this.user.oldpassword = "";
+            this.db.UpdateUser(this.user)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+                .subscribe(function (status) {
+                if (status) {
+                    _this.errorMessage = "Update succeded";
+                }
+                else {
+                    _this.errorMessage = "Update failed";
+                }
+                _this.cd.markForCheck();
+            });
+        }
     };
     ManageComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
@@ -2558,7 +2564,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-4 offset-md-2\">\r\n        <h4 *ngIf=\"!saveduser\">Create a new account.</h4>\r\n        <h4 *ngIf=\"saveduser\">Created a new account.</h4>\r\n      <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n      <form (submit)=\"onRegister(theForm)\" #theForm=\"ngForm\" novalidate>\r\n          <div class=\"form-group\">\r\n              <label for=\"user.email\">Email</label>\r\n              <input type=\"text\" class=\"form-control\" name=\"email\" [(ngModel)]=\"user.email\" #email=\"ngModel\" required />\r\n              <div class=\"text-danger\" *ngIf=\"user.email.touched && user.email.invalid && user.email.errors.required\" >Email is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n                <label for=\"user.firstName\">First Name</label>\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" [(ngModel)]=\"user.firstName\" #firstName=\"ngModel\" required />\r\n                <div class=\"text-danger\" *ngIf=\"user.firstName.touched && user.firstName.invalid && user.firstName.errors.required\" >First Name is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n                  <label for=\"user.lastName\">Last Name</label>\r\n                  <input type=\"text\" class=\"form-control\" name=\"lastName\" [(ngModel)]=\"user.lastName\" #lastName=\"ngModel\" required />\r\n                  <div class=\"text-danger\" *ngIf=\"user.lastName.touched && user.lastName.invalid && user.lastName.errors.required\" >Last Name is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n              <label for=\"user.password\">Password</label>\r\n              <input type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"user.password\" required #password=\"ngModel\" />\r\n              <div class=\"text-danger\" *ngIf=\"user.password.touched && user.password.invalid && user.password.errors.required\">Password is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n              <label for=\"user.confirmpassword\">Confirm Password</label>\r\n              <input type=\"password\" class=\"form-control\" name=\"confirmpassword\" [(ngModel)]=\"user.confirmpassword\" required #confirmpassword=\"ngModel\" />\r\n              <div class=\"text-danger\" *ngIf=\"user.confirmpassword.touched && user.confirmpassword.invalid && user.confirmpassword.errors.required\">Confirm Password is required!</div>\r\n              <div class=\"text-danger\" *ngIf=\"user.confirmpassword.touched && user.password.touched && user.confirmpassword!=user.password\">The password and the confirm password needs to be alike</div>\r\n          </div>\r\n          <div class=\"form-group\">  \r\n              <label for=\"user.role\">Role</label>\r\n              <select class=\"form-control\" id=\"role\" [(ngModel)]=\"user.role\" name=\"role\" required #role=\"ngModel\" (change)=\"OnToggleRole()\">\r\n                  <option value=\"Student\" selected>Student</option>\r\n                  <option value=\"Teacher\">Teacher</option>\r\n              </select>\r\n          </div>\r\n          <div class=\"form-group\">\r\n              <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid || saveduser\" />\r\n              <a [routerLink]=\"['/courses']\" class=\"btn btn-default\" *ngIf=\"!saveduser\">Cancel</a>\r\n          </div>    \r\n        </form>\r\n         <div *ngIf=\"returnmessage\">{{returnmessage}}</div>\r\n  </div>\r\n  <div class=\"offset-md-1 col-md-4\">\r\n      <add_student_to_course></add_student_to_course>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-4 offset-md-2\">\r\n        <h4 *ngIf=\"!saveduser\">Create a new account.</h4>\r\n        <h4 *ngIf=\"saveduser\">Created a new account.</h4>\r\n      <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n      <form (submit)=\"onRegister(theForm)\" #theForm=\"ngForm\" novalidate>\r\n          <div class=\"form-group\">\r\n              <label for=\"user.email\">Email</label>\r\n              <input type=\"text\" class=\"form-control\" name=\"email\" [(ngModel)]=\"user.email\" #email=\"ngModel\" required />\r\n              <div class=\"text-danger\" *ngIf=\"email.touched && email.invalid && email.errors.required\" >Email is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n                <label for=\"user.firstName\">First Name</label>\r\n                <input type=\"text\" class=\"form-control\" name=\"firstName\" [(ngModel)]=\"user.firstName\" #firstName=\"ngModel\" required />\r\n                <div class=\"text-danger\" *ngIf=\"firstName.touched && firstName.invalid && firstName.errors.required\" >First Name is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n                  <label for=\"user.lastName\">Last Name</label>\r\n                  <input type=\"text\" class=\"form-control\" name=\"lastName\" [(ngModel)]=\"user.lastName\" #lastName=\"ngModel\" required />\r\n                  <div class=\"text-danger\" *ngIf=\"lastName.touched && lastName.invalid && lastName.errors.required\" >Last Name is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n              <label for=\"user.password\">Password</label>\r\n              <input type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"user.password\" required #password=\"ngModel\"  />\r\n              <div class=\"text-danger\" *ngIf=\"password.touched && password.invalid && password.errors.required\">Password is required!</div>\r\n          </div>\r\n          <div class=\"form-group\">\r\n              <label for=\"user.confirmpassword\">Confirm Password</label>\r\n              <input type=\"password\" class=\"form-control\" name=\"confirmpassword\" [(ngModel)]=\"user.confirmpassword\" required  #confirmpassword=\"ngModel\" />\r\n              <div class=\"text-danger\" *ngIf=\"confirmpassword.touched && confirmpassword.invalid && confirmpassword.errors.required\">Confirm Password is required and need to be the same as password</div>\r\n             <!-- <div class=\"text-danger\" *ngIf=\"confirmpassword.touched && password.touched && (confirmpassword===password)\">The password and the confirm password needs to be alike</div>-->\r\n          </div>\r\n          <div class=\"form-group\">  \r\n              <label for=\"user.role\">Role</label>\r\n              <select class=\"form-control\" id=\"role\" [(ngModel)]=\"user.role\" name=\"role\" required #role=\"ngModel\" (change)=\"OnToggleRole()\">\r\n                  <option value=\"Student\" selected>Student</option>\r\n                  <option value=\"Teacher\">Teacher</option>\r\n              </select>\r\n          </div>\r\n          <div class=\"form-group\">\r\n              <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid || saveduser\" />\r\n              <a [routerLink]=\"['/courses']\" class=\"btn btn-default\" *ngIf=\"!saveduser\">Cancel</a>\r\n          </div>    \r\n        </form>\r\n         <div *ngIf=\"returnmessage\">{{returnmessage}}</div>\r\n  </div>\r\n  <div class=\"offset-md-1 col-md-4\">\r\n      <add_student_to_course></add_student_to_course>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -2634,24 +2640,29 @@ var RegisterComponent = /** @class */ (function () {
     RegisterComponent.prototype.onRegister = function (TheForm) {
         var _this = this;
         this.errorMessage = "";
-        this.db.register(this.user)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
-            .subscribe(function (success) {
-            _this.saveduser = true;
-            TheForm.form.disable();
-            _this.cd.markForCheck();
-            var msg = "Created " + _this.user.firstName + " " + _this.user.lastName + " with the role " + _this.user.role;
-            if (_this.user.role == "Student") {
-                // om student medella add
-                _this.messhandler.SendUserId(success.value.name);
-                _this.returnmessage = msg;
-            }
-            else {
-                _this.messhandler.SendConfirm(msg);
-                _this.router.navigate(['/Account/ConfirmRegistedUser']);
-            }
-            return true;
-        }, function (err) { return _this.errorMessage = err; });
+        if (this.user.password != this.user.confirmpassword) {
+            this.errorMessage = "Passwords doesn't match";
+        }
+        else {
+            this.db.register(this.user)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(this.unsubscribe))
+                .subscribe(function (success) {
+                _this.saveduser = true;
+                TheForm.form.disable();
+                _this.cd.markForCheck();
+                var msg = "Created " + _this.user.firstName + " " + _this.user.lastName + " with the role " + _this.user.role;
+                if (_this.user.role == "Student") {
+                    // om student medella add
+                    _this.messhandler.SendUserId(success.value.name);
+                    _this.returnmessage = msg;
+                }
+                else {
+                    _this.messhandler.SendConfirm(msg);
+                    _this.router.navigate(['/Account/ConfirmRegistedUser']);
+                }
+                return true;
+            }, function (err) { return _this.errorMessage = err; });
+        }
     };
     RegisterComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
@@ -2748,6 +2759,8 @@ var LoginMessageHandlerService = /** @class */ (function () {
         this.ConfirmGoBackUrl = this.ConfirmGoBackUrlSource.asObservable();
         this.CourseStartDateSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
         this.CourseStartDate = this.CourseStartDateSource.asObservable();
+        this.CourseidSource = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
+        this.Courseid = this.CourseidSource.asObservable();
     }
     LoginMessageHandlerService.prototype.SendUserId = function (userid) {
         this.useridSource.next(userid == null ? '' : userid);
@@ -2775,6 +2788,10 @@ var LoginMessageHandlerService = /** @class */ (function () {
     };
     LoginMessageHandlerService.prototype.SendCourseStartDate = function (arg) {
         this.CourseStartDateSource.next(arg);
+        return true;
+    };
+    LoginMessageHandlerService.prototype.SendCourseid = function (arg) {
+        this.CourseidSource.next(arg);
         return true;
     };
     LoginMessageHandlerService.prototype.SendCurrUserAuth = function (status) {
@@ -3078,7 +3095,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Create</h1>\t\r\n\r\n <h4>Module on {{courseID}}</h4>\t\r\n<hr />\t\r\n<div class=\"row\">\t\r\n    <div class=\"col-md-4\">\t\r\n            <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n         <form #theForm=\"ngForm\"  (ngSubmit)=\"Create(theForm)\"  novalidate>\t\r\n\r\n             <input type=\"hidden\" [(ngModel)]=\"Module.CourseId\" name=\"CourseId\" />\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"name\" class=\"control-label\">Name</label>\t\r\n                <input  [(ngModel)]=\"Module.name\" name=\"name\" id=\"name\" class=\"form-control\"   required #name=\"ngModel\"/>\r\n             </div>\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"startDate\" class=\"control-label\">StartDate</label>\t\r\n                <input  type =\"date\" [(ngModel)]=\"Module.startDate\" name=\"startDate\"  [min]=\"coursestartdate\"\t\r\n                   id=\"startDate\" class=\"form-control\"   required #startdate=\"ngModel\"/>\t\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate.invalid\">Formaterror on startdate  </div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate < coursestartdate\">May not start before the course</div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && endDate && endDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n             <input type=\"password\" class=\"form-control\" name=\"confirmpassword\" [(ngModel)]=\"user.confirmpassword\" required #confirmpassword=\"ngModel\" />\r\n             <div class=\"text-danger\" *ngIf=\"user.confirmpassword.touched && user.confirmpassword.invalid && user.confirmpassword.errors.required\">Confirm Password is required!</div>\r\n\r\n            <div class=\"form-group\">\t\r\n                <label for=\"endDate\" class=\"control-label\">StartDate</label>\t\r\n                <input  type =\"date\"  [(ngModel)]=\"Module.endDate\" name=\"endDate\"  [min]=\"coursestartdate\"\t\r\n                  id=\"endDate\" class=\"form-control\"  required #enddate=\"ngModel\"/>\t\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate.invalid\">Formaterror on startdate  </div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate < coursestartdate\">May not start before the course</div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && startDate && startDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"description\" class=\"control-label\">Description</label>\t\r\n                <input  [(ngModel)]=\"Module.description\" name=\"description\" id=\"description\" class=\"form-control\"   required #description=\"ngModel\"/>\t\r\n\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                    <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid\" />\r\n                    <a [routerLink]=\"['/courses', Module.CourseId]\" class=\"btn btn-default\" >Go back</a>\r\n            </div>\t\r\n        </form>\t\r\n\r\n\r\n     </div>\t\r\n</div> "
+module.exports = "<h1>Create</h1>\t\r\n\r\n <h4>Module on {{courseID}}</h4>\t\r\n<hr />\t\r\n<div class=\"row\">\t\r\n    <div class=\"col-md-4\">\t\r\n            <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n         <form #theForm=\"ngForm\"  (ngSubmit)=\"Create(theForm)\"  novalidate>\t\r\n\r\n             <input type=\"hidden\" [(ngModel)]=\"Module.courseid\" name=\"CourseId\" />\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"name\" class=\"control-label\">Name</label>\t\r\n                <input  [(ngModel)]=\"Module.name\" name=\"name\" id=\"name\" class=\"form-control\"   required #name=\"ngModel\"/>\r\n             </div>\t\r\n\r\n             <div class=\"form-group\">\t\r\n                <label for=\"startDate\" class=\"control-label\">Start Date</label>\t\r\n                <input  type =\"datetime-local\" [(ngModel)]=\"Module.startDate\" name=\"startDate\"  [min]=\"coursestartdate\"\t\r\n                   id=\"startDate\" class=\"form-control\"   required #startdate=\"ngModel\" (change)=\"gotDate()\"/>\t\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate.invalid && startDate.errors.require\">Formaterror on startdate  </div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && startDate < coursestartdate\">May not start before the course</div>\r\n                <div class=\"text-danger\" *ngIf=\"startDate && startDate.touched && endDate && endDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"endDate\" class=\"control-label\">End Date</label>\t\r\n                <input  type =\"datetime-local\"  [(ngModel)]=\"Module.endDate\" name=\"endDate\"  [min]=\"coursestartdate\"\t\r\n                  id=\"endDate\" class=\"form-control\"  required #enddate=\"ngModel\" (change)=\"gotDate()\"/>\t\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate.invalid\">Formaterror on startdate  </div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && endDate < coursestartdate\">May not start before the course</div>\r\n                  <div class=\"text-danger\" *ngIf=\"endDate && endDate.touched && startDate && startDate.touched && startdate>endDate\">May not start before the end</div>\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                <label for=\"description\" class=\"control-label\">Description</label>\t\r\n                <textarea [(ngModel)]=\"Module.description\" name=\"description\" class=\"form-control\" cols=\"30\" rows=\"5\" required></textarea>\r\n            \r\n\r\n             </div>\t\r\n            <div class=\"form-group\">\t\r\n                    <input type=\"submit\" class=\"btn btn-success\" value=\"Register\" [disabled]=\"theForm.invalid\" />\r\n                    <a [routerLink]=\"['/courses', Module.CourseId]\" class=\"btn btn-default\" >Go back</a>\r\n            </div>\t\r\n        </form>\t\r\n\r\n\r\n     </div>\t\r\n\r\n     <div class=\"col-md-4\">\t\r\n            <check-if-dubbs></check-if-dubbs>\r\n        </div> \r\n</div> "
 
 /***/ }),
 
@@ -3094,13 +3111,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddModuleWithCourseIdComponent", function() { return AddModuleWithCourseIdComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
-/* harmony import */ var ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ClientApp/app/Login/login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
-/* harmony import */ var ClientApp_app_Courses_course_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ClientApp/app/Courses/course.service */ "./app/Courses/course.service.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _module_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../module.service */ "./app/Modules/module.service.ts");
+/* harmony import */ var _courses_course__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../courses/course */ "./app/courses/course.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "../node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ClientApp/app/auth/auth.service */ "./app/auth/auth.service.ts");
+/* harmony import */ var ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ClientApp/app/Login/login-message-handler.service */ "./app/Login/login-message-handler.service.ts");
+/* harmony import */ var ClientApp_app_Courses_course_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ClientApp/app/Courses/course.service */ "./app/Courses/course.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _module_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../module.service */ "./app/Modules/module.service.ts");
+
 
 
 
@@ -3119,15 +3138,23 @@ var AddModuleWithCourseIdComponent = /** @class */ (function () {
         this.CourseService = CourseService;
         this.ModuleService = ModuleService;
         this.router = router;
-        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+        this.unsubscribe = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
+        // get course set up coursestatdate
+        this.Module = new _courses_course__WEBPACK_IMPORTED_MODULE_2__["Module"]();
         this.CourseId = "";
         this.errorMessage = "";
     }
     AddModuleWithCourseIdComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.CourseId = this.route.snapshot.paramMap.get('id');
+        this.messhandler.Courseid
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+            .subscribe(function (status) {
+            // let tmpguid= Guid.parse(status); 
+            _this.Module.courseid = status;
+            _this.cd.markForCheck();
+        });
         this.messhandler.CourseStartDate
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
             .subscribe(function (status) {
             _this.coursestartdate = status;
             _this.cd.markForCheck();
@@ -3136,14 +3163,25 @@ var AddModuleWithCourseIdComponent = /** @class */ (function () {
     AddModuleWithCourseIdComponent.prototype.Create = function (theForm) {
         var _this = this;
         this.errorMessage = "";
-        this.ModuleService.CreateModule(this.Module)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["takeUntil"])(this.unsubscribe))
-            .subscribe(function (status) {
-            if (status) {
-                _this.errorMessage = "Module " + _this.Module.name + " saved";
-            }
-            _this.cd.markForCheck();
-        }, function (err) { return _this.errorMessage = err; });
+        if (this.Module.startDate.valueOf() < this.coursestartdate.valueOf()) {
+            this.errorMessage = this.errorMessage + "Start date on module may not be before course start date (" + this.coursestartdate + ")";
+        }
+        if (this.Module.endDate.valueOf() < this.coursestartdate.valueOf()) {
+            this.errorMessage = this.errorMessage + "End date on module may not be before course start date (" + this.coursestartdate + ")";
+        }
+        if (this.Module.endDate.valueOf() < this.Module.startDate.valueOf()) {
+            this.errorMessage = this.errorMessage + " A module must end after it's start";
+        }
+        if (this.errorMessage == "") {
+            this.ModuleService.CreateModule(this.Module)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["takeUntil"])(this.unsubscribe))
+                .subscribe(function (status) {
+                if (status) {
+                    _this.errorMessage = "Module " + _this.Module.name + " saved";
+                }
+                _this.cd.markForCheck();
+            }, function (err) { return _this.errorMessage = err; });
+        }
     };
     AddModuleWithCourseIdComponent.prototype.ngOnDestroy = function () {
         this.unsubscribe.next();
@@ -3155,13 +3193,13 @@ var AddModuleWithCourseIdComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./add-module-with-course-id.component.html */ "./app/Modules/Create/add-module-with-course-id.component.html"),
             styles: [__webpack_require__(/*! ./add-module-with-course-id.component.css */ "./app/Modules/Create/add-module-with-course-id.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
-            ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"],
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"],
+            ClientApp_app_auth_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"],
             _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"],
-            ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_5__["LoginMessageHandlerService"],
-            ClientApp_app_Courses_course_service__WEBPACK_IMPORTED_MODULE_6__["CourseService"],
-            _module_service__WEBPACK_IMPORTED_MODULE_8__["ModuleService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
+            ClientApp_app_Login_login_message_handler_service__WEBPACK_IMPORTED_MODULE_6__["LoginMessageHandlerService"],
+            ClientApp_app_Courses_course_service__WEBPACK_IMPORTED_MODULE_7__["CourseService"],
+            _module_service__WEBPACK_IMPORTED_MODULE_9__["ModuleService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], AddModuleWithCourseIdComponent);
     return AddModuleWithCourseIdComponent;
 }());
@@ -3253,6 +3291,62 @@ var ModulDetailsComponent = /** @class */ (function () {
             _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"]])
     ], ModulDetailsComponent);
     return ModulDetailsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./app/Modules/check-if-dubbs.component.css":
+/*!**************************************************!*\
+  !*** ./app/Modules/check-if-dubbs.component.css ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJDbGllbnRBcHAvYXBwL01vZHVsZXMvY2hlY2staWYtZHViYnMuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./app/Modules/check-if-dubbs.component.html":
+/*!***************************************************!*\
+  !*** ./app/Modules/check-if-dubbs.component.html ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\r\n    <div *ngIf=\"Warning\" class=\"alert-warning\">{{ Warning }}</div>\r\n</p>\r\n"
+
+/***/ }),
+
+/***/ "./app/Modules/check-if-dubbs.component.ts":
+/*!*************************************************!*\
+  !*** ./app/Modules/check-if-dubbs.component.ts ***!
+  \*************************************************/
+/*! exports provided: CheckIfDubbsComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CheckIfDubbsComponent", function() { return CheckIfDubbsComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+
+
+var CheckIfDubbsComponent = /** @class */ (function () {
+    function CheckIfDubbsComponent() {
+    }
+    CheckIfDubbsComponent.prototype.ngOnInit = function () {
+    };
+    CheckIfDubbsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'check-if-dubbs',
+            template: __webpack_require__(/*! ./check-if-dubbs.component.html */ "./app/Modules/check-if-dubbs.component.html"),
+            styles: [__webpack_require__(/*! ./check-if-dubbs.component.css */ "./app/Modules/check-if-dubbs.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], CheckIfDubbsComponent);
+    return CheckIfDubbsComponent;
 }());
 
 
@@ -3456,6 +3550,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _documents_documents_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../documents/documents.module */ "./app/documents/documents.module.ts");
 /* harmony import */ var _module_delete_module_delete_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./module-delete/module-delete.component */ "./app/Modules/module-delete/module-delete.component.ts");
 /* harmony import */ var _Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../Shared/is-teacher.guard */ "./app/Shared/is-teacher.guard.ts");
+/* harmony import */ var _Modules_check_if_dubbs_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../Modules/check-if-dubbs.component */ "./app/Modules/check-if-dubbs.component.ts");
+
 
 
 
@@ -3478,6 +3574,7 @@ var ModulesModule = /** @class */ (function () {
                 _Activity_list_actitity_list_component__WEBPACK_IMPORTED_MODULE_6__["ActitityListComponent"],
                 _Details_details_component__WEBPACK_IMPORTED_MODULE_8__["ModulDetailsComponent"],
                 _module_delete_module_delete_component__WEBPACK_IMPORTED_MODULE_10__["ModuleDeleteComponent"],
+                _Modules_check_if_dubbs_component__WEBPACK_IMPORTED_MODULE_12__["CheckIfDubbsComponent"]
             ],
             imports: [
                 _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
@@ -3486,7 +3583,9 @@ var ModulesModule = /** @class */ (function () {
                 _documents_documents_module__WEBPACK_IMPORTED_MODULE_9__["DocumentsModule"],
                 _angular_router__WEBPACK_IMPORTED_MODULE_5__["RouterModule"].forChild([
                     {
-                        path: 'Modules/create', component: _Create_add_module_with_course_id_component__WEBPACK_IMPORTED_MODULE_3__["AddModuleWithCourseIdComponent"]
+                        path: 'Modules/create',
+                        canActivate: [_Shared_is_teacher_guard__WEBPACK_IMPORTED_MODULE_11__["IsTeacherGuard"]],
+                        component: _Create_add_module_with_course_id_component__WEBPACK_IMPORTED_MODULE_3__["AddModuleWithCourseIdComponent"]
                     },
                     {
                         path: 'Modules/:id',
@@ -4305,6 +4404,37 @@ var tokenData = /** @class */ (function () {
     return tokenData;
 }());
 
+
+
+/***/ }),
+
+/***/ "./app/courses/course.ts":
+/*!*******************************!*\
+  !*** ./app/courses/course.ts ***!
+  \*******************************/
+/*! exports provided: course, Module */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "course", function() { return course; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Module", function() { return Module; });
+var course = /** @class */ (function () {
+    function course() {
+    }
+    return course;
+}());
+
+var Module = /** @class */ (function () {
+    function Module() {
+        this.name = "";
+        this.description = "";
+    }
+    return Module;
+}());
+
+//it is also possible to define course class that implement the Icourse interface
+//when needed
 
 
 /***/ }),

@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using LMS_1_1.Data;
 using LMS_1_1.Models;
-using LMS_1_1.Repository;
 using LMS_1_1.ViewModels;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+using LMS_1_1.Repository;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LMS_1_1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Module1Controller : ControllerBase
     {
         private UserManager<LMSUser> _userManager;
@@ -37,24 +41,32 @@ namespace LMS_1_1.Controllers
             _documentrepository = documentrepository;
             _context = context;
             _environment = environment;
+       
+      
         }
 
-        // GET: api/Module1
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+
 
         // GET: api/Module1/5
-        [HttpGet("{id}", Name = "GetModule")]
-        public string GetModuleById(int id)
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<Module>> GetModuleById(string id)
         {
-            return "value";
+            Guid idG = Guid.Parse(id);
+            Module module = await _context.Modules.FindAsync(idG);
+
+
+            if (module == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(module);
         }
 
         // POST: api/Module1
-        [HttpPost]
+        [HttpPost("PostModule")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<Module>> PostModule([FromBody] ModuleViewModel modelVm)
         {
             if (!ModelState.IsValid)
@@ -77,22 +89,92 @@ namespace LMS_1_1.Controllers
 
         // PUT: api/Module1/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<LMSActivity>>  Put(string id, [FromBody]  ModuleViewModel modelVm)
         {
+            //if (editModel.criD==null)
+            if (id != modelVm.Id.ToString())
+            {
+                return BadRequest();
+            }
+
+            //  Guid Crid = new Guid(activtyVm.id);
+
+            Module module = new Module
+            {
+                Id = Guid.Parse(modelVm.Id),
+                Name = modelVm.Name,
+                StartDate = modelVm.StartDate,
+                EndDate = modelVm.EndDate,
+                Description = modelVm.Description,
+                CourseId= modelVm.CourseId
+            };
+
+            _context.Entry(module).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ModuleExists(module.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
         // DELETE: api/module1/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async void Delete(Guid iD)
         {
-            var module = _context.Modules.FindAsync(iD);
+            var module = _context.Modules.Find(iD);
             if (module == null)
             {
                 return;
             }
 
-            _context.Remove(module);
+            _context.Modules.Remove(module);
             await _context.SaveChangesAsync();
+        }
+
+
+        [HttpPost("TestIfInRange")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<bool>> TestIfInRange([FromBody] DubbParas parmas)
+        {
+            bool res = false;
+            if(parmas.Dubbtype == "Module")
+            {
+                 res = await _programrepository.CheckIfModuleInRange(parmas.Dubbid, parmas.Dubbstart, parmas.Dubbend);
+
+
+            }
+            else if(parmas.Dubbtype == "Activity")
+            {
+                res = await _programrepository.CheckIfActivityInRange(parmas.Dubbid, parmas.Dubbstart, parmas.Dubbend);
+            }
+            else
+            {
+                return StatusCode(500, "invalid type")
+;
+            }
+            return Ok(res);
+        }
+
+
+        private bool ModuleExists(Guid id)
+        {
+            return _context.Modules.Any(e => e.Id == id);
         }
     }
 }

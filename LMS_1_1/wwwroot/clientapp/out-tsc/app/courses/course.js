@@ -12,6 +12,12 @@ var Module = /** @class */ (function () {
     return Module;
 }());
 export { Module };
+var Activity = /** @class */ (function () {
+    function Activity() {
+    }
+    return Activity;
+}());
+export { Activity };
 //it is also possible to define course class that implement the Icourse interface
 //when needed
 //# sourceMappingURL=course.js.map

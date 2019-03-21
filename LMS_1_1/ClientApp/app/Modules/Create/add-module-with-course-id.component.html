@@ -1,6 +1,6 @@
 <h1>Create</h1>	
 
- <h4>Module on {{courseID}}</h4>	
+ <h4>Module on {{courseName}}</h4>	
 <hr />	
 <div class="row">	
     <div class="col-md-4">	
@@ -17,7 +17,7 @@
              <div class="form-group">	
                 <label for="startDate" class="control-label">Start Date</label>	
                 <input  type ="datetime-local" [(ngModel)]="Module.startDate" name="startDate"  [min]="coursestartdate"	
-                   id="startDate" class="form-control"   required #startdate="ngModel" (change)="gotDate()"/>	
+                   id="startDate" class="form-control"   required #startdate="ngModel" (blur)="gotDate()"/>	
                 <div class="text-danger" *ngIf="startDate && startDate.touched && startDate.invalid && startDate.errors.require">Formaterror on startdate  </div>
                 <div class="text-danger" *ngIf="startDate && startDate.touched && startDate < coursestartdate">May not start before the course</div>
                 <div class="text-danger" *ngIf="startDate && startDate.touched && endDate && endDate.touched && startdate>endDate">May not start before the end</div>
@@ -25,7 +25,7 @@
             <div class="form-group">	
                 <label for="endDate" class="control-label">End Date</label>	
                 <input  type ="datetime-local"  [(ngModel)]="Module.endDate" name="endDate"  [min]="coursestartdate"	
-                  id="endDate" class="form-control"  required #enddate="ngModel" (change)="gotDate()"/>	
+                  id="endDate" class="form-control"  required #enddate="ngModel" (blur)="gotDate()"/>	
                   <div class="text-danger" *ngIf="endDate && endDate.touched && endDate.invalid">Formaterror on startdate  </div>
                   <div class="text-danger" *ngIf="endDate && endDate.touched && endDate < coursestartdate">May not start before the course</div>
                   <div class="text-danger" *ngIf="endDate && endDate.touched && startDate && startDate.touched && startdate>endDate">May not start before the end</div>
@@ -38,7 +38,7 @@
              </div>	
             <div class="form-group">	
                     <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
-                    <a [routerLink]="['/courses', Module.CourseId]" class="btn btn-default" >Go back</a>
+                    <a [routerLink]="['/courses', Module.courseid]" class="btn btn-default" >Go back</a>
             </div>	
         </form>	
 

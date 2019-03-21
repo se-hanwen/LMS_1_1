@@ -245,9 +245,29 @@ namespace LMS_1_1.Repository
 
         }
 
-      
+
+
 
         #endregion
+
+        public async Task<bool> CheckIfModuleInRange(string courseid, DateTime start, DateTime end)
+        {
+          return await  _ctx.Modules
+                 .Where(m => m.CourseId.ToString() == courseid)
+                 .Where(u => ((u.StartDate <= start && u.EndDate >= start)
+                     || (u.StartDate <= end && u.EndDate >= end))
+             ).AnyAsync();
+        }
+
+        public async Task<bool> CheckIfActivityInRange(string modulid, DateTime start, DateTime end)
+        {
+            return await _ctx.LMSActivity
+         .Where(m => m.ModuleId.ToString() == modulid)
+         .Where(u => ((u.StartDate <= start && u.EndDate >= start)
+             || (u.StartDate <= end && u.EndDate >= end))
+     ).AnyAsync();
+        }
+
 
     }
 }
