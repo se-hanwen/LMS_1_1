@@ -46,14 +46,24 @@ namespace LMS_1_1.Controllers
 
 
         // GET: api/Module1/5
-        [HttpGet("{id}", Name = "GetModule")]
-        public string GetModuleById(int id)
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<Module>> GetModuleById(string id)
         {
-            return "value";
-        }
+            Guid idG = Guid.Parse(id);
+            Module module = await _context.Modules.FindAsync(idG);
 
+
+            if (module == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(module);
+        }
         // POST: api/Module1
         [HttpPost]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<Module>> PostModule([FromBody] ModuleViewModel modelVm)
         {
             if (!ModelState.IsValid)
@@ -76,10 +86,48 @@ namespace LMS_1_1.Controllers
 
         // PUT: api/Module1/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<LMSActivity>>  Put(string id, [FromBody]  ModuleViewModel modelVm)
         {
-        }
+            //if (editModel.criD==null)
+            if (id != modelVm.Id.ToString())
+            {
+                return BadRequest();
+            }
 
+            //  Guid Crid = new Guid(activtyVm.id);
+
+            Module module = new Module
+            {
+                Id = Guid.Parse(modelVm.Id),
+                Name = modelVm.Name,
+                StartDate = modelVm.StartDate,
+                EndDate = modelVm.EndDate,
+                Description = modelVm.Description,
+                CourseId= modelVm.CourseId
+            };
+
+            _context.Entry(module).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ModuleExists(module.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
         // DELETE: api/module1/5
         [HttpDelete("{id}")]
         public async void Delete(Guid iD)
@@ -117,6 +165,9 @@ namespace LMS_1_1.Controllers
             }
             return Ok(res);
         }
-
+      private bool ModuleExists(Guid id)
+        {
+            return _context.Modules.Any(e => e.Id == id);
+        }
     }
 }
