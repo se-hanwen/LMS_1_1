@@ -62,7 +62,7 @@ namespace LMS_1_1.Controllers
             return Ok(module);
         }
         // POST: api/Module1
-        [HttpPost]
+        [HttpPost("PostModule")]
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<Module>> PostModule([FromBody] ModuleViewModel modelVm)
         {
@@ -152,7 +152,7 @@ namespace LMS_1_1.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("TestIfInRange")]
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<bool>> TestIfInRange(string type, string id, DateTime start, DateTime end)
         {

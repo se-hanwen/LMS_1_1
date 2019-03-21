@@ -97,7 +97,7 @@ var AddActivitiesWithModulIdComponent = /** @class */ (function () {
                 .pipe(takeUntil(this.unsubscribe))
                 .subscribe(function (status) {
                 if (status) {
-                    _this.errorMessage = "Activity " + _this.Activity.name + " Activity";
+                    _this.errorMessage = "Activity " + _this.Activity.name + " created";
                 }
                 _this.cd.markForCheck();
             }, function (err) { return _this.errorMessage = err; });

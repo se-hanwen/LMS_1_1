@@ -104,20 +104,6 @@ var AuthService = /** @class */ (function () {
                     this.MessageHandler.SendCurrUserTeacher(this.checkisAuthenticated(this.tokenData.token, this.tokenData.tokenExpiration) ? this.checkIsTeacher(this.tokenData.isTeacher) : false);
                 }
             }
-            /*
-             AspNet.Identity.SecurityStamp: "Q5IWQMMVDLDJLI3VRCHWFOFLC2NKVVSC"
-            aud: "users"
-            exp: 1553012705
-            family_name: "Norberg"
-            given_name: "Penny"
-            http://schemas.microsoft.com/ws/2008/06/identity/claims/role: "Teacher"
-            http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: "Penny@lysator.liu.se"
-            http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: "e6e7ef33-179a-4fd0-90ec-f63bc9168482"
-            iss: "https://localhost:44396"
-            jti: "4d02d28c-57d5-4464-b8e5-9eb2875471f7"
-            sub: "Penny@lysator.liu.se"
-            unique_name: "Penny@lysator.liu.se"
-            */
             return this.checkisAuthenticated(this.tokenData.token, this.tokenData.tokenExpiration);
         },
         enumerable: true,
@@ -210,7 +196,12 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.checkisAuthenticated = function (token, tokenExpiration) {
         var res = !(token.length == 0 || tokenExpiration < new Date());
-        if (!res && token.length > 0) {
+        /* if (!res && token.length>0)
+          {
+            this.logout();
+            this.router.navigate(['/Account/Login']);
+          }*/
+        if (!res) {
             this.logout();
             this.router.navigate(['/Account/Login']);
         }

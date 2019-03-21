@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 import { LoginMessageHandlerService } from '../login-message-handler.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { RegisterUser } from '../Register/registeruser';
 import { PartipantService } from 'ClientApp/app/AddPartipant/partipant.service';
 import { takeUntil } from 'rxjs/operators';
 var EdituserComponent = /** @class */ (function () {
@@ -15,6 +16,7 @@ var EdituserComponent = /** @class */ (function () {
         this.router = router;
         this.PartipantService = PartipantService;
         this.unsubscribe = new Subject();
+        this.user = new RegisterUser();
         this.isTeacher = false;
     }
     EdituserComponent.prototype.ngOnInit = function () {
