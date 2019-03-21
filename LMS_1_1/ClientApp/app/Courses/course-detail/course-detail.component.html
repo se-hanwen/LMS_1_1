@@ -10,7 +10,7 @@
                     <p class="card-text"> {{course.description}}</p>
 
 
-                    <a href="javascript:void(0);" (click)="toggelPartipantList()">{{showpartipantlistmsg}}  partipantlist</a>
+                    <a class="btn btn-info" href="javascript:void(0);" (click)="toggelPartipantList()" [title]="showpartipantlistmsg+' partipantlist'"><i class="fa fa-2x fa-users"></i></a>
                     <app-partipant-list [courseid]='course.id'></app-partipant-list>
 
                     <div class="card-body" *ngIf="isTeacher">
@@ -18,16 +18,16 @@
                             <div class="col-6">
                                 <!-- <a [routerLink]="['/Modules/AddModuleWithCourseId', course.id]">Add Module</a> -->
                                 <p>
-                                    <a [routerLink]="['/Modules/create']" Title="Add Module">
+                                    <a class="btn btn-info" [routerLink]="['/Modules/create']" Title="Add Module">
                                         <i class="fa fa-2x fa-plus-square"></i>
                                     </a>
                                 </p>
 </div>      
                             <div class="col-6">
-                                <a class="btn btn-info" [routerLink]="['/AddPartipant', course.id]" Title="Add Participant" >Add Participant</a>
+                                <a class="btn btn-info" [routerLink]="['/AddPartipant', course.id]" Title="Add Participant" ><i class="fa fa-2x fa-user-plus"></i></a>
                             </div>
                             <div class="col-6">
-                                <a class="btn btn-info" [routerLink]="['/courses']" class="btn btn-default" >Go back</a>
+                                <a class="btn btn-info" [routerLink]="['/courses']" title="Go back"  ><i class="fa fa-2x fa-arrow-circle-left"></i></a>
                             </div>
                         </div>
                     </div>
