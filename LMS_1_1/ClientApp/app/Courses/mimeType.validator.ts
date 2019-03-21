@@ -7,8 +7,8 @@ export function mimeTypeValidator(): ValidatorFn {
 
         if (control && (control.value !== null || control.value !== undefined)) {
             let mimeType = control.value;
-            console.log(mimeType.endsWith('jpg'));
-            if (!mimeType.endsWith('jpg')) {
+            console.log(mimeType.endsWith('png'));
+            if (!(mimeType.endsWith('jpg')) || !(mimeType.endsWith('png'))) {
                 return {
                     isError: true
                 }
