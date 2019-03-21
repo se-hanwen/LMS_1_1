@@ -1,6 +1,6 @@
 <h1>Create</h1>	
 
- <h4>Module on {{courseName}}</h4>	
+ <h4>Module on {{CourseName}}</h4>	
 <hr />	
 <div class="row">	
     <div class="col-md-4">	
@@ -37,8 +37,14 @@
 
              </div>	
             <div class="form-group">	
-                    <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
-                    <a [routerLink]="['/courses', Module.courseid]" class="btn btn-default" >Go back</a>
+                 <div class="row">
+               <div class="col-6">
+                  <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
+               </div>  
+               <div class="col-6">
+               <a class="btn btn-info" [routerLink]="['/courses', Module.courseid]" title="Go back"><i class="fa fa-2x fa-arrow-circle-left"></i></a>
+               </div>
+            </div>
             </div>	
         </form>	
 

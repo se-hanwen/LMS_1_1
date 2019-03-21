@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 export class EdituserComponent implements OnInit, OnDestroy {
   private unsubscribe : Subject<void> = new Subject();
 
-  private user:RegisterUser;
+  private user:RegisterUser= new RegisterUser();
   errorMessage: string;
  isTeacher:boolean=false;
   constructor(private db: AuthService

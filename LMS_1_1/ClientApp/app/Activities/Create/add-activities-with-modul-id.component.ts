@@ -132,7 +132,7 @@ export class AddActivitiesWithModulIdComponent implements OnInit, OnDestroy {
         {
           if(status)
           {
-            this.errorMessage="Activity "+this.Activity.name+" Activity"
+            this.errorMessage="Activity "+this.Activity.name+" created"
   
           }
           this.cd.markForCheck();

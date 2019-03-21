@@ -42,8 +42,14 @@
                 
               </div>
             <div class="form-group">	
-                    <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
-                    <a [routerLink]="['/courses', Courseid]" class="btn btn-default" >Go back</a>
+            <div class="row">
+               <div class="col-6">
+                  <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid" />
+               </div>  
+               <div class="col-6">
+               <a class="btn btn-info" [routerLink]="['/courses', Courseid]" title="Go back"><i class="fa fa-2x fa-arrow-circle-left"></i></a>
+               </div>
+            </div>
             </div>	
         </form>	
 

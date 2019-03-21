@@ -28,8 +28,14 @@
               </select>
           </div>
           <div class="form-group">
-              <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid || saveduser" />
-              <a [routerLink]="['/Account/ManageUsers']" class="btn btn-default" >Back to List</a>
+            <div class="row">
+                <div class="col-6">
+                  <input type="submit" class="btn btn-success" value="Register" [disabled]="theForm.invalid || saveduser" />
+                </div>  
+                <div class="col-6">
+                  <a class="btn btn-info" [routerLink]="['/Account/ManageUsers']"   title="Back to List"><i class="fa fa-2x fa-arrow-circle-left"></i></a>
+                </div>
+            </div> 
           </div>    
         </form>
          <div *ngIf="returnmessage">{{returnmessage}}</div>
