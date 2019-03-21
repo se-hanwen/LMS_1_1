@@ -44,7 +44,11 @@ var CourseService = /** @class */ (function () {
         }).pipe(tap(function (data) { return console.log('All:' + JSON.stringify(data)); }), catchError(this.handleError));
     };
     CourseService.prototype.createCourse = function (course) {
-        return this.http.post(this.courseUrl, course, { headers: this.getAuthHeader()
+        return this.http.post(this.courseUrl + '/Create', course, { headers: this.getAuthHeader()
+        }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
+    };
+    CourseService.prototype.cloneCourse = function (course) {
+        return this.http.post(this.courseUrl + '/Clone', course, { headers: this.getAuthHeader()
         }).pipe(tap(function (result) { return JSON.stringify(result); }), catchError(this.handleError));
     };
     //Delete a course by a given guid.

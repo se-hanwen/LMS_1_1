@@ -8,18 +8,18 @@ namespace LMS_1_1.ViewModels
 {
     public class CloneFormModel
     {
-        public string OldCourseid { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public DateTime NewDate { get; set; }
         public string Description { get; set; }
         public IFormFile FileData { get; set; }
     
-        public string NewCourseId { get; set; }
+        public Guid? NewCourseId { get; set; }
     }
 
     public class CloneModuleModel
     {
-        public string OldModuleid { get; set; }
+        public Guid? Id { get; set; }
   
         public string Name { get; set; }
     
@@ -29,27 +29,27 @@ namespace LMS_1_1.ViewModels
     
         public string Description { get; set; }
 
-        public string NewModuleid { get; set; }
+        public Guid? NewModuleid { get; set; }
 
         public Guid CourseId { get; set; }
     }
  public class CloneActivityModel
     {
-        public string OldActivityId { get; set; }
+        public Guid? Id { get; set; }
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
         public int ActivityTypeId { get; set; }
-        public string moduleid { get; set; }
+        public Guid moduleid { get; set; }
 
-        public string NewActivityId { get; set; }
+        public Guid NewActivityId { get; set; }
     }
 
      public class CloneDocumentModel
     {
 
-        public string oldId { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
 
         public DateTime UploadDate { get; set; }
@@ -58,14 +58,14 @@ namespace LMS_1_1.ViewModels
 
         public string LMSUserId { get; set; }
   
-        public string OldCourseId { get; set; }
-        public string NewCourseId { get; set; }
+        public Guid CourseId { get; set; }
+        public Guid? NewCourseId { get; set; }
     
-        public string OldModuleId { get; set; }
-        public string NewModuleId { get; set; }
+        public Guid ModuleId { get; set; }
+        public Guid? NewModuleId { get; set; }
         
-        public string OldLMSActivityId { get; set; }
-        public string NewLMSActivityId { get; set; }
+        public Guid LMSActivityId { get; set; }
+        public Guid? NewLMSActivityId { get; set; }
       
 
         public int DocumentTypeId { get; set; }

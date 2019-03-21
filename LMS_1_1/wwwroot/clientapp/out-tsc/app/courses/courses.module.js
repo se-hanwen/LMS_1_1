@@ -15,6 +15,7 @@ import { IsAuthenticatedGuard } from '../Shared/is-authenticated.guard';
 import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { DocumentsModule } from '../documents/documents.module';
+import { CloneComponent } from './clone/clone.component';
 var CoursesModule = /** @class */ (function () {
     function CoursesModule() {
     }
@@ -28,6 +29,7 @@ var CoursesModule = /** @class */ (function () {
                 CourseDeleteComponent,
                 CourseEditComponent,
                 detailList,
+                CloneComponent,
             ],
             imports: [
                 CommonModule,
@@ -60,6 +62,11 @@ var CoursesModule = /** @class */ (function () {
                         path: 'courses/edit/:id',
                         canActivate: [IsTeacherGuard],
                         component: CourseEditComponent
+                    },
+                    {
+                        path: 'courses/clone/:id',
+                        canActivate: [IsTeacherGuard],
+                        component: CloneComponent
                     }
                 ])
             ]

@@ -385,7 +385,7 @@ namespace LMS_1_1.Controllers
 
                 foreach (var userid in savecouseListViewmodel.Userids)
                 {
-                    await _repository.AddCourseUser( userid, savecouseListViewmodel.Courseid);
+                    await _repository.AddCourseUser(  savecouseListViewmodel.Courseid, userid);
                 }
 
                 await _repository.SaveChanges();

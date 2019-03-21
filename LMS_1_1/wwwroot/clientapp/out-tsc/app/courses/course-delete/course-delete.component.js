@@ -1,6 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { course } from '../course';
 import { CourseService } from '../course.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,6 +11,7 @@ var CourseDeleteComponent = /** @class */ (function () {
         this.CourseService = CourseService;
         this.router = router;
         this.cd = cd;
+        this.course = new course();
         this.unsubscribe = new Subject();
     }
     CourseDeleteComponent.prototype.ngOnInit = function () {

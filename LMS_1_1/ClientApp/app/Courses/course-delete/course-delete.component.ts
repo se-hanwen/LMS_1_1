@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICourse } from '../course';
+import { ICourse, course } from '../course';
 import { CourseService } from '../course.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CourseDeleteComponent implements OnInit, OnDestroy  {
 
-    course: ICourse;
+    course: ICourse=new course();
     errorMsg: string;
     private unsubscribe : Subject<void> = new Subject();
 

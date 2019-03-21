@@ -1,6 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { course } from '../course';
 import { CourseService } from '../course.service';
 import { AuthService } from 'ClientApp/app/auth/auth.service';
 var CourseEditComponent = /** @class */ (function () {
@@ -9,14 +10,18 @@ var CourseEditComponent = /** @class */ (function () {
         this.router = router;
         this.CourseService = CourseService;
         this.AuthService = AuthService;
+        this.editCourse = new course();
     }
     CourseEditComponent.prototype.ngOnInit = function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
         this.CourseService.getCourseById(id).subscribe(function (tcourse) {
-            var tmppath = tcourse.courseImgPath.substr(tcourse.courseImgPath.lastIndexOf('\\') + 1);
-            if (tmppath == null) {
+            var tmppath;
+            if (tcourse != null || tcourse.courseImgPath != null) {
                 tmppath = "";
+            }
+            else {
+                var tmppath_1 = tcourse.courseImgPath.substr(tcourse.courseImgPath.lastIndexOf('\\') + 1);
             }
             //tcourse.courseImgPath = tcourse.courseImgPath.split('\\')[3];
             _this.editCourse = tcourse;
@@ -49,7 +54,8 @@ var CourseEditComponent = /** @class */ (function () {
             templateUrl: './course-edit.component.html',
             styleUrls: ['./course-edit.component.css']
         }),
-        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, Router, CourseService, AuthService])
+        tslib_1.__metadata("design:paramtypes", [ActivatedRoute, Router,
+            CourseService, AuthService])
     ], CourseEditComponent);
     return CourseEditComponent;
 }());
