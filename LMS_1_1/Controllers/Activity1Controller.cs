@@ -173,6 +173,14 @@ namespace LMS_1_1.Controllers
                 return;
             }
 
+            //delete documents associated to it.
+         var acDocuments =await _documentrepository.GetDocumentsByIdOwnerAsync(iD);
+            foreach (Document doc in acDocuments)
+            {
+                _documentrepository.RemoveDocumentAsync(doc);
+            }
+          
+
             _context.LMSActivity.Remove(actv);
             _context.SaveChanges();
         }

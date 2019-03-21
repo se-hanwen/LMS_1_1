@@ -23,7 +23,7 @@ namespace LMS_1_1.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Documents1Controller : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+   
        
         private readonly IDocumentRepository _repository;
         private readonly ILogger<Documents1Controller> _logger;
@@ -76,35 +76,8 @@ namespace LMS_1_1.Controllers
 
         
 
-        // PUT: api/Documents1/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDocument(Guid id, Document document)
-        {
-            if (id != document.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(document).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DocumentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+       
+      
 
         // POST: api/Documents1
        
@@ -166,9 +139,5 @@ namespace LMS_1_1.Controllers
             return Ok(document);
         }
 
-        private bool DocumentExists(Guid id)
-        {
-            return _context.Documents.Any(e => e.Id == id);
-        }
     }
 }
