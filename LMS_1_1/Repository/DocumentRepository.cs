@@ -55,8 +55,6 @@ namespace LMS_1_1.Repository
                 return true;
             }
             return false;
-
-
         }
 
         public async Task<IEnumerable<Document>> GetDocumentsByIdOwnerAsync (Guid OwnerId)
@@ -105,14 +103,10 @@ namespace LMS_1_1.Repository
             Directory.CreateDirectory(path);
             return path;
         }
-
-
         public async Task<string> UploadFile (IFormFile file,string path)
         {
             try
             {
-                
-
                 if (file.Length > 0)
                 {
                    
@@ -185,7 +179,6 @@ namespace LMS_1_1.Repository
 
         public async Task<bool> RemoveFile (string path,string fileName)
         {
-           
             var file = Path.Combine(path, fileName);
             if (File.Exists(file))
             {
