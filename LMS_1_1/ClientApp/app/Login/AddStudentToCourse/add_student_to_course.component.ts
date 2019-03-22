@@ -234,7 +234,6 @@ export class AddStudentToCourseComponent implements OnInit, OnDestroy  {
       }
 
     );
-    //this.router.navigate(['/courses', this.courseid]);
   }
 
   public ChooseCourses()

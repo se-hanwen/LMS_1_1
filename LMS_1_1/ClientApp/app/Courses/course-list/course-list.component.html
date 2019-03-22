@@ -15,7 +15,7 @@
 
 
                 <a [routerLink]="['/courses', course.id]">
-                    <img class="card-img-top fitimg"   height="300px" [src]="course.courseImgPath==null?'':course.courseImgPath" alt="Card image cap" />
+                    <img class="card-img-top fitimg"   width="18 rem" [src]="course.courseImgPath==null?'':course.courseImgPath" alt="Card image cap" />
                     <div class="card-body">
                         <h3 class="card-title">{{course.name}}</h3>
 
@@ -27,6 +27,7 @@
                 <div class="card-body" *ngIf="isTeacher">
                     <a class="card-link" [routerLink]="['/courses/edit', course.id]" [title]="'Edit course '+ course.name"><i class="fa fa-2x fa-edit"></i></a>
                     <a class="card-link" [routerLink]="['/courses/delete', course.id]" [title]="'Delete course '+ course.name"><i class="fa fa-2x fa-minus-square"></i></a>
+                    <a class="card-link" [routerLink]="['/courses/clone', course.id]" [title]="'Clone course '+ course.name"><i class="fa fa-2x fa-plus-square"></i></a>
                 </div>
             </div>
 

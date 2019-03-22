@@ -44,8 +44,13 @@
     </dl>
 
     <form #myform="ngForm" (ngSubmit)="DelActivity()">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a [routerLink]="['/courses']">Back to List</a>
-           
+        <div class="row">
+                <div class="col-6">
+                        <input type="submit" value="Delete" class="btn btn-danger" /> 
+                </div>  
+                <div class="col-6">
+                <a class="btn btn-info" [routerLink]="['/courses', csid.toString()]" title="Back to List"><i class="fa fa-2x fa-arrow-circle-left"></i></a>
+                </div>
+             </div> 
     </form>
 </div>

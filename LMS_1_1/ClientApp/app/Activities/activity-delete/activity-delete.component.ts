@@ -40,6 +40,7 @@ export class ActivityDeleteComponent implements OnInit {
                 sid => {
                     // let tmpguid= Guid.parse(status); 
                     this.csid = Guid.parse(sid);
+                   
                     this.cd.markForCheck();
                 });
     }

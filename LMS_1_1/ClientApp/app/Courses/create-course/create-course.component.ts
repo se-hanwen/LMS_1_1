@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ICourse } from '../course';
+import { ICourse, course } from '../course';
 import { ActivatedRoute, Data, Router} from '@angular/router';
 
 import { CourseService } from '../course.service';
@@ -16,7 +16,7 @@ import { mimeTypeValidator } from '../mimeType.validator';
 })
 export class CreateCourseComponent implements OnInit, OnDestroy  {
   private unsubscribe : Subject<void> = new Subject();
-    course: ICourse;
+    course: ICourse=new course();
     errorMessage: string;
     courseForm: FormGroup;
     isSubmitted = false;

@@ -18,6 +18,7 @@ import { IsTeacherGuard } from '../Shared/is-teacher.guard';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UploadComponent } from '../documents/upload/upload.component';
 import { DocumentsModule } from '../documents/documents.module';
+import { CloneComponent } from './clone/clone.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { DocumentsModule } from '../documents/documents.module';
         CourseDeleteComponent,
         CourseEditComponent,
         detailList,
+        CloneComponent,
       
 
     ],
@@ -65,6 +67,12 @@ import { DocumentsModule } from '../documents/documents.module';
                   path: 'courses/edit/:id'
                   ,canActivate: [IsTeacherGuard] 
                   , component: CourseEditComponent
+
+              },
+              {
+                  path: 'courses/clone/:id'
+                  ,canActivate: [IsTeacherGuard] 
+                  , component: CloneComponent
 
               }
           ]
