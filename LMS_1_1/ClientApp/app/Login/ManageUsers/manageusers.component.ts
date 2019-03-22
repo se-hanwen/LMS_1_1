@@ -30,7 +30,7 @@ export class ManageusersComponent implements OnInit , OnDestroy{
         this.users=status;
         this.cd.markForCheck();
       }
-    )
+    );
   }
 
   public ChooseUser(id)
