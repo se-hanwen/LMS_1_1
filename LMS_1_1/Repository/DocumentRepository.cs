@@ -83,7 +83,7 @@ namespace LMS_1_1.Repository
         public async Task RemoveDocumentAsync (Document model)
         {
             string fileNameTobeDeleted = model.Path;
-            _ctx.Remove(model);
+            _ctx.Remove(model); //<-- pply delete types too.
            await   SaveAllAsync();
             bool isExist = await IsExistDocumentByPathAsync(fileNameTobeDeleted);
             if (isExist)
