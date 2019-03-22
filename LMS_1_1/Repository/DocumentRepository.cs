@@ -57,7 +57,7 @@ namespace LMS_1_1.Repository
             return false;
         }
 
-        public async Task<IEnumerable<Document>> GetDocumentsByIdOwnerAsync (Guid OwnerId)
+        public async Task<List<Document>> GetDocumentsByIdOwnerAsync (Guid OwnerId)
         {
             
             try
@@ -83,18 +83,37 @@ namespace LMS_1_1.Repository
         public async Task RemoveDocumentAsync (Document model)
         {
             string fileNameTobeDeleted = model.Path;
-            _ctx.Remove(model); //<-- pply delete types too.
+            _ctx.Remove(model); 
            await   SaveAllAsync();
             bool isExist = await IsExistDocumentByPathAsync(fileNameTobeDeleted);
             if (isExist)
             {
                 string folderpath = GetDocumentUploadPath();
 
-                await RemoveFile(folderpath, model.Path);
+                RemoveFile(folderpath, model.Path);
             }
         }
 
-        public async Task SaveAllAsync ()
+        public async Task<bool> RemoveDocumentRangeAsync(List<Document> docCourse)
+        {
+            foreach (var doc in docCourse)
+            {
+                try
+                {
+                    await RemoveDocumentAsync(doc);
+                }
+                catch (Exception ex)
+                {
+
+                    Console.Write(ex.Message);
+                    return false;
+                }
+
+            }
+            return true;
+        }
+
+        public async Task<bool> SaveAllAsync ()
         {
             try
             {
@@ -103,7 +122,9 @@ namespace LMS_1_1.Repository
             catch(Exception ex)
             {
               Console.Write( ex.Message);
+                return false;
             }
+            return true;
         }
 
         public string GetDocumentUploadPath()
@@ -114,7 +135,7 @@ namespace LMS_1_1.Repository
             Directory.CreateDirectory(path);
             return path;
         }
-        public async Task<string> UploadFile (IFormFile file,string path)
+        public string UploadFile (IFormFile file,string path)
         {
             try
             {
@@ -144,6 +165,7 @@ namespace LMS_1_1.Repository
             }
             catch (Exception ex)
             {
+                Console.Write(ex.Message);
                 return null;
             }
         }
@@ -179,7 +201,7 @@ namespace LMS_1_1.Repository
             return filepath;
         }
 
-        public async Task<FileStream> DownloadFile (string path,string fileName)
+        public FileStream DownloadFile (string path,string fileName)
         {
           
             var file = Path.Combine(path, fileName);
@@ -188,7 +210,7 @@ namespace LMS_1_1.Repository
             return null;
         }
 
-        public async Task<bool> RemoveFile (string path,string fileName)
+        public bool RemoveFile (string path,string fileName)
         {
             var file = Path.Combine(path, fileName);
             if (File.Exists(file))
@@ -198,5 +220,7 @@ namespace LMS_1_1.Repository
             }
             return false;
         }
+
+
     }
 }

@@ -423,11 +423,27 @@ namespace LMS_1_1.Controllers
       
             // get documents
             List<Document> documents = new List<Document>();
-            documents.AddRange(await _context.Documents.Where(d => d.CourseId.ToString() == CloneFormModel.Id)
-                //.Where(d => (tempteacher.id).Contains(d.LMSUserId))
-                .ToArrayAsync());
+            var Codoc = await _context.Documents.Where(d => d.CourseId.ToString() == CloneFormModel.Id).Where(d => (tempteacher.Select(u => u.Id).Contains(d.LMSUserId)))
+                    .Select(d => new Document
+                    {
+                        Name = d.Name,
+                        UploadDate = DateTime.Now,
+                        Description = d.Description,
+                        Path = d.Path,
+                        LMSUserId = userid,
+                        CourseId = Guid.Parse(CloneFormModel.Id),
+                        ModuleId = null,
+                        LMSActivityId = null,
+                        DocumentTypeId = d.DocumentTypeId
+                    }
+             ).ToArrayAsync();
 
-          var Modoc=  _context.Documents//.Where(d =>  (tempteacher.id).Contains(d.LMSUserId))
+
+            documents.AddRange(Codoc);
+                //
+            
+
+          var Modoc=  _context.Documents.Where(d =>  (tempteacher.Select(u => u.Id).Contains(d.LMSUserId)))
                 .Join(cloneModules,
                     d => d.ModuleId,
                    (CloneModuleModel m) => m.Id,
@@ -448,7 +464,7 @@ namespace LMS_1_1.Controllers
                 );
             documents.AddRange(Modoc);
 
-            var Actdoc = _context.Documents //.Where(d => (tempteacher.id).Contains(d.LMSUserId))
+            var Actdoc = _context.Documents.Where(d => (tempteacher.Select(u => u.Id).Contains(d.LMSUserId)))
                .Join(cloneActivities,
                    d => d.LMSActivityId,
                   (CloneActivityModel m) => m.Id,
@@ -467,7 +483,7 @@ namespace LMS_1_1.Controllers
                );
             documents.AddRange(Actdoc);
             // update documents, courseid, moduleid and activitiyid
-            documents.Where(d => d.CourseId != null && d.CourseId.ToString() == CloneFormModel.Id).ToList().ForEach(d => d.CourseId = CloneFormModel.NewCourseId);
+           // documents.Where(d => d.CourseId != null && d.CourseId.ToString() == CloneFormModel.Id).ToList().ForEach(d => d.CourseId = CloneFormModel.NewCourseId);
 
             // add documents
             await _context.Documents.AddRangeAsync(documents.Select(d => new Document
@@ -489,7 +505,7 @@ namespace LMS_1_1.Controllers
             if (CloneFormModel.FileData!= null && CloneFormModel.FileData.Length > 0)
             {
                 string path = _programrepository.GetCourseImageUploadPath();
-                await _documentrepository.UploadFile(CloneFormModel.FileData, path);
+                _documentrepository.UploadFile(CloneFormModel.FileData, path);
             }
 
 
@@ -541,7 +557,7 @@ namespace LMS_1_1.Controllers
             if (editModel.FileData.Length>0)
             {
                 string path = _programrepository.GetCourseImageUploadPath();
-                await _documentrepository.UploadFile(editModel.FileData, path);
+                _documentrepository.UploadFile(editModel.FileData, path);
             }
 
             return NoContent();
@@ -567,7 +583,7 @@ namespace LMS_1_1.Controllers
            _context.Courses.Add(course);
             await _context.SaveChangesAsync();
           string path=  _programrepository.GetCourseImageUploadPath();
-            await _documentrepository.UploadFile(courseVm.FileData, path);
+            _documentrepository.UploadFile(courseVm.FileData, path);
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
         // DELETE: api/Courses1/5
@@ -575,19 +591,34 @@ namespace LMS_1_1.Controllers
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<Course>> DeleteCourse(Guid iD)
         {
-            var course = await _context.Courses.FindAsync(iD);
-            if (course == null)
+            var status= await _programrepository.RemoveCourseHelperAsync(iD);
+            if (status)
             {
-                return NotFound();
+                var course = await _context.Courses.FindAsync(iD);
+                if (course == null)
+                {
+                    return NotFound();
+                }
+                //Delete course. Data related in Modules and LMSActivity also are deleted.
+                _context.Courses.Remove(course);
+
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    _logger.LogDebug("Error deleting", ex.Message);
+                }
+
+                _logger.LogDebug("!!! Course of {name} deleted.", course.Name);
+
+
+                return Ok(course);      //Send back 200.
             }
-            //Delete course. Data related in Modules and LMSActivity also are deleted.
-            _context.Courses.Remove(course);
-            _context.SaveChanges();
-
-            _logger.LogDebug("!!! Course of {name} deleted.", course.Name);
-
-
-            return Ok(course);      //Send back 200.
+            else
+                return StatusCode(500);
         }
 
         private bool CourseExists(Guid id)

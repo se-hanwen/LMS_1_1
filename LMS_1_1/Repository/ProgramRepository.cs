@@ -19,16 +19,19 @@ namespace LMS_1_1.Repository
         private readonly ILogger<ProgramRepository> _logger;
         private readonly UserManager<LMSUser> _userManager;
         private readonly IHostingEnvironment _environment;
+        private readonly IDocumentRepository _DocumentRepository;
+
         //private readonly RoleManager<LMSUser> _roleManager;
 
         public ProgramRepository (ApplicationDbContext ctx, ILogger<ProgramRepository> logger ,UserManager<LMSUser> userManager
-        ,IHostingEnvironment environment
+        ,IHostingEnvironment environment, IDocumentRepository DocumentRepository
             )
         {
             _ctx = ctx;
             _logger = logger;
             _userManager = userManager;
             _environment = environment;
+            _DocumentRepository = DocumentRepository;
             // _roleManager = roleManager;
         }
         #region Commen
@@ -123,6 +126,44 @@ namespace LMS_1_1.Repository
        
             
         }
+
+        public async Task<bool> RemoveCourseHelperAsync(Guid coursedid)
+        {
+            var docCourse =await  _DocumentRepository.GetDocumentsByIdOwnerAsync(coursedid);
+           var status=await _DocumentRepository.RemoveDocumentRangeAsync(docCourse.ToList());
+            if(status)
+            { // modueles
+                var moduels = _ctx.Modules.Where(m => m.CourseId == coursedid);
+                List<Document> docmMod = new List<Document>();
+                List<Document> docmAct;
+                bool statusa = true;
+                bool statusm = true;
+                foreach (var modulid in moduels.Select(m => m.Id))
+                {
+                    docmMod.AddRange( (await _DocumentRepository.GetDocumentsByIdOwnerAsync(modulid)));
+                    docmAct = new List<Document>();
+                    foreach (var Activityid in _ctx.LMSActivity.Where(a => a.ModuleId == modulid).Select(a => a.Id))
+                    {
+                        docmAct.AddRange((await _DocumentRepository.GetDocumentsByIdOwnerAsync(Activityid)));
+                    }
+                    statusa = await _DocumentRepository.RemoveDocumentRangeAsync(docmAct.ToList());
+                    if (!statusa)
+                        return false;
+                }
+                statusm = await _DocumentRepository.RemoveDocumentRangeAsync(docmMod.ToList());
+                if (!statusm)
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+
+
+
+            return true;
+        }
+
         public async Task<bool> CourseExistsAsync (Guid courseId)
         {
             return await _ctx.Courses.AnyAsync(e => e.Id == courseId);

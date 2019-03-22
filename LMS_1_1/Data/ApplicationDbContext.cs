@@ -30,6 +30,13 @@ namespace LMS_1_1.Data
 
     );
 
+            modelBuilder.Entity<DocumentType>()
+    .HasData(
+        new ActivityType { Id = 1, Name = "Course" },
+        new ActivityType { Id = 2, Name = "Activity" },
+        new ActivityType { Id = 3, Name = "Module" }
+    );
+
         }
 
 

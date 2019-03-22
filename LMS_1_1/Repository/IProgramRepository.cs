@@ -32,7 +32,7 @@ namespace LMS_1_1.Repository
         Task AddTokenUser(string token, string userid);
         Task<bool> RemoveTokenUser(string token);
         Task<bool> IsTeacher(string token);
-
+        Task<bool> RemoveCourseHelperAsync(Guid coursedid);
 
         Task<bool> CheckIfModuleInRange(string courseid, DateTime start, DateTime end);
         Task<bool> CheckIfActivityInRange(string modulid, DateTime start, DateTime end);
