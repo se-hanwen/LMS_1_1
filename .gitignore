@@ -265,3 +265,4 @@ paket-files/
 __pycache__/
 *.pyc
 /LMS_1_1/app.js
+/LMS_1_1/wwwroot/clientapp/dist/assets/img
