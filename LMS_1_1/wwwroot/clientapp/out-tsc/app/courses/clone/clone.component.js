@@ -29,7 +29,7 @@ var CloneComponent = /** @class */ (function () {
             name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
             startDate: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
             description: new FormControl('', [Validators.required]),
-            fileData: new FormControl('', [Validators.required, mimeTypeValidator()])
+            fileData: new FormControl('', [mimeTypeValidator()])
         });
         this.CourseService.getCourseById(this.Courseid)
             .pipe(takeUntil(this.unsubscribe))

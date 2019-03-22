@@ -303,16 +303,16 @@ namespace LMS_1_1.Controllers
         public async Task<ActionResult<Course>> Clone([FromForm] CloneFormModel CloneFormModel )
         {
              string userid=  (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
-
-            var allteachers =(await  _userManager.GetUsersInRoleAsync("Teacher")).Select(u => u.Id);
-            var config = new MapperConfiguration(cfg => {
+            var tempteacher = await _userManager.GetUsersInRoleAsync("Teacher");
+            var allteachers =tempteacher.Select(u => u.Id);
+            /*var config = new MapperConfiguration(cfg => {
 
                  cfg.CreateMap<ICollection<Module>,List<CloneModuleModel>>();
                  cfg.CreateMap<ICollection<LMSActivity>, List<CloneActivityModel>>();
                  cfg.CreateMap<ICollection<Document>,List<CloneDocumentModel>>();
                
              });
-            IMapper iMapper = config.CreateMapper();
+            IMapper iMapper = config.CreateMapper();*/
 
             //CloneFormModel => old courseid, new start, new image may be null
             // get course
@@ -339,7 +339,7 @@ namespace LMS_1_1.Controllers
                 Name = CloneFormModel.Name,
                 Description = CloneFormModel.Description,
                 StartDate = CloneFormModel.NewDate,
-                CourseImgPath = @"..\assets\img\" + CloneFormModel.FileData.FileName
+                CourseImgPath =(CloneFormModel.FileData==null)?coursedata.CourseImgPath :@"..\assets\img\" + CloneFormModel.FileData.FileName
 
             };
 
@@ -423,9 +423,11 @@ namespace LMS_1_1.Controllers
       
             // get documents
             List<Document> documents = new List<Document>();
-            documents.AddRange(await _context.Documents.Where(d => d.CourseId.ToString() == CloneFormModel.Id).Where(d => allteachers.Contains(d.LMSUserId)).ToArrayAsync());
+            documents.AddRange(await _context.Documents.Where(d => d.CourseId.ToString() == CloneFormModel.Id)
+                //.Where(d => (tempteacher.id).Contains(d.LMSUserId))
+                .ToArrayAsync());
 
-          var Modoc=  _context.Documents.Where(d => allteachers.Contains(d.LMSUserId))
+          var Modoc=  _context.Documents//.Where(d =>  (tempteacher.id).Contains(d.LMSUserId))
                 .Join(cloneModules,
                     d => d.ModuleId,
                    (CloneModuleModel m) => m.Id,
@@ -446,7 +448,7 @@ namespace LMS_1_1.Controllers
                 );
             documents.AddRange(Modoc);
 
-            var Actdoc = _context.Documents.Where(d =>allteachers.Contains(d.LMSUserId))
+            var Actdoc = _context.Documents //.Where(d => (tempteacher.id).Contains(d.LMSUserId))
                .Join(cloneActivities,
                    d => d.LMSActivityId,
                   (CloneActivityModel m) => m.Id,
@@ -484,7 +486,7 @@ namespace LMS_1_1.Controllers
 
 
             // if a img add img.
-            if (CloneFormModel.FileData.Length > 0)
+            if (CloneFormModel.FileData!= null && CloneFormModel.FileData.Length > 0)
             {
                 string path = _programrepository.GetCourseImageUploadPath();
                 await _documentrepository.UploadFile(CloneFormModel.FileData, path);
