@@ -27,8 +27,8 @@
 
     <form #mycourse="ngForm" (ngSubmit)="ConfirmedDelete()">
         <input type="hidden" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a [routerLink]="['/courses']" >Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+        <a class="btn btn-info" [routerLink]="['/courses']" title="Back to List"><i class="fa fa-2x fa-arrow-circle-left"></i></a>
     </form>
 </div>
 <h4>NOTICE! All documents and activities connected to this course will be deleted.</h4>

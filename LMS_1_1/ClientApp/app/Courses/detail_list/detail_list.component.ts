@@ -32,6 +32,10 @@ export class detailList implements OnInit, OnDestroy {
     
     ngOnInit() {
         this.isTeacher=this.AuthService.isTeacher;
+        this.messhandler.SendModulid(null);
+        this.messhandler.SendModulStartDate(null);
+        this.messhandler.SendModulEndDate(null);
+        this.messhandler.SendModulName(null);
         /*this.AuthService.isTeacher
         .pipe(takeUntil(this.unsubscribe))
         .subscribe( i =>{

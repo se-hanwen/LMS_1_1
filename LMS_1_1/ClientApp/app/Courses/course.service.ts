@@ -96,13 +96,23 @@ export class CourseService implements  OnDestroy {
 
     createCourse(course: any) {
 
-        return this.http.post(this.courseUrl,  course,
+        return this.http.post(this.courseUrl+'/Create',  course,
             {headers: this.getAuthHeader() 
     }).pipe(
             tap(result => JSON.stringify(result)),
             catchError(this.handleError)
         );
     }
+
+    cloneCourse(course: any){
+        return this.http.post(this.courseUrl+'/Clone',  course,
+        {headers: this.getAuthHeader() 
+}).pipe(
+        tap(result => JSON.stringify(result)),
+        catchError(this.handleError)
+    );
+      }
+    
 
     //Delete a course by a given guid.
     DeleteCourse(id: Guid) {
