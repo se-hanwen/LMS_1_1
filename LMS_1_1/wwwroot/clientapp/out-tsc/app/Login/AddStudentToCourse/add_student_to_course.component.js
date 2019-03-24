@@ -177,7 +177,6 @@ var AddStudentToCourseComponent = /** @class */ (function () {
             _this.messhandler.SendCourseSaved(savedcourses);
             _this.cd.markForCheck();
         });
-        //this.router.navigate(['/courses', this.courseid]);
     };
     AddStudentToCourseComponent.prototype.ChooseCourses = function () {
         this.CoursesChoosed = !this.CoursesChoosed;

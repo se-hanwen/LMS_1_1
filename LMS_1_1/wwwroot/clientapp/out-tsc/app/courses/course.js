@@ -18,6 +18,17 @@ var Activity = /** @class */ (function () {
     return Activity;
 }());
 export { Activity };
+var CloneCourseModel = /** @class */ (function () {
+    function CloneCourseModel() {
+        this.name = "";
+        this.newDate = null;
+        this.description = "";
+        this.newCourseId = null;
+        this.courseImgPath = "";
+    }
+    return CloneCourseModel;
+}());
+export { CloneCourseModel };
 //it is also possible to define course class that implement the Icourse interface
 //when needed
 //# sourceMappingURL=course.js.map

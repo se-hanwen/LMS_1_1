@@ -1,5 +1,6 @@
 import * as tslib_1 from "tslib";
 import { Component, ChangeDetectorRef } from '@angular/core';
+import { course } from '../course';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../course.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -14,6 +15,7 @@ var CreateCourseComponent = /** @class */ (function () {
         this.router = router;
         this.cd = cd;
         this.unsubscribe = new Subject();
+        this.course = new course();
         this.isSubmitted = false;
         this.showMsg = false;
     }
