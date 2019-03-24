@@ -265,3 +265,11 @@ paket-files/
 __pycache__/
 *.pyc
 /LMS_1_1/app.js
+/LMS_1_1/ClientApp/assets/img/20150218_183825.jpg
+/LMS_1_1/ClientApp/assets/img/HR (2).png
+/LMS_1_1/ClientApp/assets/img/HR.png
+/LMS_1_1/ClientApp/assets/img/images (2).jpg
+/LMS_1_1/ClientApp/assets/img/images.jpg
+/LMS_1_1/ClientApp/assets/img/No_idea (3).jpg
+/LMS_1_1/ClientApp/assets/img
+/SQLQuery9.sql
