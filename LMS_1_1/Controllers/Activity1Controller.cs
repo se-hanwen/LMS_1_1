@@ -165,24 +165,31 @@ namespace LMS_1_1.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Teacher")]
-        public async Task Delete(Guid iD)
+        public async Task<ActionResult<bool>> Delete(Guid iD)
         {
-            var actv = await _context.LMSActivity.FindAsync(iD);
-            if (actv == null)
+            var status = await _programrepository.RemoveActivityHelperAsync(iD);
+            if (status)
             {
-                return;
-            }
-
-            //delete documents associated to it.
-         var acDocuments =await _documentrepository.GetDocumentsByIdOwnerAsync(iD);
-            foreach (Document doc in acDocuments)
-            {
-               await _documentrepository.RemoveDocumentAsync(doc);
-            }
+                var actv = await _context.LMSActivity.FindAsync(iD);
+                if (actv == null)
+                {
+                    return NotFound();
+                }
+/*
+                //delete documents associated to it.
+             var acDocuments =await _documentrepository.GetDocumentsByIdOwnerAsync(iD);
+                foreach (Document doc in acDocuments)
+                {
+                   await _documentrepository.RemoveDocumentAsync(doc);
+                }*/
           
 
-            _context.LMSActivity.Remove(actv);
-            _context.SaveChanges();
+                _context.LMSActivity.Remove(actv);
+                _context.SaveChanges();
+                return Ok(true);      //Send back 200.
+            }
+            else
+                return StatusCode(500);
         }
     }
 }

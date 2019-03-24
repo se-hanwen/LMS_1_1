@@ -19,6 +19,10 @@ namespace LMS_1_1.Repository
         Task<Document> GetDocumentByIdAsync (Guid documentId);
         Task<List<Document>> GetDocumentsByIdOwnerAsync (Guid OwnerId);
 
+        Task<ICollection<Document>> GetAllDocumentsForCourseAsync(Guid CourseId);
+        Task<ICollection<Document>> GetAllDocumentsForModuleAsync(Guid ModulId);
+        Task<ICollection<Document>> GetAllDocumentsForActivityAsync(Guid ActivitityId);
+
         Task<DocumentType> GetDocumentTypeByIdAsync (int documentTypeId);
         Task AddDocumentAsync (Document model);
         Task RemoveDocumentAsync (Document model);

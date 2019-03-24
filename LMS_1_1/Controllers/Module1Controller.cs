@@ -130,25 +130,33 @@ namespace LMS_1_1.Controllers
         }
         // DELETE: api/module1/5
         [HttpDelete("{id}")]
-        public async Task Delete(Guid iD)
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<bool>>  Delete(Guid iD)
         {
-            try
+            var status = await _programrepository.RemoveModuleHelperAsync(iD);
+            if (status)
             {
-
-
-                var module = await _context.Modules.FindAsync(iD);
-                if (module == null)
+                try
                 {
-                    return;
-                }
 
-                _context.Modules.Remove(module);
-                await _context.SaveChangesAsync();
+
+                    var module = await _context.Modules.FindAsync(iD);
+                    if (module == null)
+                    {
+                        return NotFound();
+                    }
+
+                    _context.Modules.Remove(module);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                return Ok(true);      //Send back 200.
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            else
+                return StatusCode(500);
         }
 
 

@@ -58,13 +58,13 @@ namespace LMS_1_1.ViewModels
 
         public string LMSUserId { get; set; }
   
-        public Guid CourseId { get; set; }
+        public Guid? CourseId { get; set; }
         public Guid? NewCourseId { get; set; }
     
-        public Guid ModuleId { get; set; }
+        public Guid? ModuleId { get; set; }
         public Guid? NewModuleId { get; set; }
         
-        public Guid LMSActivityId { get; set; }
+        public Guid? LMSActivityId { get; set; }
         public Guid? NewLMSActivityId { get; set; }
       
 

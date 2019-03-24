@@ -221,6 +221,30 @@ namespace LMS_1_1.Repository
             return false;
         }
 
+        public async Task<ICollection<Document>> GetAllDocumentsForCourseAsync(Guid CourseId)
+        {
+            var doc= await _ctx.Documents.Where(d => d.CourseId == CourseId).ToListAsync();
+            foreach (var module in _ctx.Modules.Where(m => m.CourseId== CourseId))
+            {
+                doc.AddRange(await GetAllDocumentsForModuleAsync(module.Id));
+            }
+            return doc;
+        }
 
+        public async Task<ICollection<Document>> GetAllDocumentsForModuleAsync(Guid ModulId)
+        {
+            var doc = await  _ctx.Documents.Where(d => d.ModuleId == ModulId).ToListAsync();
+            foreach (var activity in _ctx.LMSActivity.Where(a => a.ModuleId== ModulId)   )
+            {
+                doc.AddRange(await GetAllDocumentsForActivityAsync(activity.Id));
+            }
+
+            return doc;
+        }
+
+        public async Task<ICollection<Document>> GetAllDocumentsForActivityAsync(Guid ActivitityId)
+        {
+            return await _ctx.Documents.Where(d => d.LMSActivityId == ActivitityId).ToListAsync();
+        }
     }
 }

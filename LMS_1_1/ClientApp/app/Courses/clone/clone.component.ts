@@ -105,10 +105,10 @@ register() {
     .subscribe(
         (result) => {
             this.isSubmitted = false;
-         
+            this.cd.markForCheck();
             this.router.navigate(['/courses'])
             
-            this.cd.markForCheck();
+            
         },
         error => this.errorMessage = <any>error
     );

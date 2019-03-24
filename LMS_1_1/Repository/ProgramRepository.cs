@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using LMS_1_1.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LMS_1_1.Repository
 {
@@ -129,40 +131,148 @@ namespace LMS_1_1.Repository
 
         public async Task<bool> RemoveCourseHelperAsync(Guid coursedid)
         {
-            var docCourse =await  _DocumentRepository.GetDocumentsByIdOwnerAsync(coursedid);
-           var status=await _DocumentRepository.RemoveDocumentRangeAsync(docCourse.ToList());
-            if(status)
-            { // modueles
-                var moduels = _ctx.Modules.Where(m => m.CourseId == coursedid);
-                List<Document> docmMod = new List<Document>();
-                List<Document> docmAct;
-                bool statusa = true;
-                bool statusm = true;
-                foreach (var modulid in moduels.Select(m => m.Id))
-                {
-                    docmMod.AddRange( (await _DocumentRepository.GetDocumentsByIdOwnerAsync(modulid)));
-                    docmAct = new List<Document>();
-                    foreach (var Activityid in _ctx.LMSActivity.Where(a => a.ModuleId == modulid).Select(a => a.Id))
-                    {
-                        docmAct.AddRange((await _DocumentRepository.GetDocumentsByIdOwnerAsync(Activityid)));
-                    }
-                    statusa = await _DocumentRepository.RemoveDocumentRangeAsync(docmAct.ToList());
-                    if (!statusa)
-                        return false;
-                }
-                statusm = await _DocumentRepository.RemoveDocumentRangeAsync(docmMod.ToList());
-                if (!statusm)
-                    return false;
-            }
-            else
-            {
-                return false;
-            }
 
-
-
-            return true;
+            var docCourse = await _DocumentRepository.GetAllDocumentsForCourseAsync(coursedid);
+            return await _DocumentRepository.RemoveDocumentRangeAsync(docCourse.ToList());
         }
+
+        public async Task<Course> CloneCourseAsync(CloneFormModel cloneFormModel, string userid)
+        {
+            var tempteacher = await _userManager.GetUsersInRoleAsync("Teacher");
+            var coursedata = await _ctx.Courses
+                         .Include(c => c.Modules)
+                         .ThenInclude(m => m.LMSActivities)
+                         .ThenInclude(a => a.ActivityType)
+                         .FirstOrDefaultAsync(c => cloneFormModel.Id == c.Id.ToString());
+
+            var Alldocs = await _DocumentRepository.GetAllDocumentsForCourseAsync(Guid.Parse(cloneFormModel.Id));
+            var Alldocclones = Alldocs.Where(d => (tempteacher.Select(u => u.Id).Contains(d.LMSUserId))).Select(d => new CloneDocumentModel
+            {
+                Name = d.Name,
+                UploadDate = DateTime.Now,
+                Description = d.Description,
+                Path = d.Path,
+                LMSUserId = userid,
+                CourseId = d.CourseId,
+                NewCourseId = null,
+                ModuleId = d.ModuleId,
+                NewModuleId = null,
+                LMSActivityId = d.LMSActivityId,
+                NewLMSActivityId = null,
+                DocumentTypeId = d.DocumentTypeId
+            }).ToList();
+
+            DateTime dt = DateTime.Parse(cloneFormModel.NewDate.ToShortDateString());
+            DateTime dt1 = DateTime.Parse(coursedata.StartDate.ToShortDateString());
+
+            int noOfDays = (int)dt.Subtract(dt1).TotalDays; // dates to add
+
+
+            var tmpcourse = new Course
+            {
+
+                Name = cloneFormModel.Name,
+                Description = cloneFormModel.Description,
+                StartDate = cloneFormModel.NewDate,
+                CourseImgPath = (cloneFormModel.FileData == null) ? coursedata.CourseImgPath : @"..\assets\img\" + cloneFormModel.FileData.FileName
+
+            };
+            await _ctx.Courses.AddRangeAsync(tmpcourse);
+            _ctx.SaveChanges();
+            cloneFormModel.NewCourseId = tmpcourse.Id;
+
+            for (int i = 0; i < Alldocclones.Count(); i++)
+            {
+                if(Alldocclones[i].CourseId== Guid.Parse(cloneFormModel.Id))
+                {
+                    Alldocclones[i].NewCourseId= cloneFormModel.NewCourseId;
+                }
+            }
+  
+            foreach (var mod in coursedata.Modules.Where(m => m.CourseId == Guid.Parse(cloneFormModel.Id)))
+            {
+
+                Module tmp2 = new Module
+                {
+                    Name = mod.Name,
+                    Description = mod.Description,
+                    StartDate = mod.StartDate.AddDays(noOfDays),
+                    EndDate = mod.EndDate.AddDays(noOfDays),
+                    CourseId = cloneFormModel.NewCourseId.Value
+                };
+
+                // add modules Save old and new modulid
+                await _ctx.Modules.AddAsync(tmp2);
+                 _ctx.SaveChanges();
+                for (int i = 0;  i < Alldocclones.Count(); i++)
+                {
+                    if(Alldocclones[i].ModuleId==mod.Id)
+                    {
+                        Alldocclones[i].NewModuleId = tmp2.Id;
+                    }
+                }
+                /*foreach (var doc in Alldocclones.Where(d => d.ModuleId == mod.Id))
+                {
+                    doc.NewModuleId = tmp2.Id;
+                }*/
+                //  foreach (var act in _ctx.LMSActivity.Where(m => m.ModuleId == mod.Id))
+                foreach (var act in coursedata.Modules.Where(m => m.Id == mod.Id).Select(m => m.LMSActivities).FirstOrDefault())
+                {
+
+                    LMSActivity tmpact = new LMSActivity
+                    {
+                        Name = act.Name,
+                        Description = act.Description,
+                        StartDate = act.StartDate.AddDays(noOfDays),
+                        EndDate = act.EndDate.AddDays(noOfDays),
+                        ActivityTypeId = act.ActivityTypeId,
+                        ModuleId = tmp2.Id
+                    };
+                    await _ctx.LMSActivity.AddAsync(tmpact);
+                    await _ctx.SaveChangesAsync();
+                    for (int i = 0; i < Alldocclones.Count(); i++)
+                    {
+                        if(Alldocclones[i].LMSActivityId==act.Id)
+                        {
+                            Alldocclones[i].NewLMSActivityId= tmpact.Id;
+                        }
+                    }
+                   /* foreach (var doc in Alldocclones.Where(d => d.LMSActivityId == act.Id))
+                    {
+                        doc.NewLMSActivityId = tmpact.Id;
+                    }*/
+                }
+            }
+            // in with docs
+            await _ctx.Documents.AddRangeAsync(Alldocclones.Select(d => new Document
+            {
+                Name = d.Name,
+                UploadDate = DateTime.Now,
+                Description = d.Description,
+                Path = d.Path,
+                LMSUserId = userid,
+                CourseId = d.NewCourseId,
+                ModuleId = d.NewModuleId,
+                LMSActivityId = d.NewLMSActivityId,
+                DocumentTypeId = d.DocumentTypeId
+            }));
+            await _ctx.SaveChangesAsync();
+
+
+            // if a img add img.
+            if (cloneFormModel.FileData != null && cloneFormModel.FileData.Length > 0)
+            {
+                string path = GetCourseImageUploadPath();
+                _DocumentRepository.UploadFile(cloneFormModel.FileData, path);
+            }
+
+
+
+
+
+            return new Course();
+        }
+
 
         public async Task<bool> CourseExistsAsync (Guid courseId)
         {
@@ -206,6 +316,13 @@ namespace LMS_1_1.Repository
             }
         }
 
+        public async Task<bool> RemoveModuleHelperAsync(Guid moduleid)
+        {
+            var docModule = await _DocumentRepository.GetAllDocumentsForModuleAsync(moduleid);
+            return await _DocumentRepository.RemoveDocumentRangeAsync(docModule.ToList());
+        }
+
+
         public async Task<bool> ModuleExistsAsync (Guid moduleId)
         {
             return await _ctx.Modules.AnyAsync(e => e.Id == moduleId);
@@ -227,6 +344,13 @@ namespace LMS_1_1.Repository
                  .FirstOrDefaultAsync(a => a.Id == activityId);
 
         }
+
+        public async Task<bool> RemoveActivityHelperAsync(Guid activityid)
+        {
+            var docActivity = await _DocumentRepository.GetAllDocumentsForActivityAsync(activityid);
+            return await _DocumentRepository.RemoveDocumentRangeAsync(docActivity.ToList());
+        }
+
         public async Task<bool> LMSActivityExistsAsync (Guid activityId)
         {
             return await _ctx.LMSActivity.AnyAsync(e => e.Id == activityId);

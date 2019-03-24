@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LMS_1_1.Models;
+using LMS_1_1.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LMS_1_1.Repository
 {
@@ -32,7 +34,9 @@ namespace LMS_1_1.Repository
         Task AddTokenUser(string token, string userid);
         Task<bool> RemoveTokenUser(string token);
         Task<bool> IsTeacher(string token);
-        Task<bool> RemoveCourseHelperAsync(Guid coursedid);
+        Task<bool> RemoveCourseHelperAsync(Guid courseid);
+        Task<bool> RemoveModuleHelperAsync(Guid moduleid);
+        Task<bool> RemoveActivityHelperAsync(Guid activityid);
 
         Task<bool> CheckIfModuleInRange(string courseid, DateTime start, DateTime end);
         Task<bool> CheckIfActivityInRange(string modulid, DateTime start, DateTime end);
@@ -40,5 +44,6 @@ namespace LMS_1_1.Repository
         Task AddEntityAsync (object model);
         void UpdateEntity (object model);
         void RemoveEntity (object model);
+        Task<Course> CloneCourseAsync(CloneFormModel cloneFormModel, string userid);
     }
 }

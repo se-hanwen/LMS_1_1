@@ -302,217 +302,217 @@ namespace LMS_1_1.Controllers
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<Course>> Clone([FromForm] CloneFormModel CloneFormModel )
         {
+
+
+
              string userid=  (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
-            var tempteacher = await _userManager.GetUsersInRoleAsync("Teacher");
-            var allteachers =tempteacher.Select(u => u.Id);
-            /*var config = new MapperConfiguration(cfg => {
+             var res= await _programrepository.CloneCourseAsync(CloneFormModel, userid);
 
-                 cfg.CreateMap<ICollection<Module>,List<CloneModuleModel>>();
-                 cfg.CreateMap<ICollection<LMSActivity>, List<CloneActivityModel>>();
-                 cfg.CreateMap<ICollection<Document>,List<CloneDocumentModel>>();
-               
-             });
-            IMapper iMapper = config.CreateMapper();*/
+            return Ok(res);
 
-            //CloneFormModel => old courseid, new start, new image may be null
-            // get course
-            var coursedata = await _context.Courses
-                            .Include(c => c.Modules)
-                            .ThenInclude(m => m.LMSActivities)
-                            .ThenInclude(a => a.ActivityType)
-                     
-
-                            .FirstOrDefaultAsync(c => CloneFormModel.Id == c.Id.ToString());
-            /// int datediff = ((TimeSpan) (CloneFormModel.NewDate - coursedata.StartDate).Days;
-            CloneFormModel.NewDate = CloneFormModel.NewDate;
-
-            DateTime dt = DateTime.Parse(CloneFormModel.NewDate.ToShortDateString());
-            DateTime dt1 = DateTime.Parse(coursedata.StartDate.ToShortDateString());
-
-            int noOfDays = (int) dt.Subtract(dt1).TotalDays; // dates to add
-
-  
-
-            var tmpcourse = new Course
-            {
-
-                Name = CloneFormModel.Name,
-                Description = CloneFormModel.Description,
-                StartDate = CloneFormModel.NewDate,
-                CourseImgPath =(CloneFormModel.FileData==null)?coursedata.CourseImgPath :@"..\assets\img\" + CloneFormModel.FileData.FileName
-
-            };
-
-            // update course name and date
-            // add course, Save Old and new courseid
-            await _context.Courses.AddRangeAsync(tmpcourse);
-            await _context.SaveChangesAsync();
-            CloneFormModel.NewCourseId = tmpcourse.Id;
-
-            var cloneModules = new List<CloneModuleModel>();
-            var cloneActivities = new List<CloneActivityModel>();
-            foreach (var mod in coursedata.Modules)
-            {
-                Module tmp2 = new Module
-                {
-                    Name = mod.Name
-                  ,
-                    Description = mod.Description
-                  ,
-                    StartDate = mod.StartDate.AddDays(noOfDays)
-                  ,
-                    EndDate = mod.EndDate.AddDays(noOfDays)
-                  ,
-                    CourseId = CloneFormModel.NewCourseId.Value
-                };
-
-                // add modules Save old and new modulid
-                await _context.Modules.AddAsync(tmp2);
-                await _context.SaveChangesAsync();
-                
-
-                cloneModules.Add(new CloneModuleModel
-                {
-                    Id = mod.Id,
-                    Name = mod.Name,
-                    Description = mod.Description,
-                    StartDate = mod.StartDate.AddDays(noOfDays),
-                    EndDate = mod.EndDate.AddDays(noOfDays),
-                    CourseId = CloneFormModel.NewCourseId.Value,
-                    NewModuleid=tmp2.Id
-
-                });
-                foreach(var act in coursedata.Modules.Where(m=> m.Id==mod.Id).Select(m => m.LMSActivities).FirstOrDefault())
-                {
-                    LMSActivity tmpact = new LMSActivity
-                    {
-                        Name = act.Name
-                    ,
-                        Description = act.Description
-                    ,
-                        StartDate = act.StartDate.AddDays(noOfDays)
-                    ,
-                        EndDate = act.EndDate.AddDays(noOfDays)
-                    ,
-                        ActivityTypeId = act.ActivityTypeId
-                    ,
-                        ModuleId = tmp2.Id
-                    };
-                    // add activitities save old and new activitiyid
-                    await _context.LMSActivity.AddAsync(tmpact);
-                    await _context.SaveChangesAsync();
-
-                    cloneActivities.Add(new CloneActivityModel
-                    {
-                        Id=act.Id,
-                        Name=act.Name
- ,
-                        StartDate = act.StartDate.AddDays(noOfDays)
-                  ,
-                        EndDate = act.EndDate.AddDays(noOfDays)
-                        ,
-                        ActivityTypeId = act.ActivityTypeId
-                        ,moduleid = tmp2.Id
-                        ,NewActivityId= tmpact.Id
-
-                    });
-                }
-
-            }
-
-      
-            // get documents
-            List<Document> documents = new List<Document>();
-            var Codoc = await _context.Documents.Where(d => d.CourseId.ToString() == CloneFormModel.Id).Where(d => (tempteacher.Select(u => u.Id).Contains(d.LMSUserId)))
-                    .Select(d => new Document
-                    {
-                        Name = d.Name,
-                        UploadDate = DateTime.Now,
-                        Description = d.Description,
-                        Path = d.Path,
-                        LMSUserId = userid,
-                        CourseId = Guid.Parse(CloneFormModel.Id),
-                        ModuleId = null,
-                        LMSActivityId = null,
-                        DocumentTypeId = d.DocumentTypeId
-                    }
-             ).ToArrayAsync();
+            /*  var tempteacher = await _userManager.GetUsersInRoleAsync("Teacher");
+               var allteachers =tempteacher.Select(u => u.Id);
 
 
-            documents.AddRange(Codoc);
-                //
-            
+               //CloneFormModel => old courseid, new start, new image may be null
+               // get course
+               var coursedata = await _context.Courses
+                               .Include(c => c.Modules)
+                               .ThenInclude(m => m.LMSActivities)
+                               .ThenInclude(a => a.ActivityType)
 
-          var Modoc=  _context.Documents.Where(d =>  (tempteacher.Select(u => u.Id).Contains(d.LMSUserId)))
-                .Join(cloneModules,
-                    d => d.ModuleId,
-                   (CloneModuleModel m) => m.Id,
-                    (d, m) => 
-                      new Document
-                      { 
+
+                               .FirstOrDefaultAsync(c => CloneFormModel.Id == c.Id.ToString());
+               /// int datediff = ((TimeSpan) (CloneFormModel.NewDate - coursedata.StartDate).Days;
+               CloneFormModel.NewDate = CloneFormModel.NewDate;
+
+               DateTime dt = DateTime.Parse(CloneFormModel.NewDate.ToShortDateString());
+               DateTime dt1 = DateTime.Parse(coursedata.StartDate.ToShortDateString());
+
+               int noOfDays = (int) dt.Subtract(dt1).TotalDays; // dates to add
+
+
+
+               var tmpcourse = new Course
+               {
+
+                   Name = CloneFormModel.Name,
+                   Description = CloneFormModel.Description,
+                   StartDate = CloneFormModel.NewDate,
+                   CourseImgPath =(CloneFormModel.FileData==null)?coursedata.CourseImgPath :@"..\assets\img\" + CloneFormModel.FileData.FileName
+
+               };
+
+               // update course name and date
+               // add course, Save Old and new courseid
+               await _context.Courses.AddRangeAsync(tmpcourse);
+               await _context.SaveChangesAsync();
+               CloneFormModel.NewCourseId = tmpcourse.Id;
+
+               var cloneModules = new List<CloneModuleModel>();
+               var cloneActivities = new List<CloneActivityModel>();
+               foreach (var mod in coursedata.Modules)
+               {
+                   Module tmp2 = new Module
+                   {
+                       Name = mod.Name
+                     ,
+                       Description = mod.Description
+                     ,
+                       StartDate = mod.StartDate.AddDays(noOfDays)
+                     ,
+                       EndDate = mod.EndDate.AddDays(noOfDays)
+                     ,
+                       CourseId = CloneFormModel.NewCourseId.Value
+                   };
+
+                   // add modules Save old and new modulid
+                   await _context.Modules.AddAsync(tmp2);
+                   await _context.SaveChangesAsync();
+
+
+                   cloneModules.Add(new CloneModuleModel
+                   {
+                       Id = mod.Id,
+                       Name = mod.Name,
+                       Description = mod.Description,
+                       StartDate = mod.StartDate.AddDays(noOfDays),
+                       EndDate = mod.EndDate.AddDays(noOfDays),
+                       CourseId = CloneFormModel.NewCourseId.Value,
+                       NewModuleid=tmp2.Id
+
+                   });
+                   foreach(var act in coursedata.Modules.Where(m=> m.Id==mod.Id).Select(m => m.LMSActivities).FirstOrDefault())
+                   {
+                       LMSActivity tmpact = new LMSActivity
+                       {
+                           Name = act.Name
+                       ,
+                           Description = act.Description
+                       ,
+                           StartDate = act.StartDate.AddDays(noOfDays)
+                       ,
+                           EndDate = act.EndDate.AddDays(noOfDays)
+                       ,
+                           ActivityTypeId = act.ActivityTypeId
+                       ,
+                           ModuleId = tmp2.Id
+                       };
+                       // add activitities save old and new activitiyid
+                       await _context.LMSActivity.AddAsync(tmpact);
+                       await _context.SaveChangesAsync();
+
+                       cloneActivities.Add(new CloneActivityModel
+                       {
+                           Id=act.Id,
+                           Name=act.Name
+    ,
+                           StartDate = act.StartDate.AddDays(noOfDays)
+                     ,
+                           EndDate = act.EndDate.AddDays(noOfDays)
+                           ,
+                           ActivityTypeId = act.ActivityTypeId
+                           ,moduleid = tmp2.Id
+                           ,NewActivityId= tmpact.Id
+
+                       });
+                   }
+
+               }
+
+
+               // get documents
+               List<Document> documents = new List<Document>();
+               var Codoc = await _context.Documents.Where(d => d.CourseId.ToString() == CloneFormModel.Id).Where(d => (tempteacher.Select(u => u.Id).Contains(d.LMSUserId)))
+                       .Select(d => new Document
+                       {
+                           Name = d.Name,
+                           UploadDate = DateTime.Now,
+                           Description = d.Description,
+                           Path = d.Path,
+                           LMSUserId = userid,
+                           CourseId = CloneFormModel.NewCourseId.Value,
+                           ModuleId = null,
+                           LMSActivityId = null,
+                           DocumentTypeId = d.DocumentTypeId
+                       }
+                ).ToArrayAsync();
+
+
+               documents.AddRange(Codoc);
+                   //
+
+
+             var Modoc=  _context.Documents.Where(d =>  (tempteacher.Select(u => u.Id).Contains(d.LMSUserId)))
+                   .Join(cloneModules,
+                       d => d.ModuleId,
+                      (CloneModuleModel m) => m.Id,
+                       (d, m) => 
+                         new Document
+                         { 
+                             Name = d.Name,
+                             UploadDate = DateTime.Now,
+                             Description = d.Description,
+                             Path = d.Path,
+                             LMSUserId = userid,
+                             CourseId = null,
+                             ModuleId = m.NewModuleid,
+                             LMSActivityId = null,
+                             DocumentTypeId = d.DocumentTypeId
+                         }
+
+                   );
+               documents.AddRange(Modoc);
+
+               var Actdoc = _context.Documents.Where(d => (tempteacher.Select(u => u.Id).Contains(d.LMSUserId)))
+                  .Join(cloneActivities,
+                      d => d.LMSActivityId,
+                     (CloneActivityModel m) => m.Id,
+                      (d, m) => new Document
+                      {
                           Name = d.Name,
                           UploadDate = DateTime.Now,
                           Description = d.Description,
                           Path = d.Path,
                           LMSUserId = userid,
                           CourseId = null,
-                          ModuleId = m.NewModuleid,
-                          LMSActivityId = null,
+                          ModuleId = null,
+                          LMSActivityId = m.NewActivityId,
                           DocumentTypeId = d.DocumentTypeId
                       }
-                    
-                );
-            documents.AddRange(Modoc);
+                  );
+               documents.AddRange(Actdoc);
+               // update documents, courseid, moduleid and activitiyid
+              // documents.Where(d => d.CourseId != null && d.CourseId.ToString() == CloneFormModel.Id).ToList().ForEach(d => d.CourseId = CloneFormModel.NewCourseId);
 
-            var Actdoc = _context.Documents.Where(d => (tempteacher.Select(u => u.Id).Contains(d.LMSUserId)))
-               .Join(cloneActivities,
-                   d => d.LMSActivityId,
-                  (CloneActivityModel m) => m.Id,
-                   (d, m) => new Document
-                   {
-                       Name = d.Name,
-                       UploadDate = DateTime.Now,
-                       Description = d.Description,
-                       Path = d.Path,
-                       LMSUserId = userid,
-                       CourseId = null,
-                       ModuleId = null,
-                       LMSActivityId = m.NewActivityId,
-                       DocumentTypeId = d.DocumentTypeId
-                   }
-               );
-            documents.AddRange(Actdoc);
-            // update documents, courseid, moduleid and activitiyid
-           // documents.Where(d => d.CourseId != null && d.CourseId.ToString() == CloneFormModel.Id).ToList().ForEach(d => d.CourseId = CloneFormModel.NewCourseId);
-
-            // add documents
-            await _context.Documents.AddRangeAsync(documents.Select(d => new Document
-            {
-                Name = d.Name,
-                UploadDate = DateTime.Now,
-                Description = d.Description,
-                Path = d.Path,
-                LMSUserId =userid,
-                CourseId=d.CourseId,
-                ModuleId=d.ModuleId,
-                LMSActivityId=d.LMSActivityId,
-                DocumentTypeId=d.DocumentTypeId
-              }));
-            await _context.SaveChangesAsync();
+               // add documents
+               await _context.Documents.AddRangeAsync(documents.Select(d => new Document
+               {
+                   Name = d.Name,
+                   UploadDate = DateTime.Now,
+                   Description = d.Description,
+                   Path = d.Path,
+                   LMSUserId =userid,
+                   CourseId=d.CourseId,
+                   ModuleId=d.ModuleId,
+                   LMSActivityId=d.LMSActivityId,
+                   DocumentTypeId=d.DocumentTypeId
+                 }));
+               await _context.SaveChangesAsync();
 
 
-            // if a img add img.
-            if (CloneFormModel.FileData!= null && CloneFormModel.FileData.Length > 0)
-            {
-                string path = _programrepository.GetCourseImageUploadPath();
-                _documentrepository.UploadFile(CloneFormModel.FileData, path);
-            }
+               // if a img add img.
+               if (CloneFormModel.FileData!= null && CloneFormModel.FileData.Length > 0)
+               {
+                   string path = _programrepository.GetCourseImageUploadPath();
+                   _documentrepository.UploadFile(CloneFormModel.FileData, path);
+               }
 
 
 
 
 
-            return Ok(new Course());
+               return Ok(new Course());*/
         }
         // PUT: api/Courses1
         [HttpPut("{id}")]
@@ -589,7 +589,7 @@ namespace LMS_1_1.Controllers
         // DELETE: api/Courses1/5
         [HttpDelete("{id}")]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<Course>> DeleteCourse(Guid iD)
+        public async Task<ActionResult<bool>> DeleteCourse(Guid iD)
         {
             var status= await _programrepository.RemoveCourseHelperAsync(iD);
             if (status)
@@ -615,7 +615,7 @@ namespace LMS_1_1.Controllers
                 _logger.LogDebug("!!! Course of {name} deleted.", course.Name);
 
 
-                return Ok(course);      //Send back 200.
+                return Ok(true);      //Send back 200.
             }
             else
                 return StatusCode(500);
